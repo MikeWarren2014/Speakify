@@ -6,6 +6,8 @@ import android.service.notification.StatusBarNotification
 class YourNotificationListenerService : NotificationListenerService() {
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
+
+//        sbn.notification.
         throw NotImplementedError()
     }
 }
