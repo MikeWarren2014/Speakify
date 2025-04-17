@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.UserAppModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,43 +15,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddAppMenuViewModel @Inject constructor(
-    private val repository: AppsRepository // Replace with your actual repository
-) : ViewModel() {
+    override var repository: AppsRepository // Replace with your actual repository
+) : BaseSearchableViewModel(repository) {
     private val _appsToAdd = MutableStateFlow<List<AppListItemViewModel>>(emptyList())
 
-    private val _searchText = MutableStateFlow("")
-    var searchText: StateFlow<String> = _searchText.asStateFlow()
+    override fun getMainMutableStateFlow(): MutableStateFlow<List<AppListItemViewModel>> {
+        return _appsToAdd
+    }
 
-    private val _filteredApps = MutableStateFlow<List<AppListItemViewModel>>(_appsToAdd.value)
-    val filteredApps: StateFlow<List<AppListItemViewModel>> = _filteredApps.asStateFlow()
+    override fun getRepositoryStateFlow(): StateFlow<List<UserAppModel>> {
+        return repository.otherApps
+    }
 
     init {
-        viewModelScope.launch {
-            repository.otherApps.collect { userAppModels: List<UserAppModel> ->
-                _appsToAdd.value = userAppModels.map { model: UserAppModel -> AppListItemViewModel(model) }
-                applySearchFilter()
-            }
-        }
-    }
-
-    fun onSearchTextChange(text: String) {
-        _searchText.value = text
-        applySearchFilter()
-    }
-
-    private fun applySearchFilter() {
-        val text = _searchText.value
-        val appViewModels = _appsToAdd.value
-        if (text.isBlank()) {
-            _filteredApps.value = appViewModels
-            return;
-        }
-        _filteredApps.value = appViewModels.filter { vm: AppListItemViewModel ->
-            vm.model.appName.contains(
-                text,
-                ignoreCase = true
-            )
-        }
+        onInit()
     }
 
     fun onAppSelected(model: UserAppModel, onDone: (UserAppModel) -> Any) {

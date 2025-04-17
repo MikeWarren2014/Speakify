@@ -2,6 +2,7 @@ package com.mikewarren.speakify
 
 import android.content.Context
 import com.mikewarren.speakify.data.AppsRepository
+import com.mikewarren.speakify.data.AppsRepositoryImpl
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.SettingsRepositoryImpl
 import dagger.Binds
@@ -21,6 +22,13 @@ abstract class AppModule {
         settingsRepositoryImpl: SettingsRepositoryImpl
     ): SettingsRepository
 
+    @Binds
+    @Singleton // If you want a single instance
+    abstract fun bindAppsRepository(
+        appsRepositoryImpl: AppsRepositoryImpl
+        // If the repository has dependencies, list them as parameters here
+        // e.g., database: YourDatabase
+    ): AppsRepository
 
     companion object {
         @Provides
@@ -29,17 +37,8 @@ abstract class AppModule {
             @ApplicationContext context: Context
         ): SettingsRepositoryImpl = SettingsRepositoryImpl(context)
 
-
         @Provides
-        @Singleton // If you want a single instance
-        fun provideAppsRepository(
-            // If the repository has dependencies, list them as parameters here
-            // e.g., database: YourDatabase
-        ): AppsRepository {
-            return AppsRepository(
-                // Pass any required arguments to the constructor if needed
-                // e.g., database = database
-            )
-        }
+        @Singleton
+        fun provideAppsRepository(): AppsRepositoryImpl = AppsRepositoryImpl()
     }
 }
