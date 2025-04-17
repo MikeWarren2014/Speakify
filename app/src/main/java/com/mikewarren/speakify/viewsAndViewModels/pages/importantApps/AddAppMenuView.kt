@@ -14,6 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import com.mikewarren.speakify.data.UserAppModel
 
 @Composable
@@ -33,6 +35,9 @@ fun AddAppMenuView(
                 Text("Add App", style = MaterialTheme.typography.titleMedium)
                 Spacer(Modifier.height(8.dp))
                 OutlinedTextField(
+                    leadingIcon = {
+                        Icon(Icons.Filled.Search, contentDescription = "Filter Apps")
+                    },
                     value = searchTextState,
                     onValueChange = { textFieldValue: TextFieldValue ->
                         searchTextState = textFieldValue
