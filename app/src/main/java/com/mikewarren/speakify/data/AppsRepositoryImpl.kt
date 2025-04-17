@@ -1,6 +1,5 @@
 package com.mikewarren.speakify.data
 
-import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +16,7 @@ class AppsRepositoryImpl @Inject constructor(): AppsRepository {
         UserAppModel("com.test.game", "Awesome Game", false),
     )
 
-    // In a real app, this would interact with a database or DataStore
+    // TODO: In a real app, this would interact with a database or DataStore
     private val _importantApps = MutableStateFlow(_allApps
         .filter { model : UserAppModel -> model.enabled })
     override val importantApps: StateFlow<List<UserAppModel>> = _importantApps.asStateFlow()
@@ -25,16 +24,6 @@ class AppsRepositoryImpl @Inject constructor(): AppsRepository {
     private val _otherApps = MutableStateFlow(_allApps.filter
     { model: UserAppModel -> !model.enabled })
     override val otherApps: StateFlow<List<UserAppModel>> = _otherApps.asStateFlow()
-
-    // New: Add a readiness flag
-    private val _isReady = MutableStateFlow(false)
-    val isReady: StateFlow<Boolean> = _isReady.asStateFlow()
-    init {
-        // New: Log when initialization is complete
-        Log.d("AppsRepositoryImpl", "AppsRepositoryImpl initialized")
-        // New: Set the readiness flag (after any potential initialization)
-        _isReady.value = true
-    }
 
     override fun addImportantApp(appModel: UserAppModel) {
         _importantApps.update { it + appModel }

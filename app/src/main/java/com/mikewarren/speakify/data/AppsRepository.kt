@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.update
 
 interface AppsRepository {
 
-    val importantApps: StateFlow<List<UserAppModel>> // Now a property
-    val otherApps: StateFlow<List<UserAppModel>>     // Now a property
+    val importantApps: StateFlow<List<UserAppModel>>
+    val otherApps: StateFlow<List<UserAppModel>>
 
     fun addImportantApp(appModel: UserAppModel)
     fun removeImportantApps(appsToRemove: List<UserAppModel>)
