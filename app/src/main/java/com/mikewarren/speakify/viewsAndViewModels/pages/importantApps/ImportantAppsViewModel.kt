@@ -1,64 +1,40 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.util.Log
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import com.mikewarren.speakify.data.AppsRepository
+import com.mikewarren.speakify.data.AppsRepositoryImpl
 import com.mikewarren.speakify.data.UserAppModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
 class ImportantAppsViewModel @Inject constructor(
-    private val repository: AppsRepository // Replace with your actual repository
-) : ViewModel() {
+    override var repository: AppsRepository // Replace with your actual repository
+) : BaseSearchableViewModel(repository) {
 
     private val _importantApps = MutableStateFlow<List<AppListItemViewModel>>(emptyList())
     val importantApps: StateFlow<List<AppListItemViewModel>> = _importantApps.asStateFlow()
 
-    private val _searchText = MutableStateFlow("")
-    var searchText: StateFlow<String> = _searchText.asStateFlow()
-
-    private val _filteredApps = MutableStateFlow<List<AppListItemViewModel>>(emptyList())
-    val filteredApps: StateFlow<List<AppListItemViewModel>> = _filteredApps.asStateFlow()
-
     init {
-        viewModelScope.launch {
-            repository.importantApps.collect { userAppModels: List<UserAppModel> ->
-                _importantApps.value = userAppModels.map { model: UserAppModel -> AppListItemViewModel(model) }
-
-                // Update _filteredApps after the main state flow has been populated
-                _filteredApps.value = _importantApps.value
-
-                applySearchFilter()
-            }
-        }
+        onInit()
     }
 
-    fun onSearchTextChange(text: String) {
-        _searchText.value = text
-        applySearchFilter()
+    override fun getMainMutableStateFlow(): MutableStateFlow<List<AppListItemViewModel>> {
+        return _importantApps
     }
 
-    private fun applySearchFilter() {
-        val text = _searchText.value
-        val appViewModels = _importantApps.value
-        if (text.isBlank()) {
-            _filteredApps.value = appViewModels
-            return;
-        }
-        _filteredApps.value = appViewModels.filter { vm: AppListItemViewModel ->
-            vm.model.appName.contains(
-                text,
-                ignoreCase = true
-            )
-        }
+    override fun getRepositoryStateFlow(): StateFlow<List<UserAppModel>> {// Temporary: Observe readiness (with a timeout for safety)
+        return repository.importantApps
     }
 
-    
 
     fun getSelectedApps(): List<UserAppModel> {
         return _importantApps.value

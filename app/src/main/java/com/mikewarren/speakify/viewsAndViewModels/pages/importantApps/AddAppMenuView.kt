@@ -25,14 +25,19 @@ fun AddAppMenuView(
     val searchText by viewModel.searchText.collectAsState()
     val appVMs by viewModel.filteredApps.collectAsState()
 
+    var searchTextState by remember { mutableStateOf(TextFieldValue(searchText)) }
+
     Dialog(onDismissRequest = onDismissRequest) {
         Surface(shape = MaterialTheme.shapes.medium) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text("Add App", style = MaterialTheme.typography.titleMedium)
                 Spacer(Modifier.height(8.dp))
                 OutlinedTextField(
-                    value = TextFieldValue(text = searchText),
-                    onValueChange = { textFieldValue: TextFieldValue -> viewModel.onSearchTextChange(textFieldValue.text) },
+                    value = searchTextState,
+                    onValueChange = { textFieldValue: TextFieldValue ->
+                        searchTextState = textFieldValue
+                        viewModel.onSearchTextChange(textFieldValue.text)
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     placeholder = { Text("Search Apps") }
                 )
