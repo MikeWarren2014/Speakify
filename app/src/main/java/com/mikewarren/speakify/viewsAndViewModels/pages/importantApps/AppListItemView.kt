@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 
 import androidx.compose.runtime.LaunchedEffect
 import android.util.Log
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AppSettingsView
 
 @Composable
 fun AppListItemView(

@@ -1,4 +1,4 @@
-package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps
+package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.SettingsRepository

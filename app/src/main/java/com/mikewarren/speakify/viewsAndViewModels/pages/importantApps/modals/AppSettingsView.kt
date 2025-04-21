@@ -1,4 +1,4 @@
-package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps
+package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

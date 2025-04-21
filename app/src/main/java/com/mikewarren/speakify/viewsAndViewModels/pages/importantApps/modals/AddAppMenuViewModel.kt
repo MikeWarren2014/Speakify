@@ -1,16 +1,13 @@
-package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps
+package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.UserAppModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.AppListItemViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

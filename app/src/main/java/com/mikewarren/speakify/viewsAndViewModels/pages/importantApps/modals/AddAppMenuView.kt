@@ -1,4 +1,4 @@
-package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps
+package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mikewarren.speakify.data.UserAppModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.AppListItemViewModel
 
 @Composable
 fun AddAppMenuView(
