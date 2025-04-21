@@ -23,7 +23,6 @@ import android.util.Log
 @Composable
 fun AppListItemView(
     viewModel: ConfigurableAppListItemViewModel,
-    onConfigClick: () -> Unit,
 ) {
     LaunchedEffect(viewModel.isSelected) {
         Log.d("AppListItemView", "App: ${viewModel.model.appName}, Package:${viewModel.model.packageName}, isSelected: ${viewModel.isSelected}")

@@ -56,7 +56,6 @@ fun ImportantAppsView() {
             items(appVMs) { appVM ->
                 AppListItemView(
                     viewModel = appVM as ConfigurableAppListItemViewModel,
-                    onConfigClick = { /* TODO: Navigate to config screen for this app */ },
                 )
             }
         }

@@ -47,10 +47,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.51.1")
     implementation libs.androidx.media3.common.ktx
     kapt("com.google.dagger:hilt-compiler:2.51.1")
-// If using Hilt with Compose Navigation:
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-//    implementation("com.google.protobuf:protobuf-javalite:3.18.0") // or latest version
-    // Add this line:
     implementation("com.google.protobuf:protoc:3.17.2") // Use the same version as in your protobuf extension
     implementation("androidx.datastore:datastore:1.1.4")
     implementation libs.androidx.core.ktx
