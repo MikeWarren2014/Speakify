@@ -27,6 +27,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mikewarren.speakify.data.UserAppModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AddAppMenuView
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.DeleteConfirmationDialog
 
 @Composable
 fun ImportantAppsView() {
