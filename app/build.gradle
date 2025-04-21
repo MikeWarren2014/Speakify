@@ -5,16 +5,19 @@ plugins {
 
     id "kotlin-kapt"
     id 'com.google.dagger.hilt.android' // Add this line
+    id 'org.jetbrains.kotlin.plugin.serialization'
 }
+
+final int androidSdkVersion = 35
 
 android {
     namespace 'com.mikewarren.speakify'
-    compileSdk 35
+    compileSdk androidSdkVersion
 
     defaultConfig {
         applicationId "com.mikewarren.speakify"
         minSdk 24
-        targetSdk 35
+        targetSdk androidSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -44,9 +47,9 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.51.1")
     implementation libs.androidx.media3.common.ktx
     kapt("com.google.dagger:hilt-compiler:2.51.1")
-// If using Hilt with Compose Navigation:
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-
+    implementation("com.google.protobuf:protoc:3.17.2") // Use the same version as in your protobuf extension
+    implementation("androidx.datastore:datastore:1.1.4")
     implementation libs.androidx.core.ktx
     implementation libs.androidx.lifecycle.runtime.ktx
     implementation libs.androidx.activity.compose
@@ -62,6 +65,7 @@ dependencies {
     // https://mvnrepository.com/artifact/androidx.datastore/datastore-preferences
     implementation "androidx.datastore:datastore-preferences:1.1.4"
 
+    implementation libs.kotlinx.serialization.json
 
     implementation libs.androidx.datastore.core.android
     implementation libs.androidx.datastore.preferences.core.jvm
@@ -73,7 +77,6 @@ dependencies {
     debugImplementation libs.androidx.ui.tooling
     debugImplementation libs.androidx.ui.test.manifest
 
-//    // https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-viewmodel-compose
-    runtimeOnly 'androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7'
+    runtimeOnly libs.androidx.lifecycle
 
 }

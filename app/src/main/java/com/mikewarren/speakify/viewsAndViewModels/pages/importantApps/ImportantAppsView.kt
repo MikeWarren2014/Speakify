@@ -55,8 +55,7 @@ fun ImportantAppsView() {
         LazyColumn(modifier = Modifier.weight(1f)) {
             items(appVMs) { appVM ->
                 AppListItemView(
-                    viewModel = appVM,
-                    onConfigClick = { /* TODO: Navigate to config screen for this app */ },
+                    viewModel = appVM as ConfigurableAppListItemViewModel,
                 )
             }
         }

@@ -1,7 +1,6 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +11,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,8 +22,7 @@ import android.util.Log
 
 @Composable
 fun AppListItemView(
-    viewModel: AppListItemViewModel,
-    onConfigClick: () -> Unit,
+    viewModel: ConfigurableAppListItemViewModel,
 ) {
     LaunchedEffect(viewModel.isSelected) {
         Log.d("AppListItemView", "App: ${viewModel.model.appName}, Package:${viewModel.model.packageName}, isSelected: ${viewModel.isSelected}")
@@ -43,8 +40,20 @@ fun AppListItemView(
         Spacer(Modifier.width(8.dp))
         Text(viewModel.model.appName)
         Spacer(Modifier.weight(1f))
-        IconButton(onClick = onConfigClick) {
+        IconButton(onClick = {
+            viewModel.childViewModel.isOpen = true;
+        }) {
             Icon(Icons.Filled.Settings, contentDescription = "Configure")
         }
     }
+
+    AppSettingsView(
+        viewModel = viewModel.childViewModel,
+        onDismiss = {
+            viewModel.childViewModel.isOpen = false;
+        },
+        onSave = {
+            viewModel.childViewModel.isOpen = false;
+        },
+    )
 }
