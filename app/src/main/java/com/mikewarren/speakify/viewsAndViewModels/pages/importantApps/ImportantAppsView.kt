@@ -1,5 +1,6 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,8 +12,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -24,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mikewarren.speakify.data.UserAppModel
@@ -54,11 +57,36 @@ fun ImportantAppsView() {
         Spacer(Modifier.height(16.dp))
 
         // App List
-        LazyColumn(modifier = Modifier.weight(1f)) {
-            items(appVMs) { appVM ->
-                AppListItemView(
-                    viewModel = appVM as ConfigurableAppListItemViewModel,
+        if (appVMs.isEmpty()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f) // Take available space
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center // Center vertically as well
+            ) {
+                Text(
+                    text = "No apps added yet!",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
+                Text(
+                    text = "Click the Add App button below to add some apps to be alerted when they send you notifications.",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                )
+            }
+        } else {
+
+            LazyColumn(modifier = Modifier.weight(1f)) {
+                items(appVMs) { appVM ->
+                    AppListItemView(
+                        viewModel = appVM as ConfigurableAppListItemViewModel,
+                    )
+                }
             }
         }
         Spacer(Modifier.height(16.dp))
