@@ -70,7 +70,7 @@ abstract class BaseTTSAutoCompletableViewModel(
         }
     }
 
-    abstract fun saveSelectedVoice(voiceName: String)
+    abstract fun onSelectedVoice(voiceName: String)
 
     override fun onCleared() {
         super.onCleared()

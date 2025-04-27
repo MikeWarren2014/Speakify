@@ -10,7 +10,7 @@ class AppsRepositoryImpl @Inject constructor(): AppsRepository {
     private val _allApps = listOf(
         UserAppModel("com.example.app1", "App One", true),
         UserAppModel("com.example.app2", "App Two", true),
-        UserAppModel("com.example.app3", "App Three", true),
+        UserAppModel("com.google.android.dialer", "Phone", true),
         UserAppModel("com.example.app4", "Example App 1", false),
         UserAppModel("com.example.app5", "Another App", false),
         UserAppModel("com.test.game", "Awesome Game", false),

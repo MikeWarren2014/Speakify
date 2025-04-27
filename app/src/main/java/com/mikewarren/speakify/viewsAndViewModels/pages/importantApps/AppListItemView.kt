@@ -42,7 +42,7 @@ fun AppListItemView(
         Text(viewModel.model.appName)
         Spacer(Modifier.weight(1f))
         IconButton(onClick = {
-            viewModel.childViewModel.isOpen = true;
+            viewModel.childViewModel.open();
         }) {
             Icon(Icons.Filled.Settings, contentDescription = "Configure")
         }
@@ -50,11 +50,5 @@ fun AppListItemView(
 
     AppSettingsView(
         viewModel = viewModel.childViewModel,
-        onDismiss = {
-            viewModel.childViewModel.isOpen = false;
-        },
-        onSave = {
-            viewModel.childViewModel.isOpen = false;
-        },
     )
 }

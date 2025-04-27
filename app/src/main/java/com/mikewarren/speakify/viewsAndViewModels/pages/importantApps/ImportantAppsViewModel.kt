@@ -1,10 +1,6 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps
 
-import android.util.Log
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import com.mikewarren.speakify.data.AppsRepository
-import com.mikewarren.speakify.data.AppsRepositoryImpl
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.UserAppModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
@@ -12,8 +8,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel

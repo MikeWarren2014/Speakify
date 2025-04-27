@@ -26,7 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mikewarren.speakify.utils.TTSUtils
+import com.mikewarren.speakify.data.Constants
 
 @Composable
 fun AutoCompletableView(
@@ -34,7 +34,7 @@ fun AutoCompletableView(
     onGetDefaultValues: (BaseAutoCompletableViewModel) -> List<String>,
     onHandleSelection: (BaseAutoCompletableViewModel, String) -> Any,
 ) {
-    val filteredVoiceNames : List<String> = remember(viewModel.searchText) {
+    val filteredChoices : List<String> = remember(viewModel.searchText) {
         (if (viewModel.searchText.isBlank()) {
             onGetDefaultValues(viewModel)
         } else {
@@ -56,7 +56,7 @@ fun AutoCompletableView(
             onValueChange = { text: String ->
                 viewModel.setAutocompleteDropdownState(true)
                 viewModel.onSearchTextChanged(text, { newValue:String ->
-                    if ((filteredVoiceNames.size == 1) && (newValue in filteredVoiceNames)) {
+                    if ((filteredChoices.size == 1) && (newValue in filteredChoices)) {
                         onHandleSelection(viewModel, newValue)
                     }
                 })
@@ -69,9 +69,9 @@ fun AutoCompletableView(
             label = { Text("Search for ${viewModel.getLabel()}") }
         )
 
-        if (filteredVoiceNames.isNotEmpty() && viewModel.isAutocompleteDropdownOpen) {
+        if (filteredChoices.isNotEmpty() && viewModel.isAutocompleteDropdownOpen) {
             LazyColumn {
-                items(filteredVoiceNames) { voiceName ->
+                items(filteredChoices.take(Constants.AutoCompleteListSizeLimit)) { choice ->
                     val annotatedString = buildAnnotatedString {
                         withStyle(
                             style = SpanStyle(
@@ -81,13 +81,13 @@ fun AutoCompletableView(
                                 // Add more style attributes as needed
                             )
                         ) {
-                            append(voiceName)
+                            append(choice)
                         }
                         addStringAnnotation(
                             tag = "Clickable",
-                            annotation = voiceName, // Store voiceName as annotation
+                            annotation = choice, // Store choice as annotation
                             start = 0,
-                            end = voiceName.length
+                            end = choice.length
                         )
                     }
 

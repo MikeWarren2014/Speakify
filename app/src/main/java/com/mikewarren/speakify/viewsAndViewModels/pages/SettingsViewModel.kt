@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.viewsAndViewModels.widgets.BaseTTSAutoCompletableViewModel
@@ -46,7 +48,7 @@ class SettingsViewModel @Inject constructor(
     }
 
 
-    override fun saveSelectedVoice(voiceName: String) {
+    override fun onSelectedVoice(voiceName: String) {
         viewModelScope.launch {
             searchText = voiceName
             settingsRepository.saveSelectedVoice(voiceName)

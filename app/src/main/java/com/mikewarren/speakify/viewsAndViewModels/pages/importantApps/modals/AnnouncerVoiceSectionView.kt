@@ -18,7 +18,7 @@ fun AnnouncerVoiceSectionView(
         Spacer(modifier = Modifier.width(16.dp))
         TTSAutoCompletableView(viewModel = viewModel,
             onHandleSelection = { viewModel, selection: String ->
-                (viewModel as AnnouncerVoiceSectionViewModel).saveSelectedVoice(selection)
+                (viewModel as AnnouncerVoiceSectionViewModel).onSelectedVoice(selection)
             })
     }
 }

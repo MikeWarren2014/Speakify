@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi
 import java.util.Locale
 
 object TTSUtils {
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun GetRecommendedDefaultVoiceNames(ttsEngine: TextToSpeech): List<String> {
         val availableVoices = ttsEngine.voices?.toList() ?: emptyList()
@@ -33,6 +34,6 @@ object TTSUtils {
         if (!preferredVoices.isNullOrEmpty())
             voices = usEnglishVoices
 
-        return voices.map { voice: Voice -> voice.name}
+        return voices.map { voice: Voice -> voice.name }
     }
 }
