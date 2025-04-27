@@ -58,6 +58,7 @@ class AppSettingsViewModel(
 
     fun open() {
         isOpen = true
+        childAnnouncerVoiceSectionViewModel.onOpen()
         childNotificationListViewModel?.onOpen()
     }
 

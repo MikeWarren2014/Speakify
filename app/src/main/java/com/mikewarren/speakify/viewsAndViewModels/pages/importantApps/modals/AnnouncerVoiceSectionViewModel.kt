@@ -26,8 +26,13 @@ class AnnouncerVoiceSectionViewModel(
         initializeTTS()
     }
 
+    fun onOpen() {
+        searchText = initialVoice
+    }
+
     override fun onSelectedVoice(voiceName: String) {
         viewModelScope.launch {
+            searchText = voiceName
             _selectedVoice.update { voiceName }
         }
     }

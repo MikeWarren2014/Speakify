@@ -45,16 +45,6 @@ android {
 }
 
 dependencies {
-
-//    implementation("io.grpc:grpc-protobuf:1.57.2") {
-//        exclude(group = "com.google.protobuf", module = "protobuf-java")
-//        exclude(group = "com.google.protobuf", module = "protobuf-javalite")
-//    }
-//    implementation(libs.proto.google.cloud.bigquery.connection.v1) {
-//        exclude(group = "com.google.protobuf", module = "protobuf-java")
-//        exclude(group = "com.google.protobuf", module = "protobuf-javalite")
-//    }
-
     implementation("com.google.dagger:hilt-android:2.51.1")
     implementation libs.androidx.media3.common.ktx
     implementation libs.androidx.appcompat
