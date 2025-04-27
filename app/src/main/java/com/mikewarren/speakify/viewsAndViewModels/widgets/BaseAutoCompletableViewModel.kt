@@ -4,7 +4,9 @@ import android.speech.tts.Voice
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
+import java.util.Locale
 
 abstract class BaseAutoCompletableViewModel : ViewModel() {
     var selection by mutableStateOf<String?>(null)
@@ -24,11 +26,11 @@ abstract class BaseAutoCompletableViewModel : ViewModel() {
         val allChoices = getAllChoices()
 
         if (allChoices.isEmpty())
-            throw IllegalStateException("Cannot filter voices if there are no voices to begin with")
+            return emptyList()
 
         return allChoices
-            .filter { voiceName: String ->
-                voiceName.contains(searchText)
+            .filter { choice: String ->
+                choice.lowercase().contains(searchText.lowercase())
             }
     }
 

@@ -7,35 +7,43 @@ import com.mikewarren.speakify.viewsAndViewModels.widgets.BaseTTSAutoCompletable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AnnouncerVoiceSectionViewModel(
     override var settingsRepository: SettingsRepository,
-    override var initialSettings: AppSettingsModel,
-    override var _settings: MutableStateFlow<AppSettingsModel>,
-    override var settings: StateFlow<AppSettingsModel>,
+    private var initialVoice: String,
+    val onSave: (String) -> Unit,
 ) : IAppSettingsSectionViewModel,
     BaseTTSAutoCompletableViewModel(settingsRepository) {
+
+    var _selectedVoice = MutableStateFlow(initialVoice)
+    val selectedVoice: StateFlow<String> = _selectedVoice.asStateFlow()
 
     init {
         initializeTTS()
     }
 
-    override fun saveSelectedVoice(voiceName: String) {
+    override fun onSelectedVoice(voiceName: String) {
         viewModelScope.launch {
-            val updatedSettings = _settings.value.copy(announcerVoice = voiceName)
-            _settings.value = updatedSettings
-            settingsRepository.saveAppSettings(updatedSettings)
+            _selectedVoice.update { voiceName }
         }
     }
 
-    override fun getTTSFlow(): Flow<String?> {
-        return settingsRepository.appSettings
-            .map { appSettingsMap : Map<String, AppSettingsModel> ->
-                val defaultTTSVoice = "en-US-language"
+    override fun cancel() {
+        viewModelScope.launch {
+            _selectedVoice.update { initialVoice }
+        }
+    }
 
-                appSettingsMap[initialSettings.packageName]?.announcerVoice ?: defaultTTSVoice
-            }
+    override fun onSave() {
+        initialVoice = selectedVoice.value
+        onSave(selectedVoice.value)
+    }
+
+    override fun getTTSFlow(): Flow<String?> {
+        return selectedVoice
     }
 }
