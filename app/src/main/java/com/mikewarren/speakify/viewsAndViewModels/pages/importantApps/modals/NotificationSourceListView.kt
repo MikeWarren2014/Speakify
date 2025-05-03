@@ -20,6 +20,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -31,6 +34,7 @@ fun <T : Any?> NotificationSourceListView(
     viewModel: BaseNotificationSourceListViewModel<T>,
 ) {
     val notificationSources by viewModel.notificationSources.collectAsState()
+    val allData by viewModel.allData.collectAsState()
 
     Text(text = "Alert me to Notifications From", style = MaterialTheme.typography.titleMedium)
     Spacer(modifier = Modifier.height(8.dp))
@@ -38,6 +42,27 @@ fun <T : Any?> NotificationSourceListView(
         .heightIn(max = 200.dp)
         .border(3.dp, MaterialTheme.colorScheme.primaryContainer)
     ) { // Limit height for scrollability
+        if (allData.isEmpty()) {
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Loading....",
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f) // A bit lighter
+                    )
+                }
+            }
+
+            return@LazyColumn
+        }
+
+
         if (notificationSources.isEmpty()) {
             item {
                 Column(

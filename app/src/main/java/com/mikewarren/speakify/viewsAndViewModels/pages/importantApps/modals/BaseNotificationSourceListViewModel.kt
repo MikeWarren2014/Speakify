@@ -1,12 +1,9 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 
-import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.viewsAndViewModels.widgets.BaseAutoCompletableViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,17 +12,18 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import android.util.Log
 
 abstract class BaseNotificationSourceListViewModel<T>(
     override var settingsRepository: SettingsRepository,
-    protected var selectedNotificationSources: List<String>,
+    protected var notificationSourceList: List<String>,
     val onSave: (List<String>) -> Any,
 ) : IAppSettingsSectionViewModel,
     BaseAutoCompletableViewModel() {
-
+    protected var selectedNotificationSources = notificationSourceList
     abstract val allData: StateFlow<List<T>>
 
-    protected val _notificationSources = MutableStateFlow<List<String>>(emptyList())
+    protected val _notificationSources = MutableStateFlow(notificationSourceList)
     val notificationSources: StateFlow<List<String>> = _notificationSources.asStateFlow()
 
     protected val _allAddableSourceModels = MutableStateFlow<List<T>>(emptyList())
@@ -35,9 +33,13 @@ abstract class BaseNotificationSourceListViewModel<T>(
         protected set
 
     fun onOpen() {
+        Log.d(this.javaClass.name,
+            "Invoked BaseNotificationSourceList.onOpen()")
         isLoading = true
         viewModelScope.launch {
             allData.collectLatest {
+                Log.d(this.javaClass.name,
+                    "Data loaded successfully: ${it}")
                 onDataLoaded()
             }
         }
@@ -50,6 +52,8 @@ abstract class BaseNotificationSourceListViewModel<T>(
     }
     
     fun getAddedSourceModels(): List<T> {
+        Log.d(this.javaClass.name,
+            "Invoked BaseNotificationSourceList.getAddedSourceModels() ... allData.value == ${allData.value}")
         return allData.value?.filter { model: T -> toSourceString(model) in _notificationSources.value }
             ?: emptyList()
 
@@ -110,6 +114,6 @@ abstract class BaseNotificationSourceListViewModel<T>(
 
     override fun onSave() {
         selectedNotificationSources = notificationSources.value
-        onSave(notificationSources.value)
+        onSave(notificationSourceList)
     }
 }

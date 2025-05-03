@@ -15,6 +15,6 @@ object Constants {
         "com.samsung.android.messaging",
     )
 
-    const val DefaultTTSLanguage = "en-US-language"
+    const val DefaultTTSVoice = "en-US-language"
     const val AutoCompleteListSizeLimit = 5
 }
