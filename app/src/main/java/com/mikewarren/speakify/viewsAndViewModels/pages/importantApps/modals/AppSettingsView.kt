@@ -42,7 +42,8 @@ fun AppSettingsView(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Announcer Voice Section (needs Autocomplete)
-                AnnouncerVoiceSectionView(viewModel.childAnnouncerVoiceSectionViewModel)
+                if (viewModel.childAnnouncerVoiceSectionViewModel != null)
+                    AnnouncerVoiceSectionView(viewModel.childAnnouncerVoiceSectionViewModel!!)
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -80,7 +81,7 @@ fun GetChildListView(viewModel: AppSettingsViewModel) {
     if (viewModel.childNotificationListViewModel == null)
         return NotSupportedView(viewModel.appModel.appName)
 
-    return NotificationSourceListView(viewModel.childNotificationListViewModel)
+    return NotificationSourceListView(viewModel.childNotificationListViewModel!!)
 }
 
 @Composable
