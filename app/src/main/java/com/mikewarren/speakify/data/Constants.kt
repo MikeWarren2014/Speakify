@@ -7,6 +7,7 @@ object Constants {
         "com.google.android.dialer",
         "com.android.dialer",
         "com.samsung.android.dialer",
+        "com.android.phone",
     )
 
     val MessagingAppPackageNames = listOf(

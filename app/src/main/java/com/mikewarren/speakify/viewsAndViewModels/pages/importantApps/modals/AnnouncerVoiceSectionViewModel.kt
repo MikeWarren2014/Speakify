@@ -27,7 +27,7 @@ class AnnouncerVoiceSectionViewModel(
         }
     }
 
-    fun onOpen() {
+    override fun onOpen() {
         searchText = initialVoice
     }
 

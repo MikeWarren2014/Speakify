@@ -2,7 +2,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:8.9.2'
         classpath "com.google.dagger:hilt-android-gradle-plugin:2.51.1" // Add this line with the correct version
-        classpath 'com.google.protobuf:protobuf-javalite:4.30.2'
+        classpath 'com.google.protobuf:protobuf-java:4.30.2'
         classpath "org.jetbrains.kotlin:kotlin-serialization:2.1.20"
     }
 }
@@ -12,4 +12,13 @@ plugins {
 alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
+}
+
+allprojects {
+    // Configure all dependencies that have the specified properties here
+    configurations.all {
+        resolutionStrategy {
+            force("com.google.protobuf:protobuf-java:4.30.2") // Or your desired version
+        }
+    }
 }
