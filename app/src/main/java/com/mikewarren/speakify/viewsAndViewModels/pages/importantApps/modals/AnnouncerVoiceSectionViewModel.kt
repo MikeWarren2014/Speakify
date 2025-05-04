@@ -7,13 +7,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AnnouncerVoiceSectionViewModel(
     override var settingsRepository: SettingsRepository,
-    val initialVoice: String,
+    private var initialVoice: String,
     val onSave: (String) -> Unit,
 ) : IAppSettingsSectionViewModel,
     BaseTTSAutoCompletableViewModel(settingsRepository) {
@@ -28,8 +27,8 @@ class AnnouncerVoiceSectionViewModel(
         }
     }
 
-    fun onOpen() {
-//        searchText = initialVoice
+    override fun onOpen() {
+        searchText = initialVoice
     }
 
     override fun onSelectedVoice(voiceName: String) {
@@ -40,13 +39,13 @@ class AnnouncerVoiceSectionViewModel(
     }
 
     override fun cancel() {
-//        viewModelScope.launch {
-//            _selectedVoice.update { initialVoice }
-//        }
+        viewModelScope.launch {
+            _selectedVoice.update { initialVoice }
+        }
     }
 
     override fun onSave() {
-//        initialVoice = selectedVoice.value
+        initialVoice = selectedVoice.value
         onSave(selectedVoice.value)
     }
 

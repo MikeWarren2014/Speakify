@@ -1,5 +1,7 @@
 [versions]
 agp = "8.9.2"
+androidxJunit = "1.2.1"
+core = "1.5.0"
 kotlin = "2.0.21"
 coreKtx = "1.10.1"
 junit = "4.13.2"
@@ -10,10 +12,14 @@ lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.8.0"
 composeBom = "2024.09.00"
 navigationRuntimeKtx = "2.8.9"
-protoGoogleCloudBigqueryConnectionV1 = "0.0.1-alpha0.15"
+playServicesBase = "18.7.0"
+playServicesBasement = "18.7.0"
+protobufJava = "4.30.2"
+runner = "1.6.2"
+storage = "1.5.0"
 viewmodelCompose = "2.8.7"
 navigationCompose = "2.8.9"
-datastoreRef = "1.1.4"
+datastoreRef = "1.1.5"
 datastoreCoreAndroid = "1.1.4"
 datastorePreferencesCoreJvm = "1.1.4"
 media3CommonKtx = "1.6.0"
@@ -22,7 +28,10 @@ preference = "1.2.0"
 material = "1.4.+"
 
 [libraries]
+androidx-core = { module = "androidx.test:core", version.ref = "core" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
+androidx-storage = { module = "androidx.test.services:storage", version.ref = "storage" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -47,7 +56,9 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-proto-google-cloud-bigquery-connection-v1 = { module = "com.google.api.grpc:proto-google-cloud-bigquery-connection-v1", version.ref = "protoGoogleCloudBigqueryConnectionV1" }
+play-services-base = { module = "com.google.android.gms:play-services-base", version.ref = "playServicesBase" }
+play-services-basement = { module = "com.google.android.gms:play-services-basement", version.ref = "playServicesBasement" }
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobufJava" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

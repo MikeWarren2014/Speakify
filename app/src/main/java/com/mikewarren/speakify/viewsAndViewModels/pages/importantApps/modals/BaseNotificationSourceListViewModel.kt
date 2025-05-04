@@ -32,7 +32,7 @@ abstract class BaseNotificationSourceListViewModel<T>(
     var isLoading by mutableStateOf(false)
         protected set
 
-    fun onOpen() {
+    override fun onOpen() {
         Log.d(this.javaClass.name,
             "Invoked BaseNotificationSourceList.onOpen()")
         isLoading = true
