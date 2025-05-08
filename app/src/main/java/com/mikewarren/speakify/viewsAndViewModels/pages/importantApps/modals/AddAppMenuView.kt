@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,10 +36,10 @@ import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.AppListIte
 
 @Composable
 fun AddAppMenuView(
+    viewModel: AddAppMenuViewModel,
     onDismissRequest: () -> Unit,
     onAppSelected: (UserAppModel) -> Unit,
 ) {
-    val viewModel: AddAppMenuViewModel = hiltViewModel()
     val searchText by viewModel.searchText.collectAsState()
     val appVMs by viewModel.filteredApps.collectAsState()
 
@@ -88,10 +89,4 @@ fun AddAppMenuView(
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AddAppMenuPreview() {
-    AddAppMenuView(onDismissRequest = {}, onAppSelected = { _ -> })
 }

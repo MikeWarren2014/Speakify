@@ -1,4 +1,4 @@
-package com.mikewarren.speakify.viewsAndViewModels.pages.contactsFetcher
+package com.mikewarren.speakify.viewsAndViewModels.pages.fetcher
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,20 +12,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ContactsFetcherView(viewModel: ContactsFetcherViewModel) {
+fun FetcherView(viewModel: BaseFetcherViewModel) {
     if (viewModel.isLoading)
-        LoadingScreen();
+        LoadingScreen(viewModel);
 }
 
 @Composable
-fun LoadingScreen() {
+private fun LoadingScreen(viewModel: BaseFetcherViewModel) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CircularProgressIndicator()
-            Text(text = "Fetching contacts...", modifier = Modifier.padding(top = 8.dp))
+            Text(text = "Fetching ${viewModel.getDataName()}...", modifier = Modifier.padding(top = 8.dp))
         }
     }
 }

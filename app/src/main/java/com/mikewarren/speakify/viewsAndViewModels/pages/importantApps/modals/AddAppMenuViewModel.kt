@@ -4,15 +4,14 @@ import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.UserAppModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.AppListItemViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
-@HiltViewModel
 class AddAppMenuViewModel @Inject constructor(
-    override var repository: AppsRepository // Replace with your actual repository
+    override var repository: AppsRepository,
+    val allAppsFlow: StateFlow<List<UserAppModel>>
 ) : BaseSearchableViewModel(repository) {
     private val _appsToAdd = MutableStateFlow<List<AppListItemViewModel>>(emptyList())
 
@@ -20,8 +19,8 @@ class AddAppMenuViewModel @Inject constructor(
         return _appsToAdd
     }
 
-    override fun getRepositoryStateFlow(): StateFlow<List<UserAppModel>> {
-        return repository.otherApps
+    override fun getRawDataStateFlow(): StateFlow<List<UserAppModel>> {
+        return allAppsFlow
     }
 
     init {

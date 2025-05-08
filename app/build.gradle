@@ -10,13 +10,14 @@ plugins {
 }
 
 final int androidSdkVersion = 35
+final String packageName = 'com.mikewarren.speakify'
 
 android {
-    namespace 'com.mikewarren.speakify'
+    namespace packageName
     compileSdk androidSdkVersion
 
     defaultConfig {
-        applicationId "com.mikewarren.speakify"
+        applicationId packageName
         minSdk 24
         targetSdk androidSdkVersion
         versionCode 1
@@ -71,7 +72,6 @@ dependencies {
 
     implementation libs.kotlinx.serialization.json
 
-    implementation libs.androidx.datastore.core.android
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.androidx.espresso.core
