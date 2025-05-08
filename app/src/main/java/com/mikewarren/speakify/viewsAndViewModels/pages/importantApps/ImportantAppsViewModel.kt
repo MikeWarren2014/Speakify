@@ -1,13 +1,20 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps
 
+import android.content.pm.ApplicationInfo
+import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.UserAppModel
+import com.mikewarren.speakify.data.events.PackagesListDataSource
 import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AddAppMenuViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,8 +26,41 @@ class ImportantAppsViewModel @Inject constructor(
     private val _importantApps = MutableStateFlow<List<AppListItemViewModel>>(emptyList())
     val importantApps: StateFlow<List<AppListItemViewModel>> = _importantApps.asStateFlow()
 
+    val packagesListDataSource = PackagesListDataSource(settingsRepository.getContext())
+    private val _allAppsFlow : StateFlow<List<ApplicationInfo>> = packagesListDataSource.observeData()
+
+    var childAddAppMenuViewModel: AddAppMenuViewModel? = null
+
     init {
         onInit()
+    }
+
+    override fun onInit() {
+        super.onInit()
+
+        childAddAppMenuViewModel = AddAppMenuViewModel(repository,
+            combine(_allAppsFlow, repository.importantApps) { allApps, importantApps ->
+                val allAppsModels = allApps.map { appInfo ->
+                    UserAppModel(
+                        appName = settingsRepository.getContext().packageManager
+                            .getApplicationLabel(appInfo)
+                            .toString(),
+                        packageName = appInfo.packageName,
+                        enabled = false,
+                    )
+                }
+                val importantAppsModels = importantApps
+                allAppsModels.minus(importantAppsModels.toSet())
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyList()
+            )
+        )
+    }
+
+    fun fetchApps() {
+        packagesListDataSource.requestData()
     }
 
     override fun onMapModelToVM(): (UserAppModel) -> AppListItemViewModel {
@@ -34,7 +74,7 @@ class ImportantAppsViewModel @Inject constructor(
         return _importantApps
     }
 
-    override fun getRepositoryStateFlow(): StateFlow<List<UserAppModel>> {// Temporary: Observe readiness (with a timeout for safety)
+    override fun getRawDataStateFlow(): StateFlow<List<UserAppModel>> {
         return repository.importantApps
     }
 

@@ -15,10 +15,10 @@ class BaseImportantContactsListViewModel(
 ) {
     protected val dataSource = ContactListDataSource(settingsRepository.getContext())
 
-    override val allData: StateFlow<List<ContactModel>> = dataSource.observeContacts()
+    override val allData: StateFlow<List<ContactModel>> = dataSource.observeData()
 
     fun fetchContacts() {
-        dataSource.requestContacts()
+        dataSource.requestData()
     }
 
     override fun getNotificationSourcesName(): String {

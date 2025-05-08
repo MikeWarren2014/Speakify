@@ -14,17 +14,17 @@ abstract class BaseSearchableViewModel constructor(
     protected open var repository: AppsRepository
 ) : ViewModel() {
     protected abstract fun getMainMutableStateFlow(): MutableStateFlow<List<AppListItemViewModel>>
-    protected abstract fun getRepositoryStateFlow(): StateFlow<List<UserAppModel>>
+    protected abstract fun getRawDataStateFlow(): StateFlow<List<UserAppModel>>
 
     private val _searchText = MutableStateFlow("")
-    var searchText: StateFlow<String> = _searchText.asStateFlow()
+    open var searchText: StateFlow<String> = _searchText.asStateFlow()
 
     private val _filteredApps = MutableStateFlow<List<AppListItemViewModel>>(emptyList())
-    val filteredApps: StateFlow<List<AppListItemViewModel>> = _filteredApps.asStateFlow()
+    open val filteredApps: StateFlow<List<AppListItemViewModel>> = _filteredApps.asStateFlow()
 
-    protected fun onInit() {
+    protected open fun onInit() {
         viewModelScope.launch {
-            getRepositoryStateFlow().collect { userAppModels: List<UserAppModel> ->
+            getRawDataStateFlow().collect { userAppModels: List<UserAppModel> ->
                 getMainMutableStateFlow().value = userAppModels.map(onMapModelToVM())
                 _filteredApps.value = getMainMutableStateFlow().value
                 applySearchFilter()

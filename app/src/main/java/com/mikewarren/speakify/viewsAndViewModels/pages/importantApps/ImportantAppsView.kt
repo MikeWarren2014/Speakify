@@ -33,6 +33,8 @@ import com.mikewarren.speakify.data.UserAppModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AddAppMenuView
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.DeleteConfirmationDialog
 
+import androidx.compose.runtime.LaunchedEffect
+
 @Composable
 fun ImportantAppsView() {
     val viewModel: ImportantAppsViewModel = hiltViewModel()
@@ -41,6 +43,10 @@ fun ImportantAppsView() {
     val selectedApps = remember { mutableStateListOf<UserAppModel>() }
     var isAddMenuExpanded by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchApps()
+    }
 
     Column(modifier = Modifier.padding(16.dp)) {
         // Search Bar
@@ -119,8 +125,9 @@ fun ImportantAppsView() {
         }
 
         // Add App Menu
-        if (isAddMenuExpanded) {
+        if ((isAddMenuExpanded) && (viewModel.childAddAppMenuViewModel != null)) {
             AddAppMenuView(
+                viewModel = viewModel.childAddAppMenuViewModel!!,
                 onDismissRequest = { isAddMenuExpanded = false },
                 onAppSelected = { model : UserAppModel ->
                     viewModel.addApp(model)

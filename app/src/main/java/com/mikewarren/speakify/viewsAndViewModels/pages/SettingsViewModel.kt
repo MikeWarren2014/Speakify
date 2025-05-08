@@ -2,6 +2,7 @@ package com.mikewarren.speakify.viewsAndViewModels.pages
 
 import android.speech.tts.TextToSpeech
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
