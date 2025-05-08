@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.UserAppModel
-import com.mikewarren.speakify.data.events.PackagesListDataSource
+import com.mikewarren.speakify.data.events.PackageListDataSource
 import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AddAppMenuViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,8 +26,8 @@ class ImportantAppsViewModel @Inject constructor(
     private val _importantApps = MutableStateFlow<List<AppListItemViewModel>>(emptyList())
     val importantApps: StateFlow<List<AppListItemViewModel>> = _importantApps.asStateFlow()
 
-    val packagesListDataSource = PackagesListDataSource(settingsRepository.getContext())
-    private val _allAppsFlow : StateFlow<List<ApplicationInfo>> = packagesListDataSource.observeData()
+    val packageListDataSource = PackageListDataSource(settingsRepository.getContext())
+    private val _allAppsFlow : StateFlow<List<ApplicationInfo>> = packageListDataSource.observeData()
 
     var childAddAppMenuViewModel: AddAppMenuViewModel? = null
 
@@ -49,8 +49,9 @@ class ImportantAppsViewModel @Inject constructor(
                         enabled = false,
                     )
                 }
-                val importantAppsModels = importantApps
-                allAppsModels.minus(importantAppsModels.toSet())
+                return@combine allAppsModels.filter {  model: UserAppModel ->
+                    importantApps.find { it.packageName == model.packageName } == null
+                }
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),
@@ -60,7 +61,7 @@ class ImportantAppsViewModel @Inject constructor(
     }
 
     fun fetchApps() {
-        packagesListDataSource.requestData()
+        packageListDataSource.requestData()
     }
 
     override fun onMapModelToVM(): (UserAppModel) -> AppListItemViewModel {
