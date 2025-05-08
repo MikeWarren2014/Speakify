@@ -8,11 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
-class AppsRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
-): AppsRepository {
-    val settingsRepository = SettingsRepositoryImpl(context)
-
+class AppsRepositoryImpl @Inject constructor(): AppsRepository {
     private var _allApps: List<UserAppModel> = emptyList()
 
     // TODO: In a real app, this would interact with a database or DataStore

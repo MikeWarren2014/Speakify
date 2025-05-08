@@ -44,14 +44,14 @@ class NotificationPermissionHelper(private val context: Context) {
 
     private fun hasNotificationPermission(applicationInfo: ApplicationInfo): Boolean {
         // Check if the app is opted into notifications
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
             val mode = getMode(appOpsManager, applicationInfo)
             return mode == AppOpsManager.MODE_ALLOWED
-//        }
+          }
 
         // only returns if THIS APP has permission to send notifications
-//        return NotificationManagerCompat.from(context).areNotificationsEnabled()
+       return NotificationManagerCompat.from(context).areNotificationsEnabled()
     }
 
     private fun getMode(appOpsManager: AppOpsManager, applicationInfo: ApplicationInfo): Int {
