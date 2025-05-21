@@ -22,7 +22,6 @@ import java.io.IOException
 class AppSettingsDaoTest {
     private lateinit var userAppDao: UserAppsDao
     private lateinit var appSettingsDao: AppSettingsDao
-    private lateinit var notificationSourcesDao: NotificationSourcesDao
 
     private lateinit var db: AppDatabase
 
@@ -41,34 +40,6 @@ class AppSettingsDaoTest {
             .build()
         userAppDao = db.userAppsDao()
         appSettingsDao = db.appSettingsDao()
-//        notificationSourcesDao = db.notificationSourcesDao()
-//
-//
-//        // populate the database with some test data
-//        runTest {
-//            userAppDao.insertAll(
-//                UserAppModel("com.example.app1", "App 1", true),
-//                UserAppModel(PhoneAppPackageName, "Phone", true)
-//            )
-//
-//            val appSettingsId = appSettingsDao.insert(
-//                AppSettingsDbModel(
-//                    id = null,
-//                    packageName = PhoneAppPackageName,
-//                    announcerVoice = "en-US-language-male",
-//                )
-//            )
-//
-//            notificationSourcesDao.insertAll(
-//                listOf(
-//                    NotificationSourceModel(
-//                        id = null,
-//                        appSettingsId,
-//                        value = "+13175551234",
-//                    )
-//                )
-//            )
-//        }
     }
 
     @After
@@ -99,10 +70,9 @@ class AppSettingsDaoTest {
             packageName = PhoneAppPackageName,
             announcerVoice = "en-US-language-male",
         )
-        val firstId = appSettingsDao.insert(appSettingsDbModel)
-        val secondId = appSettingsDao.insert(appSettingsDbModel)
+        appSettingsDao.insert(appSettingsDbModel)
+        appSettingsDao.insert(appSettingsDbModel)
 
-//        assertEquals(firstId, secondId)
         assert(appSettingsDao.getAll().size == 1)
 
     }
