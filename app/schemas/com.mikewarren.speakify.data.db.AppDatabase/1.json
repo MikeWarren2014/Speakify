@@ -1,0 +1,154 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "f215594082b011189fc92f5869ff6606",
+    "entities": [
+      {
+        "tableName": "important_apps",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`package_name` TEXT NOT NULL, `app_name` TEXT NOT NULL, `enabled` INTEGER NOT NULL, `rate_limit` INTEGER NOT NULL, PRIMARY KEY(`package_name`))",
+        "fields": [
+          {
+            "fieldPath": "packageName",
+            "columnName": "package_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "appName",
+            "columnName": "app_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "enabled",
+            "columnName": "enabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rateLimit",
+            "columnName": "rate_limit",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "package_name"
+          ]
+        }
+      },
+      {
+        "tableName": "app_settings",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`as_id` INTEGER PRIMARY KEY AUTOINCREMENT, `package_name` TEXT NOT NULL, `announcer_voice` TEXT, FOREIGN KEY(`as_id`) REFERENCES `app_settings`(`as_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "as_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "packageName",
+            "columnName": "package_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "announcerVoice",
+            "columnName": "announcer_voice",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "as_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_app_settings_package_name",
+            "unique": true,
+            "columnNames": [
+              "package_name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_app_settings_package_name` ON `${TABLE_NAME}` (`package_name`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "app_settings",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "as_id"
+            ],
+            "referencedColumns": [
+              "as_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "notification_sources",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ns_id` INTEGER, `as_id` INTEGER, `ns_value` TEXT NOT NULL, PRIMARY KEY(`ns_id`), FOREIGN KEY(`as_id`) REFERENCES `app_settings`(`as_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "ns_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "appSettingsId",
+            "columnName": "as_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "ns_value",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "ns_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_notification_sources_as_id_ns_value",
+            "unique": true,
+            "columnNames": [
+              "as_id",
+              "ns_value"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_notification_sources_as_id_ns_value` ON `${TABLE_NAME}` (`as_id`, `ns_value`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "app_settings",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "as_id"
+            ],
+            "referencedColumns": [
+              "as_id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f215594082b011189fc92f5869ff6606')"
+    ]
+  }
+}

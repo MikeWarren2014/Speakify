@@ -4,7 +4,7 @@ import android.content.pm.ApplicationInfo
 import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.SettingsRepository
-import com.mikewarren.speakify.data.UserAppModel
+import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.events.PackageListDataSource
 import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AddAppMenuViewModel
@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -58,6 +59,10 @@ class ImportantAppsViewModel @Inject constructor(
                 initialValue = emptyList()
             )
         )
+
+        viewModelScope.launch {
+            repository.loadApps()
+        }
     }
 
     fun fetchApps() {
@@ -87,20 +92,20 @@ class ImportantAppsViewModel @Inject constructor(
     }
 
     fun addApp(appModel: UserAppModel) {
-        appModel.enabled = true
-        repository.addImportantApp(appModel)
+        viewModelScope.launch {
+            appModel.enabled = true
+            repository.addImportantApp(appModel)
+        }
     }
 
     fun deleteSelectedApps() {
-        val selectedApps = getSelectedApps()
-        selectedApps.forEach({ model: UserAppModel ->
-            model.enabled = false
-        })
-        repository.removeImportantApps(selectedApps)
-    }
-
-    fun updateAppConfig(app: UserAppModel) {
-        repository.updateApp(app)
+        viewModelScope.launch {
+            val selectedApps = getSelectedApps()
+            selectedApps.forEach({ model: UserAppModel ->
+                model.enabled = false
+            })
+            repository.removeImportantApps(selectedApps)
+        }
     }
 
 }
