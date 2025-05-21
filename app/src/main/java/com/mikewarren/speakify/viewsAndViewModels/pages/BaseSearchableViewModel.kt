@@ -3,7 +3,7 @@ package com.mikewarren.speakify.viewsAndViewModels.pages
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.data.AppsRepository
-import com.mikewarren.speakify.data.UserAppModel
+import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.AppListItemViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

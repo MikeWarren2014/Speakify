@@ -10,6 +10,14 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
     }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "androidx.room") {
+                useVersion("2.7.1") // Use YOUR Room version here
+            }
+            // Add similar blocks for other version-managed plugins if needed
+        }
+    }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)

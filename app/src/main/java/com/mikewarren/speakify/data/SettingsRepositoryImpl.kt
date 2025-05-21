@@ -5,12 +5,15 @@ import android.content.Context
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
+import com.mikewarren.speakify.data.db.AppSettingsDao
+import com.mikewarren.speakify.data.db.AppSettingsDbModel
+import com.mikewarren.speakify.data.db.DbProvider
+import com.mikewarren.speakify.data.db.NotificationSourceModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -25,6 +28,7 @@ private val Context.userSettingsDataStore: DataStore<UserSettingsModel> by dataS
 class SettingsRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : SettingsRepository {
+    private val _db = DbProvider.GetDb(context)
 
     // Create a mutable state flow for app settings
     private val _appSettings = MutableStateFlow<Map<String, AppSettingsModel>>(emptyMap())
@@ -39,17 +43,19 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     private fun loadAppSettings() {
+        // TODO: should we use the suspend fun instead?
         Log.d("SettingsRepositoryImpl", "loadAppSettings: loading settings")
         CoroutineScope(Dispatchers.IO).launch {
-            context.userSettingsDataStore.data.collect { model: UserSettingsModel ->
-                Log.d("SettingsRepositoryImpl", "loadAppSettings - collect: DataStore emitted: $model")
-                _appSettings.update {
-                    Log.d("SettingsRepositoryImpl", "loadAppSettings - _appSettings.update: Updating _appSettings with ${model.appSettings}")
-                    model.appSettings
+            _db.appSettingsDao().getAll()
+                .forEach { appSettingsNestedDbModel: AppSettingsWithNotificationSources ->
+                    _appSettings.update { appSettingsMap: Map<String, AppSettingsModel> ->
+                        return@update appSettingsMap.plus(Pair(appSettingsNestedDbModel.appSettings.packageName,
+                            AppSettingsModel.FromDbModel(appSettingsNestedDbModel))
+                        )
+                    }
                 }
-            }
         }
-        Log.d("SettingsRepositoryImpl", "loadAppSettings: loading finished")
+        Log.d("SettingsRepositoryImpl", "loadAppSettings: loading finished with data: ${_appSettings.value}")
     }
 
     override val useDarkTheme: Flow<Boolean?> = context.userSettingsDataStore.data
@@ -75,19 +81,42 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveAppSettings(appSettingsModel: AppSettingsModel) {
-        Log.d("SettingsRepositoryImpl", "saveAppSettings: Saving app settings: $appSettings")
-        // Get current map
-        val userSettingsDataStore = context.userSettingsDataStore
+        val appSettingsDao = _db.appSettingsDao()
+        val notificationSourcesDao = _db.notificationSourcesDao()
 
-        // Get current map
-        var currentMap = userSettingsDataStore.data.map { model -> model.appSettings }.first()
-        // Add new data
-        currentMap = currentMap.plus(Pair(appSettingsModel.packageName, appSettingsModel))
-        // Save map
-        userSettingsDataStore.updateData { userSettingsModel: UserSettingsModel ->
-            Log.d("SettingsRepositoryImpl", "saveAppSettings - updateData: Updating DataStore with: $userSettingsModel")
-            userSettingsModel.copy(appSettings = currentMap)
+        // create the AppSettingsWithNotificationSources object from our AppSettingsModel
+        val appSettingsDbModel = AppSettingsDbModel(
+            id = appSettingsModel.id,
+            packageName = appSettingsModel.packageName,
+            announcerVoice = appSettingsModel.announcerVoice,
+        )
+
+        if (appSettingsModel.id != null) {
+            notificationSourcesDao.deleteAllWithoutValues(appSettingsModel.id, appSettingsModel.notificationSources)
         }
+
+        val savedAppSettingsId = saveToDatabase(appSettingsDao, appSettingsDbModel)
+
+        notificationSourcesDao.insertAll(appSettingsModel.notificationSources.map { value: String ->
+            NotificationSourceModel(
+                id = null,
+                appSettingsId = savedAppSettingsId,
+                value,
+            )
+        })
+
+        _appSettings.update { appSettingsMap: Map<String, AppSettingsModel> ->
+            appSettingsMap.plus(Pair(appSettingsModel.packageName, appSettingsModel.copy(id = savedAppSettingsId)))
+        }
+    }
+
+    private suspend fun saveToDatabase(appSettingsDao: AppSettingsDao, appSettingsDbModel: AppSettingsDbModel) : Long {
+        if (appSettingsDbModel.id == null) {
+            return appSettingsDao.insert(appSettingsDbModel)
+
+        }
+        appSettingsDao.updateAppSettings(appSettingsDbModel)
+        return appSettingsDbModel.id
     }
 
     override fun getContext() : Context {

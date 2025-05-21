@@ -114,6 +114,6 @@ abstract class BaseNotificationSourceListViewModel<T>(
 
     override fun onSave() {
         selectedNotificationSources = notificationSources.value
-        onSave(notificationSourceList)
+        onSave(selectedNotificationSources)
     }
 }

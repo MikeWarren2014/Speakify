@@ -7,6 +7,7 @@ plugins {
     id 'com.google.dagger.hilt.android' // Add this line
     id 'org.jetbrains.kotlin.plugin.serialization'
     id 'kotlin-parcelize'
+    id 'androidx.room'
 }
 
 final int androidSdkVersion = 35
@@ -45,15 +46,19 @@ android {
     }
 }
 
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
 dependencies {
-    implementation("com.google.dagger:hilt-android:2.51.1")
+    implementation(libs.hilt.android)
     implementation libs.androidx.media3.common.ktx
     implementation libs.androidx.appcompat
     implementation libs.androidx.preference
     implementation libs.material
-    kapt("com.google.dagger:hilt-compiler:2.51.1")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    implementation("com.google.protobuf:protoc:3.17.2") // Use the same version as in your protobuf extension
+    kapt(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.protoc) // Use the same version as in your protobuf extension
     implementation("androidx.datastore:datastore:1.1.4")
     implementation libs.androidx.core.ktx
     implementation libs.androidx.lifecycle.runtime.ktx
@@ -82,4 +87,10 @@ dependencies {
 
     runtimeOnly libs.androidx.lifecycle
 
+    final String roomVersion = "2.7.1"
+    implementation libs.androidx.room.runtime
+    kapt("androidx.room:room-compiler:$roomVersion")
+    // optional - Paging 3 Integration
+    implementation("androidx.room:room-paging:$roomVersion")
+    implementation libs.kotlin.test
 }

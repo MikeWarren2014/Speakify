@@ -39,6 +39,8 @@ abstract class AppModule {
 
         @Provides
         @Singleton
-        fun provideAppsRepository(): AppsRepositoryImpl = AppsRepositoryImpl()
+        fun provideAppsRepository(
+            @ApplicationContext context: Context
+        ): AppsRepositoryImpl = AppsRepositoryImpl(context)
     }
 }

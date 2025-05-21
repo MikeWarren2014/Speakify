@@ -1,7 +1,7 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 
 import com.mikewarren.speakify.data.AppsRepository
-import com.mikewarren.speakify.data.UserAppModel
+import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.AppListItemViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
