@@ -93,4 +93,6 @@ dependencies {
     // optional - Paging 3 Integration
     implementation("androidx.room:room-paging:$roomVersion")
     implementation libs.kotlin.test
+
+    implementation libs.libphonenumber
 }

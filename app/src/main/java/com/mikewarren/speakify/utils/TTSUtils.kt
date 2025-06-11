@@ -36,4 +36,21 @@ object TTSUtils {
 
         return voices.map { voice: Voice -> voice.name }
     }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    fun SetTTSVoice(tts: TextToSpeech?, voiceName: String? = null) {
+        val voices = tts?.voices
+        if (voices.isNullOrEmpty()) {
+            throw IllegalStateException("somehow, our list of voices to choose from is either null or empty")
+        }
+
+        // Use provided voiceName or system default if null
+        val voice = voiceName?.let { name ->
+            voices.find { it.name == name }
+        } ?: voices.find { it.locale == Locale.getDefault() } ?: voices.firstOrNull()
+
+        voice?.let {
+            tts.voice = it
+        }
+    }
 }

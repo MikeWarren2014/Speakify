@@ -1,18 +1,19 @@
 [versions]
-agp = "8.9.2"
+agp = "8.10.1"
 androidxJunit = "1.2.1"
 core = "1.5.0"
-gradle = "8.9.2"
+gradle = "8.10.1"
 hiltAndroidGradlePlugin = "2.51.1"
 hiltNavigationCompose = "1.2.0"
 kotlin = "2.1.10"
-coreKtx = "1.10.1"
+coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 kotlinSerialization = "2.1.20"
 kotlinTest = "2.1.20"
 kotlinxSerializationJson = "1.8.1"
+libphonenumber = "9.0.5"
 lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.8.0"
 composeBom = "2024.09.00"
@@ -70,6 +71,7 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotl
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
+libphonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "libphonenumber" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 play-services-base = { module = "com.google.android.gms:play-services-base", version.ref = "playServicesBase" }
 play-services-basement = { module = "com.google.android.gms:play-services-basement", version.ref = "playServicesBasement" }
