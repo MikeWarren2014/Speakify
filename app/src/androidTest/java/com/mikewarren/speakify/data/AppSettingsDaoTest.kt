@@ -23,6 +23,8 @@ class AppSettingsDaoTest {
     private lateinit var userAppDao: UserAppsDao
     private lateinit var appSettingsDao: AppSettingsDao
 
+    private lateinit var notificationSourcesDao: NotificationSourcesDao
+
     private lateinit var db: AppDatabase
 
     companion object {
@@ -40,6 +42,7 @@ class AppSettingsDaoTest {
             .build()
         userAppDao = db.userAppsDao()
         appSettingsDao = db.appSettingsDao()
+        notificationSourcesDao = db.notificationSourcesDao()
     }
 
     @After
@@ -74,9 +77,24 @@ class AppSettingsDaoTest {
         appSettingsDao.insert(appSettingsDbModel)
 
         assert(appSettingsDao.getAll().size == 1)
-
+        assertEquals(1, appSettingsDao.getAll().first().appSettings.id)
     }
 
+    @Test
+    @Throws(Exception::class)
+    fun testGetByPackageName() = runTest {
+        notificationSourcesDao.insertAll(listOf(
+            NotificationSourceModel(
+                id = null,
+                appSettingsId = 1,
+                value = "test",
+                ),
+            NotificationSourceModel(
+                id = null,
+                appSettingsId = 1,
+                value = "test2",
+            ),
+        ))
 
-
+    }
 }

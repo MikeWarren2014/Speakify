@@ -1,12 +1,12 @@
 [versions]
-agp = "8.10.1"
+agp = "8.9.2"
 androidxJunit = "1.2.1"
 core = "1.5.0"
-gradle = "8.10.1"
+gradle = "8.9.2"
 hiltAndroidGradlePlugin = "2.51.1"
 hiltNavigationCompose = "1.2.0"
 kotlin = "2.1.10"
-coreKtx = "1.16.0"
+coreKtx = "1.10.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
@@ -42,6 +42,7 @@ androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-com
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
 androidx-storage = { module = "androidx.test.services:storage", version.ref = "storage" }
+datastore = { module = "androidx.datastore:datastore", version.ref = "datastoreCoreAndroid" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidGradlePlugin" }
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
@@ -82,4 +83,5 @@ protoc = { module = "com.google.protobuf:protoc", version.ref = "protoc" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+#hilt-android-gradle = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroidGradlePlugin" }
 

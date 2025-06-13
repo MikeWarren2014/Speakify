@@ -13,7 +13,10 @@ data class AppSettingsModel(
     constructor(packageName: String, announcerVoice: String?) : this(-1, packageName, announcerVoice)
 
     companion object {
-        fun FromDbModel(dbModel: AppSettingsWithNotificationSources): AppSettingsModel {
+        fun FromDbModel(dbModel: AppSettingsWithNotificationSources?): AppSettingsModel? {
+            if (dbModel == null)
+                return null
+
             return AppSettingsModel(
                 id = dbModel.appSettings.id!!,
                 packageName = dbModel.appSettings.packageName,

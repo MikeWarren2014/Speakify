@@ -48,7 +48,7 @@ class SpeakifyNotificationListener : NotificationListenerService() {
             return
 
         // if we somehow got a notification about our app, we're done!
-        if (sbn?.packageName == "com.mikewarren.speakify") {
+        if (sbn.packageName == "com.mikewarren.speakify") {
             return
         }
 
@@ -63,10 +63,7 @@ class SpeakifyNotificationListener : NotificationListenerService() {
 
                 // construct a model for reading the notification
                 // if there are no app settings, we should assume that every notification from the app in question...is important...and worth speaking!
-                val allAppSettings = appSettingsDao.getAll()
-                    .map { dbModel : AppSettingsWithNotificationSources -> AppSettingsModel.FromDbModel(dbModel) }
-
-                var appSettingsModel = allAppSettings.find { model: AppSettingsModel -> model.packageName == sbn?.packageName }
+                var appSettingsModel = AppSettingsModel.FromDbModel(appSettingsDao.getByPackageName(sbn.packageName))
                 if (appSettingsModel == null) {
                     appSettingsModel = AppSettingsModel(sbn.packageName, defaultVoice)
                 }
@@ -76,7 +73,7 @@ class SpeakifyNotificationListener : NotificationListenerService() {
                 // build the notification strategy for this app
                 val notificationStrategy = NotificationStrategyFactory.CreateFrom(sbn, appSettingsModel, settingsRepository.getContext(), tts)
                 if (notificationStrategy.shouldSpeakify()) {
-                    notificationStrategy.textToSpeakify()
+                    notificationStrategy.speakify()
                 }
             }
 
