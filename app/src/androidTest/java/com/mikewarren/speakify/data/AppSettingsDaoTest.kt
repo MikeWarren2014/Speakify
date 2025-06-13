@@ -77,7 +77,13 @@ class AppSettingsDaoTest {
         appSettingsDao.insert(appSettingsDbModel)
 
         assert(appSettingsDao.getAll().size == 1)
+<<<<<<< HEAD
         assertEquals(1, appSettingsDao.getAll().first().appSettings.id)
+=======
+
+        assertEquals(1L, appSettingsDao.getAll().first().appSettings.id)
+
+>>>>>>> dc98b0dddc03b27330d0361221146d96a26f60f7
     }
 
     @Test
