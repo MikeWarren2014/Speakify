@@ -4,4 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ContactModel(val id: Long, val name:String, val phoneNumber: String) : Parcelable
+data class ContactModel(val id: Long, val name:String, val phoneNumber: String) : Parcelable {
+    constructor() : this(-1, "", "")
+    constructor(name:String, phoneNumber: String) : this(-1, name, phoneNumber)
+}
