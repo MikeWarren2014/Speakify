@@ -19,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId packageName
-        minSdk 24
+        minSdk 28
         targetSdk androidSdkVersion
         versionCode 1
         versionName "1.0"
@@ -93,4 +93,6 @@ dependencies {
     // optional - Paging 3 Integration
     implementation("androidx.room:room-paging:$roomVersion")
     implementation libs.kotlin.test
+
+    implementation libs.libphonenumber
 }

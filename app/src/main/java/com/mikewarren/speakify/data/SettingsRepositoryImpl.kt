@@ -49,8 +49,12 @@ class SettingsRepositoryImpl @Inject constructor(
             _db.appSettingsDao().getAll()
                 .forEach { appSettingsNestedDbModel: AppSettingsWithNotificationSources ->
                     _appSettings.update { appSettingsMap: Map<String, AppSettingsModel> ->
+                        val appSettingsModel: AppSettingsModel? = AppSettingsModel.FromDbModel(appSettingsNestedDbModel)
+                        if (appSettingsModel == null)
+                            return@update appSettingsMap
+
                         return@update appSettingsMap.plus(Pair(appSettingsNestedDbModel.appSettings.packageName,
-                            AppSettingsModel.FromDbModel(appSettingsNestedDbModel))
+                            appSettingsModel)
                         )
                     }
                 }

@@ -1,15 +1,13 @@
 package com.mikewarren.speakify.utils
 
-import android.os.Build
 import android.speech.tts.TextToSpeech
 import android.speech.tts.Voice
 import android.util.Log
-import androidx.annotation.RequiresApi
+import com.mikewarren.speakify.data.Constants
 import java.util.Locale
 
 object TTSUtils {
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun GetRecommendedDefaultVoiceNames(ttsEngine: TextToSpeech): List<String> {
         val availableVoices = ttsEngine.voices?.toList() ?: emptyList()
         val usEnglishVoices = availableVoices.filter {
@@ -35,5 +33,21 @@ object TTSUtils {
             voices = usEnglishVoices
 
         return voices.map { voice: Voice -> voice.name }
+    }
+
+    fun SetTTSVoice(tts: TextToSpeech?, voiceName: String? = Constants.DefaultTTSVoice) {
+        val voices = tts?.voices
+        if (voices.isNullOrEmpty()) {
+            throw IllegalStateException("somehow, our list of voices to choose from is either null or empty")
+        }
+
+        // Use provided voiceName or system default if null
+        val voice = voiceName?.let { name ->
+            voices.find { it.name == name }
+        } ?: voices.find { it.locale == Locale.getDefault() } ?: voices.firstOrNull()
+
+        voice?.let {
+            tts.voice = it
+        }
     }
 }

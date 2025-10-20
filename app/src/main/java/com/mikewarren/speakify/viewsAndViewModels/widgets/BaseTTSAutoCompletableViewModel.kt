@@ -6,7 +6,9 @@ import android.speech.tts.Voice
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.viewModelScope
+import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.utils.TTSUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -53,21 +55,8 @@ abstract class BaseTTSAutoCompletableViewModel(
 
     protected abstract fun getTTSFlow(): Flow<String?>
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    protected fun setTTSVoice(voiceName: String? = null) {
-        val voices = tts?.voices
-        if (voices.isNullOrEmpty()) {
-            throw IllegalStateException("somehow, our list of voices to choose from is either null or empty")
-        }
-
-        // Use provided voiceName or system default if null
-        val voice = voiceName?.let { name ->
-            voices.find { it.name == name }
-        } ?: voices.find { it.locale == Locale.getDefault() } ?: voices.firstOrNull()
-
-        voice?.let {
-            tts?.voice = it
-        }
+    protected fun setTTSVoice(voiceName: String? = Constants.DefaultTTSVoice) {
+        TTSUtils.SetTTSVoice(tts, voiceName)
     }
 
     abstract fun onSelectedVoice(voiceName: String)

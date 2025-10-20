@@ -6,6 +6,7 @@ import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.events.PackageListDataSource
+import com.mikewarren.speakify.utils.AppNameHelper
 import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AddAppMenuViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,9 +44,8 @@ class ImportantAppsViewModel @Inject constructor(
             combine(_allAppsFlow, repository.importantApps) { allApps, importantApps ->
                 val allAppsModels = allApps.map { appInfo ->
                     UserAppModel(
-                        appName = settingsRepository.getContext().packageManager
-                            .getApplicationLabel(appInfo)
-                            .toString(),
+                        appName = AppNameHelper(settingsRepository.getContext())
+                            .getAppDisplayName(appInfo),
                         packageName = appInfo.packageName,
                         enabled = false,
                     )
