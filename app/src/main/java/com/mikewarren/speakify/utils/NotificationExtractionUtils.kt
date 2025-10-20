@@ -1,24 +1,30 @@
 package com.mikewarren.speakify.utils
 
+import android.annotation.SuppressLint
 import android.app.Notification
-import androidx.core.app.Person
-import android.os.Build
-import android.os.Bundle
+import android.app.Person
+import android.content.Context
+import android.database.Cursor
+import android.net.Uri
+import android.os.Parcelable
+import android.provider.ContactsContract
 import android.service.notification.StatusBarNotification
-import androidx.annotation.RequiresApi
+import androidx.annotation.OptIn
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.mikewarren.speakify.data.ContactModel
+import androidx.core.net.toUri
+import androidx.media3.common.util.Log
+import androidx.media3.common.util.UnstableApi
 
 object NotificationExtractionUtils {
-    fun ExtractContactModel(sbn: StatusBarNotification, possiblePersonExtras: Array<String>, onPreCheckKey: (StatusBarNotification, String) -> Boolean = ({ _, _ -> true })): ContactModel {
-        var contactModel = ContactModel()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            contactModel = extractContactFromPeopleList(sbn)
-            if (contactModel.phoneNumber != "") {
-                return contactModel
-            }
+    fun ExtractContactModel(context: Context,
+                            sbn: StatusBarNotification,
+                            possiblePersonExtras: Array<String>,
+                            onPreCheckKey: (StatusBarNotification, String) -> Boolean = ({ _, _ -> true })): ContactModel {
+        var contactModel = extractContactFromPeopleList(context, sbn)
+        if (contactModel.phoneNumber != "") {
+            return contactModel
         }
 
         possiblePersonExtras.forEach { notificationKey ->
@@ -60,33 +66,86 @@ object NotificationExtractionUtils {
         return contactModel
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
-    fun extractContactFromPeopleList(sbn: StatusBarNotification): ContactModel {
-        val peopleBundles: ArrayList<Bundle>? =
-            sbn.notification.extras.getParcelableArrayList(Notification.EXTRA_PEOPLE_LIST) // Get ArrayList<Bundle>
+    fun extractContactFromPeopleList(context: Context, sbn: StatusBarNotification): ContactModel {
+        // TODO: seems we make mistake here in assuming this ArrayList will contain Bundles . It contains Person objects here....
+        val personList: ArrayList<Parcelable>? =
+            sbn.notification.extras.getParcelableArrayList(Notification.EXTRA_PEOPLE_LIST)
 
-        val personBundle = peopleBundles
-            ?.firstOrNull()
+        val person = personList
+            ?.firstOrNull() as Person?
 
-        if (personBundle == null)
+        if (person == null)
             return ContactModel()
 
-        Person.fromBundle(personBundle)
-            .let { person ->
-                return ContactModel(
-                    -1,
-                    person.name.toString(),
-                    extractPhoneNumberFromPerson(person),
-                )
-            }
+        return ContactModel(
+            -1,
+            person.name.toString(),
+            extractPhoneNumberFromPerson(context, person),
+        )
     }
 
-    private fun extractPhoneNumberFromPerson(person: Person): String {
+    @OptIn(UnstableApi::class)
+    @SuppressLint("Range")
+    private fun extractPhoneNumberFromPerson(context: Context, person: Person): String {
         if (person.uri == null) return ""
         if (person.uri!!.startsWith("tel:")) {
             return person.uri!!.substringAfter("tel:")
         }
+        if (person.uri!!.startsWith("content://")) {
+            val contactUri = person.uri!!.toUri()
+            val contactId = getContactIdFromUri(context, contactUri)
+
+            if (contactId == null) {
+                Log.e("NotificationUtils", "Could not find Contact ID for URI: $contactUri")
+                return ""
+            }
+
+            return getPhoneNumberForContactId(context, contactId)
+        }
         return ""
+    }
+
+    @OptIn(UnstableApi::class)
+    @SuppressLint("Range")
+    private fun getContactIdFromUri(context: Context, contactUri: Uri): String? {
+        var contactId: String? = null
+        val projection = arrayOf(ContactsContract.Contacts._ID)
+        var cursor: Cursor? = null
+        try {
+            cursor = context.contentResolver.query(contactUri, projection, null, null, null)
+            if (cursor != null && cursor.moveToFirst()) {
+                contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
+            }
+        } catch (e: Exception) {
+            Log.e("NotificationUtils", "Error getting contact ID", e)
+        } finally {
+            cursor?.close()
+        }
+        return contactId
+    }
+
+    @OptIn(UnstableApi::class)
+    @SuppressLint("Range")
+    private fun getPhoneNumberForContactId(context: Context, contactId: String): String {
+        var phoneNumber: String? = null
+        val phoneQueryUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
+        val selection = "${ContactsContract.CommonDataKinds.Phone.CONTACT_ID} = ?"
+        val selectionArgs = arrayOf(contactId)
+        val projection = arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER)
+        var cursor: Cursor? = null
+
+        try {
+            cursor = context.contentResolver.query(phoneQueryUri, projection, selection, selectionArgs, null)
+            // Get the first phone number available for the contact
+            if (cursor != null && cursor.moveToFirst()) {
+                phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+            }
+        } catch (e: Exception) {
+            Log.e("NotificationUtils", "Error querying for phone number", e)
+        } finally {
+            cursor?.close()
+        }
+        return phoneNumber ?: ""
     }
 
     private fun extractPhoneNumberWithLib(text: String?, regionCode: String = "US"): Pair<String, Int> {
@@ -96,8 +155,9 @@ object NotificationExtractionUtils {
         if (numbersIterator.hasNext()) {
             val phoneNumberMatch = numbersIterator.next()
             val number: Phonenumber.PhoneNumber = phoneNumberMatch.number()
-            return Pair(PhoneNumberUtil.getInstance()
-                .format(number, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL),
+            return Pair(
+                PhoneNumberUtil.getInstance()
+                    .format(number, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL),
                 phoneNumberMatch.start(),
             )
         }

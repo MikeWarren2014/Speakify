@@ -95,7 +95,8 @@ class SMSNotificationStrategy(notification: StatusBarNotification,
     }
 
     override fun extractContactModel(): ContactModel {
-        val simplyExtractedContactModel = NotificationExtractionUtils.ExtractContactModel(notification,
+        val simplyExtractedContactModel = NotificationExtractionUtils.ExtractContactModel(context,
+            notification,
             this.getPossiblePersonExtras(),
             { sbn: StatusBarNotification, extrasKey: String ->
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

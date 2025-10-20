@@ -1,9 +1,9 @@
 [versions]
-agp = "8.10.1"
+agp = "8.13.0"
 androidxJunit = "1.2.1"
 core = "1.6.1"
-gradle = "8.10.1"
-hiltAndroidGradlePlugin = "2.51.1"
+gradle = "8.13.0"
+hiltAndroidGradlePlugin = "2.57.2"
 hiltNavigationCompose = "1.2.0"
 kotlin = "2.1.10"
 coreKtx = "1.16.0"

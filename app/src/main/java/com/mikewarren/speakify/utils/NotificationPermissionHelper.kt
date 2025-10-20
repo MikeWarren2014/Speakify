@@ -1,13 +1,17 @@
 package com.mikewarren.speakify.utils
 
 import android.app.AppOpsManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Build
+import android.text.TextUtils
 import androidx.core.app.NotificationManagerCompat
+
+import android.provider.Settings
 
 
 class NotificationPermissionHelper(private val context: Context) {
@@ -44,22 +48,18 @@ class NotificationPermissionHelper(private val context: Context) {
 
     private fun hasNotificationPermission(applicationInfo: ApplicationInfo): Boolean {
         // Check if the app is opted into notifications
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-            val mode = getMode(appOpsManager, applicationInfo)
-            return mode == AppOpsManager.MODE_ALLOWED
-          }
-
-        // only returns if THIS APP has permission to send notifications
-       return NotificationManagerCompat.from(context).areNotificationsEnabled()
+        val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        val mode = getMode(appOpsManager, applicationInfo)
+        return mode == AppOpsManager.MODE_ALLOWED
     }
 
     private fun getMode(appOpsManager: AppOpsManager, applicationInfo: ApplicationInfo): Int {
-        return onGetOp()(appOpsManager,
+        return onGetOp()(
+            appOpsManager,
             "android:post_notification",
             applicationInfo.uid,
             applicationInfo.packageName,
-            )
+        )
     }
 
     private fun onGetOp(): (AppOpsManager, String, Int, String) -> Int {
@@ -67,6 +67,22 @@ class NotificationPermissionHelper(private val context: Context) {
             return AppOpsManager::unsafeCheckOpNoThrow
         }
         return AppOpsManager::checkOpNoThrow
+    }
+
+    fun isNotificationServiceEnabled() : Boolean {
+        val flat = Settings.Secure.getString(context.contentResolver, "enabled_notification_listeners")
+        if (!TextUtils.isEmpty(flat)) {
+            val names = flat.split(":").toTypedArray()
+            for (name in names) {
+                val cn = ComponentName.unflattenFromString(name)
+                if (cn != null) {
+                    if (TextUtils.equals(context.packageName, cn.packageName)) {
+                        return true
+                    }
+                }
+            }
+        }
+        return false
     }
 
 }

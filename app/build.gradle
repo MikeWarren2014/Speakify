@@ -19,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId packageName
-        minSdk 24
+        minSdk 28
         targetSdk androidSdkVersion
         versionCode 1
         versionName "1.0"

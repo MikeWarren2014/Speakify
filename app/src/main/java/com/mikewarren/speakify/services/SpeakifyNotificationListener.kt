@@ -72,6 +72,7 @@ class SpeakifyNotificationListener : NotificationListenerService() {
 
                 // build the notification strategy for this app
                 val notificationStrategy = NotificationStrategyFactory.CreateFrom(sbn, appSettingsModel, settingsRepository.getContext(), tts)
+                notificationStrategy.logNotification()
                 if (notificationStrategy.shouldSpeakify()) {
                     notificationStrategy.speakify()
                 }
