@@ -22,7 +22,7 @@ abstract class BaseAutoCompletableViewModel : ViewModel() {
 
     abstract fun getAllChoices(): List<String>
 
-    fun filterChoices(searchText: String): List<String> {
+    open fun filterChoices(searchText: String): List<String> {
         val allChoices = getAllChoices()
 
         if (allChoices.isEmpty())
