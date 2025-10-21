@@ -1,8 +1,12 @@
 package com.mikewarren.speakify
 
 import android.Manifest
+import android.content.ContentResolver
+import android.os.Build
+import android.os.Bundle
 import android.provider.ContactsContract
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.data.events.ContactEvent
 import com.mikewarren.speakify.data.events.ContactEventBus
@@ -36,7 +40,7 @@ class ContactsFetcherActivity : BaseFetcherActivity<ContactModel, ContactEvent>(
             null,
             null,
             null,
-            null
+            null,
         ) ?: return emptyList()
 
         return resultSetCursor.use { cursor ->
@@ -59,6 +63,9 @@ class ContactsFetcherActivity : BaseFetcherActivity<ContactModel, ContactEvent>(
 
                     if (phoneNumberIdx > -1)
                         phoneNumber = cursor.getString(phoneNumberIdx)
+
+                    if (contacts.any { it.phoneNumber == phoneNumber })
+                        continue
 
                     contacts.add(
                         ContactModel(
