@@ -36,7 +36,7 @@ class ContactsFetcherActivity : BaseFetcherActivity<ContactModel, ContactEvent>(
             null,
             null,
             null,
-            null
+            null,
         ) ?: return emptyList()
 
         return resultSetCursor.use { cursor ->
@@ -59,6 +59,9 @@ class ContactsFetcherActivity : BaseFetcherActivity<ContactModel, ContactEvent>(
 
                     if (phoneNumberIdx > -1)
                         phoneNumber = cursor.getString(phoneNumberIdx)
+
+                    if (contacts.any { it.phoneNumber == phoneNumber })
+                        continue
 
                     contacts.add(
                         ContactModel(
