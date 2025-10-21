@@ -2,10 +2,8 @@ package com.mikewarren.speakify.strategies
 
 import android.app.Notification
 import android.content.Context
-import android.os.Build
 import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
-import androidx.annotation.RequiresApi
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
@@ -34,7 +32,7 @@ class PhoneNotificationStrategy(notification: StatusBarNotification,
         val actionTitlesLowercased = this.getActionTitlesLowercased()
         if (actionTitlesLowercased.contains("answer"))
             return PhoneNotificationType.IncomingCall
-        if (actionTitlesLowercased.contains("end call"))
+        if (listOf("end call", "hang up", "speaker").intersect(actionTitlesLowercased).isNotEmpty())
             return PhoneNotificationType.OutgoingCall
         if (actionTitlesLowercased.contains("call back"))
             return PhoneNotificationType.MissedCall
