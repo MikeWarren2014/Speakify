@@ -1,12 +1,8 @@
 package com.mikewarren.speakify
 
 import android.Manifest
-import android.content.ContentResolver
-import android.os.Build
-import android.os.Bundle
 import android.provider.ContactsContract
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.data.events.ContactEvent
 import com.mikewarren.speakify.data.events.ContactEventBus
