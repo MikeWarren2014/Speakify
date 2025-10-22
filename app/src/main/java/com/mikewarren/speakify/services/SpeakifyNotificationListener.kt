@@ -15,7 +15,6 @@ import com.mikewarren.speakify.strategies.NotificationStrategyFactory
 import com.mikewarren.speakify.utils.TTSUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,6 +40,8 @@ class SpeakifyNotificationListener : NotificationListenerService() {
 
     private val packageTTSDict = mutableMapOf<String, TextToSpeech>()
 
+    private lateinit var defaultVoice: String;
+
     override fun onCreate() {
         super.onCreate()
         // Start the collector when the service is created.
@@ -50,10 +51,12 @@ class SpeakifyNotificationListener : NotificationListenerService() {
 
     private fun startListeningForNotifications() {
         applicationScope.launch {
-            settingsRepository.appSettings.collect { appSettings ->
+            settingsRepository.selectedTTSVoice.collect { selectedTTSVoice ->
                 // Logic to process app settings and maybe update TTS instances
+                defaultVoice = selectedTTSVoice ?: Constants.DefaultTTSVoice
+
                 // This collector will run continuously in the background.
-                Log.d("SpeakifyNLS", "App settings updated. Ready to process notifications.")
+                Log.d("SpeakifyNLS", "Ready to process notifications.")
             }
         }
     }
@@ -82,8 +85,6 @@ class SpeakifyNotificationListener : NotificationListenerService() {
 
         if (!importantApps.map { model -> model.packageName }.contains(sbn?.packageName))
             return
-
-        val defaultVoice = settingsRepository.selectedTTSVoice.first() ?: Constants.DefaultTTSVoice
 
         // construct a model for reading the notification
         // if there are no app settings, we should assume that every notification from the app in question...is important...and worth speaking!
