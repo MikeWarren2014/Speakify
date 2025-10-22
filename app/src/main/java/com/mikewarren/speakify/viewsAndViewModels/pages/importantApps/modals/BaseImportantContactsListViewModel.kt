@@ -57,7 +57,7 @@ class BaseImportantContactsListViewModel(
 
                 var choiceWithJustDigits: String = choice;
                 if (choice.last() == ')') {
-                    val result : MatchResult? = """(.*(?<=[^\d+]) )(?<phone>\([#*+\d()\- ]+\))"""
+                    val result : MatchResult? = """(.*(?<=[^\d+]|[A-Za-z\d+]) )(?<phone>\([#*+\d()\- ]+\))"""
                         .toRegex()
                         .find(choice)
                     if (result == null)
