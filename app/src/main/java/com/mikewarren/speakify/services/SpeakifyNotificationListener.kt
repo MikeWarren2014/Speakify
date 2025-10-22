@@ -6,7 +6,6 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 import com.mikewarren.speakify.ApplicationScope
 import com.mikewarren.speakify.data.AppSettingsModel
-import com.mikewarren.speakify.data.AppSettingsWithNotificationSources
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.db.AppSettingsDao
@@ -16,9 +15,6 @@ import com.mikewarren.speakify.strategies.NotificationStrategyFactory
 import com.mikewarren.speakify.utils.TTSUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
