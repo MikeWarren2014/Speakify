@@ -4,6 +4,7 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
 import android.util.Log
+import com.mikewarren.speakify.ApplicationScope
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.AppSettingsWithNotificationSources
 import com.mikewarren.speakify.data.Constants
@@ -18,6 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,11 +37,30 @@ class SpeakifyNotificationListener : NotificationListenerService() {
     @Inject
     lateinit var notificationSourcesDao: NotificationSourcesDao
 
-    private val serviceJob = SupervisorJob()
-    private val serviceScope = CoroutineScope(Dispatchers.IO + serviceJob) // Use IO dispatcher for DB operations
 
-    // TODO: we need a cache of TTS instances...that will get destroyed and overwritten if their voice name is different from that which is saved on the appSettingsModel...
+    // Inject the application-level CoroutineScope
+    @Inject
+    @ApplicationScope
+    lateinit var applicationScope: CoroutineScope
+
     private val packageTTSDict = mutableMapOf<String, TextToSpeech>()
+
+    override fun onCreate() {
+        super.onCreate()
+        // Start the collector when the service is created.
+        // This ensures it's always listening as long as the service process is alive.
+        startListeningForNotifications()
+    }
+
+    private fun startListeningForNotifications() {
+        applicationScope.launch {
+            settingsRepository.appSettings.collect { appSettings ->
+                // Logic to process app settings and maybe update TTS instances
+                // This collector will run continuously in the background.
+                Log.d("SpeakifyNLS", "App settings updated. Ready to process notifications.")
+            }
+        }
+    }
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
@@ -52,33 +73,38 @@ class SpeakifyNotificationListener : NotificationListenerService() {
             return
         }
 
-        serviceScope.launch {
-            settingsRepository.selectedTTSVoice.collectLatest { ttsVoice: String? ->
-                val defaultVoice = ttsVoice ?: Constants.DefaultTTSVoice
-
-                val importantApps = userAppsDao.getAll()
-
-                if (!importantApps.map { model -> model.packageName }.contains(sbn?.packageName))
-                    return@collectLatest
-
-                // construct a model for reading the notification
-                // if there are no app settings, we should assume that every notification from the app in question...is important...and worth speaking!
-                var appSettingsModel = AppSettingsModel.FromDbModel(appSettingsDao.getByPackageName(sbn.packageName))
-                if (appSettingsModel == null) {
-                    appSettingsModel = AppSettingsModel(sbn.packageName, defaultVoice)
-                }
-
-                val tts = createOrUpdateTTS(appSettingsModel)
-
-                // build the notification strategy for this app
-                val notificationStrategy = NotificationStrategyFactory.CreateFrom(sbn, appSettingsModel, settingsRepository.getContext(), tts)
-                notificationStrategy.logNotification()
-                if (notificationStrategy.shouldSpeakify()) {
-                    notificationStrategy.speakify()
-                }
-            }
-
+        // Launch a new coroutine for each notification.
+        // This is non-blocking and uses the robust application scope.
+        applicationScope.launch {
+            processNotification(sbn)
         }
+    }
+
+    private suspend fun processNotification(sbn: StatusBarNotification) {
+
+        val importantApps = userAppsDao.getAll()
+
+        if (!importantApps.map { model -> model.packageName }.contains(sbn?.packageName))
+            return
+
+        val defaultVoice = settingsRepository.selectedTTSVoice.first() ?: Constants.DefaultTTSVoice
+
+        // construct a model for reading the notification
+        // if there are no app settings, we should assume that every notification from the app in question...is important...and worth speaking!
+        var appSettingsModel = AppSettingsModel.FromDbModel(appSettingsDao.getByPackageName(sbn.packageName))
+        if (appSettingsModel == null) {
+            appSettingsModel = AppSettingsModel(sbn.packageName, defaultVoice)
+        }
+
+        val tts = createOrUpdateTTS(appSettingsModel)
+
+        // build the notification strategy for this app
+        val notificationStrategy = NotificationStrategyFactory.CreateFrom(sbn, appSettingsModel, settingsRepository.getContext(), tts)
+        notificationStrategy.logNotification()
+        if (notificationStrategy.shouldSpeakify()) {
+            notificationStrategy.speakify()
+        }
+
     }
 
     fun createOrUpdateTTS(appSettingsModel: AppSettingsModel): TextToSpeech? {
@@ -121,8 +147,5 @@ class SpeakifyNotificationListener : NotificationListenerService() {
         }
 
         packageTTSDict.clear()
-
-        // Cancel all coroutines when the service is destroyed
-        serviceJob.cancel()
     }
 }
