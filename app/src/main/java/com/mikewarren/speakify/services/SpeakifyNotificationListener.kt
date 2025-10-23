@@ -111,13 +111,21 @@ class SpeakifyNotificationListener : NotificationListenerService() {
             if (cachedTTS == null)
                 throw IllegalStateException("Somehow we have an entry on the packageTTSDict for package ${appSettingsModel.packageName}, but it's null!")
 
-            if ((cachedTTS.voice.name != appSettingsModel.announcerVoice)) {
+            if (cachedTTS.voice == null)
+                return createTTS(appSettingsModel);
+
+            if (cachedTTS.voice.name != appSettingsModel.announcerVoice) {
                 TTSUtils.SetTTSVoice(cachedTTS, appSettingsModel.announcerVoice)
             }
 
             return cachedTTS
         }
 
+        return createTTS(appSettingsModel);
+
+    }
+
+    fun createTTS(appSettingsModel: AppSettingsModel): TextToSpeech? {
         packageTTSDict[appSettingsModel.packageName] = TextToSpeech(this, { status ->
             if (status == TextToSpeech.SUCCESS) {
                 TTSUtils.SetTTSVoice(packageTTSDict[appSettingsModel.packageName], appSettingsModel.announcerVoice)
@@ -128,6 +136,7 @@ class SpeakifyNotificationListener : NotificationListenerService() {
 
         return packageTTSDict[appSettingsModel.packageName]
     }
+
 
     fun shutdownTTS(tts: TextToSpeech) {
         tts.stop()

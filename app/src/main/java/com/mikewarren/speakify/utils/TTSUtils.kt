@@ -38,7 +38,8 @@ object TTSUtils {
     fun SetTTSVoice(tts: TextToSpeech?, voiceName: String? = Constants.DefaultTTSVoice) {
         val voices = tts?.voices
         if (voices.isNullOrEmpty()) {
-            throw IllegalStateException("somehow, our list of voices to choose from is either null or empty")
+            Log.w("TTSUtils", "TTS engine has no voices available, using system default.")
+            return // Can't set a voice if there are none. The system will use a default.
         }
 
         // Use provided voiceName or system default if null
