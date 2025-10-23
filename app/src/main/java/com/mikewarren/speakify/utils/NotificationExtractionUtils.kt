@@ -16,6 +16,7 @@ import com.mikewarren.speakify.data.ContactModel
 import androidx.core.net.toUri
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
+import java.net.URLDecoder
 
 object NotificationExtractionUtils {
     fun ExtractContactModel(context: Context,
@@ -77,9 +78,14 @@ object NotificationExtractionUtils {
         if (person == null)
             return ContactModel()
 
+        var name = person.name?.toString()
+        if (name.isNullOrEmpty()) {
+            name = extractDisplayNameFromPerson(context, person)
+        }
+
         return ContactModel(
             -1,
-            person.name.toString(),
+            name,
             extractPhoneNumberFromPerson(context, person),
         )
     }
@@ -89,7 +95,8 @@ object NotificationExtractionUtils {
     private fun extractPhoneNumberFromPerson(context: Context, person: Person): String {
         if (person.uri == null) return ""
         if (person.uri!!.startsWith("tel:")) {
-            return person.uri!!.substringAfter("tel:")
+            val encodedPhoneNumber = person.uri!!.substringAfter("tel:")
+            return URLDecoder.decode(encodedPhoneNumber, "UTF-8")
         }
         if (person.uri!!.startsWith("content://")) {
             val contactUri = person.uri!!.toUri()
@@ -102,6 +109,30 @@ object NotificationExtractionUtils {
 
             return getPhoneNumberForContactId(context, contactId)
         }
+        return ""
+    }
+
+    private fun extractDisplayNameFromPerson(context: Context, person: Person): String {
+        if (person.uri == null) return ""
+
+        if (person.uri!!.startsWith("content://")) {
+            val contactUri = person.uri!!.toUri()
+            val contactId = getContactIdFromUri(context, contactUri)
+            if (contactId != null) {
+                val name = getNameForContactId(context, contactId)
+                if (name.isNotEmpty()) {
+                    return name
+                }
+            }
+        }
+
+        if (person.uri!!.startsWith("tel:")) {
+            val phoneNumber = URLDecoder.decode(person.uri!!.substringAfter("tel:"), "UTF-8")
+            if (phoneNumber.isNotEmpty()) {
+                return getDisplayNameForPhoneNumber(context, phoneNumber)
+            }
+        }
+
         return ""
     }
 
@@ -126,26 +157,54 @@ object NotificationExtractionUtils {
 
     @OptIn(UnstableApi::class)
     @SuppressLint("Range")
-    private fun getPhoneNumberForContactId(context: Context, contactId: String): String {
-        var phoneNumber: String? = null
-        val phoneQueryUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
-        val selection = "${ContactsContract.CommonDataKinds.Phone.CONTACT_ID} = ?"
-        val selectionArgs = arrayOf(contactId)
-        val projection = arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER)
+    private fun getDisplayNameForPhoneNumber(context: Context, phoneNumber: String): String {
+        val uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber))
+        val projection = arrayOf(ContactsContract.PhoneLookup.DISPLAY_NAME)
+        var displayName = ""
         var cursor: Cursor? = null
-
         try {
-            cursor = context.contentResolver.query(phoneQueryUri, projection, selection, selectionArgs, null)
-            // Get the first phone number available for the contact
+            cursor = context.contentResolver.query(uri, projection, null, null, null)
             if (cursor != null && cursor.moveToFirst()) {
-                phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME))
             }
         } catch (e: Exception) {
-            Log.e("NotificationUtils", "Error querying for phone number", e)
+            Log.e("NotificationUtils", "Error getting display name for phone number", e)
         } finally {
             cursor?.close()
         }
-        return phoneNumber ?: ""
+        return displayName
+    }
+
+    private fun getPhoneNumberForContactId(context: Context, contactId: String): String {
+        return getDataForContactId(context, contactId, ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+    }
+
+    private fun getNameForContactId(context: Context, contactId: String): String {
+        return getDataForContactId(context, contactId, ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+    }
+
+    @OptIn(UnstableApi::class)
+    @SuppressLint("Range")
+    private fun getDataForContactId(context: Context, contactId: String, dataField: String, mimeType: String): String {
+        var data: String? = null
+        val dataQueryUri = ContactsContract.Data.CONTENT_URI
+        val selection = "${ContactsContract.Data.CONTACT_ID} = ? AND ${ContactsContract.Data.MIMETYPE} = ?"
+        val selectionArgs = arrayOf(contactId, mimeType)
+        val projection = arrayOf(dataField)
+        var cursor: Cursor? = null
+
+        try {
+            cursor = context.contentResolver.query(dataQueryUri, projection, selection, selectionArgs, null)
+            // Get the first phone number available for the contact
+            if (cursor != null && cursor.moveToFirst()) {
+                data = cursor.getString(cursor.getColumnIndex(dataField))
+            }
+        } catch (e: Exception) {
+            Log.e("NotificationUtils", "Error querying for dataField: $dataField for mimeType: $mimeType", e)
+        } finally {
+            cursor?.close()
+        }
+        return data ?: ""
     }
 
     private fun extractPhoneNumberWithLib(text: String?, regionCode: String = "US"): Pair<String, Int> {
