@@ -10,12 +10,12 @@ import android.os.Parcelable
 import android.provider.ContactsContract
 import android.service.notification.StatusBarNotification
 import androidx.annotation.OptIn
-import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
-import com.mikewarren.speakify.data.ContactModel
 import androidx.core.net.toUri
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.google.i18n.phonenumbers.Phonenumber
+import com.mikewarren.speakify.data.ContactModel
 import java.net.URLDecoder
 
 object NotificationExtractionUtils {
@@ -83,10 +83,18 @@ object NotificationExtractionUtils {
             name = extractDisplayNameFromPerson(context, person)
         }
 
+        var phoneNumber = extractPhoneNumberFromPerson(context, person)
+
+        // If we got a name but couldn't find a phone number (because URI was null),
+        // we now try to find the phone number using the name.
+        if (phoneNumber.isEmpty() && name.isNotEmpty()) {
+            phoneNumber = getPhoneNumberForDisplayName(context, name)
+        }
+
         return ContactModel(
             -1,
             name,
-            extractPhoneNumberFromPerson(context, person),
+            phoneNumber,
         )
     }
 
@@ -173,6 +181,31 @@ object NotificationExtractionUtils {
             cursor?.close()
         }
         return displayName
+    }
+
+    @OptIn(UnstableApi::class)
+    @SuppressLint("Range")
+    private fun getPhoneNumberForDisplayName(context: Context, displayName: String): String {
+        val uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
+        // Search in the Data table where the display name matches and the entry is a phone number.
+        val selection = "${ContactsContract.Data.DISPLAY_NAME_PRIMARY} = ? AND ${ContactsContract.Data.MIMETYPE} = ?"
+        val selectionArgs = arrayOf(displayName, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+        val projection = arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER)
+        var phoneNumber = ""
+        var cursor: Cursor? = null
+
+        try {
+            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
+            if (cursor != null && cursor.moveToFirst()) {
+                // Return the first phone number found for that contact name.
+                phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+            }
+        } catch (e: Exception) {
+            Log.e("NotificationUtils", "Error getting phone number for display name: $displayName", e)
+        } finally {
+            cursor?.close()
+        }
+        return phoneNumber
     }
 
     private fun getPhoneNumberForContactId(context: Context, contactId: String): String {
