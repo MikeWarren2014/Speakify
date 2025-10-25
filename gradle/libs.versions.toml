@@ -1,6 +1,7 @@
 [versions]
 agp = "8.13.0"
 androidxJunit = "1.2.1"
+coilCompose = "2.7.0"
 core = "1.6.1"
 gradle = "8.13.0"
 hiltAndroidGradlePlugin = "2.57.2"
@@ -42,6 +43,7 @@ androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-com
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
 androidx-storage = { module = "androidx.test.services:storage", version.ref = "storage" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastoreCoreAndroid" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidGradlePlugin" }
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }

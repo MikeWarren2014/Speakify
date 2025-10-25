@@ -95,4 +95,6 @@ dependencies {
     implementation libs.kotlin.test
 
     implementation libs.libphonenumber
+
+    implementation(libs.coil.compose)
 }
