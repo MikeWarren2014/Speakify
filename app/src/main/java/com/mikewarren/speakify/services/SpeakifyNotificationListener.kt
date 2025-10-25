@@ -12,6 +12,7 @@ import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.NotificationSourcesDao
 import com.mikewarren.speakify.data.db.UserAppsDao
 import com.mikewarren.speakify.strategies.NotificationStrategyFactory
+import com.mikewarren.speakify.strategies.PhoneNotificationStrategy
 import com.mikewarren.speakify.utils.TTSUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -82,6 +83,10 @@ class SpeakifyNotificationListener : NotificationListenerService() {
     private suspend fun processNotification(sbn: StatusBarNotification) {
 
         val importantApps = userAppsDao.getAll()
+
+        if ((sbn.packageName.contains("dialer")) || (sbn.packageName.contains("phone")))
+            PhoneNotificationStrategy(sbn, null, settingsRepository.getContext(), null)
+                .logNotification()
 
         if (!importantApps.map { model -> model.packageName }.contains(sbn?.packageName))
             return

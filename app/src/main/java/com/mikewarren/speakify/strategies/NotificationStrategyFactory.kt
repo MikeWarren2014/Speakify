@@ -13,6 +13,7 @@ object NotificationStrategyFactory {
                    context: Context,
                    tts: TextToSpeech?,
     ) : BaseNotificationStrategy {
+        // TODO: this may need to go bye-bye. We are handling this in PhoneStateReceiver .
         if (Constants.PhoneAppPackageNames.contains(notification.packageName))
             return PhoneNotificationStrategy(notification, appSettings, context, tts)
         if (Constants.MessagingAppPackageNames.contains(notification.packageName))
