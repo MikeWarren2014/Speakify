@@ -3,15 +3,14 @@ package com.mikewarren.speakify.strategies
 import android.app.Notification
 import android.content.Context
 import android.service.notification.StatusBarNotification
-import android.speech.tts.TextToSpeech
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.services.TTSManager
 
 abstract class BasePhoneNotificationStrategy(notification: StatusBarNotification,
-                                    appSettings: AppSettingsModel?,
-                                    context: Context,
-                                    ttsManager: TTSManager) : BaseNotificationStrategy(notification, appSettings, context, ttsManager) {
+                                             appSettingsModel: AppSettingsModel?,
+                                             context: Context,
+                                             ttsManager: TTSManager) : BaseNotificationStrategy(notification, appSettingsModel, context, ttsManager) {
 
     protected val extractedContactModel = this.extractContactModel()
 
