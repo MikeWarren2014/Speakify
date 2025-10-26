@@ -3,7 +3,6 @@ package com.mikewarren.speakify.receivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.speech.tts.TextToSpeech
 import android.telephony.TelephonyManager
 import android.util.Log
 import com.mikewarren.speakify.ApplicationScope
@@ -16,12 +15,10 @@ import com.mikewarren.speakify.data.db.UserAppsDao
 import com.mikewarren.speakify.services.PhoneCallAnnouncer
 import com.mikewarren.speakify.utils.PackageHelper
 import com.mikewarren.speakify.utils.SearchUtils
-import com.mikewarren.speakify.utils.TTSUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.collections.set
 
 @AndroidEntryPoint
 class PhoneStateReceiver : BroadcastReceiver() {
@@ -46,9 +43,6 @@ class PhoneStateReceiver : BroadcastReceiver() {
     lateinit var applicationScope: CoroutineScope
 
     private lateinit var defaultVoice: String;
-
-    private var tts: TextToSpeech? = null;
-
 
 
     override fun onReceive(context: Context, intent: Intent) {

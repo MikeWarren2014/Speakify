@@ -29,7 +29,7 @@ object TTSUtils {
 
         // If no preferred voices found, fallback to first two en-US voices
         var voices = preferredVoices
-        if (!preferredVoices.isNullOrEmpty())
+        if (preferredVoices.isNotEmpty())
             voices = usEnglishVoices
 
         return voices.map { voice: Voice -> voice.name }

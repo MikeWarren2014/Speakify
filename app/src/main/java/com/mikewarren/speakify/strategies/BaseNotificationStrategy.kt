@@ -5,16 +5,17 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.service.notification.StatusBarNotification
-import android.speech.tts.TextToSpeech
 import android.util.Log
 import com.mikewarren.speakify.data.AppSettingsModel
+import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.services.TTSManager
 
 
 abstract class BaseNotificationStrategy(
     val notification: StatusBarNotification,
-    val appSettings: AppSettingsModel?,
+    val appSettingsModel: AppSettingsModel?,
     val context: Context,
-    val tts: TextToSpeech?,
+    val ttsManager: TTSManager,
 ) {
 
     fun logNotification() {
@@ -58,13 +59,13 @@ abstract class BaseNotificationStrategy(
     fun speakify() {
         val text: String = textToSpeakify()
         Log.d(this.javaClass.name, "Now speakifying : '${text}'")
-        tts?.speak(text, TextToSpeech.QUEUE_ADD, null, null)
+        ttsManager.speak(text, appSettingsModel?.announcerVoice?: Constants.DefaultTTSVoice)
     }
 
     abstract fun textToSpeakify() : String
     open fun shouldSpeakify() : Boolean {
         // if the app settings is null or notification sources is empty, we should speakify
-        return (appSettings == null || appSettings.notificationSources.isEmpty())
+        return (appSettingsModel == null || appSettingsModel.notificationSources.isEmpty())
     }
 
 }

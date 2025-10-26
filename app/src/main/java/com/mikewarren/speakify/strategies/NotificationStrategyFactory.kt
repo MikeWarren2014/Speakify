@@ -5,17 +5,18 @@ import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.AppNameHelper
 
 object NotificationStrategyFactory {
     fun CreateFrom(notification: StatusBarNotification,
                    appSettings: AppSettingsModel?,
                    context: Context,
-                   tts: TextToSpeech?,
+                   ttsManager: TTSManager,
     ) : BaseNotificationStrategy {
         if (Constants.MessagingAppPackageNames.contains(notification.packageName))
-            return SMSNotificationStrategy(notification, appSettings, context, tts)
+            return SMSNotificationStrategy(notification, appSettings, context, ttsManager)
 
-        return SimpleNotificationStrategy(notification, appSettings, context, tts)
+        return SimpleNotificationStrategy(notification, appSettings, context, ttsManager)
     }
 }

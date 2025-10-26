@@ -9,13 +9,14 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
+import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
 
 class SMSNotificationStrategy(notification: StatusBarNotification,
                               appSettings: AppSettingsModel?,
                               context: Context,
-                              tts: TextToSpeech?,
-) : BasePhoneNotificationStrategy(notification, appSettings, context, tts) {
+                              ttsManager: TTSManager,
+) : BasePhoneNotificationStrategy(notification, appSettings, context, ttsManager) {
     companion object {
         val SelfName = "Self"
     }
