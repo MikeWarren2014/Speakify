@@ -42,7 +42,8 @@ class SpeakifyNotificationListener : NotificationListenerService() {
     @ApplicationScope
     lateinit var applicationScope: CoroutineScope
 
-    private val packageTTSDict = mutableMapOf<String, TextToSpeech>()
+    @Inject
+    lateinit var ttsManager: TTSManager
 
     private lateinit var defaultVoice: String;
 
@@ -112,10 +113,8 @@ class SpeakifyNotificationListener : NotificationListenerService() {
             appSettingsModel = AppSettingsModel(sbn.packageName, defaultVoice)
         }
 
-        val tts = createOrUpdateTTS(appSettingsModel)
-
         // build the notification strategy for this app
-        val notificationStrategy = NotificationStrategyFactory.CreateFrom(sbn, appSettingsModel, settingsRepository.getContext(), tts)
+        val notificationStrategy = NotificationStrategyFactory.CreateFrom(sbn, appSettingsModel, settingsRepository.getContext(), ttsManager)
         notificationStrategy.logNotification()
         if (notificationStrategy.shouldSpeakify()) {
             notificationStrategy.speakify()
@@ -123,55 +122,10 @@ class SpeakifyNotificationListener : NotificationListenerService() {
 
     }
 
-    fun createOrUpdateTTS(appSettingsModel: AppSettingsModel): TextToSpeech? {
-        if (packageTTSDict.containsKey(appSettingsModel.packageName)) {
-            val cachedTTS = packageTTSDict[appSettingsModel.packageName]
-
-            if (cachedTTS == null)
-                throw IllegalStateException("Somehow we have an entry on the packageTTSDict for package ${appSettingsModel.packageName}, but it's null!")
-
-            if (cachedTTS.voice == null)
-                return createTTS(appSettingsModel);
-
-            if (cachedTTS.voice.name != appSettingsModel.announcerVoice) {
-                TTSUtils.SetTTSVoice(cachedTTS, appSettingsModel.announcerVoice)
-            }
-
-            return cachedTTS
-        }
-
-        return createTTS(appSettingsModel);
-
-    }
-
-    fun createTTS(appSettingsModel: AppSettingsModel): TextToSpeech? {
-        packageTTSDict[appSettingsModel.packageName] = TextToSpeech(this, { status ->
-            if (status == TextToSpeech.SUCCESS) {
-                TTSUtils.SetTTSVoice(packageTTSDict[appSettingsModel.packageName], appSettingsModel.announcerVoice)
-                return@TextToSpeech
-            }
-            Log.e(this.javaClass.name, "TTS initialization failed with status: $status")
-        })
-
-        return packageTTSDict[appSettingsModel.packageName]
-    }
-
-
-    fun shutdownTTS(tts: TextToSpeech) {
-        tts.stop()
-        tts.shutdown()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
 
-        packageTTSDict.keys.forEach { packageName: String ->
-            val tts = packageTTSDict[packageName]
-            if (tts != null)
-                shutdownTTS(tts)
-        }
-
-        packageTTSDict.clear()
+        ttsManager.shutdown()
 
         Log.d("SpeakifyNLS", "Service destroyed. Unregistering PhoneStateReceiver.")
 

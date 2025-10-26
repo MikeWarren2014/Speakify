@@ -3,14 +3,14 @@ package com.mikewarren.speakify.strategies
 import android.app.Notification
 import android.content.Context
 import android.service.notification.StatusBarNotification
-import android.speech.tts.TextToSpeech
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
+import com.mikewarren.speakify.services.TTSManager
 
 abstract class BasePhoneNotificationStrategy(notification: StatusBarNotification,
-                                    appSettings: AppSettingsModel?,
-                                    context: Context,
-                                    tts: TextToSpeech?) : BaseNotificationStrategy(notification, appSettings, context, tts) {
+                                             appSettingsModel: AppSettingsModel?,
+                                             context: Context,
+                                             ttsManager: TTSManager) : BaseNotificationStrategy(notification, appSettingsModel, context, ttsManager) {
 
     protected val extractedContactModel = this.extractContactModel()
 
@@ -33,7 +33,7 @@ abstract class BasePhoneNotificationStrategy(notification: StatusBarNotification
             return true;
 
         // get the phone number from the status bar notification, and compare it against the app settings notification sources
-        return appSettings?.notificationSources?.contains(extractedContactModel.phoneNumber) ?: false
+        return appSettingsModel?.notificationSources?.contains(extractedContactModel.phoneNumber) ?: false
     }
 
 }

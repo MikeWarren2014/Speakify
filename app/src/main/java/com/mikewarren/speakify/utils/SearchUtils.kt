@@ -1,8 +1,5 @@
 package com.mikewarren.speakify.utils
 
-import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
-
 object SearchUtils {
     fun HasAnySubstringOverlap(firstList: List<String>, secondList: List<String>): Boolean{
         return firstList.any { firstItem: String ->
