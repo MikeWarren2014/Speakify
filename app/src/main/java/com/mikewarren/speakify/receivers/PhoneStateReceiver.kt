@@ -92,7 +92,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
                 Log.d("PhoneStateReceiver", "Phone is RINGING. Incoming number: $incomingNumber")
                 if (incomingNumber.isNullOrEmpty())
                     return
-                if (!SearchUtils.IsInPhoneNumberList(appSettingsModel.notificationSources, incomingNumber))
+                if ((appSettingsModel.notificationSources.isNotEmpty()) && (!SearchUtils.IsInPhoneNumberList(appSettingsModel.notificationSources, incomingNumber)))
                     return
                 announcer.announceCall(incomingNumber)
             }
