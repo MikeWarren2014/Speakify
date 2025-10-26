@@ -7,6 +7,7 @@ import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
 import android.telephony.TelephonyManager
 import android.util.Log
+import android.util.LruCache
 import com.mikewarren.speakify.ApplicationScope
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
@@ -46,6 +47,12 @@ class SpeakifyNotificationListener : NotificationListenerService() {
     lateinit var ttsManager: TTSManager
 
     private lateinit var defaultVoice: String;
+
+    private val recentlySpokenCache = LruCache<String, Long>(20)
+
+    companion object {
+        const val DEBOUNCE_TIME_MS = 5 * Constants.OneSecond
+    }
 
     private val phoneStateReceiver = PhoneStateReceiver()
 
@@ -106,6 +113,13 @@ class SpeakifyNotificationListener : NotificationListenerService() {
         if (Constants.PhoneAppPackageNames.contains(sbn.packageName))
             return
 
+        val lastSpokenTime = recentlySpokenCache.get(sbn.key)
+        val currentTime = System.currentTimeMillis()
+        if (lastSpokenTime != null && (currentTime - lastSpokenTime) < DEBOUNCE_TIME_MS) {
+            Log.d("SpeakifyNLS", "Notification ${sbn.key} was spoken recently. Debouncing.")
+            return // Ignore this notification
+        }
+
         // construct a model for reading the notification
         // if there are no app settings, we should assume that every notification from the app in question...is important...and worth speaking!
         var appSettingsModel = AppSettingsModel.FromDbModel(appSettingsDao.getByPackageName(sbn.packageName))
@@ -117,6 +131,7 @@ class SpeakifyNotificationListener : NotificationListenerService() {
         val notificationStrategy = NotificationStrategyFactory.CreateFrom(sbn, appSettingsModel, settingsRepository.getContext(), ttsManager)
         notificationStrategy.logNotification()
         if (notificationStrategy.shouldSpeakify()) {
+            recentlySpokenCache.put(sbn.key, currentTime)
             notificationStrategy.speakify()
         }
 

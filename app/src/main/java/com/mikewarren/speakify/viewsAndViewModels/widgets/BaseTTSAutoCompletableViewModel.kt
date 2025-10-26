@@ -1,10 +1,8 @@
 package com.mikewarren.speakify.viewsAndViewModels.widgets
 
-import android.os.Build
 import android.speech.tts.TextToSpeech
 import android.speech.tts.Voice
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
@@ -12,7 +10,6 @@ import com.mikewarren.speakify.utils.TTSUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 abstract class BaseTTSAutoCompletableViewModel(
     protected open val settingsRepository: SettingsRepository) : BaseAutoCompletableViewModel() {
