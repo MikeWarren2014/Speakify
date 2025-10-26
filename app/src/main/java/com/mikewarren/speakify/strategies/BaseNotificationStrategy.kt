@@ -58,7 +58,7 @@ abstract class BaseNotificationStrategy(
     fun speakify() {
         val text: String = textToSpeakify()
         Log.d(this.javaClass.name, "Now speakifying : '${text}'")
-        tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
+        tts?.speak(text, TextToSpeech.QUEUE_ADD, null, null)
     }
 
     abstract fun textToSpeakify() : String

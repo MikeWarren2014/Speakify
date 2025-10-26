@@ -1,8 +1,11 @@
 package com.mikewarren.speakify.services
 
+import android.content.IntentFilter
+import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
+import android.telephony.TelephonyManager
 import android.util.Log
 import com.mikewarren.speakify.ApplicationScope
 import com.mikewarren.speakify.data.AppSettingsModel
@@ -11,6 +14,7 @@ import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.NotificationSourcesDao
 import com.mikewarren.speakify.data.db.UserAppsDao
+import com.mikewarren.speakify.receivers.PhoneStateReceiver
 import com.mikewarren.speakify.strategies.NotificationStrategyFactory
 import com.mikewarren.speakify.utils.TTSUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,11 +46,22 @@ class SpeakifyNotificationListener : NotificationListenerService() {
 
     private lateinit var defaultVoice: String;
 
+    private val phoneStateReceiver = PhoneStateReceiver()
+
     override fun onCreate() {
         super.onCreate()
         // Start the collector when the service is created.
         // This ensures it's always listening as long as the service process is alive.
         startListeningForNotifications()
+
+        Log.d("SpeakifyNLS", "Service created. Registering PhoneStateReceiver.")
+
+        // Define the intent filter for the broadcast we want to receive.
+        val intentFilter = IntentFilter(TelephonyManager.ACTION_PHONE_STATE_CHANGED)
+
+        // Register the receiver dynamically.
+        // For Android O (API 26) and above, you must specify if the receiver is exported.
+        registerReceiver(phoneStateReceiver, intentFilter, RECEIVER_EXPORTED)
     }
 
     private fun startListeningForNotifications() {
@@ -83,7 +98,11 @@ class SpeakifyNotificationListener : NotificationListenerService() {
 
         val importantApps = userAppsDao.getAll()
 
-        if (!importantApps.map { model -> model.packageName }.contains(sbn?.packageName))
+        if (!importantApps.map { model -> model.packageName }.contains(sbn.packageName))
+            return
+
+        // we're passing responsibility for this to PhoneStateReceiver
+        if (Constants.PhoneAppPackageNames.contains(sbn.packageName))
             return
 
         // construct a model for reading the notification
@@ -153,5 +172,15 @@ class SpeakifyNotificationListener : NotificationListenerService() {
         }
 
         packageTTSDict.clear()
+
+        Log.d("SpeakifyNLS", "Service destroyed. Unregistering PhoneStateReceiver.")
+
+        // IMPORTANT: Always unregister the receiver to avoid memory leaks.
+        try {
+            unregisterReceiver(phoneStateReceiver)
+        } catch (e: Exception) {
+            // Can throw an exception if the receiver was never registered, so catch it.
+            Log.e("SpeakifyNLS", "Error unregistering PhoneStateReceiver", e)
+        }
     }
 }
