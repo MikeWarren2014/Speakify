@@ -5,13 +5,14 @@ import androidx.annotation.OptIn
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton // This makes it a singleton, accessible via Hilt
 class PhoneCallAnnouncer @Inject constructor(
-    private val context: Context,
-    // Add other dependencies if needed, e.g., TTS instance
+    @ApplicationContext private val context: Context,
+    private val ttsManager: TTSManager
 ) {
     @OptIn(UnstableApi::class)
     fun announceCall(phoneNumber: String) {
@@ -24,15 +25,13 @@ class PhoneCallAnnouncer @Inject constructor(
             "Incoming call from ${phoneNumber.toCharArray().joinToString(" ")}" // Spells out the number
         }
 
-        // TODO: Get your TTS instance and speak the announcement.
-        // This part needs to be connected to your existing TTS management logic.
-        // For example, you might have a TTSManager that this class can use.
         Log.d("PhoneCallAnnouncer", "SPEAKING: $announcement")
+        ttsManager.speak(announcement)
     }
 
     @OptIn(UnstableApi::class)
     fun stopAnnouncing() {
-        // TODO: Stop the TTS engine.
         Log.d("PhoneCallAnnouncer", "STOPPING announcement.")
+        ttsManager.stop()
     }
 }

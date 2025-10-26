@@ -36,7 +36,7 @@ object NotificationExtractionUtils {
             if (!onPreCheckKey(sbn, text))
                 return@forEach
 
-            val phoneNumberMatch = extractPhoneNumberWithLib(text)
+            val phoneNumberMatch = ExtractPhoneNumberWithLib(text)
             if (phoneNumberMatch.first.isNotEmpty())
                 contactModel = contactModel.copy(phoneNumber = phoneNumberMatch.first)
 
@@ -240,7 +240,7 @@ object NotificationExtractionUtils {
         return data ?: ""
     }
 
-    private fun extractPhoneNumberWithLib(text: String?, regionCode: String = "US"): Pair<String, Int> {
+    public fun ExtractPhoneNumberWithLib(text: String?, regionCode: String = "US"): Pair<String, Int> {
         if (text == null) return Pair("", -1)
         val numbersIterator = PhoneNumberUtil.getInstance().findNumbers(text, regionCode)
             .iterator();
