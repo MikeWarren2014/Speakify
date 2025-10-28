@@ -1,10 +1,8 @@
 package com.mikewarren.speakify.services
 
 import android.content.IntentFilter
-import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import android.speech.tts.TextToSpeech
 import android.telephony.TelephonyManager
 import android.util.Log
 import android.util.LruCache
@@ -12,12 +10,12 @@ import com.mikewarren.speakify.ApplicationScope
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.NotificationSourcesDao
 import com.mikewarren.speakify.data.db.UserAppsDao
 import com.mikewarren.speakify.receivers.PhoneStateReceiver
 import com.mikewarren.speakify.strategies.NotificationStrategyFactory
-import com.mikewarren.speakify.utils.TTSUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -110,7 +108,7 @@ class SpeakifyNotificationListener : NotificationListenerService() {
             return
 
         // we're passing responsibility for this to PhoneStateReceiver
-        if (Constants.PhoneAppPackageNames.contains(sbn.packageName))
+        if (PackageNames.PhoneAppList.contains(sbn.packageName))
             return
 
         val lastSpokenTime = recentlySpokenCache.get(sbn.key)
