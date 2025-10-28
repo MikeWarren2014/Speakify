@@ -9,6 +9,7 @@ import com.mikewarren.speakify.ApplicationScope
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.NotificationSourcesDao
 import com.mikewarren.speakify.data.db.UserAppsDao
@@ -59,7 +60,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
                 val importantApps = userAppsDao.getAll()
 
                 // TODO: we should consider when the user has designated some third-party App as a Phone app
-                if (!SearchUtils.HasAnyOverlap(Constants.PhoneAppPackageNames, importantApps.map { it.packageName }))
+                if (!SearchUtils.HasAnyOverlap(PackageNames.PhoneAppList, importantApps.map { it.packageName }))
                     return@collect
 
                 process(context, intent)
@@ -78,8 +79,6 @@ class PhoneStateReceiver : BroadcastReceiver() {
         if (appSettingsModel == null) {
             appSettingsModel = AppSettingsModel(packageName, defaultVoice)
         }
-
-        Log.d("PhoneStateReceiver", "State: $state, incoming number: $incomingNumber")
 
         when (state) {
             TelephonyManager.EXTRA_STATE_RINGING -> {
