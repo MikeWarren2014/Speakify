@@ -18,6 +18,9 @@ object NotificationStrategyFactory {
         if (notification.packageName == PackageNames.GoogleVoice)
             return GoogleVoiceNotificationStrategy(notification, appSettingsModel, context, ttsManager)
 
+        if (notification.packageName == PackageNames.GoogleCalendar)
+            return GoogleCalendarNotificationStrategy(notification, appSettingsModel, context, ttsManager)
+
         return SimpleNotificationStrategy(notification, appSettingsModel, context, ttsManager)
     }
 }

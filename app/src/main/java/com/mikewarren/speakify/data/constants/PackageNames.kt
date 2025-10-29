@@ -4,6 +4,7 @@ package com.mikewarren.speakify.data.constants
 
 object PackageNames {
     const val GoogleVoice = "com.google.android.apps.googlevoice"
+    const val GoogleCalendar = "com.google.android.calendar"
     val PhoneAppList = listOf(
         "com.google.android.dialer",
         "com.android.dialer",
