@@ -56,7 +56,7 @@ abstract class BaseNotificationStrategy(
         Log.d(this.javaClass.name, "================================================")
     }
 
-    fun speakify() {
+    suspend fun speakify() {
         val text: String = textToSpeakify()
         Log.d(this.javaClass.name, "Now speakifying : '${text}'")
         ttsManager.speak(text, appSettingsModel?.announcerVoice?: Constants.DefaultTTSVoice)

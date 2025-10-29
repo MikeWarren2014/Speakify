@@ -1,14 +1,20 @@
 package com.mikewarren.speakify.services
 
 import android.content.Context
+import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import androidx.annotation.OptIn
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import com.mikewarren.speakify.utils.TTSUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.suspendCancellableCoroutine
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 @OptIn(UnstableApi::class)
 @Singleton
@@ -18,7 +24,7 @@ class TTSManager @Inject constructor(
 
     private var tts: TextToSpeech? = null
     private var isInitialized = false
-    private var pendingAnnouncement: String? = null
+    private val pendingAnnouncements = mutableListOf<Pair<String, String?>>()
 
     init {
         // Start initializing the TTS engine as soon as the manager is created.
@@ -32,12 +38,18 @@ class TTSManager @Inject constructor(
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             isInitialized = true
+            tts?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+                override fun onStart(utteranceId: String?) {}
+                override fun onDone(utteranceId: String?) {}
+                override fun onError(utteranceId: String?) {}
+            })
             Log.d("TTSManager", "TTS engine successfully initialized.")
-            // If there was a pending announcement, speak it now.
-            pendingAnnouncement?.let {
-                speak(it)
-                pendingAnnouncement = null
+            // If there were any pending announcements, speak them now.
+            pendingAnnouncements.forEach { (text, voiceName) ->
+                // We can't use the suspend function here as we are not in a coroutine
+                internalSpeak(text, voiceName)
             }
+            pendingAnnouncements.clear()
 
             return
         }
@@ -45,17 +57,47 @@ class TTSManager @Inject constructor(
         Log.e("TTSManager", "TTS engine failed to initialize with status: $status")
     }
 
-    fun speak(text: String, voiceName: String? = null) {
-        if (isInitialized) {
-            TTSUtils.SetTTSVoice(tts, voiceName)
-
-            tts?.speak(text, TextToSpeech.QUEUE_ADD, null, null)
-
+    suspend fun speak(text: String, voiceName: String? = null) {
+        if (!isInitialized) {
+            // Engine isn't ready yet, save the announcement to be spoken once it is.
+            pendingAnnouncements.add(text to voiceName)
+            Log.d("TTSManager", "TTS not ready. Queuing announcement.")
             return
         }
-        // Engine isn't ready yet, save the announcement to be spoken once it is.
-        pendingAnnouncement = text
-        Log.d("TTSManager", "TTS not ready. Queuing announcement.")
+
+        return suspendCancellableCoroutine { continuation ->
+            val utteranceId = UUID.randomUUID().toString()
+            val listener = object : UtteranceProgressListener() {
+                override fun onStart(id: String?) {}
+
+                override fun onDone(id: String?) {
+                    if (id == utteranceId && continuation.isActive) {
+                        continuation.resume(Unit)
+                    }
+                }
+
+                @Deprecated("deprecated in API level 21")
+                override fun onError(id: String?) {
+                    if (id == utteranceId && continuation.isActive) {
+                        continuation.resumeWithException(RuntimeException("TTS error"))
+                    }
+                }
+
+                override fun onError(id: String?, errorCode: Int) {
+                    if (id == utteranceId && continuation.isActive) {
+                        continuation.resumeWithException(RuntimeException("TTS error with code $errorCode"))
+                    }
+                }
+            }
+            tts?.setOnUtteranceProgressListener(listener)
+            TTSUtils.SetTTSVoice(tts, voiceName)
+            tts?.speak(text, TextToSpeech.QUEUE_ADD, null, utteranceId)
+        }
+    }
+
+    private fun internalSpeak(text: String, voiceName: String? = null) {
+        TTSUtils.SetTTSVoice(tts, voiceName)
+        tts?.speak(text, TextToSpeech.QUEUE_ADD, null, null)
     }
 
     fun stop() {
