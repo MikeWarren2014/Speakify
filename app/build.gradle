@@ -10,7 +10,7 @@ plugins {
     id 'androidx.room'
 }
 
-final int androidSdkVersion = 35
+final int androidSdkVersion = 36
 final String packageName = 'com.mikewarren.speakify'
 
 android {
@@ -34,11 +34,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '17'
     }
     buildFeatures {
         compose true
@@ -97,4 +97,7 @@ dependencies {
     implementation libs.libphonenumber
 
     implementation(libs.coil.compose)
+
+    implementation("com.clerk:clerk-android:0.1.17")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
 }
