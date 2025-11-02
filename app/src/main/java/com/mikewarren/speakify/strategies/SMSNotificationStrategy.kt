@@ -26,9 +26,13 @@ IMessageNotificationHandler {
     }
 
     fun getSMSNotificationType() : SMSNotificationType {
+        if (isFromSentMessage())
+            return SMSNotificationType.OutgoingSMS
+
         val actions = notification.notification.actions
         if (actions == null)
             return SMSNotificationType.Other
+
         for (action in actions) {
             if (isReplyAction(action)) {
                 // Check if it has RemoteInput for inline reply (stronger signal for actual reply)
@@ -141,16 +145,6 @@ IMessageNotificationHandler {
         throw IllegalStateException("Somehow we got the notification, and messages, but no person was found.")
     }
 
-    fun getMessages(): List<NotificationCompat.MessagingStyle.Message> {
-        val messagingStyle = getMessagingStyle()
 
-        if (messagingStyle != null)
-            return messagingStyle.messages
-
-        Log.w("SMSNotificationStrategy", "Could not extract MessagingStyle, though EXTRA_MESSAGES might be present.")
-        if (notification.notification.extras.containsKey(Notification.EXTRA_MESSAGES))
-            Log.d("SMSNotificationStrategy", "EXTRA_MESSAGES is present.")
-        return emptyList()
-    }
 
 }
