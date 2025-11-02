@@ -6,10 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mikewarren.speakify.data.AppSettingsWithNotificationSources
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.UserAppModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -90,8 +90,10 @@ class AppSettingsViewModel(
         Log.d("AppSettingsViewModel", "packageName = '${appModel.packageName}' , notificationSources = ${model.notificationSources}")
 
         // TODO: should we have a separate view model for each app?
-        if ((getPackageName() in Constants.PhoneAppPackageNames) ||
-            (getPackageName() in Constants.MessagingAppPackageNames))
+        if ((getPackageName() in PackageNames.PhoneAppList) ||
+            (getPackageName() in PackageNames.MessagingAppList) ||
+            (getPackageName() == PackageNames.GoogleVoice)
+        )
             return BaseImportantContactsListViewModel(
                 settingsRepository,
                 model.notificationSources,

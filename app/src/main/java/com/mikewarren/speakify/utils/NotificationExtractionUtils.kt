@@ -88,7 +88,7 @@ object NotificationExtractionUtils {
         // If we got a name but couldn't find a phone number (because URI was null),
         // we now try to find the phone number using the name.
         if (phoneNumber.isEmpty() && name.isNotEmpty()) {
-            phoneNumber = getPhoneNumberForDisplayName(context, name)
+            phoneNumber = GetPhoneNumberForDisplayName(context, name)
         }
 
         return ContactModel(
@@ -185,7 +185,7 @@ object NotificationExtractionUtils {
 
     @OptIn(UnstableApi::class)
     @SuppressLint("Range")
-    private fun getPhoneNumberForDisplayName(context: Context, displayName: String): String {
+    public fun GetPhoneNumberForDisplayName(context: Context, displayName: String): String {
         val uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
         // Search in the Data table where the display name matches and the entry is a phone number.
         val selection = "${ContactsContract.Data.DISPLAY_NAME_PRIMARY} = ? AND ${ContactsContract.Data.MIMETYPE} = ?"

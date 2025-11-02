@@ -15,10 +15,9 @@ class SMSNotificationStrategy(notification: StatusBarNotification,
                               appSettingsModel: AppSettingsModel?,
                               context: Context,
                               ttsManager: TTSManager,
-) : BasePhoneNotificationStrategy(notification, appSettingsModel, context, ttsManager) {
-    companion object {
-        val SelfName = "Self"
-    }
+) : BasePhoneNotificationStrategy(notification, appSettingsModel, context, ttsManager),
+IMessageNotificationHandler {
+
 
     enum class SMSNotificationType(val stringValue: String) {
         IncomingSMS("incoming sms"),
@@ -27,26 +26,22 @@ class SMSNotificationStrategy(notification: StatusBarNotification,
     }
 
     fun getSMSNotificationType() : SMSNotificationType {
+        if (isFromSentMessage())
+            return SMSNotificationType.OutgoingSMS
+
         val actions = notification.notification.actions
         if (actions == null)
             return SMSNotificationType.Other
+
         for (action in actions) {
-            val actionTitle = action.title?.toString() ?: ""
-            if (actionTitle.equals("Reply", ignoreCase = true) ||
-                actionTitle.equals("Répondre", ignoreCase = true) ||
-                actionTitle.equals("Responder", ignoreCase = true)) {
+            if (isReplyAction(action)) {
                 // Check if it has RemoteInput for inline reply (stronger signal for actual reply)
                 if (action.remoteInputs?.isNotEmpty() == true) {
                     Log.d(this.javaClass.name, "Notification has 'Reply' action. Likely an incoming message")
                     return SMSNotificationType.IncomingSMS
                 }
             }
-            if (actionTitle.equals("Mark as read", ignoreCase = true) ||
-                actionTitle.equals("Mark Read", ignoreCase = true) || // Common variation
-                actionTitle.equals("Marquer comme lu", ignoreCase = true) ||
-                actionTitle.equals("Marquer lu", ignoreCase = true) ||
-                actionTitle.equals("Marcar como leído", ignoreCase = true) ||
-                actionTitle.equals("Marcar leído", ignoreCase = true)) {
+            if (isMarkAsReadAction(action)) {
                 Log.d(this.javaClass.name, "Notification has 'Mark as read' action. Likely an incoming message")
                 return SMSNotificationType.IncomingSMS
             }
@@ -84,7 +79,7 @@ class SMSNotificationStrategy(notification: StatusBarNotification,
             return false
         }
 
-        return (getSMSNotificationType() == SMSNotificationType.IncomingSMS) && (extractedContactModel.name != SelfName)
+        return (getSMSNotificationType() == SMSNotificationType.IncomingSMS) && (extractedContactModel.name != IMessageNotificationHandler.SelfName)
     }
 
     override fun textToSpeakify(): String {
@@ -135,7 +130,7 @@ class SMSNotificationStrategy(notification: StatusBarNotification,
         if (senderPerson != null) {
             var name = senderPerson.name?.toString() ?: ""
             if ((!senderPerson.uri.isNullOrEmpty()) && (getMessagingStyle()!!.user.uri == senderPerson.uri))
-                name = SelfName
+                name = IMessageNotificationHandler.SelfName
 
             var phoneNumber = ""
             senderPerson.uri?.let { uriString ->
@@ -150,19 +145,6 @@ class SMSNotificationStrategy(notification: StatusBarNotification,
         throw IllegalStateException("Somehow we got the notification, and messages, but no person was found.")
     }
 
-    fun getMessages(): List<NotificationCompat.MessagingStyle.Message> {
-        val messagingStyle = getMessagingStyle()
 
-        if (messagingStyle != null)
-            return messagingStyle.messages
 
-        Log.w("SMSNotificationStrategy", "Could not extract MessagingStyle, though EXTRA_MESSAGES might be present.")
-        if (notification.notification.extras.containsKey(Notification.EXTRA_MESSAGES))
-            Log.d("SMSNotificationStrategy", "EXTRA_MESSAGES is present.")
-        return emptyList()
-    }
-
-    fun getMessagingStyle() : NotificationCompat.MessagingStyle? {
-        return NotificationCompat.MessagingStyle.extractMessagingStyleFromNotification(notification.notification)
-    }
 }
