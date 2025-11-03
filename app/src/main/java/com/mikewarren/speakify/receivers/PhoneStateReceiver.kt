@@ -18,6 +18,7 @@ import com.mikewarren.speakify.utils.PackageHelper
 import com.mikewarren.speakify.utils.SearchUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -50,20 +51,28 @@ class PhoneStateReceiver : BroadcastReceiver() {
         if (intent.action != TelephonyManager.ACTION_PHONE_STATE_CHANGED) {
             return
         }
+
+        val pendingResult = goAsync()
         applicationScope.launch {
-            settingsRepository.selectedTTSVoice.collect { selectedTTSVoice ->
-                // Logic to process app settings and maybe update TTS instances
-                defaultVoice = selectedTTSVoice ?: Constants.DefaultTTSVoice
+            try {
+                settingsRepository.selectedTTSVoice.first().let { selectedTTSVoice ->
+                    // Logic to process app settings and maybe update TTS instances
+                    defaultVoice = selectedTTSVoice ?: Constants.DefaultTTSVoice
 
-                // This collector will run continuously in the background.
-                Log.d("PhoneStateReceiver", "Ready to listen for calls!")
-                val importantApps = userAppsDao.getAll()
+                    // This collector will run continuously in the background.
+                    Log.d("PhoneStateReceiver", "Ready to listen for calls!")
+                    val importantApps = userAppsDao.getAll()
 
-                // TODO: we should consider when the user has designated some third-party App as a Phone app
-                if (!SearchUtils.HasAnyOverlap(PackageNames.PhoneAppList, importantApps.map { it.packageName }))
-                    return@collect
-
-                process(context, intent)
+                    // TODO: we should consider when the user has designated some third-party App as a Phone app
+                    if (SearchUtils.HasAnyOverlap(
+                            PackageNames.PhoneAppList,
+                            importantApps.map { it.packageName })
+                    ) {
+                        process(context, intent)
+                    }
+                }
+            } finally {
+                pendingResult.finish()
             }
         }
     }
