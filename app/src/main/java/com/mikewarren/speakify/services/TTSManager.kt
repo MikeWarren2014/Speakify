@@ -2,6 +2,8 @@ package com.mikewarren.speakify.services
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import androidx.annotation.OptIn
@@ -23,14 +25,33 @@ class TTSManager @Inject constructor(
 ) : TextToSpeech.OnInitListener {
 
     private var tts: TextToSpeech? = null
+    @Volatile
     private var isInitialized = false
     private val pendingAnnouncements = mutableListOf<Pair<String, String?>>()
 
-    init {
-        // Start initializing the TTS engine as soon as the manager is created.
-        tts = TextToSpeech(context, this)
-        Log.d("TTSManager", "TTS engine initialization started.")
+    @Volatile
+    private var isInitializationStarted = false
+    private val initializationLock = Any()
+
+    private fun initialize() {
+        // Use double-checked locking to ensure TTS initialization is only started once.
+        if (isInitializationStarted) {
+            return
+        }
+        synchronized(initializationLock) {
+            if (isInitializationStarted) {
+                return
+            }
+            // The TextToSpeech constructor must be called on a thread with a Looper.
+            // We use the main thread's Looper for this.
+            Handler(Looper.getMainLooper()).post {
+                tts = TextToSpeech(context, this)
+            }
+            isInitializationStarted = true
+            Log.d("TTSManager", "TTS engine initialization queued.")
+        }
     }
+
 
     /**
      * This callback is fired when the TTS engine is ready.
@@ -45,11 +66,13 @@ class TTSManager @Inject constructor(
             })
             Log.d("TTSManager", "TTS engine successfully initialized.")
             // If there were any pending announcements, speak them now.
-            pendingAnnouncements.forEach { (text, voiceName) ->
-                // We can't use the suspend function here as we are not in a coroutine
-                internalSpeak(text, voiceName)
+            synchronized(pendingAnnouncements) {
+                pendingAnnouncements.forEach { (text, voiceName) ->
+                    // We can't use the suspend function here as we are not in a coroutine
+                    internalSpeak(text, voiceName)
+                }
+                pendingAnnouncements.clear()
             }
-            pendingAnnouncements.clear()
 
             return
         }
@@ -58,9 +81,13 @@ class TTSManager @Inject constructor(
     }
 
     suspend fun speak(text: String, voiceName: String? = null) {
+        initialize() // Make sure initialization has been triggered.
+
         if (!isInitialized) {
             // Engine isn't ready yet, save the announcement to be spoken once it is.
-            pendingAnnouncements.add(text to voiceName)
+            synchronized(pendingAnnouncements) {
+                pendingAnnouncements.add(text to voiceName)
+            }
             Log.d("TTSManager", "TTS not ready. Queuing announcement.")
             return
         }
