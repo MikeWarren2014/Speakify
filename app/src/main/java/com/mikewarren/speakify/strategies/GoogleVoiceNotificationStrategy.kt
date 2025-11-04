@@ -27,32 +27,28 @@ IMessageNotificationHandler {
     }
 
     fun getNotificationType() : NotificationType {
+        if (isFromSentMessage())
+            return NotificationType.OutgoingSMS
+
         val actions = notification.notification.actions
         if (actions == null)
             return NotificationType.Other
 
         val messagingStyle = getMessagingStyle()
-        if (messagingStyle != null) {
-            for (action in actions) {
-                if (isReplyAction(action)) {
-                    // Check if it has RemoteInput for inline reply (stronger signal for actual reply)
-                    if (!action.remoteInputs.isNullOrEmpty()) {
-                        Log.d(this.javaClass.name, "Notification has 'Reply' action. Likely an incoming message")
-                        return NotificationType.IncomingSMS
-                    }
-                }
-                if (isMarkAsReadAction(action)) {
-                    Log.d(this.javaClass.name, "Notification has 'Mark as read' action. Likely an incoming message")
+        for (action in actions) {
+            if (isReplyAction(action)) {
+                // Check if it has RemoteInput for inline reply (stronger signal for actual reply)
+                if (!action.remoteInputs.isNullOrEmpty()) {
+                    Log.d(this.javaClass.name, "Notification has 'Reply' action. Likely an incoming message")
                     return NotificationType.IncomingSMS
                 }
             }
-
-            if (messagingStyle.messages.isNotEmpty()) {
-                TODO("get the last message and make sure that it wasn't sent from Self")
+            if (isMarkAsReadAction(action)) {
+                Log.d(this.javaClass.name, "Notification has 'Mark as read' action. Likely an incoming message")
+                return NotificationType.IncomingSMS
             }
-
-            return NotificationType.IncomingSMS
         }
+
 
         val actionTitlesLowercased = this.getActionTitlesLowercased()
         if (actionTitlesLowercased.contains("answer"))
