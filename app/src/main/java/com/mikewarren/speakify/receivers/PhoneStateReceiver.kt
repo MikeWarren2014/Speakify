@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.telephony.TelephonyManager
 import android.util.Log
+import com.clerk.api.Clerk
 import com.mikewarren.speakify.ApplicationScope
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
@@ -49,6 +50,11 @@ class PhoneStateReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != TelephonyManager.ACTION_PHONE_STATE_CHANGED) {
+            return
+        }
+
+        if (Clerk.user == null) {
+            Log.w("PhoneStateReceiver", "User is not logged in. Skipping call processing.")
             return
         }
 

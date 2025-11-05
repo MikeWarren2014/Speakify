@@ -3,12 +3,13 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.auth
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -26,7 +27,7 @@ fun SignInView(viewModel: SignInViewModel = viewModel()) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterVertically)
     ) {
-        Text("Sign In")
+        Text("Sign In", style = MaterialTheme.typography.headlineMedium)
         TextField(value = email, onValueChange = { email = it }, placeholder = { Text("Email") })
         TextField(
             value = password,

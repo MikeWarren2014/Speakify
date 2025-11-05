@@ -25,9 +25,9 @@ object SearchUtils {
 
     fun IsInPhoneNumberList(listOfPhoneNumbers: List<String>, phoneNumber: String): Boolean {
         return listOfPhoneNumbers.any { firstPhoneNumber: String ->
-            val firstPhoneNumberIntlFormat = NotificationExtractionUtils.ExtractPhoneNumberWithLib(firstPhoneNumber)
+            val firstPhoneNumberIntlFormat = PhoneNumberUtils.ExtractPhoneNumberWithLib(firstPhoneNumber)
                 .first
-            val phoneNumberIntlFormat = NotificationExtractionUtils.ExtractPhoneNumberWithLib(phoneNumber)
+            val phoneNumberIntlFormat = PhoneNumberUtils.ExtractPhoneNumberWithLib(phoneNumber)
                 .first
 
             return@any firstPhoneNumberIntlFormat == phoneNumberIntlFormat

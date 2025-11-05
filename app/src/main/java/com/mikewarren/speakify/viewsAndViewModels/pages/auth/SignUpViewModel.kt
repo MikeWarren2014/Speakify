@@ -1,6 +1,10 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.auth
 
 import android.util.Log
+import android.util.Patterns
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.clerk.api.Clerk
@@ -10,6 +14,8 @@ import com.clerk.api.network.serialization.onSuccess
 import com.clerk.api.signup.SignUp
 import com.clerk.api.signup.attemptVerification
 import com.clerk.api.signup.prepareVerification
+import com.mikewarren.speakify.data.UserModel
+import com.mikewarren.speakify.utils.PhoneNumberUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -19,9 +25,51 @@ class SignUpViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<SignUpUiState>(SignUpUiState.SignedOut)
     val uiState = _uiState.asStateFlow()
 
-    fun signUp(email: String, password: String, onDone: (success: Boolean) -> Unit) {
+    var model by mutableStateOf(UserModel())
+        private set
+
+    var errorsDict by mutableStateOf<Map<String, String>>(emptyMap())
+        private set
+
+    fun onModelChange(updatedModel: UserModel) {
+        model = updatedModel
+        validate()
+    }
+
+    private fun validate(): Boolean {
+        val newErrors = mutableMapOf<String, String>()
+        if (model.firstName.isBlank()) {
+            newErrors["firstName"] = "First Name is required."
+        }
+        if (model.email.isBlank()) {
+            newErrors["email"] = "Email is required."
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(model.email).matches()) {
+            newErrors["email"] = "Invalid email format."
+        }
+        if (model.password.isBlank()) {
+            newErrors["password"] = "Password is required."
+        } else if (model.password.length < 8) {
+            newErrors["password"] = "Password must be at least 8 characters."
+        }
+        if (model.phoneNumber.isNotEmpty() && !PhoneNumberUtils.IsValidPhoneNumber(model.phoneNumber)) {
+            newErrors["phoneNumber"] = "Invalid phone number format."
+        }
+        errorsDict = newErrors
+        return newErrors.isEmpty()
+    }
+
+
+    fun signUp(onDone: (success: Boolean) -> Unit) {
+        if (!validate()) {
+            onDone(false)
+            return
+        }
         viewModelScope.launch {
-            SignUp.create(SignUp.CreateParams.Standard(emailAddress = email, password = password))
+            SignUp.create(SignUp.CreateParams.Standard(emailAddress = model.email,
+                password = model.password,
+                firstName = model.firstName,
+                lastName = model.lastName,
+                phoneNumber = PhoneNumberUtils.ToI164Format(model.phoneNumber)))
                 .onSuccess {
                     if (it.status == SignUp.Status.COMPLETE) {
                         _uiState.value = SignUpUiState.Success
@@ -32,15 +80,30 @@ class SignUpViewModel : ViewModel() {
                     }
                 }
                 .onFailure {
+                    val newErrorsDict = errorsDict.toMutableMap()
                     // See https://clerk.com/docs/guides/development/custom-flows/error-handling
                     // for more info on error handling
+                    it.error?.errors?.forEach { error ->
+                        // TODO: concatenate each error message onto its respective map entry in errors
+                        arrayOf("email", "password")
+                            .forEach { key ->
+                                if (!error.message.lowercase().contains(key)) return@forEach
+                                if (errorsDict[key].isNullOrBlank()) {
+                                    newErrorsDict[key] = error.message
+                                    return@forEach
+                                }
+                                newErrorsDict[key] = "${errorsDict[key]}\n${error.message}"
+                            }
+                    }
+                    errorsDict = newErrorsDict
+
                     Log.e("SignUpViewModel", it.longErrorMessageOrNull, it.throwable)
                     onDone(false)
                 }
         }
     }
 
-    fun verify(code: String, onDone: (success: Boolean) -> Unit) {
+    fun checkVerification(code: String, onDone: (success: Boolean) -> Unit) {
         val inProgressSignUp = Clerk.signUp ?: return
         viewModelScope.launch {
             inProgressSignUp.attemptVerification(SignUp.AttemptVerificationParams.EmailCode(code))

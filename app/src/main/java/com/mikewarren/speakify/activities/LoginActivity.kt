@@ -7,17 +7,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mikewarren.speakify.activities.MainActivity
-import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainUiState
+import com.mikewarren.speakify.data.MainUiState
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.SignInOrUpView
 

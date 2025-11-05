@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -24,12 +25,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
 import com.mikewarren.speakify.viewsAndViewModels.widgets.TTSAutoCompletableView
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 @Composable
 fun SettingsView() {
     val viewModel: SettingsViewModel = hiltViewModel() // Use hiltViewModel()
+    val mainViewModel: MainViewModel = hiltViewModel()
     val isDarkThemePreferred by viewModel.useDarkTheme.collectAsState(initial = null)
 
     var expanded by remember { mutableStateOf(false) }
@@ -71,5 +74,13 @@ fun SettingsView() {
             )
         }
 
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Button(
+            onClick = { mainViewModel.signOut() },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Sign Out")
+        }
     }
 }
