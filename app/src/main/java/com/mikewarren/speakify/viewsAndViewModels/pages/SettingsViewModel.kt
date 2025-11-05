@@ -9,7 +9,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
 import com.mikewarren.speakify.viewsAndViewModels.widgets.BaseTTSAutoCompletableViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -21,6 +23,7 @@ class SettingsViewModel @Inject constructor(
     settingsRepository: SettingsRepository,
 ) : BaseTTSAutoCompletableViewModel(settingsRepository) {
 
+    val childMainVM = MainViewModel()
     val useDarkTheme: Flow<Boolean?> = settingsRepository.useDarkTheme
     var isDarkThemePreferred by mutableStateOf<Boolean?>(null)
         private set

@@ -46,7 +46,7 @@ class LoginActivity : ComponentActivity() {
                     is MainUiState.Loading -> CircularProgressIndicator()
                     is MainUiState.SignedOut -> SignInOrUpView()
                     is MainUiState.SignedIn -> {
-                        Text("Successfully signed in. Redirecting...")
+                        Text("Successfully signed in. Redirecting to app...")
                     }
                 }
             }

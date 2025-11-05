@@ -32,7 +32,6 @@ import com.mikewarren.speakify.viewsAndViewModels.widgets.TTSAutoCompletableView
 @Composable
 fun SettingsView() {
     val viewModel: SettingsViewModel = hiltViewModel() // Use hiltViewModel()
-    val mainViewModel: MainViewModel = hiltViewModel()
     val isDarkThemePreferred by viewModel.useDarkTheme.collectAsState(initial = null)
 
     var expanded by remember { mutableStateOf(false) }
@@ -77,7 +76,7 @@ fun SettingsView() {
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            onClick = { mainViewModel.signOut() },
+            onClick = { viewModel.childMainVM.signOut() },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Sign Out")
