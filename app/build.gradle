@@ -10,7 +10,7 @@ plugins {
     id 'androidx.room'
 }
 
-final int androidSdkVersion = 35
+final int androidSdkVersion = 36
 final String packageName = 'com.mikewarren.speakify'
 
 android {
@@ -25,6 +25,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('gradle.properties').newDataInputStream())
+        buildConfigField "String", "CLERK_PUBLISHABLE_KEY", "\"${properties.getProperty('CLERK_PUBLISHABLE_KEY')}\""
     }
 
     buildTypes {
@@ -34,15 +38,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '17'
     }
     buildFeatures {
         compose true
         viewBinding true
+        buildConfig true
     }
 }
 
@@ -68,6 +73,7 @@ dependencies {
     implementation libs.androidx.ui.graphics
     implementation libs.androidx.ui.tooling.preview
     implementation libs.androidx.material3
+    implementation "androidx.compose.material:material-icons-extended"
     implementation libs.androidx.navigation.runtime.ktx
     implementation libs.androidx.navigation.compose
     implementation libs.androidx.espresso.core
@@ -97,4 +103,7 @@ dependencies {
     implementation libs.libphonenumber
 
     implementation(libs.coil.compose)
+
+    implementation("com.clerk:clerk-android:0.1.17")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
 }

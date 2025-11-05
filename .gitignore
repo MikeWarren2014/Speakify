@@ -34,3 +34,5 @@ google-services.json
 
 # Any Kotlin sessions stuff
 .kotlin/*
+
+gradle.properties

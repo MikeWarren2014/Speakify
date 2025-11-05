@@ -6,6 +6,7 @@ import android.service.notification.StatusBarNotification
 import android.telephony.TelephonyManager
 import android.util.Log
 import android.util.LruCache
+import com.clerk.api.Clerk
 import com.mikewarren.speakify.ApplicationScope
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
@@ -90,6 +91,11 @@ class SpeakifyNotificationListener : NotificationListenerService() {
 
         // if we somehow got a notification about our app, we're done!
         if (sbn.packageName == "com.mikewarren.speakify") {
+            return
+        }
+
+        if (Clerk.user == null) {
+            Log.w("SpeakifyNLS", "onNotificationPosted: Clerk.user is null. Not reading the notification")
             return
         }
 

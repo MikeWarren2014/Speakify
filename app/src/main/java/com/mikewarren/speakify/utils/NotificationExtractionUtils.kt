@@ -13,8 +13,6 @@ import androidx.annotation.OptIn
 import androidx.core.net.toUri
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
-import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
 import com.mikewarren.speakify.data.ContactModel
 import java.net.URLDecoder
 
@@ -36,7 +34,7 @@ object NotificationExtractionUtils {
             if (!onPreCheckKey(sbn, text))
                 return@forEach
 
-            val phoneNumberMatch = ExtractPhoneNumberWithLib(text)
+            val phoneNumberMatch = PhoneNumberUtils.ExtractPhoneNumberWithLib(text)
             if (phoneNumberMatch.first.isNotEmpty())
                 contactModel = contactModel.copy(phoneNumber = phoneNumberMatch.first)
 
@@ -238,22 +236,6 @@ object NotificationExtractionUtils {
             cursor?.close()
         }
         return data ?: ""
-    }
-
-    public fun ExtractPhoneNumberWithLib(text: String?, regionCode: String = "US"): Pair<String, Int> {
-        if (text == null) return Pair("", -1)
-        val numbersIterator = PhoneNumberUtil.getInstance().findNumbers(text, regionCode)
-            .iterator();
-        if (numbersIterator.hasNext()) {
-            val phoneNumberMatch = numbersIterator.next()
-            val number: Phonenumber.PhoneNumber = phoneNumberMatch.number()
-            return Pair(
-                PhoneNumberUtil.getInstance()
-                    .format(number, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL),
-                phoneNumberMatch.start(),
-            )
-        }
-        return Pair("", -1)
     }
 
     private fun isPossibleContactName(text: String?, existingPhoneNumberSearch: Pair<String, Int>?): Boolean {

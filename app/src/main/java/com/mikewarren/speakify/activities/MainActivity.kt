@@ -1,4 +1,4 @@
-package com.mikewarren.speakify
+package com.mikewarren.speakify.activities
 
 import android.Manifest
 import android.app.AlertDialog
@@ -11,16 +11,22 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.gestures.forEach
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.ui.input.key.key
+import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.mikewarren.speakify.data.MainUiState
 import com.mikewarren.speakify.ui.theme.MyApplicationTheme
 import com.mikewarren.speakify.utils.NotificationPermissionHelper
 import com.mikewarren.speakify.viewsAndViewModels.AppView
 import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsViewModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.auth.SignInOrUpView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -48,11 +54,30 @@ class MainActivity : ComponentActivity()  {
 
         val viewModel: SettingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
 
+
         lifecycleScope.launch {
             viewModel.useDarkTheme.collectLatest { useDarkTheme ->
                 setContent {
+                    val state by viewModel.childMainVM.uiState.collectAsStateWithLifecycle()
+
+                    if (state is MainUiState.SignedOut) {
+                        LaunchedEffect(state) {
+                            val intent = Intent(this@MainActivity, LoginActivity::class.java).apply {
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            }
+                            startActivity(intent)
+                        }
+                    }
+
                     MyApplicationTheme(darkTheme = useDarkTheme == true, content = {
-                        AppView()
+                        when (state) {
+                            is MainUiState.Loading -> CircularProgressIndicator()
+                            is MainUiState.SignedOut -> Text("Successfully signed out. Redirecting back to login page...")
+                            is MainUiState.SignedIn -> {
+                                AppView()
+                            }
+                        }
+
                     })
                 }
             }
