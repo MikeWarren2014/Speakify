@@ -2,6 +2,7 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.auth
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -18,8 +19,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
@@ -51,9 +54,12 @@ fun SignUpScreenView(viewModel: SignUpViewModel = viewModel(), state: SignUpView
 fun VerificationView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean) -> Unit) {
     var code by remember { mutableStateOf("") }
 
-    Text("Check your email inbox for the verification code and enter it here. ")
-
-    Text("Please note, it could take a couple minutes to arrive and could be in spam folder.")
+    Text(
+        "Check your email inbox for the verification code and enter it here. " +
+                "Please note, it could take a couple minutes to arrive and could be in the spam folder.",
+        textAlign = TextAlign.Center,
+        modifier = Modifier.padding(horizontal = 32.dp)
+    )
 
 
     TextField(value = code, onValueChange = { code = it })
@@ -82,16 +88,6 @@ fun SignUpFormView(viewModel: SignUpViewModel = viewModel(), onDone: (success: B
         ))},
         placeholder = { Text("Last Name") })
 
-    TextField(value = viewModel.model.phoneNumber,
-        onValueChange = { phoneNumber: String -> viewModel.onModelChange(viewModel.model.copy(
-            phoneNumber = phoneNumber
-        ))},
-        placeholder = { Text("Phone Number") },
-        isError = viewModel.errorsDict.containsKey("phoneNumber"),
-        supportingText = {
-            viewModel.errorsDict["phoneNumber"]?.let { Text(it) }
-        }
-    )
 
     TextField(value = viewModel.model.email,
         onValueChange = { email: String -> viewModel.onModelChange(viewModel.model.copy(

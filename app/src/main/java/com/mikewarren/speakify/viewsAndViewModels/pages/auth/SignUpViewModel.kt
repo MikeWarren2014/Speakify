@@ -51,9 +51,6 @@ class SignUpViewModel : ViewModel() {
         } else if (model.password.length < 8) {
             newErrors["password"] = "Password must be at least 8 characters."
         }
-        if (model.phoneNumber.isNotEmpty() && !PhoneNumberUtils.IsValidPhoneNumber(model.phoneNumber)) {
-            newErrors["phoneNumber"] = "Invalid phone number format."
-        }
         errorsDict = newErrors
         return newErrors.isEmpty()
     }
@@ -69,7 +66,7 @@ class SignUpViewModel : ViewModel() {
                 password = model.password,
                 firstName = model.firstName,
                 lastName = model.lastName,
-                phoneNumber = PhoneNumberUtils.ToI164Format(model.phoneNumber)))
+                ))
                 .onSuccess {
                     if (it.status == SignUp.Status.COMPLETE) {
                         _uiState.value = SignUpUiState.Success
