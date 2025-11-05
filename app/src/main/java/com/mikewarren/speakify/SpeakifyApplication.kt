@@ -10,8 +10,7 @@ class SpeakifyApplication : Application() {
         super.onCreate()
         Clerk.initialize(
             this,
-            publishableKey = "pk_test_Z2xvcmlvdXMtbGxhbWEtNzQuY2xlcmsuYWNjb3VudHMuZGV2JA"
-
+            publishableKey = BuildConfig.CLERK_PUBLISHABLE_KEY
         )
     }
 }
