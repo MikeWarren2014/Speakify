@@ -25,9 +25,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mikewarren.speakify.data.SignUpUiState
 
 @Composable
-fun SignUpView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean) -> Unit) {
+fun SignUpView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
 
     val state by viewModel.uiState.collectAsState()
 
@@ -42,8 +43,8 @@ fun SignUpView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boole
 }
 
 @Composable
-fun SignUpScreenView(viewModel: SignUpViewModel = viewModel(), state: SignUpViewModel.SignUpUiState, onDone: (success: Boolean) -> Unit) {
-    if (state is SignUpViewModel.SignUpUiState.NeedsVerification) {
+fun SignUpScreenView(viewModel: SignUpViewModel = viewModel(), state: SignUpUiState, onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
+    if (state is SignUpUiState.NeedsVerification) {
         VerificationView(viewModel, onDone)
         return
     }
@@ -51,7 +52,7 @@ fun SignUpScreenView(viewModel: SignUpViewModel = viewModel(), state: SignUpView
 }
 
 @Composable
-fun VerificationView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean) -> Unit) {
+fun VerificationView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
     var code by remember { mutableStateOf("") }
 
     Text(
@@ -68,7 +69,7 @@ fun VerificationView(viewModel: SignUpViewModel = viewModel(), onDone: (success:
 }
 
 @Composable
-fun SignUpFormView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean) -> Unit) {
+fun SignUpFormView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
     var passwordVisible by remember { mutableStateOf(false) }
 
     TextField(value = viewModel.model.firstName,

@@ -14,10 +14,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mikewarren.speakify.data.SignUpUiState
 
 @Composable
 fun SignInOrUpView() {
     var isSignUp by remember { mutableStateOf(true) }
+    var signUpUiState by remember { mutableStateOf<SignUpUiState>(SignUpUiState.SignedOut) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -26,8 +28,9 @@ fun SignInOrUpView() {
     ) {
         if (isSignUp) {
             SignUpView(
-                onDone = { success ->
-                    if (success) {
+                onDone = { success, state ->
+                    signUpUiState = state
+                    if ((success) && (state is SignUpUiState.Success)) {
                         isSignUp = false
                     }
                 })
@@ -35,11 +38,13 @@ fun SignInOrUpView() {
             SignInView()
         }
 
-        Button(onClick = { isSignUp = !isSignUp }) {
-            if (isSignUp) {
-                Text("Already have an account? Sign in")
-            } else {
-                Text("Don't have an account? Sign up")
+        if (signUpUiState is SignUpUiState.SignedOut) {
+            Button(onClick = { isSignUp = !isSignUp }) {
+                if (isSignUp) {
+                    Text("Already have an account? Sign in")
+                } else {
+                    Text("Don't have an account? Sign up")
+                }
             }
         }
     }

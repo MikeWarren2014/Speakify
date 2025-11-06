@@ -1,8 +1,7 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,14 +24,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
 import com.mikewarren.speakify.viewsAndViewModels.widgets.TTSAutoCompletableView
 
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 @Composable
 fun SettingsView() {
     val viewModel: SettingsViewModel = hiltViewModel() // Use hiltViewModel()
-    val isDarkThemePreferred by viewModel.useDarkTheme.collectAsState(initial = null)
+    val isDarkThemePreferred by viewModel.useDarkTheme.collectAsState(initial = isSystemInDarkTheme())
 
     var expanded by remember { mutableStateOf(false) }
 

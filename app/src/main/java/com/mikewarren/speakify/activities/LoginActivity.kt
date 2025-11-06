@@ -5,28 +5,39 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mikewarren.speakify.data.MainUiState
+import com.mikewarren.speakify.ui.theme.MyApplicationTheme
+import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.SignInOrUpView
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class LoginActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
+
             val viewModel: MainViewModel by viewModels()
+            val settingsViewModel: SettingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
             val state by viewModel.uiState.collectAsStateWithLifecycle()
+            val useDarkTheme by settingsViewModel.useDarkTheme.collectAsStateWithLifecycle(isSystemInDarkTheme())
 
             // When the state becomes SignedIn, navigate to MainActivity
             if (state is MainUiState.SignedIn) {
@@ -38,18 +49,25 @@ class LoginActivity : ComponentActivity() {
                 }
             }
 
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                when (state) {
-                    is MainUiState.Loading -> CircularProgressIndicator()
-                    is MainUiState.SignedOut -> SignInOrUpView()
-                    is MainUiState.SignedIn -> {
-                        Text("Successfully signed in. Redirecting to app...")
+            MyApplicationTheme(darkTheme = useDarkTheme == true, content = {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background // Use theme's background color
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        when (state) {
+                            is MainUiState.Loading -> CircularProgressIndicator()
+                            is MainUiState.SignedOut -> SignInOrUpView()
+                            is MainUiState.SignedIn -> {
+                                Text("Successfully signed in. Redirecting to app...")
+                            }
+                        }
                     }
                 }
-            }
+            })
         }
     }
 }

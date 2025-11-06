@@ -14,8 +14,8 @@ import com.clerk.api.network.serialization.onSuccess
 import com.clerk.api.signup.SignUp
 import com.clerk.api.signup.attemptVerification
 import com.clerk.api.signup.prepareVerification
+import com.mikewarren.speakify.data.SignUpUiState
 import com.mikewarren.speakify.data.UserModel
-import com.mikewarren.speakify.utils.PhoneNumberUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -56,9 +56,9 @@ class SignUpViewModel : ViewModel() {
     }
 
 
-    fun signUp(onDone: (success: Boolean) -> Unit) {
+    fun signUp(onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
         if (!validate()) {
-            onDone(false)
+            onDone(false, SignUpUiState.SignedOut)
             return
         }
         viewModelScope.launch {
@@ -70,10 +70,11 @@ class SignUpViewModel : ViewModel() {
                 .onSuccess {
                     if (it.status == SignUp.Status.COMPLETE) {
                         _uiState.value = SignUpUiState.Success
-                        onDone(true)
+                        onDone(true, SignUpUiState.Success)
                     } else {
                         _uiState.value = SignUpUiState.NeedsVerification
                         it.prepareVerification(SignUp.PrepareVerificationParams.Strategy.EmailCode())
+                        onDone(true, SignUpUiState.NeedsVerification)
                     }
                 }
                 .onFailure {
@@ -95,31 +96,27 @@ class SignUpViewModel : ViewModel() {
                     errorsDict = newErrorsDict
 
                     Log.e("SignUpViewModel", it.longErrorMessageOrNull, it.throwable)
-                    onDone(false)
+                    onDone(false, SignUpUiState.SignedOut)
                 }
         }
     }
 
-    fun checkVerification(code: String, onDone: (success: Boolean) -> Unit) {
+    fun checkVerification(code: String, onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
         val inProgressSignUp = Clerk.signUp ?: return
         viewModelScope.launch {
             inProgressSignUp.attemptVerification(SignUp.AttemptVerificationParams.EmailCode(code))
                 .onSuccess {
                     _uiState.value = SignUpUiState.Success
-                    onDone(true)
+                    onDone(true, SignUpUiState.Success)
                 }
                 .onFailure {
                     // See https://clerk.com/docs/guides/development/custom-flows/error-handling
                     // for more info on error handling
                     Log.e("SignUpViewModel", it.longErrorMessageOrNull, it.throwable)
-                    onDone(false)
+                    onDone(false, SignUpUiState.NeedsVerification)
                 }
         }
     }
 
-    sealed interface SignUpUiState {
-        data object SignedOut : SignUpUiState
-        data object Success : SignUpUiState
-        data object NeedsVerification : SignUpUiState
-    }
+
 }
