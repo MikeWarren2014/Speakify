@@ -1,5 +1,6 @@
 package com.mikewarren.speakify.services
 
+import android.content.Intent
 import android.content.IntentFilter
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -54,6 +55,7 @@ class SpeakifyNotificationListener : NotificationListenerService() {
     }
 
     private val phoneStateReceiver = PhoneStateReceiver()
+    private val screenStateReceiver = ScreenStateReceiver()
 
     override fun onCreate() {
         super.onCreate()
@@ -69,6 +71,11 @@ class SpeakifyNotificationListener : NotificationListenerService() {
         // Register the receiver dynamically.
         // For Android O (API 26) and above, you must specify if the receiver is exported.
         registerReceiver(phoneStateReceiver, intentFilter, RECEIVER_EXPORTED)
+        val screenStateFilter = IntentFilter().apply {
+            addAction(Intent.ACTION_SCREEN_ON)
+            addAction(Intent.ACTION_SCREEN_OFF)
+        }
+        registerReceiver(screenStateReceiver, screenStateFilter)
     }
 
     private fun startListeningForNotifications() {
@@ -154,6 +161,12 @@ class SpeakifyNotificationListener : NotificationListenerService() {
         } catch (e: Exception) {
             // Can throw an exception if the receiver was never registered, so catch it.
             Log.e("SpeakifyNLS", "Error unregistering PhoneStateReceiver", e)
+        }
+
+        try {
+            unregisterReceiver(screenStateReceiver)
+        } catch (e: Exception) {
+            Log.e("SpeakifyNLS", "Error unregistering ScreenStateReceiver", e)
         }
     }
 }
