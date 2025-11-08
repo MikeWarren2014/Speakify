@@ -23,5 +23,13 @@ class ScreenStateReceiver: BroadcastReceiver() {
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0)
         }
 
+        if (intent.action == Intent.ACTION_USER_PRESENT) {
+            Log.d("ScreenStateReceiver", "User PRESENT. Restoring original notification volume.")
+            // Restore the original volume
+            if (originalNotificationVolume != -1) {
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, originalNotificationVolume, 0)
+                originalNotificationVolume = -1
+            }
+        }
     }
 }
