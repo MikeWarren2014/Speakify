@@ -15,6 +15,9 @@ import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
 import com.mikewarren.speakify.viewsAndViewModels.widgets.BaseTTSAutoCompletableViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,7 +30,13 @@ class SettingsViewModel @Inject constructor(
     val useDarkTheme: Flow<Boolean?> = settingsRepository.useDarkTheme
     var isDarkThemePreferred by mutableStateOf<Boolean?>(null)
         private set
-    
+
+    val maximizeVolumeOnScreenOff: StateFlow<Boolean> = settingsRepository.maximizeVolumeOnScreenOff
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = false // Default to false
+        )
 
     init {
         observeThemePreference()
@@ -56,6 +65,12 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             searchText = voiceName
             settingsRepository.saveSelectedVoice(voiceName)
+        }
+    }
+
+    fun setMaximizeVolumeOnScreenOff(shouldMaximize: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.setMaximizeVolumeOnScreenOff(shouldMaximize)
         }
     }
 }

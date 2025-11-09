@@ -12,16 +12,16 @@ class ScreenStateReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
-        if (intent.action == Intent.ACTION_SCREEN_OFF) {
-            Log.d("ScreenStateReceiver", "Screen OFF. Maximizing notification volume.")
-            // Save the current volume if it hasn't been saved yet
-            if (originalNotificationVolume == -1) {
-                originalNotificationVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+            if (intent.action == Intent.ACTION_SCREEN_OFF) {
+                Log.d("ScreenStateReceiver", "Screen OFF. Maximizing notification volume.")
+                // Save the current volume if it hasn't been saved yet
+                if (originalNotificationVolume == -1) {
+                    originalNotificationVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+                }
+                // Get max volume and set it
+                val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0)
             }
-            // Get max volume and set it
-            val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0)
-        }
 
         if (intent.action == Intent.ACTION_USER_PRESENT) {
             Log.d("ScreenStateReceiver", "User PRESENT. Restoring original notification volume.")

@@ -9,9 +9,13 @@ interface SettingsRepository {
     val selectedTTSVoice: Flow<String?>
     val appSettings: Flow<Map<String, AppSettingsModel>>
 
+    val maximizeVolumeOnScreenOff: Flow<Boolean>
+
     suspend fun updateUseDarkTheme(useDarkTheme: Boolean)
     suspend fun saveSelectedVoice(voiceName: String)
     suspend fun saveAppSettings(appSettingsModel: AppSettingsModel)
+
+    suspend fun setMaximizeVolumeOnScreenOff(shouldMaximize: Boolean)
 
     fun getContext() : Context
 }
