@@ -1,9 +1,11 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps
 
 import android.content.pm.ApplicationInfo
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.events.PackageListDataSource
 import com.mikewarren.speakify.utils.AppNameHelper
@@ -23,6 +25,7 @@ import javax.inject.Inject
 class ImportantAppsViewModel @Inject constructor(
     override var repository: AppsRepository,
     private var settingsRepository: SettingsRepository,
+    private val phonePermissionDataSource: PhonePermissionDataSource,
 ) : BaseSearchableViewModel(repository) {
 
     private val _importantApps = MutableStateFlow<List<AppListItemViewModel>>(emptyList())
@@ -95,6 +98,11 @@ class ImportantAppsViewModel @Inject constructor(
         viewModelScope.launch {
             appModel.enabled = true
             repository.addImportantApp(appModel)
+
+            if (PackageNames.PhoneAppList.contains(appModel.packageName)) {
+                Log.d("ImportantAppsVM", "Phone app added. Requesting phone permissions via DataSource.")
+                phonePermissionDataSource.requestPermissions()
+            }
         }
     }
 

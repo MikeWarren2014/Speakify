@@ -53,6 +53,12 @@
             android:exported="false"
             android:label="PackageQueryFetcherActivity">
         </activity>
+        <activity android:name=".activities.PhonePermissionsActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
+            android:exported="false"
+            android:label="PhonePermissionsActivity">
+        </activity>
+
 
         <service
             android:name=".services.SpeakifyNotificationListener"

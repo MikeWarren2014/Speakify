@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo
 import android.os.Build
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import com.mikewarren.speakify.data.constants.PermissionCodes
 import com.mikewarren.speakify.data.events.PackageQueryEvent
 import com.mikewarren.speakify.data.events.PackageQueryEventBus
 import com.mikewarren.speakify.viewsAndViewModels.pages.fetcher.AppFetcherViewModel
@@ -14,7 +15,7 @@ import com.mikewarren.speakify.utils.NotificationPermissionHelper
 class PackageQueryFetcherActivity: BaseFetcherActivity<ApplicationInfo, PackageQueryEvent>(
     eventBus = PackageQueryEventBus.GetInstance(),
     permission = Manifest.permission.QUERY_ALL_PACKAGES,
-    permissionRequestCode = 1000,
+    permissionRequestCode = PermissionCodes.PackageQueryFetcher,
 ) {
     override val viewModel: AppFetcherViewModel by viewModels()
 

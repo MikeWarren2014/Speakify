@@ -4,6 +4,7 @@ import android.Manifest
 import android.provider.ContactsContract
 import androidx.activity.viewModels
 import com.mikewarren.speakify.data.ContactModel
+import com.mikewarren.speakify.data.constants.PermissionCodes
 import com.mikewarren.speakify.data.events.ContactEvent
 import com.mikewarren.speakify.data.events.ContactEventBus
 import com.mikewarren.speakify.viewsAndViewModels.pages.fetcher.ContactFetcherViewModel
@@ -13,7 +14,7 @@ import kotlinx.coroutines.withContext
 class ContactsFetcherActivity : BaseFetcherActivity<ContactModel, ContactEvent>(
     eventBus = ContactEventBus.GetInstance(),
     permission = Manifest.permission.READ_CONTACTS,
-    permissionRequestCode = 1001,
+    permissionRequestCode = PermissionCodes.ContactsFetcher,
 ) {
     override val viewModel: ContactFetcherViewModel by viewModels()
 
