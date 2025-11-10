@@ -4,9 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import androidx.core.content.ContextCompat
-import com.mikewarren.speakify.PackageQueryFetcherActivity
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.mikewarren.speakify.activities.PackageQueryFetcherActivity
 import kotlinx.coroutines.launch
 
 class PackageListDataSource(context: Context) : BaseDataSource<ApplicationInfo, PackageQueryEvent>(context) {
