@@ -31,19 +31,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity()  {
-    private val requestMultiplePermissionsLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            permissions.entries.forEach {
-                Log.d("MainActivity", "${it.key} = ${it.value}")
-            }
-            // You can check here if all permissions were granted and update the UI if needed.
-            if (permissions[Manifest.permission.READ_CALL_LOG] == true &&
-                (permissions[Manifest.permission.READ_PHONE_STATE] == true)) {
-                Log.d("MainActivity", "Phone state and call log permissions granted.")
-            } else {
-                Log.w("MainActivity", "One or more phone permissions were denied.")
-            }
-        }
+
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,7 +71,7 @@ class MainActivity : ComponentActivity()  {
 
         // Check for permission when the activity is created
         checkAndRequestNotificationAccess()
-        checkAndRequestPhonePermissions()
+
     }
 
     private fun checkAndRequestNotificationAccess() {
@@ -103,26 +91,5 @@ class MainActivity : ComponentActivity()  {
         }
     }
 
-    private fun checkAndRequestPhonePermissions() {
-        val permissionsToRequest = arrayOf(
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.READ_CALL_LOG,
-        )
 
-        val permissionsNotGranted = permissionsToRequest.filter {
-            ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
-        }
-
-        if (permissionsNotGranted.isNotEmpty()) {
-            // Show a dialog explaining why you need these permissions, then request them.
-            AlertDialog.Builder(this)
-                .setTitle("Permissions Required")
-                .setMessage("Speakify needs access to your phone state and call logs to announce incoming calls. Please grant these permissions.")
-                .setPositiveButton("OK") { _, _ ->
-                    requestMultiplePermissionsLauncher.launch(permissionsNotGranted.toTypedArray())
-                }
-                .setNegativeButton("Cancel", null)
-                .show()
-        }
-    }
 }
