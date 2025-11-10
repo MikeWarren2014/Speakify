@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.content.ContextCompat
-import com.mikewarren.speakify.ContactsFetcherActivity
+import com.mikewarren.speakify.activities.ContactsFetcherActivity
 import com.mikewarren.speakify.data.ContactModel
 
 import kotlinx.coroutines.launch

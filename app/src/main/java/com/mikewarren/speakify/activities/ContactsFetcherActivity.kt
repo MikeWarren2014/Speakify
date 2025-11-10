@@ -1,4 +1,4 @@
-package com.mikewarren.speakify
+package com.mikewarren.speakify.activities
 
 import android.Manifest
 import android.provider.ContactsContract
