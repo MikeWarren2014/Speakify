@@ -18,14 +18,23 @@ class SpeakifyAudioManager @Inject constructor(
      * Maximizes the music stream volume after saving the current volume.
      */
     fun maximizeVolume() {
-        // Save the current volume only if it hasn't been saved yet.
+
+        val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+
+        setVolume(maxVolume)
+        Log.d("SpeakifyAudioManager", "Set music volume to max: $maxVolume")
+    }
+
+    fun getVolume(): Int {
+        return audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+    }
+
+    fun setVolume(volume: Int) {
         if (originalMusicVolume == -1) {
             originalMusicVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
             Log.d("SpeakifyAudioManager", "Saved original music volume: $originalMusicVolume")
         }
-        val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0)
-        Log.d("SpeakifyAudioManager", "Set music volume to max: $maxVolume")
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0)
     }
 
     /**

@@ -95,25 +95,23 @@ class PhoneStateReceiver : BroadcastReceiver() {
             appSettingsModel = AppSettingsModel(packageName, defaultVoice)
         }
 
-        when (state) {
-            TelephonyManager.EXTRA_STATE_RINGING -> {
-                Log.d("PhoneStateReceiver", "Phone is RINGING. Incoming number: $incomingNumber")
-                if (incomingNumber.isNullOrEmpty())
-                    return
-                if ((appSettingsModel.notificationSources.isNotEmpty()) && (!SearchUtils.IsInPhoneNumberList(appSettingsModel.notificationSources, incomingNumber)))
-                    return
-                announcer.announceCall(incomingNumber)
-            }
-            TelephonyManager.EXTRA_STATE_OFFHOOK -> {
-                Log.d("PhoneStateReceiver", "Phone is OFFHOOK (call answered or dialing out).")
-                announcer.stopAnnouncing()
-            }
-            TelephonyManager.EXTRA_STATE_IDLE -> {
-                Log.d("PhoneStateReceiver", "Phone is IDLE (call ended or hung up).")
-                announcer.stopAnnouncing()
-            }
+        if (state == TelephonyManager.EXTRA_STATE_RINGING) {
+            Log.d("PhoneStateReceiver", "Phone is RINGING. Incoming number: $incomingNumber")
+            if (incomingNumber.isNullOrEmpty())
+                return
+            if ((appSettingsModel.notificationSources.isNotEmpty()) && (!SearchUtils.IsInPhoneNumberList(appSettingsModel.notificationSources, incomingNumber)))
+                return
+            announcer.announceCall(incomingNumber)
+            return
         }
-        
+        if (state == TelephonyManager.EXTRA_STATE_OFFHOOK) {
+                Log.d("PhoneStateReceiver", "Phone is OFFHOOK (call answered or dialing out).")
+        }
+        if (state == TelephonyManager.EXTRA_STATE_IDLE) {
+            Log.d("PhoneStateReceiver", "Phone is IDLE (call ended or hung up).")
+        }
+        announcer.stopAnnouncing()
+
     }
 
 }
