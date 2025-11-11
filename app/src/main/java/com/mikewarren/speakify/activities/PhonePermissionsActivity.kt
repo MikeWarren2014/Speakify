@@ -20,11 +20,11 @@ class PhonePermissionsActivity() : BasePermissionRequesterActivity<PhonePermissi
                 (permissions[Manifest.permission.READ_PHONE_STATE] == true)) {
                 Log.d(this.javaClass.name, "Phone state and call log permissions granted.")
                 onPermissionGranted()
-            } else {
-                Log.w(this.javaClass.name, "One or more phone permissions were denied.")
-                eventBus.post(getPermissionDeniedEvent())
-                finish()
+                return@registerForActivityResult
             }
+            Log.w(this.javaClass.name, "One or more phone permissions were denied.")
+            eventBus.post(getPermissionDeniedEvent())
+            finish()
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {

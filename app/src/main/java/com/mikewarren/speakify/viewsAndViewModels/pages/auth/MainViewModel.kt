@@ -7,14 +7,12 @@ import com.clerk.api.Clerk
 import com.clerk.api.network.serialization.longErrorMessageOrNull
 import com.clerk.api.network.serialization.onFailure
 import com.clerk.api.network.serialization.onSuccess
-import com.mikewarren.speakify.data.MainUiState
+import com.mikewarren.speakify.data.uiStates.MainUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
-import kotlin.onFailure
-import kotlin.onSuccess
 
 class MainViewModel: ViewModel() {
     private val _uiState = MutableStateFlow<MainUiState>(MainUiState.Loading)

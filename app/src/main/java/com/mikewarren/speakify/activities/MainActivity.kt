@@ -1,26 +1,21 @@
 package com.mikewarren.speakify.activities
 
-import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.mikewarren.speakify.data.MainUiState
+import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.ui.theme.MyApplicationTheme
 import com.mikewarren.speakify.utils.NotificationPermissionHelper
 import com.mikewarren.speakify.viewsAndViewModels.AppView
