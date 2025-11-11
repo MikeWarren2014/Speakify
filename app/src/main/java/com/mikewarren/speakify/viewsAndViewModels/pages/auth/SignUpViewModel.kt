@@ -14,7 +14,7 @@ import com.clerk.api.network.serialization.onSuccess
 import com.clerk.api.signup.SignUp
 import com.clerk.api.signup.attemptVerification
 import com.clerk.api.signup.prepareVerification
-import com.mikewarren.speakify.data.SignUpUiState
+import com.mikewarren.speakify.data.uiStates.SignUpUiState
 import com.mikewarren.speakify.data.UserModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

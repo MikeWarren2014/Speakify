@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mikewarren.speakify.data.SignUpUiState
+import com.mikewarren.speakify.data.uiStates.SignUpUiState
 
 @Composable
 fun SignUpView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {

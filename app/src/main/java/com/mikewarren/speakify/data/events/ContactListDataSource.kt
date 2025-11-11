@@ -5,6 +5,7 @@ import android.content.Intent
 import android.util.Log
 import com.mikewarren.speakify.activities.ContactsFetcherActivity
 import com.mikewarren.speakify.data.ContactModel
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 
 class ContactListDataSource(context: Context): BaseDataSource<ContactModel, ContactEvent>(context) {

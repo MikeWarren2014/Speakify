@@ -1,6 +1,4 @@
-package com.mikewarren.speakify.data
-
-import com.mikewarren.speakify.viewsAndViewModels.pages.auth.SignUpViewModel
+package com.mikewarren.speakify.data.uiStates
 
 sealed interface SignUpUiState {
     data object Success : SignUpUiState
