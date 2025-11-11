@@ -73,6 +73,7 @@ class SpeakifyNotificationListener : NotificationListenerService() {
         registerReceiver(phoneStateReceiver, intentFilter, RECEIVER_EXPORTED)
         val screenStateFilter = IntentFilter().apply {
             addAction(Intent.ACTION_SCREEN_OFF)
+            addAction(Intent.ACTION_SCREEN_ON)
             addAction(Intent.ACTION_USER_PRESENT)
         }
         registerReceiver(screenStateReceiver, screenStateFilter)

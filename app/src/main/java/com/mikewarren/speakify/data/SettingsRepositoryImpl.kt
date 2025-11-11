@@ -72,6 +72,12 @@ class SettingsRepositoryImpl @Inject constructor(
             model.selectedTTSVoice
         }
 
+    override val maximizeVolumeOnScreenOff: Flow<Boolean> = context.userSettingsDataStore.data
+        .map { model: UserSettingsModel ->
+            model.maximizeVolumeOnScreenOff
+        }
+
+
     override suspend fun updateUseDarkTheme(useDarkTheme: Boolean) {
         context.userSettingsDataStore.updateData { model: UserSettingsModel ->
             model.copy(useDarkTheme = useDarkTheme)
@@ -81,6 +87,12 @@ class SettingsRepositoryImpl @Inject constructor(
     override suspend fun saveSelectedVoice(voiceName: String) {
         context.userSettingsDataStore.updateData { model: UserSettingsModel ->
             model.copy(selectedTTSVoice = voiceName)
+        }
+    }
+
+    override suspend fun setMaximizeVolumeOnScreenOff(shouldMaximize: Boolean) {
+        context.userSettingsDataStore.updateData { model: UserSettingsModel ->
+            model.copy(maximizeVolumeOnScreenOff = shouldMaximize)
         }
     }
 

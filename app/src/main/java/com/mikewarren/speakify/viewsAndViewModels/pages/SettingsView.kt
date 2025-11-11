@@ -30,6 +30,7 @@ import com.mikewarren.speakify.viewsAndViewModels.widgets.TTSAutoCompletableView
 fun SettingsView() {
     val viewModel: SettingsViewModel = hiltViewModel() // Use hiltViewModel()
     val isDarkThemePreferred by viewModel.useDarkTheme.collectAsState(initial = isSystemInDarkTheme())
+    val shouldMaximizeVolumeOnScreenOff by viewModel.maximizeVolumeOnScreenOff.collectAsState()
 
     var expanded by remember { mutableStateOf(false) }
 
@@ -71,6 +72,18 @@ fun SettingsView() {
         }
 
         Spacer(modifier = Modifier.height(32.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "Maximize volume on screen off")
+            Spacer(modifier = Modifier.width(16.dp))
+            Switch(
+                checked = shouldMaximizeVolumeOnScreenOff,
+                onCheckedChange = { viewModel.setMaximizeVolumeOnScreenOff(it) },
+            )
+        }
 
         Button(
             onClick = { viewModel.childMainVM.signOut() },
