@@ -16,7 +16,7 @@ class UserSettingsSerializer @Inject constructor() : Serializer<UserSettingsMode
         useDarkTheme = true,
         appSettings = emptyMap(),
         selectedTTSVoice = "",
-        maximizeVolumeOnScreenOff = true,
+        maximizeVolumeOnScreenOff = false,
     )
 
     override suspend fun readFrom(input: InputStream): UserSettingsModel {
