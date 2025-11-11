@@ -38,6 +38,13 @@ class SettingsViewModel @Inject constructor(
             initialValue = false // Default to false
         )
 
+    val minVolume: StateFlow<Int> = settingsRepository.minVolume
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = 0 // Default to 0
+        )
+
     init {
         observeThemePreference()
         initializeTTS()
@@ -71,6 +78,12 @@ class SettingsViewModel @Inject constructor(
     fun setMaximizeVolumeOnScreenOff(shouldMaximize: Boolean) {
         viewModelScope.launch {
             settingsRepository.setMaximizeVolumeOnScreenOff(shouldMaximize)
+        }
+    }
+
+    fun setMinVolume(volume: Int) {
+        viewModelScope.launch {
+            settingsRepository.setMinVolume(volume)
         }
     }
 }

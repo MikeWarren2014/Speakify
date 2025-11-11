@@ -11,11 +11,15 @@ interface SettingsRepository {
 
     val maximizeVolumeOnScreenOff: Flow<Boolean>
 
+    val minVolume: Flow<Int>
+
     suspend fun updateUseDarkTheme(useDarkTheme: Boolean)
     suspend fun saveSelectedVoice(voiceName: String)
     suspend fun saveAppSettings(appSettingsModel: AppSettingsModel)
 
     suspend fun setMaximizeVolumeOnScreenOff(shouldMaximize: Boolean)
+
+    suspend fun setMinVolume(volume: Int)
 
     fun getContext() : Context
 }

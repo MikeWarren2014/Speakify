@@ -12,4 +12,5 @@ data class UserSettingsModel(
     val selectedTTSVoice: String,
     val appSettings: Map<String, AppSettingsModel>,
     val maximizeVolumeOnScreenOff: Boolean = false,
+    val minVolume: Int = 0,
 )

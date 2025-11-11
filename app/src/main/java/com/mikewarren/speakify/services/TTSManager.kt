@@ -9,8 +9,11 @@ import android.speech.tts.UtteranceProgressListener
 import androidx.annotation.OptIn
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
+import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.utils.TTSUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.UUID
 import javax.inject.Inject
@@ -21,7 +24,9 @@ import kotlin.coroutines.resumeWithException
 @OptIn(UnstableApi::class)
 @Singleton
 class TTSManager @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val settingsRepository: SettingsRepository,
+    private val audioManager: SpeakifyAudioManager,
 ) : TextToSpeech.OnInitListener {
 
     private var tts: TextToSpeech? = null
@@ -92,13 +97,23 @@ class TTSManager @Inject constructor(
             return
         }
 
+        val minVolume = settingsRepository.minVolume.first()
         return suspendCancellableCoroutine { continuation ->
             val utteranceId = UUID.randomUUID().toString()
+
+            // We use runBlocking here because this part of the code is not suspendable
+            // and we need the value before proceeding.
+            val currentVolume = audioManager.getVolume()
+
+            if (currentVolume < minVolume) {
+                audioManager.setVolume(minVolume)
+            }
             val listener = object : UtteranceProgressListener() {
                 override fun onStart(id: String?) {}
 
                 override fun onDone(id: String?) {
                     if (id == utteranceId && continuation.isActive) {
+                        audioManager.restoreVolume()
                         continuation.resume(Unit)
                     }
                 }
@@ -106,12 +121,14 @@ class TTSManager @Inject constructor(
                 @Deprecated("deprecated in API level 21")
                 override fun onError(id: String?) {
                     if (id == utteranceId && continuation.isActive) {
+                        audioManager.restoreVolume()
                         continuation.resumeWithException(RuntimeException("TTS error"))
                     }
                 }
 
                 override fun onError(id: String?, errorCode: Int) {
                     if (id == utteranceId && continuation.isActive) {
+                        audioManager.restoreVolume()
                         continuation.resumeWithException(RuntimeException("TTS error with code $errorCode"))
                     }
                 }
@@ -129,6 +146,7 @@ class TTSManager @Inject constructor(
 
     fun stop() {
         tts?.stop()
+        audioManager.restoreVolume()
     }
 
     // You might call this from your Application's onDestroy if needed,

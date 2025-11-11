@@ -77,6 +77,12 @@ class SettingsRepositoryImpl @Inject constructor(
             model.maximizeVolumeOnScreenOff
         }
 
+    override val minVolume: Flow<Int> = context.userSettingsDataStore
+        .data
+        .map { model: UserSettingsModel ->
+            model.minVolume
+        }
+
 
     override suspend fun updateUseDarkTheme(useDarkTheme: Boolean) {
         context.userSettingsDataStore.updateData { model: UserSettingsModel ->
@@ -93,6 +99,12 @@ class SettingsRepositoryImpl @Inject constructor(
     override suspend fun setMaximizeVolumeOnScreenOff(shouldMaximize: Boolean) {
         context.userSettingsDataStore.updateData { model: UserSettingsModel ->
             model.copy(maximizeVolumeOnScreenOff = shouldMaximize)
+        }
+    }
+
+    override suspend fun setMinVolume(volume: Int) {
+        context.userSettingsDataStore.updateData { model: UserSettingsModel ->
+            model.copy(minVolume = volume)
         }
     }
 
