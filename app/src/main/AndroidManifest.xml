@@ -43,16 +43,22 @@
             android:exported="false"
             android:theme="@style/Theme.MyApplication" >
         </activity>
-        <activity android:name=".ContactsFetcherActivity"
+        <activity android:name=".activities.ContactsFetcherActivity"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
             android:exported="false"
             android:label="ContactsFetcherActivity">
         </activity>
-        <activity android:name=".PackageQueryFetcherActivity"
+        <activity android:name=".activities.PackageQueryFetcherActivity"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
             android:exported="false"
             android:label="PackageQueryFetcherActivity">
         </activity>
+        <activity android:name=".activities.PhonePermissionsActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
+            android:exported="false"
+            android:label="PhonePermissionsActivity">
+        </activity>
+
 
         <service
             android:name=".services.SpeakifyNotificationListener"

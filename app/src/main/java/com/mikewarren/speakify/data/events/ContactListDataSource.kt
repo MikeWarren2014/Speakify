@@ -3,10 +3,9 @@ package com.mikewarren.speakify.data.events
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.core.content.ContextCompat
-import com.mikewarren.speakify.ContactsFetcherActivity
+import com.mikewarren.speakify.activities.ContactsFetcherActivity
 import com.mikewarren.speakify.data.ContactModel
-
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 
 class ContactListDataSource(context: Context): BaseDataSource<ContactModel, ContactEvent>(context) {
@@ -44,7 +43,7 @@ class ContactListDataSource(context: Context): BaseDataSource<ContactModel, Cont
     }
 
     override fun onRequestData() {
-        ContextCompat.startActivity(context,
+        context.startActivity(
             Intent(context, ContactsFetcherActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
             null)

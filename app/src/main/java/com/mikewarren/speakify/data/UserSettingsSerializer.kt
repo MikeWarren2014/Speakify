@@ -26,7 +26,8 @@ class UserSettingsSerializer @Inject constructor() : Serializer<UserSettingsMode
     override suspend fun writeTo(t: UserSettingsModel, output: OutputStream) {
         withContext(Dispatchers.IO) {
             output.write(
-                Json.encodeToString(UserSettingsModel.serializer(), t)
+                Json
+                    .encodeToString(UserSettingsModel.serializer(), t)
                     .encodeToByteArray()
             )
         }

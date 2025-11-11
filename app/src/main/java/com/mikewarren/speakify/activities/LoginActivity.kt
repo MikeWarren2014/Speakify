@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,11 +18,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mikewarren.speakify.data.MainUiState
+import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.ui.theme.MyApplicationTheme
 import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsViewModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.auth.InitialScreenView
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
-import com.mikewarren.speakify.viewsAndViewModels.pages.auth.SignInOrUpView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -60,7 +59,7 @@ class LoginActivity : ComponentActivity() {
                     ) {
                         when (state) {
                             is MainUiState.Loading -> CircularProgressIndicator()
-                            is MainUiState.SignedOut -> SignInOrUpView()
+                            is MainUiState.SignedOut -> InitialScreenView()
                             is MainUiState.SignedIn -> {
                                 Text("Successfully signed in. Redirecting to app...")
                             }

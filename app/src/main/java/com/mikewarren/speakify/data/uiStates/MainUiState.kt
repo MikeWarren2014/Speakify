@@ -1,4 +1,4 @@
-package com.mikewarren.speakify.data
+package com.mikewarren.speakify.data.uiStates
 
 sealed interface MainUiState {
     data object Loading : MainUiState

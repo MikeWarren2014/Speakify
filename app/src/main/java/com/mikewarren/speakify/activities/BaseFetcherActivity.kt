@@ -1,4 +1,4 @@
-package com.mikewarren.speakify
+package com.mikewarren.speakify.activities
 
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -18,10 +18,10 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 abstract class BaseFetcherActivity<Model, Event> (
-    protected val eventBus: BaseEventBus<Event>,
+    eventBus: BaseEventBus<Event>,
     protected val permission: String,
-    protected val permissionRequestCode : Int,
-): AppCompatActivity() {
+    permissionRequestCode : Int,
+): BasePermissionRequesterActivity<Event>(eventBus, permissionRequestCode) {
     protected abstract val viewModel: BaseFetcherViewModel
 
     private val dataFlow: MutableSharedFlow<List<Model>> =
@@ -30,8 +30,11 @@ abstract class BaseFetcherActivity<Model, Event> (
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportActionBar?.hide()
+        requestDataAccessPermission()
+    }
 
+    override fun doDisplay() {
+        super.doDisplay()
         setContent {
             MyApplicationTheme {
                 // A surface container using the 'background' color from the theme
@@ -43,45 +46,18 @@ abstract class BaseFetcherActivity<Model, Event> (
                 }
             }
         }
+    }
 
-        requestDataAccessPermission()
+    override fun getPermissions(): Array<String> {
+        return arrayOf(permission)
     }
 
     protected fun requestDataAccessPermission() {
-        if (!hasDataAccessPermission()) {
-            requestPermissions(
-                arrayOf(this.permission),
-                permissionRequestCode
-            )
-            return
-        }
+        requestPermissions()
+    }
+
+    override fun onPermissionGranted() {
         fetchData()
-
-    }
-
-    protected fun hasDataAccessPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            this.permission,
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode != permissionRequestCode)
-            return
-
-        if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-            fetchData()
-            return
-        }
-        eventBus.post(getPermissionDeniedEvent())
-        finish()
     }
 
     private fun fetchData() {
@@ -99,7 +75,10 @@ abstract class BaseFetcherActivity<Model, Event> (
         }
     }
 
-    abstract fun getPermissionDeniedEvent() : Event
+    override fun getFailureEvent(message: String) : Event {
+        return getFetchFailedEvent(message)
+    }
+
     abstract fun getDataFetchedEvent(data: List<Model>) : Event
     abstract fun getFetchFailedEvent(message: String) : Event
 

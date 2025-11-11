@@ -3,10 +3,7 @@ package com.mikewarren.speakify.data.events
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
-import androidx.core.content.ContextCompat
-import com.mikewarren.speakify.PackageQueryFetcherActivity
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.mikewarren.speakify.activities.PackageQueryFetcherActivity
 import kotlinx.coroutines.launch
 
 class PackageListDataSource(context: Context) : BaseDataSource<ApplicationInfo, PackageQueryEvent>(context) {
@@ -32,7 +29,7 @@ class PackageListDataSource(context: Context) : BaseDataSource<ApplicationInfo, 
     }
 
     override fun onRequestData() {
-        ContextCompat.startActivity(context,
+        context.startActivity(
             Intent(context, PackageQueryFetcherActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
             null)

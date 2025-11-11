@@ -1,8 +1,12 @@
 package com.mikewarren.speakify.data
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 
+@OptIn(ExperimentalSerializationApi::class)
 @Serializable
+@JsonIgnoreUnknownKeys
 data class UserSettingsModel(
     val useDarkTheme: Boolean,
     val selectedTTSVoice: String,
