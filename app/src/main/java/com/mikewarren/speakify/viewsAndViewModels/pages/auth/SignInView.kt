@@ -17,15 +17,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -33,6 +32,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -44,13 +44,13 @@ fun SignInView(viewModel: SignInViewModel = viewModel()) {
     var passwordVisible by remember { mutableStateOf(false) }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val keyboardController = LocalSoftwareKeyboardController.current
 
     val shake = remember { Animatable(0f) }
-    LaunchedEffect(uiState) {
-        if (uiState is SignInViewModel.SignInUiState.Error) {
-            // Trigger the shake animation
-            launch {
+    val scope = rememberCoroutineScope()
+
+    scope.launch {
+        viewModel.eventFlow.collectLatest { event ->
+            if (event is SignInViewModel.Event.Shake) {
                 shake.animateTo(0f) // Reset before starting
                 for (i in 0..5) {
                     when (i % 2) {
