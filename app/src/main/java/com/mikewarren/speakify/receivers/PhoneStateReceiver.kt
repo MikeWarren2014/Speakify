@@ -105,7 +105,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
             return
         }
         if (state == TelephonyManager.EXTRA_STATE_OFFHOOK) {
-                Log.d("PhoneStateReceiver", "Phone is OFFHOOK (call answered or dialing out).")
+            Log.d("PhoneStateReceiver", "Phone is OFFHOOK (call answered or dialing out).")
         }
         if (state == TelephonyManager.EXTRA_STATE_IDLE) {
             Log.d("PhoneStateReceiver", "Phone is IDLE (call ended or hung up).")

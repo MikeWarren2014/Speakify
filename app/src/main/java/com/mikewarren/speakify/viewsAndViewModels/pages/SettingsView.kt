@@ -6,11 +6,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
@@ -40,95 +44,56 @@ fun SettingsView() {
 
     val minVolume by viewModel.minVolume.collectAsStateWithLifecycle()
 
-    Column(modifier = Modifier.padding(16.dp)) {
+    val scrollState = rememberScrollState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
         Text(
             text = "Settings",
             style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 18.dp),
         )
-        Spacer(modifier = Modifier.height(16.dp))
 
-        // Theme Toggle
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+        // Refactored Theme Toggle Card
+        SettingsToggleCard(
+            title = "Dark Theme",
+            description = "Enable or disable dark mode for the app.",
+            isChecked = isDarkThemePreferred ?: false,
+            onCheckedChange = { viewModel.updateUseDarkTheme(it) },
+        )
+
+        // Refactored TTS Voice Selection Card
+        SettingsItemCard(
+            title = "TTS Voice",
+            description = "Select the voice for spoken notifications.",
         ) {
-            Text(text = "Dark Theme")
-            Spacer(modifier = Modifier.width(16.dp))
-            Switch(
-                checked = isDarkThemePreferred ?: false,
-                onCheckedChange = { viewModel.updateUseDarkTheme(it) },
-            )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { expanded = true },
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "TTS Voice")
-            Spacer(modifier = Modifier.width(16.dp))
             TTSAutoCompletableView(
                 viewModel,
-                onHandleSelection = { viewModel, selectedVoice: String ->
-                    viewModel.onSelectedVoice(selectedVoice)
+                onHandleSelection = { vm, selectedVoice ->
+                    vm.onSelectedVoice(selectedVoice)
                 },
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
 
-        Column(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-        ) {
-            Text(text = "Minimum Volume", style = MaterialTheme.typography.bodyLarge)
-            Text(
-                text = "The lowest volume level the app will use when speaking notifications.",
-                style = MaterialTheme.typography.bodySmall
-            )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Slider(
-                    value = minVolume.toFloat(),
-                    onValueChange = { viewModel.setMinVolume(it.roundToInt()) },
-                    valueRange = 0f..15f, // Standard Android media volume range is 0-15
-                    steps = 14, // 14 steps create 15 distinct values (0 to 15)
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    text = minVolume.toString(),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        }
+        MinVolumeSettingCard(
+            title = "Minimum Volume",
+            description = "The lowest volume level the app will use when speaking notifications.",
+            currentValue = minVolume,
+            onValueChange = { viewModel.setMinVolume(it) }
+        )
 
-        Spacer(modifier = Modifier.height(32.dp))
-
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-            ) {
-                Text(
-                    text = "Maximize volume on screen off",
-                    style = MaterialTheme.typography.bodyLarge
-                )
-                Text(
-                    text = "Boosts notification volume to maximum when the screen is locked to ensure you hear it.",
-                    style = MaterialTheme.typography.bodySmall
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                Switch(
-                    checked = shouldMaximizeVolumeOnScreenOff,
-                    onCheckedChange = { viewModel.setMaximizeVolumeOnScreenOff(it) },
-                )
-            }
-        }
+        SettingsToggleCard(
+            title = "Maximize volume on screen off",
+            description = "Boosts notification volume to maximum when the screen is locked to ensure you hear it",
+            isChecked = shouldMaximizeVolumeOnScreenOff,
+            onCheckedChange = { viewModel.setMaximizeVolumeOnScreenOff(it) },
+        )
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
@@ -139,3 +104,78 @@ fun SettingsView() {
         }
     }
 }
+
+@Composable
+fun MinVolumeSettingCard(
+    title: String,
+    description: String,
+    currentValue: Int,
+    onValueChange: (Int) -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+        ) {
+            // Title and Description
+            Text(text = title, style = MaterialTheme.typography.bodyLarge)
+            Text(text = description, style = MaterialTheme.typography.bodySmall)
+            Spacer(modifier = Modifier.height(8.dp))
+            // Slider and Value
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Slider(
+                    value = currentValue.toFloat(),
+                    onValueChange = { onValueChange(it.roundToInt()) },
+                    valueRange = 0f..15f, // Standard Android media volume range is 0-15
+                    steps = 14, // 14 steps create 15 distinct values (0 to 15)
+                    modifier = Modifier.weight(1f)
+                )
+                Text(
+                    text = currentValue.toString(),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun SettingsToggleCard(title: String,
+                       description: String,
+                       isChecked: Boolean,
+                       onCheckedChange: (Boolean) -> Unit) {
+   SettingsItemCard(title,
+       description,
+       {
+           Switch(
+               checked = isChecked,
+               onCheckedChange = onCheckedChange,
+               modifier = Modifier.padding(start = 16.dp)
+           )
+       })
+}
+
+@Composable
+fun SettingsItemCard(title: String,
+                     description: String,
+                     content: @Composable () -> Unit) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = title, style = MaterialTheme.typography.bodyLarge)
+                Text(text = description, style = MaterialTheme.typography.bodySmall)
+            }
+            content()
+        }
+    }
+ }
