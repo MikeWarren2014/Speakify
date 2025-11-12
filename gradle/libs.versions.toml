@@ -36,6 +36,7 @@ appcompat = "1.7.1"
 preference = "1.2.1"
 material = "1.4.+"
 ui = "1.9.4"
+foundation = "1.9.4"
 
 [libraries]
 androidx-core = { module = "androidx.test:core", version.ref = "core" }
@@ -82,6 +83,7 @@ play-services-basement = { module = "com.google.android.gms:play-services-baseme
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobufJava" }
 protoc = { module = "com.google.protobuf:protoc", version.ref = "protoc" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
