@@ -3,6 +3,8 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.auth
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -20,6 +22,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -54,6 +60,7 @@ fun SignUpScreenView(viewModel: SignUpViewModel = viewModel(), state: SignUpUiSt
 @Composable
 fun VerificationView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
     var code by remember { mutableStateOf("") }
+    val focusManager = LocalFocusManager.current
 
     Text(
         "Check your email inbox for the verification code and enter it here. " +
@@ -63,7 +70,18 @@ fun VerificationView(viewModel: SignUpViewModel = viewModel(), onDone: (success:
     )
 
 
-    TextField(value = code, onValueChange = { code = it })
+    TextField(value = code,
+        onValueChange = { code = it },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                focusManager.clearFocus()
+                viewModel.checkVerification(code, onDone)
+            }
+        ))
 
     Button(onClick = { viewModel.checkVerification(code, onDone) }) { Text("Verify") }
 }
@@ -71,23 +89,36 @@ fun VerificationView(viewModel: SignUpViewModel = viewModel(), onDone: (success:
 @Composable
 fun SignUpFormView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
     var passwordVisible by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
 
-    TextField(value = viewModel.model.firstName,
-        onValueChange = { firstName: String -> viewModel.onModelChange(viewModel.model.copy(
-            firstName = firstName
-        ))},
+    TextField(
+        value = viewModel.model.firstName,
+        onValueChange = { firstName: String ->
+            viewModel.onModelChange(
+                viewModel.model.copy(
+                    firstName = firstName
+                )
+            )
+        },
         placeholder = { Text("First Name *") },
         isError = viewModel.errorsDict.containsKey("firstName"),
         supportingText = {
             viewModel.errorsDict["firstName"]?.let { Text(it) }
         },
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+        keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
     )
 
     TextField(value = viewModel.model.lastName,
         onValueChange = { lastName: String -> viewModel.onModelChange(viewModel.model.copy(
             lastName = lastName
         ))},
-        placeholder = { Text("Last Name") })
+        placeholder = { Text("Last Name") },
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+        keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
+    )
 
 
     TextField(value = viewModel.model.email,
@@ -98,7 +129,13 @@ fun SignUpFormView(viewModel: SignUpViewModel = viewModel(), onDone: (success: B
         isError = viewModel.errorsDict.containsKey("email"),
         supportingText = {
             viewModel.errorsDict["email"]?.let { Text(it) }
-        }
+        },
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next
+        ),
+        keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
     )
 
     TextField(
@@ -112,6 +149,17 @@ fun SignUpFormView(viewModel: SignUpViewModel = viewModel(), onDone: (success: B
         supportingText = {
             viewModel.errorsDict["password"]?.let { Text(it) }
         },
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                focusManager.clearFocus() // Hide the keyboard
+                viewModel.signUp(onDone)
+            }
+        ),
         trailingIcon = {
             val image = if (passwordVisible)
                 Icons.Filled.Visibility

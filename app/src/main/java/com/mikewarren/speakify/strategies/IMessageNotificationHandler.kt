@@ -32,7 +32,7 @@ interface IMessageNotificationHandler {
         ), action.title.toString())
     }
 
-    fun isFromSentMessage(): Boolean {
+    open fun isFromSentMessage(): Boolean {
         return getLastSenderPerson() == null
     }
 
