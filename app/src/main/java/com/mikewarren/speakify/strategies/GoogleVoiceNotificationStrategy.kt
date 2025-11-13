@@ -61,6 +61,10 @@ IMessageNotificationHandler {
         return NotificationType.Other
     }
 
+    override fun isFromSentMessage(): Boolean {
+        return getMessages().isNotEmpty() && super.isFromSentMessage()
+    }
+
     override fun getPossiblePersonExtras(): Array<String> {
         return arrayOf(
             Notification.EXTRA_TITLE,
