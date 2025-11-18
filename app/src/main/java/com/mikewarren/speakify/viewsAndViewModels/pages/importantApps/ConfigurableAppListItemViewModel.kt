@@ -1,6 +1,6 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps
 
-import com.mikewarren.speakify.data.AppSettingsWithNotificationSources
+import com.mikewarren.speakify.data.db.AppSettingsWithNotificationSources
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository

@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.mikewarren.speakify.data.AppSettingsWithNotificationSources
+import com.mikewarren.speakify.data.db.AppSettingsWithNotificationSources
 
 @Dao
 interface AppSettingsDao {
@@ -15,6 +15,8 @@ interface AppSettingsDao {
     @Query("SELECT * FROM app_settings")
     suspend fun getAll(): List<AppSettingsWithNotificationSources>
 
+    @Query("SELECT * FROM app_settings")
+    suspend fun getAllRaw(): List<AppSettingsDbModel>
     @Transaction
     @Query("SELECT * FROM app_settings WHERE package_name = :packageName")
     suspend fun getByPackageName(packageName: String): AppSettingsWithNotificationSources?

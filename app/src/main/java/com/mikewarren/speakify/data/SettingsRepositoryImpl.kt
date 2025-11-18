@@ -7,6 +7,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.AppSettingsDbModel
+import com.mikewarren.speakify.data.db.AppSettingsWithNotificationSources
 import com.mikewarren.speakify.data.db.DbProvider
 import com.mikewarren.speakify.data.db.NotificationSourceModel
 import dagger.hilt.android.qualifiers.ApplicationContext

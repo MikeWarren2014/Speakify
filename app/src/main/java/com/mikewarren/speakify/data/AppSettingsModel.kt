@@ -1,5 +1,6 @@
 package com.mikewarren.speakify.data
 
+import com.mikewarren.speakify.data.db.AppSettingsWithNotificationSources
 import kotlinx.serialization.Serializable
 
 @Serializable

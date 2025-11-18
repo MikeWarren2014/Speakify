@@ -1,5 +1,7 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -16,10 +18,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,61 +52,124 @@ fun SettingsView() {
 
     val scrollState = rememberScrollState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-        Text(
-            text = "Settings",
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 18.dp),
-        )
+    // --- Backup Launchers ---
 
-        // Refactored Theme Toggle Card
-        SettingsToggleCard(
-            title = "Dark Theme",
-            description = "Enable or disable dark mode for the app.",
-            isChecked = isDarkThemePreferred ?: false,
-            onCheckedChange = { viewModel.updateUseDarkTheme(it) },
-        )
+    // 1. Launcher for EXPORT (Creating a file)
+    val exportLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("application/json")
+    ) { uri ->
+        uri?.let { viewModel.exportBackup(it) }
+    }
 
-        // Refactored TTS Voice Selection Card
-        SettingsItemCard(
-            title = "TTS Voice",
-            description = "Select the voice for spoken notifications.",
-        ) {
-            TTSAutoCompletableView(
-                viewModel,
-                onHandleSelection = { vm, selectedVoice ->
-                    vm.onSelectedVoice(selectedVoice)
-                },
-            )
+    // 2. Launcher for IMPORT (Opening a file)
+    val importLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        uri?.let { viewModel.importBackup(it) }
+    }
+
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is SettingsViewModel.UiEvent.ShowSnackbar -> {
+                    snackbarHostState.showSnackbar(event.message)
+                }
+            }
         }
+    }
 
-        MinVolumeSettingCard(
-            title = "Minimum Volume",
-            description = "The lowest volume level the app will use when speaking notifications.",
-            currentValue = minVolume,
-            onValueChange = { viewModel.setMinVolume(it) }
-        )
-
-        SettingsToggleCard(
-            title = "Maximize volume on screen off",
-            description = "Boosts notification volume to maximum when the screen is locked to ensure you hear it",
-            isChecked = shouldMaximizeVolumeOnScreenOff,
-            onCheckedChange = { viewModel.setMaximizeVolumeOnScreenOff(it) },
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Button(
-            onClick = { viewModel.childMainVM.signOut() },
-            modifier = Modifier.fillMaxWidth()
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Text("Sign Out")
+            Text(
+                text = "Settings",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 18.dp),
+            )
+
+            // Refactored Theme Toggle Card
+            SettingsToggleCard(
+                title = "Dark Theme",
+                description = "Enable or disable dark mode for the app.",
+                isChecked = isDarkThemePreferred ?: false,
+                onCheckedChange = { viewModel.updateUseDarkTheme(it) },
+            )
+
+            // Refactored TTS Voice Selection Card
+            SettingsItemCard(
+                title = "TTS Voice",
+                description = "Select the voice for spoken notifications.",
+            ) {
+                TTSAutoCompletableView(
+                    viewModel,
+                    onHandleSelection = { vm, selectedVoice ->
+                        vm.onSelectedVoice(selectedVoice)
+                    },
+                )
+            }
+
+            MinVolumeSettingCard(
+                title = "Minimum Volume",
+                description = "The lowest volume level the app will use when speaking notifications.",
+                currentValue = minVolume,
+                onValueChange = { viewModel.setMinVolume(it) }
+            )
+
+            SettingsToggleCard(
+                title = "Maximize volume on screen off",
+                description = "Boosts notification volume to maximum when the screen is locked to ensure you hear it",
+                isChecked = shouldMaximizeVolumeOnScreenOff,
+                onCheckedChange = { viewModel.setMaximizeVolumeOnScreenOff(it) },
+            )
+
+            Text(
+                text = "Data Management",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+
+            SettingsItemCard(
+                title = "Backup Data",
+                description = "Save your settings and app list to a file."
+            ) {
+                Button(onClick = {
+                    // Suggest a filename
+                    exportLauncher.launch("speakify_backup_${System.currentTimeMillis()}.json")
+                }) {
+                    Text("Export")
+                }
+            }
+
+            SettingsItemCard(
+                title = "Restore Data",
+                description = "Import settings from a backup file."
+            ) {
+                Button(onClick = {
+                    // Filter for JSON files
+                    importLauncher.launch(arrayOf("application/json"))
+                }) {
+                    Text("Import")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Button(
+                onClick = { viewModel.childMainVM.signOut() },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Sign Out")
+            }
         }
     }
 }
