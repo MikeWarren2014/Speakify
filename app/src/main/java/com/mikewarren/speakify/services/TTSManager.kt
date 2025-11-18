@@ -9,6 +9,7 @@ import android.speech.tts.UtteranceProgressListener
 import androidx.annotation.OptIn
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.utils.TTSUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -54,6 +55,7 @@ class TTSManager @Inject constructor(
             }
             isInitializationStarted = true
             Log.d("TTSManager", "TTS engine initialization queued.")
+            FirebaseCrashlytics.getInstance().log("TTS engine initialization queued.")
         }
     }
 
@@ -83,6 +85,7 @@ class TTSManager @Inject constructor(
         }
         isInitialized = false
         Log.e("TTSManager", "TTS engine failed to initialize with status: $status")
+        FirebaseCrashlytics.getInstance().log("TTS engine failed to initialize with status: $status")
     }
 
     suspend fun speak(text: String, voiceName: String? = null) {
@@ -94,6 +97,7 @@ class TTSManager @Inject constructor(
                 pendingAnnouncements.add(text to voiceName)
             }
             Log.d("TTSManager", "TTS not ready. Queuing announcement.")
+            FirebaseCrashlytics.getInstance().log("TTS not ready. Queuing announcement.")
             return
         }
 
