@@ -101,6 +101,8 @@ class SettingsViewModel @Inject constructor(
 
     fun exportBackup(uri: Uri) {
         viewModelScope.launch {
+            _uiEvent.emit(UiEvent.ShowSnackbar("Exporting backup..."))
+            // 2. Perform the export
             val result = backupRepository.exportData(uri)
             // 3. Emit events based on result
             if (result.isSuccess) {
@@ -113,6 +115,7 @@ class SettingsViewModel @Inject constructor(
 
     fun importBackup(uri: Uri) {
         viewModelScope.launch {
+            _uiEvent.emit(UiEvent.ShowSnackbar("Restoring data..."))
             val result = backupRepository.importData(uri)
             if (result.isSuccess) {
                 _uiEvent.emit(UiEvent.ShowSnackbar("Data restored successfully!"))
