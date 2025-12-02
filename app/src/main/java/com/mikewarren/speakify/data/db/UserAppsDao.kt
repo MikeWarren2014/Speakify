@@ -5,11 +5,16 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserAppsDao {
     @Query("SELECT * FROM important_apps")
     suspend fun getAll(): List<UserAppModel>
+
+    // UserAppsDao.kt
+    @Query("SELECT * FROM important_apps")
+    fun getAllFlow(): Flow<List<UserAppModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(importantApp: UserAppModel)
