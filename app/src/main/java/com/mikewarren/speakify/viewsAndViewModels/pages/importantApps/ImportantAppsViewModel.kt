@@ -43,7 +43,7 @@ class ImportantAppsViewModel @Inject constructor(
         onInit()
     }
 
-    public override fun onInit() {
+    override fun onInit() {
         super.onInit()
 
         childAddAppMenuViewModel = AddAppMenuViewModel(repository,

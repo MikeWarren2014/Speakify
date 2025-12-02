@@ -73,21 +73,10 @@ class ContactListDataSource protected constructor(
     }
 
     override fun onRequestData() {
-//        context.startActivity(
-//            Intent(context, ContactsFetcherActivity::class.java)
-//                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-//            null)
-        try {
-            context.startActivity(
-                Intent(context, ContactsFetcherActivity::class.java)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                null
-            )
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to start ContactsFetcherActivity", e)
-            // Optionally emit a failure event back if the activity can't even start
-            // scope.launch { eventBus.emit(ContactEvent.FetchFailed("Could not start fetcher activity")) }
-        }
+        context.startActivity(
+            Intent(context, ContactsFetcherActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+            null)
     }
 
     override fun getRequestEvent(): ContactEvent {
