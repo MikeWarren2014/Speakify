@@ -1,4 +1,4 @@
-package com.mikewarren.speakify
+package com.mikewarren.speakify.di
 
 import dagger.Module
 import dagger.Provides

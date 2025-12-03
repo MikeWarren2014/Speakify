@@ -23,14 +23,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private val Context.userSettingsDataStore: DataStore<UserSettingsModel> by dataStore(
-    fileName = "userSettings.pb",
-    serializer = UserSettingsSerializer(),
-)
-
 
 class SettingsRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val userSettingsDataStore: DataStore<UserSettingsModel>,
 ) : SettingsRepository {
     private val _db = DbProvider.GetDb(context)
 
@@ -52,22 +48,22 @@ class SettingsRepositoryImpl @Inject constructor(
             initialValue = emptyMap()
         )
 
-    override val useDarkTheme: Flow<Boolean?> = context.userSettingsDataStore.data
+    override val useDarkTheme: Flow<Boolean?> = userSettingsDataStore.data
         .map { model: UserSettingsModel ->
             model.useDarkTheme
         }
 
-    override val selectedTTSVoice: Flow<String?> = context.userSettingsDataStore.data
+    override val selectedTTSVoice: Flow<String?> = userSettingsDataStore.data
         .map { model: UserSettingsModel ->
             model.selectedTTSVoice
         }
 
-    override val maximizeVolumeOnScreenOff: Flow<Boolean> = context.userSettingsDataStore.data
+    override val maximizeVolumeOnScreenOff: Flow<Boolean> = userSettingsDataStore.data
         .map { model: UserSettingsModel ->
             model.maximizeVolumeOnScreenOff
         }
 
-    override val minVolume: Flow<Int> = context.userSettingsDataStore
+    override val minVolume: Flow<Int> = userSettingsDataStore
         .data
         .map { model: UserSettingsModel ->
             model.minVolume
@@ -75,25 +71,25 @@ class SettingsRepositoryImpl @Inject constructor(
 
 
     override suspend fun updateUseDarkTheme(useDarkTheme: Boolean) {
-        context.userSettingsDataStore.updateData { model: UserSettingsModel ->
+        userSettingsDataStore.updateData { model: UserSettingsModel ->
             model.copy(useDarkTheme = useDarkTheme)
         }
     }
 
     override suspend fun saveSelectedVoice(voiceName: String) {
-        context.userSettingsDataStore.updateData { model: UserSettingsModel ->
+        userSettingsDataStore.updateData { model: UserSettingsModel ->
             model.copy(selectedTTSVoice = voiceName)
         }
     }
 
     override suspend fun setMaximizeVolumeOnScreenOff(shouldMaximize: Boolean) {
-        context.userSettingsDataStore.updateData { model: UserSettingsModel ->
+        userSettingsDataStore.updateData { model: UserSettingsModel ->
             model.copy(maximizeVolumeOnScreenOff = shouldMaximize)
         }
     }
 
     override suspend fun setMinVolume(volume: Int) {
-        context.userSettingsDataStore.updateData { model: UserSettingsModel ->
+        userSettingsDataStore.updateData { model: UserSettingsModel ->
             model.copy(minVolume = volume)
         }
     }
@@ -140,13 +136,13 @@ class SettingsRepositoryImpl @Inject constructor(
 
     // TODO: this shouldn't be here in SettingsRepository, but right now I can't think of a better place to put it
 
-    override val hasRequestedPhonePermissions: Flow<Boolean> = context.userSettingsDataStore.data
+    override val hasRequestedPhonePermissions: Flow<Boolean> = userSettingsDataStore.data
         .map { model: UserSettingsModel ->
             model.hasRequestedPhonePermissions
         }
 
     override suspend fun setPhonePermissionsRequested(hasRequested: Boolean) {
-        context.userSettingsDataStore.updateData { model: UserSettingsModel ->
+        userSettingsDataStore.updateData { model: UserSettingsModel ->
             model.copy(hasRequestedPhonePermissions = hasRequested)
         }
     }
