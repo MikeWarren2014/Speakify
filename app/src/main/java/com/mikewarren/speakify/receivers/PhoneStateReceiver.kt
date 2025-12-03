@@ -6,7 +6,7 @@ import android.content.Intent
 import android.telephony.TelephonyManager
 import android.util.Log
 import com.clerk.api.Clerk
-import com.mikewarren.speakify.ApplicationScope
+import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
