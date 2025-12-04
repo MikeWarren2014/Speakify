@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.concurrent.atomics.update
 
 class SignInViewModel : ViewModel() {
 
@@ -40,5 +39,9 @@ class SignInViewModel : ViewModel() {
         }
     }
 
-
+    fun onClickForgotPassword() {
+        viewModelScope.launch {
+            _uiState.update { SignInUiState.ResetPassword(SignInUiState.ResetPassword.ForgotPassword) }
+        }
+    }
 }

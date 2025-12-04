@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mikewarren.speakify.data.uiStates.SignUpUiState
+import com.mikewarren.speakify.viewsAndViewModels.widgets.PasswordField
 
 @Composable
 fun SignUpView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
@@ -138,40 +139,18 @@ fun SignUpFormView(viewModel: SignUpViewModel = viewModel(), onDone: (success: B
         keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
     )
 
-    TextField(
+    PasswordField(
         value = viewModel.model.password,
-        placeholder = { Text("Password *") },
+        placeholderText = "Password *",
         onValueChange = { password : String -> viewModel.onModelChange(viewModel.model.copy(
             password = password
         )) },
-        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         isError = viewModel.errorsDict.containsKey("password"),
-        supportingText = {
-            viewModel.errorsDict["password"]?.let { Text(it) }
+        supportingText = viewModel.errorsDict["password"],
+        onDone = {
+            viewModel.signUp(onDone)
         },
-        singleLine = true,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Password,
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                focusManager.clearFocus() // Hide the keyboard
-                viewModel.signUp(onDone)
-            }
-        ),
-        trailingIcon = {
-            val image = if (passwordVisible)
-                Icons.Filled.Visibility
-            else Icons.Filled.VisibilityOff
-
-            // Please provide localized description for accessibility services
-            val description = if (passwordVisible) "Hide password" else "Show password"
-
-            IconButton(onClick = {passwordVisible = !passwordVisible}){
-                Icon(imageVector  = image, description)
-            }
-        }
+        focusManager = focusManager,
     )
     Button(onClick = { viewModel.signUp( onDone) }) { Text("Sign Up") }
 

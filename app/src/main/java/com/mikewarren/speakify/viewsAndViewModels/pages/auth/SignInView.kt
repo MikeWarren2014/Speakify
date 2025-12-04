@@ -15,8 +15,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -32,6 +35,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mikewarren.speakify.data.uiStates.SignInUiState
+import com.mikewarren.speakify.viewsAndViewModels.widgets.PasswordField
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -41,14 +46,18 @@ fun SignInView(viewModel: SignInViewModel = viewModel()) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var passwordVisible by remember { mutableStateOf(false) }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    if (uiState is SignInUiState.ResetPassword) {
+        ForgotPasswordView((uiState as SignInUiState.ResetPassword).reason)
+        return
+    }
 
     val shake = remember { Animatable(0f) }
     val scope = rememberCoroutineScope()
 
-    scope.launch {
+    LaunchedEffect(Unit) {
         viewModel.eventFlow.collectLatest { event ->
             if (event is SignInViewModel.Event.Shake) {
                 shake.animateTo(0f) // Reset before starting
@@ -61,6 +70,10 @@ fun SignInView(viewModel: SignInViewModel = viewModel()) {
                 shake.animateTo(0f, tween(50))
             }
         }
+    }
+
+    val onSignInAction = {
+        viewModel.signIn(email, password)
     }
 
     Column(
@@ -80,31 +93,19 @@ fun SignInView(viewModel: SignInViewModel = viewModel()) {
                 imeAction = ImeAction.Next // Go to next field on "Enter"
             ),
         )
-        TextField(
+        PasswordField(
             value = password,
             onValueChange = { password = it },
-            placeholder = { Text("password") },
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = {
-                val image = if (passwordVisible)
-                    Icons.Filled.Visibility
-                else Icons.Filled.VisibilityOff
-
-                val description = if (passwordVisible) "Hide password" else "Show password"
-
-                IconButton(onClick = {passwordVisible = !passwordVisible}){
-                    Icon(imageVector  = image, description)
-                }
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done // Trigger action on "Enter"
-            ),
-            // --- Start of Keyboard Action Logic ---
-            keyboardActions = KeyboardActions(
-                onDone = { viewModel.signIn(email, password) }
-            ),
+            placeholderText = "password",
+            onDone = { onSignInAction() },
+            focusManager = LocalFocusManager.current,
         )
-        Button(onClick = { viewModel.signIn(email, password) }) { Text("Sign In") }
+        TextButton(
+            onClick = { viewModel.onClickForgotPassword() },
+            modifier = Modifier.align(Alignment.End) // Align to the right
+        ) {
+            Text("Forgot password?")
+        }
+        Button(onClick = { onSignInAction() }) { Text("Sign In") }
     }
 }
