@@ -17,4 +17,27 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="title_activity_main2">MainActivity2</string>
+
+
+    <string name="feedback_email_subject">Speakify Feedback / Feature Request</string>
+
+    <string name="feedback_email_body">
+        I am writing regarding a:\n
+        [ ] Feature Request\n
+        [ ] General Feedback / Bug Report\n
+\n
+        Description:\n
+        (Please describe your request or issue here)\n
+\n
+\n
+        --------------------------------------------------\n
+        User Account: %3$s\n
+        Device Info (Auto-filled):\n
+        Model: %1$s\n
+        Android Version: %2$s\n
+        --------------------------------------------------\n
+\n
+        P.S. If this is positive feedback, I will definitely consider rating Speakify on the Google
+        Play Store!
+    </string>
 </resources>
