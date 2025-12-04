@@ -37,6 +37,7 @@ import com.mikewarren.speakify.viewsAndViewModels.navigation.navItems
 import com.mikewarren.speakify.viewsAndViewModels.pages.AboutView
 import com.mikewarren.speakify.viewsAndViewModels.pages.DefaultView
 import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsView
+import com.mikewarren.speakify.viewsAndViewModels.pages.SupportView
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.ImportantAppsView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -110,6 +111,9 @@ fun ChildView(title: String, paddingValues: PaddingValues) {
 
     if (title == Titles.About)
         return AboutView()
+
+    if (title == Titles.Support)
+        return SupportView()
 
     if (title == Titles.Settings)
         return SettingsView()
