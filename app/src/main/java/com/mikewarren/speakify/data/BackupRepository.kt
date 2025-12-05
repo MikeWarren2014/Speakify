@@ -3,6 +3,7 @@ package com.mikewarren.speakify.data
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import androidx.datastore.core.DataStore
 import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.AppSettingsDbModel
 import com.mikewarren.speakify.data.db.NotificationSourceModel
@@ -10,6 +11,7 @@ import com.mikewarren.speakify.data.db.NotificationSourcesDao
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.db.UserAppsDao
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.first
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.io.BufferedReader
@@ -23,7 +25,8 @@ data class BackupData(
     val userApps: List<UserAppModel>,
     val appSettings: List<AppSettingsDbModel>,
     val notificationSources: List<NotificationSourceModel>,
-    // Add other entities here if you have more tables
+    // user settings
+    val userSettingsModel: UserSettingsModel,
 )
 
 @Singleton
@@ -32,6 +35,8 @@ class BackupRepository @Inject constructor(
     private val userAppsDao: UserAppsDao,
     private val appSettingsDao: AppSettingsDao,
     private val notificationSourcesDao: NotificationSourcesDao,
+
+    private val userSettingsDataStore: DataStore<UserSettingsModel>,
 ) {
 
     private val json = Json { ignoreUnknownKeys = true; prettyPrint = true }
@@ -42,11 +47,14 @@ class BackupRepository @Inject constructor(
             val apps = userAppsDao.getAll()
             val settings = appSettingsDao.getAllRaw()
             val notificationSources = notificationSourcesDao.getAll()
+            val userSettingsModel = userSettingsDataStore.data.first()
+
 
             val backupData = BackupData(
                 apps,
                 settings,
                 notificationSources,
+                userSettingsModel,
             )
 
             // 2. Serialize to JSON
@@ -86,6 +94,9 @@ class BackupRepository @Inject constructor(
             backupData.userApps.forEach { userAppsDao.insert(it) }
             backupData.appSettings.forEach { appSettingsDao.insert(it) }
             notificationSourcesDao.insertAll(backupData.notificationSources)
+
+            userSettingsDataStore.updateData { backupData.userSettingsModel }
+
 
             Result.success(true)
         } catch (e: Exception) {

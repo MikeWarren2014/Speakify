@@ -8,7 +8,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 
-abstract class BaseDataSource<Model, Event : Emittable<Model>>(protected val context: Context) : Closeable{
+abstract class BaseDataSource<Model, Event : Emittable<Model>> protected constructor(protected val context: Context) : Closeable{
     protected abstract val eventBus: BaseEventBus<Event>
     protected val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     protected val dataFlow = MutableStateFlow<List<Model>>(emptyList())

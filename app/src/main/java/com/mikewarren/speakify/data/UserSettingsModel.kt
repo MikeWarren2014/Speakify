@@ -13,4 +13,6 @@ data class UserSettingsModel(
     val appSettings: Map<String, AppSettingsModel>,
     val maximizeVolumeOnScreenOff: Boolean = false,
     val minVolume: Int = 0,
+
+    val hasRequestedPhonePermissions: Boolean = false,
 )

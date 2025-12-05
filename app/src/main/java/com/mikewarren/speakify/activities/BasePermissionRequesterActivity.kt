@@ -63,6 +63,10 @@ abstract class BasePermissionRequesterActivity<Event>(
         if (requestCode != permissionRequestCode)
             return
 
+        if (grantResults.isEmpty()) {
+            return
+        }
+
         if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
             onPermissionGranted()
             return

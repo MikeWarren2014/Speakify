@@ -5,12 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import androidx.media3.common.util.Log
-import com.mikewarren.speakify.ApplicationScope
+import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.data.SettingsRepository
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

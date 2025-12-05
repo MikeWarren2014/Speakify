@@ -17,6 +17,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -63,8 +66,38 @@ class ImportantAppsViewModel @Inject constructor(
             )
         )
 
+    }
+
+    fun handleNewAppPermissions() {
         viewModelScope.launch {
-            repository.loadApps()
+            repository.importantApps.collect { newAppsList ->
+                checkForPhoneAppsAndRequestPermissions(newAppsList)
+
+                val viewModels = newAppsList.map(onMapModelToVM())
+                _importantApps.value = viewModels
+            }
+        }
+    }
+
+
+    private suspend fun checkForPhoneAppsAndRequestPermissions(apps: List<UserAppModel>) {
+        // First, quick check: Do we even have any phone apps in the list?
+        val hasPhoneApp = apps.any { PackageNames.PhoneAppList.contains(it.packageName) }
+
+        if (!hasPhoneApp) return
+
+        // Second, check if we have already requested permissions in the past.
+        // We read this from the SettingsRepository to persist the state across app restarts/restores.
+        val alreadyRequested = settingsRepository.hasRequestedPhonePermissions.first()
+
+        if (!alreadyRequested) {
+            Log.d("ImportantAppsVM", "Found phone app in list and haven't requested permissions yet. Requesting now.")
+
+            // Trigger the request
+            phonePermissionDataSource.requestPermissions()
+
+            // Mark as requested so we never do this again
+            settingsRepository.setPhonePermissionsRequested(true)
         }
     }
 
@@ -84,7 +117,13 @@ class ImportantAppsViewModel @Inject constructor(
     }
 
     override fun getRawDataStateFlow(): StateFlow<List<UserAppModel>> {
-        return repository.importantApps
+        return importantApps.map { appListItemViewModels ->
+            appListItemViewModels.map { it.model }
+        }.stateIn(
+            scope = viewModelScope, // Ties the flow to the ViewModel's lifecycle
+            started = SharingStarted.WhileSubscribed(5000), // Stops when UI isn't listening
+            initialValue = emptyList() // You MUST provide a default starting value
+        )
     }
 
 
@@ -98,11 +137,6 @@ class ImportantAppsViewModel @Inject constructor(
         viewModelScope.launch {
             appModel.enabled = true
             repository.addImportantApp(appModel)
-
-            if (PackageNames.PhoneAppList.contains(appModel.packageName)) {
-                Log.d("ImportantAppsVM", "Phone app added. Requesting phone permissions via DataSource.")
-                phonePermissionDataSource.requestPermissions()
-            }
         }
     }
 

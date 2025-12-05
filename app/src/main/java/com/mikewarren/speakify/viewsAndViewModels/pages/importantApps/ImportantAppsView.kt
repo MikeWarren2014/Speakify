@@ -46,6 +46,7 @@ fun ImportantAppsView() {
 
     LaunchedEffect(Unit) {
         viewModel.fetchApps()
+        viewModel.handleNewAppPermissions()
     }
 
     Column(modifier = Modifier.padding(16.dp)) {

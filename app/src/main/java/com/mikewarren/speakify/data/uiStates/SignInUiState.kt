@@ -8,4 +8,11 @@ sealed interface SignInUiState {
     data class Error(val message: String) : SignInUiState
 
     data object Success : SignInUiState
+
+    data class ResetPassword(val reason: String) : SignInUiState {
+        companion object ResetPasswordReasons {
+            val ForgotPassword = "Forgot Password"
+            val PwnedCredentials = "Pwned Credentials"
+        }
+    }
 }

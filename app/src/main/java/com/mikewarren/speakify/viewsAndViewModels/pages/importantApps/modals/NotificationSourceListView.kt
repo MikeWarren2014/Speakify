@@ -75,7 +75,7 @@ fun <T : Any?> NotificationSourceListView(
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f) // A bit lighter
                     )
                     Text(
-                        text = "Add some ${viewModel.getNotificationSourcesName()} to be notified about them.",
+                        text = "Add some ${viewModel.getNotificationSourcesName()} to be notified about just them, or leave this blank to be notified about ALL ${viewModel.getNotificationSourcesName()}.",
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)

@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -29,6 +30,7 @@ class AppSettingsViewModel(
     var isOpen by mutableStateOf(false)
 
     val modelFlow : StateFlow<AppSettingsModel?> = settingsRepository.appSettings
+        .distinctUntilChanged()
         .map { appSettings: Map<String, AppSettingsModel> ->
             Log.d(
                 this.javaClass.name,
@@ -36,7 +38,8 @@ class AppSettingsViewModel(
             )
 
             return@map appSettings[appModel.packageName]
-        }.stateIn(
+        }
+        .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000L),
             initialValue = initialSettingsModel
