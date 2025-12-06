@@ -98,7 +98,6 @@ class SettingsRepositoryImpl @Inject constructor(
         val appSettingsDao = _db.appSettingsDao()
         val notificationSourcesDao = _db.notificationSourcesDao()
 
-        // create the AppSettingsWithNotificationSources object from our AppSettingsModel
         val appSettingsDbModel = AppSettingsDbModel(
             id = appSettingsModel.id,
             packageName = appSettingsModel.packageName,

@@ -6,17 +6,20 @@ import android.app.Person
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
+import android.os.Bundle
 import android.os.Parcelable
 import android.provider.ContactsContract
 import android.service.notification.StatusBarNotification
 import androidx.annotation.OptIn
+import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import com.mikewarren.speakify.data.ContactModel
+import com.mikewarren.speakify.utils.log.ITaggable
 import java.net.URLDecoder
 
-object NotificationExtractionUtils {
+object NotificationExtractionUtils: ITaggable {
     fun ExtractContactModel(context: Context,
                             sbn: StatusBarNotification,
                             possiblePersonExtras: Array<String>,
@@ -256,4 +259,45 @@ object NotificationExtractionUtils {
         return true
     }
 
+    public fun ExtractMessagesManually(extras: Bundle): List<NotificationCompat.MessagingStyle.Message> {
+        try {
+            val rawMessages = extras.getParcelableArray(Notification.EXTRA_MESSAGES)
+            if (rawMessages.isNullOrEmpty())
+                return emptyList()
+            // These come in as Bundles, and we can use the Compat class to parse them
+            return rawMessages.mapNotNull {
+                if (it is Bundle) {
+                    try {
+                        // Manual extraction since there is no public Bundle constructor
+                        val text = it.getCharSequence("text")
+                        val time = it.getLong("time")
+                        val person: androidx.core.app.Person? = if (it.containsKey("person")) {
+                            // Try to get the Person object from the bundle
+                            it.getParcelable("person") as? androidx.core.app.Person
+                                ?: it.getBundle("person")
+                                    ?.let { bundle -> androidx.core.app.Person.fromBundle(bundle) }
+                        } else if (it.containsKey("sender")) {
+                            // Fallback for older versions that used "sender" CharSequence
+                            androidx.core.app.Person.Builder()
+                                .setName(it.getCharSequence("sender")).build()
+                        } else {
+                            null
+                        }
+
+                        return@mapNotNull NotificationCompat.MessagingStyle.Message(
+                            text,
+                            time,
+                            person
+                        )
+                    } catch (e: Exception) {
+                        return@mapNotNull null
+                    }
+                }
+                return@mapNotNull null
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to manually parse EXTRA_MESSAGES", e)
+        }
+        return emptyList()
+    }
 }
