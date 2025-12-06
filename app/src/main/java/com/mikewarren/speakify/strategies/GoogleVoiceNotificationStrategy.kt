@@ -15,7 +15,7 @@ class GoogleVoiceNotificationStrategy(notification: StatusBarNotification,
                                       appSettingsModel: AppSettingsModel?,
                                       context: Context,
                                       ttsManager: TTSManager): BasePhoneNotificationStrategy(notification, appSettingsModel, context, ttsManager),
-IMessageNotificationHandler {
+IMessageNotificationHandler<GoogleVoiceNotificationStrategy.NotificationType> {
 
     enum class NotificationType(val stringValue: String) {
         IncomingSMS("incoming sms"),
@@ -26,28 +26,11 @@ IMessageNotificationHandler {
         Other("other"),
     }
 
-    fun getNotificationType() : NotificationType {
-        if (isFromSentMessage())
-            return NotificationType.OutgoingSMS
-
-        val actions = notification.notification.actions
-        if (actions == null)
-            return NotificationType.Other
-
-        val messagingStyle = getMessagingStyle()
-        for (action in actions) {
-            if (isReplyAction(action)) {
-                // Check if it has RemoteInput for inline reply (stronger signal for actual reply)
-                if (!action.remoteInputs.isNullOrEmpty()) {
-                    Log.d(this.javaClass.name, "Notification has 'Reply' action. Likely an incoming message")
-                    return NotificationType.IncomingSMS
-                }
-            }
-            if (isMarkAsReadAction(action)) {
-                Log.d(this.javaClass.name, "Notification has 'Mark as read' action. Likely an incoming message")
-                return NotificationType.IncomingSMS
-            }
-        }
+    override fun getNotificationType() : NotificationType {
+        val baseNotificationType = super.getNotificationType()
+        if ((baseNotificationType != getOtherType()) ||
+            (notification.notification.actions.isNullOrEmpty()))
+            return baseNotificationType
 
 
         val actionTitlesLowercased = this.getActionTitlesLowercased()
@@ -63,6 +46,18 @@ IMessageNotificationHandler {
 
     override fun isFromSentMessage(): Boolean {
         return getMessages().isNotEmpty() && super.isFromSentMessage()
+    }
+
+    override fun getOutgoingSMSType(): NotificationType {
+        return NotificationType.OutgoingSMS
+    }
+
+    override fun getIncomingSMSType(): NotificationType {
+        return NotificationType.IncomingSMS
+    }
+
+    override fun getOtherType(): NotificationType {
+        return NotificationType.Other
     }
 
     override fun getPossiblePersonExtras(): Array<String> {
@@ -112,6 +107,13 @@ IMessageNotificationHandler {
                 .contains(notificationType))
             return false
 
-        return super.shouldSpeakify()
+        val baseShouldSpeakify = super.shouldSpeakify()
+        if ((baseShouldSpeakify) && (notificationType == NotificationType.Other)) {
+            logNotification()
+            doLog("notificationType == ${notificationType}")
+            throw IllegalStateException("Notification type is unknown, but we are trying to speakify it?!")
+        }
+
+        return baseShouldSpeakify
     }
 }
