@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Build
 import android.service.notification.StatusBarNotification
 import android.util.Log
-import androidx.core.app.NotificationCompat
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.services.TTSManager
@@ -16,7 +15,7 @@ class SMSNotificationStrategy(notification: StatusBarNotification,
                               context: Context,
                               ttsManager: TTSManager,
 ) : BasePhoneNotificationStrategy(notification, appSettingsModel, context, ttsManager),
-IMessageNotificationHandler {
+IMessageNotificationHandler<SMSNotificationStrategy.SMSNotificationType> {
 
 
     enum class SMSNotificationType(val stringValue: String) {
@@ -25,27 +24,11 @@ IMessageNotificationHandler {
         Other("other"),
     }
 
-    fun getSMSNotificationType() : SMSNotificationType {
-        if (isFromSentMessage())
-            return SMSNotificationType.OutgoingSMS
-
-        val actions = notification.notification.actions
-        if (actions == null)
-            return SMSNotificationType.Other
-
-        for (action in actions) {
-            if (isReplyAction(action)) {
-                // Check if it has RemoteInput for inline reply (stronger signal for actual reply)
-                if (action.remoteInputs?.isNotEmpty() == true) {
-                    Log.d(this.javaClass.name, "Notification has 'Reply' action. Likely an incoming message")
-                    return SMSNotificationType.IncomingSMS
-                }
-            }
-            if (isMarkAsReadAction(action)) {
-                Log.d(this.javaClass.name, "Notification has 'Mark as read' action. Likely an incoming message")
-                return SMSNotificationType.IncomingSMS
-            }
-        }
+    override fun getNotificationType() : SMSNotificationType {
+        val baseNotificationType = super.getNotificationType()
+        if ((baseNotificationType != getOtherType()) ||
+                (notification.notification.actions.isNullOrEmpty()))
+            return baseNotificationType
 
         // --- Fallback or further checks if actions aren't definitive ---
         // If it's identified as MessagingStyle and has messages, that's also very strong.
@@ -79,7 +62,7 @@ IMessageNotificationHandler {
             return false
         }
 
-        return (getSMSNotificationType() == SMSNotificationType.IncomingSMS) && (extractedContactModel.name != IMessageNotificationHandler.SelfName)
+        return (getNotificationType() == SMSNotificationType.IncomingSMS) && (extractedContactModel.name != IMessageNotificationHandler.SelfName)
     }
 
     override fun textToSpeakify(): String {
@@ -111,14 +94,14 @@ IMessageNotificationHandler {
         val notificationExtras = notification.notification.extras
 
         val notificationTitleExtra = notificationExtras.getString(Notification.EXTRA_TITLE)
-        if ((notificationTitleExtra.isNullOrEmpty()) || (notificationTitleExtra.contains("MessagingStyle")))
-            return simplyExtractedContactModel
+        if ((notificationTitleExtra.isNullOrEmpty()) || (!notificationTitleExtra.contains("MessagingStyle")))
+            return ContactModel()
 
         val allMessages = getMessages()
 
         if (allMessages.isEmpty()) {
             Log.d("SMSNotificationStrategy", "No messages found in MessagingStyle.")
-            return simplyExtractedContactModel // Or handle as appropriate
+            return ContactModel()
         }
 
         // Now you can work with the 'allMessages' list
@@ -142,9 +125,21 @@ IMessageNotificationHandler {
 
             return ContactModel(name, phoneNumber)
         }
+        logNotification()
         throw IllegalStateException("Somehow we got the notification, and messages, but no person was found.")
     }
 
+    override fun getOutgoingSMSType(): SMSNotificationType {
+        return SMSNotificationType.OutgoingSMS
+    }
+
+    override fun getIncomingSMSType(): SMSNotificationType {
+        return SMSNotificationType.IncomingSMS
+    }
+
+    override fun getOtherType(): SMSNotificationType {
+        return SMSNotificationType.Other
+    }
 
 
 }
