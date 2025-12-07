@@ -1,7 +1,6 @@
 package com.mikewarren.speakify.utils
 
 import android.content.Context
-import android.content.pm.PackageManager
 import android.telecom.TelecomManager
 
 object PackageHelper {

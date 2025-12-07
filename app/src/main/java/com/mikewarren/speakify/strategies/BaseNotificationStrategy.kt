@@ -10,6 +10,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.services.TTSManager
+import com.mikewarren.speakify.utils.log.ITaggable
 
 
 abstract class BaseNotificationStrategy(
@@ -17,8 +18,7 @@ abstract class BaseNotificationStrategy(
     val appSettingsModel: AppSettingsModel?,
     val context: Context,
     val ttsManager: TTSManager,
-) {
-    private val TAG = this.javaClass.name
+): ITaggable {
 
     fun logNotification() {
 
@@ -66,7 +66,8 @@ abstract class BaseNotificationStrategy(
 
     suspend fun speakify() {
         val text: String = textToSpeakify()
-        doLog("Now speakifying : '${text}'")
+        // we log this normally (i.e. NOT to Firebase Crashlytics)
+        Log.d(TAG, "Now speakifying : '${text}'")
         ttsManager.speak(text, appSettingsModel?.announcerVoice?: Constants.DefaultTTSVoice)
     }
     abstract fun textToSpeakify() : String
