@@ -6,7 +6,6 @@ import android.service.notification.StatusBarNotification
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.services.TTSManager
-import com.mikewarren.speakify.utils.SearchUtils
 
 abstract class BasePhoneNotificationStrategy(notification: StatusBarNotification,
                                              appSettingsModel: AppSettingsModel?,

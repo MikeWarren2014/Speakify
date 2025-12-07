@@ -18,13 +18,15 @@ import com.mikewarren.speakify.data.db.NotificationSourcesDao
 import com.mikewarren.speakify.data.db.UserAppsDao
 import com.mikewarren.speakify.receivers.PhoneStateReceiver
 import com.mikewarren.speakify.strategies.NotificationStrategyFactory
+import com.mikewarren.speakify.utils.log.ITaggable
+import com.mikewarren.speakify.utils.log.LogUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SpeakifyNotificationListener : NotificationListenerService() {
+class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
     @Inject
     lateinit var settingsRepository: SettingsRepository
 
@@ -63,7 +65,7 @@ class SpeakifyNotificationListener : NotificationListenerService() {
         // This ensures it's always listening as long as the service process is alive.
         startListeningForNotifications()
 
-        Log.d("SpeakifyNLS", "Service created. Registering PhoneStateReceiver.")
+        Log.d(TAG, "Service created. Registering PhoneStateReceiver.")
 
         // Define the intent filter for the broadcast we want to receive.
         val intentFilter = IntentFilter(TelephonyManager.ACTION_PHONE_STATE_CHANGED)
@@ -86,7 +88,7 @@ class SpeakifyNotificationListener : NotificationListenerService() {
                 defaultVoice = selectedTTSVoice ?: Constants.DefaultTTSVoice
 
                 // This collector will run continuously in the background.
-                Log.d("SpeakifyNLS", "Ready to process notifications.")
+                Log.d(TAG, "Ready to process notifications.")
             }
         }
     }
@@ -103,7 +105,6 @@ class SpeakifyNotificationListener : NotificationListenerService() {
         }
 
         if (Clerk.user == null) {
-            Log.w("SpeakifyNLS", "onNotificationPosted: Clerk.user is null. Not reading the notification")
             return
         }
 
@@ -128,8 +129,8 @@ class SpeakifyNotificationListener : NotificationListenerService() {
         val lastSpokenTime = recentlySpokenCache.get(sbn.key)
         val currentTime = System.currentTimeMillis()
         if (lastSpokenTime != null && (currentTime - lastSpokenTime) < DEBOUNCE_TIME_MS) {
-            Log.d("SpeakifyNLS", "Notification ${sbn.key} was spoken recently. Debouncing.")
-            return // Ignore this notification
+            Log.d(TAG, "Notification ${sbn.key} was spoken recently. Debouncing.")
+            return
         }
 
         // construct a model for reading the notification
@@ -154,20 +155,20 @@ class SpeakifyNotificationListener : NotificationListenerService() {
 
         ttsManager.shutdown()
 
-        Log.d("SpeakifyNLS", "Service destroyed. Unregistering PhoneStateReceiver.")
+        Log.d(TAG, "Service destroyed. Unregistering PhoneStateReceiver.")
 
         // IMPORTANT: Always unregister the receiver to avoid memory leaks.
         try {
             unregisterReceiver(phoneStateReceiver)
         } catch (e: Exception) {
             // Can throw an exception if the receiver was never registered, so catch it.
-            Log.e("SpeakifyNLS", "Error unregistering PhoneStateReceiver", e)
+            LogUtils.LogNonFatalError(TAG, "Error unregistering PhoneStateReceiver", e)
         }
 
         try {
             unregisterReceiver(screenStateReceiver)
         } catch (e: Exception) {
-            Log.e("SpeakifyNLS", "Error unregistering ScreenStateReceiver", e)
+            LogUtils.LogNonFatalError(TAG, "Error unregistering ScreenStateReceiver", e)
         }
     }
 }

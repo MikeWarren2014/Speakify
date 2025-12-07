@@ -17,6 +17,7 @@ import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.utils.log.ITaggable
+import com.mikewarren.speakify.utils.log.LogUtils
 import java.net.URLDecoder
 
 object NotificationExtractionUtils: ITaggable {
@@ -112,7 +113,7 @@ object NotificationExtractionUtils: ITaggable {
             val contactId = getContactIdFromUri(context, contactUri)
 
             if (contactId == null) {
-                Log.e("NotificationUtils", "Could not find Contact ID for URI: $contactUri")
+                LogUtils.LogWarning(TAG, "Could not find Contact ID for URI: $contactUri")
                 return ""
             }
 
@@ -157,7 +158,7 @@ object NotificationExtractionUtils: ITaggable {
                 contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
             }
         } catch (e: Exception) {
-            Log.e("NotificationUtils", "Error getting contact ID", e)
+            LogUtils.LogNonFatalError(TAG, "Error getting contact ID", e)
         } finally {
             cursor?.close()
         }
@@ -177,7 +178,7 @@ object NotificationExtractionUtils: ITaggable {
                 displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME))
             }
         } catch (e: Exception) {
-            Log.e("NotificationUtils", "Error getting display name for phone number", e)
+            LogUtils.LogNonFatalError(TAG, "Error getting display name for phone number", e)
         } finally {
             cursor?.close()
         }
@@ -202,7 +203,7 @@ object NotificationExtractionUtils: ITaggable {
                 phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
             }
         } catch (e: Exception) {
-            Log.e("NotificationUtils", "Error getting phone number for display name: $displayName", e)
+            LogUtils.LogNonFatalError(TAG, "Error getting phone number for display name: $displayName", e)
         } finally {
             cursor?.close()
         }
@@ -234,7 +235,7 @@ object NotificationExtractionUtils: ITaggable {
                 data = cursor.getString(cursor.getColumnIndex(dataField))
             }
         } catch (e: Exception) {
-            Log.e("NotificationUtils", "Error querying for dataField: $dataField for mimeType: $mimeType", e)
+            LogUtils.LogNonFatalError(TAG, "Error querying for dataField: $dataField for mimeType: $mimeType", e)
         } finally {
             cursor?.close()
         }
@@ -297,7 +298,7 @@ object NotificationExtractionUtils: ITaggable {
                 return@mapNotNull null
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to manually parse EXTRA_MESSAGES", e)
+            LogUtils.LogNonFatalError(TAG, "Failed to manually parse EXTRA_MESSAGES", e)
         }
         return emptyList()
     }
