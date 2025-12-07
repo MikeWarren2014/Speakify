@@ -2,6 +2,8 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.clerk.api.network.model.error.ClerkErrorResponse
+import com.clerk.api.network.serialization.ClerkResult
 import com.clerk.api.network.serialization.longErrorMessageOrNull
 import com.clerk.api.network.serialization.onFailure
 import com.clerk.api.network.serialization.onSuccess
@@ -32,8 +34,13 @@ class SignInViewModel : ViewModel() {
             _uiState.update { SignInUiState.Loading }
             SignIn.create(SignIn.CreateParams.Strategy.Password(identifier = email, password = password))
                 .onSuccess { _uiState.value = SignInUiState.Success }
-                .onFailure {
-                    _uiState.value = SignInUiState.Error("Sign-in not complete. Details: ${it.longErrorMessageOrNull}")
+                .onFailure { failure: ClerkResult.Failure<ClerkErrorResponse> ->
+                    if (failure.error?.errors?.firstOrNull()?.code == "form_password_pwned") {
+                        _uiState.value = SignInUiState.ResetPassword(SignInUiState.ResetPassword.PwnedCredentials)
+                        return@onFailure
+                    }
+
+                    _uiState.value = SignInUiState.Error("Sign-in not complete. Details: ${failure.longErrorMessageOrNull}")
                     _eventFlow.emit(Event.Shake)
                 }
         }
