@@ -6,7 +6,6 @@ import android.service.notification.StatusBarNotification
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.services.TTSManager
-import com.mikewarren.speakify.utils.SearchUtils
 
 abstract class BasePhoneNotificationStrategy(notification: StatusBarNotification,
                                              appSettingsModel: AppSettingsModel?,
@@ -28,8 +27,6 @@ abstract class BasePhoneNotificationStrategy(notification: StatusBarNotification
     }
 
     override fun shouldSpeakify(): Boolean {
-        // TODO: should we check phone notification types here?
-
         if (super.shouldSpeakify())
             return true;
 

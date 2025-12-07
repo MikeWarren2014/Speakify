@@ -4,18 +4,20 @@ import android.app.Notification
 import android.content.Context
 import android.os.Build
 import android.service.notification.StatusBarNotification
-import android.util.Log
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
+import com.mikewarren.speakify.utils.log.ITaggable
+import com.mikewarren.speakify.utils.log.LogUtils
 
 class SMSNotificationStrategy(notification: StatusBarNotification,
                               appSettingsModel: AppSettingsModel?,
                               context: Context,
                               ttsManager: TTSManager,
 ) : BasePhoneNotificationStrategy(notification, appSettingsModel, context, ttsManager),
-IMessageNotificationHandler<SMSNotificationStrategy.SMSNotificationType> {
+IMessageNotificationHandler<SMSNotificationStrategy.SMSNotificationType>,
+ITaggable {
 
 
     enum class SMSNotificationType(val stringValue: String) {
@@ -37,11 +39,10 @@ IMessageNotificationHandler<SMSNotificationStrategy.SMSNotificationType> {
             // If we reached here, it means the explicit action check above might not have passed,
             // but it IS a messaging style notification with messages.
             // We already filtered for "Self" in the extractedContactModel check.
-            Log.d(this.javaClass.name, "Is MessagingStyle with messages. Likely an incoming message.")
             return SMSNotificationType.IncomingSMS
         }
 
-        Log.w(this.javaClass.name, "Notification does not appear to be a standard speakable incoming message based on actions or MessagingStyle content.")
+        LogUtils.LogWarning(TAG, "Notification does not appear to be a standard speakable incoming message based on actions or MessagingStyle content.")
 
         return SMSNotificationType.Other
     }
@@ -58,7 +59,6 @@ IMessageNotificationHandler<SMSNotificationStrategy.SMSNotificationType> {
             return false
 
         if (extractedContactModel == ContactModel()) {
-            Log.w(this.javaClass.name, "Could not extract contact model from notification.")
             return false
         }
 
@@ -100,7 +100,6 @@ IMessageNotificationHandler<SMSNotificationStrategy.SMSNotificationType> {
         val allMessages = getMessages()
 
         if (allMessages.isEmpty()) {
-            Log.d("SMSNotificationStrategy", "No messages found in MessagingStyle.")
             return ContactModel()
         }
 

@@ -5,10 +5,10 @@ import android.service.notification.StatusBarNotification
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
-import com.mikewarren.speakify.strategies.SMSNotificationStrategy.SMSNotificationType
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import com.mikewarren.speakify.utils.SearchUtils
 import com.mikewarren.speakify.utils.log.ITaggable
+import com.mikewarren.speakify.utils.log.LogUtils
 
 interface IMessageNotificationHandler<EnumType>: ITaggable {
 
@@ -30,12 +30,10 @@ interface IMessageNotificationHandler<EnumType>: ITaggable {
             if (isReplyAction(action)) {
                 // Check if it has RemoteInput for inline reply (stronger signal for actual reply)
                 if (action.remoteInputs?.isNotEmpty() == true) {
-                    Log.d(this.javaClass.name, "Notification has 'Reply' action. Likely an incoming message")
                     return getIncomingSMSType()
                 }
             }
             if (isMarkAsReadAction(action)) {
-                Log.d(this.javaClass.name, "Notification has 'Mark as read' action. Likely an incoming message")
                 return getIncomingSMSType()
             }
         }
@@ -80,15 +78,14 @@ interface IMessageNotificationHandler<EnumType>: ITaggable {
         if (messagingStyle != null)
             return messagingStyle.messages
 
-        Log.w(TAG, "Could not extract MessagingStyle, though EXTRA_MESSAGES might be present.")
+        LogUtils.LogWarning(TAG, "Could not extract MessagingStyle, though EXTRA_MESSAGES might be present.")
         val extras = notification.notification.extras
         if (extras.containsKey(Notification.EXTRA_MESSAGES)) {
             Log.d(TAG, "MessagingStyle missing, but EXTRA_MESSAGES found. Attempting manual parse.")
-            // TODO: move all this to NotificationExtractionUtils, or somewhere similar
             return NotificationExtractionUtils.ExtractMessagesManually(extras)
         }
 
-        Log.w(TAG, "Could not extract messages via Style or Extras.")
+        LogUtils.LogWarning(TAG, "Could not extract messages via Style or Extras.")
         return emptyList()
     }
 

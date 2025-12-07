@@ -2,11 +2,12 @@ package com.mikewarren.speakify.utils
 
 import android.speech.tts.TextToSpeech
 import android.speech.tts.Voice
-import android.util.Log
 import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.utils.log.ITaggable
+import com.mikewarren.speakify.utils.log.LogUtils
 import java.util.Locale
 
-object TTSUtils {
+object TTSUtils: ITaggable {
 
     fun GetRecommendedDefaultVoiceNames(ttsEngine: TextToSpeech): List<String> {
         val availableVoices = ttsEngine.voices?.toList() ?: emptyList()
@@ -15,7 +16,7 @@ object TTSUtils {
         }
 
         if (usEnglishVoices.isEmpty()) {
-            Log.w("SettingsView", "No en-US voices found, falling back to system default.")
+            LogUtils.LogWarning(TAG, "No en-US voices found, falling back to system default.")
             return emptyList() // Or return a list containing the system default voice
         }
 
@@ -38,8 +39,8 @@ object TTSUtils {
     fun SetTTSVoice(tts: TextToSpeech?, voiceName: String? = Constants.DefaultTTSVoice) {
         val voices = tts?.voices
         if (voices.isNullOrEmpty()) {
-            Log.w("TTSUtils", "TTS engine has no voices available, using system default.")
-            return // Can't set a voice if there are none. The system will use a default.
+            LogUtils.LogWarning(TAG, "TTS engine has no voices available, using system default.")
+            return
         }
 
         // Use provided voiceName or system default if null
