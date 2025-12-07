@@ -259,6 +259,7 @@ object NotificationExtractionUtils: ITaggable {
         return true
     }
 
+    @OptIn(UnstableApi::class)
     public fun ExtractMessagesManually(extras: Bundle): List<NotificationCompat.MessagingStyle.Message> {
         try {
             val rawMessages = extras.getParcelableArray(Notification.EXTRA_MESSAGES)

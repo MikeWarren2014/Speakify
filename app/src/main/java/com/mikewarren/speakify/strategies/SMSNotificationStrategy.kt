@@ -100,7 +100,6 @@ IMessageNotificationHandler<SMSNotificationStrategy.SMSNotificationType> {
         val allMessages = getMessages()
 
         if (allMessages.isEmpty()) {
-            Log.d("SMSNotificationStrategy", "No messages found in MessagingStyle.")
             return ContactModel()
         }
 

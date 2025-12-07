@@ -28,8 +28,6 @@ abstract class BasePhoneNotificationStrategy(notification: StatusBarNotification
     }
 
     override fun shouldSpeakify(): Boolean {
-        // TODO: should we check phone notification types here?
-
         if (super.shouldSpeakify())
             return true;
 

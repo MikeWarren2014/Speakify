@@ -25,7 +25,7 @@ object DataStoreModule {
     ): DataStore<UserSettingsModel> {
         return DataStoreFactory.create(
             serializer = serializer,
-            produceFile = { context.dataStoreFile("user_settings.json") } // Or .pb if using protobuf
+            produceFile = { context.dataStoreFile("user_settings.json") }
         )
     }
 }
