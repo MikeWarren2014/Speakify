@@ -46,8 +46,6 @@ fun SettingsView() {
     val isDarkThemePreferred by viewModel.useDarkTheme.collectAsState(initial = isSystemInDarkTheme())
     val shouldMaximizeVolumeOnScreenOff by viewModel.maximizeVolumeOnScreenOff.collectAsState()
 
-    var expanded by remember { mutableStateOf(false) }
-
     val minVolume by viewModel.minVolume.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
@@ -82,10 +80,11 @@ fun SettingsView() {
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-    ) {
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(paddingValues)
                 .verticalScroll(scrollState)
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
