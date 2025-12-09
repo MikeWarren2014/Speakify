@@ -21,7 +21,7 @@ class AnnouncerVoiceSectionViewModel(
     val selectedVoice: StateFlow<String> = _selectedVoice.asStateFlow()
 
     init {
-        initializeTTS()
+        observeVoicePreference()
         viewModelScope.launch {
             _selectedVoice.value = initialVoice
         }

@@ -59,7 +59,7 @@ class SettingsViewModel @Inject constructor(
 
     init {
         observeThemePreference()
-        initializeTTS()
+        observeVoicePreference()
     }
 
     override fun getTTSFlow(): Flow<String?> {
