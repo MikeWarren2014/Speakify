@@ -8,6 +8,7 @@ import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.events.PackageListDataSource
+import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.AppNameHelper
 import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AddAppMenuViewModel
@@ -28,6 +29,7 @@ import javax.inject.Inject
 class ImportantAppsViewModel @Inject constructor(
     override var repository: AppsRepository,
     private var settingsRepository: SettingsRepository,
+    private val ttsManager: TTSManager,
     private val phonePermissionDataSource: PhonePermissionDataSource,
 ) : BaseSearchableViewModel(repository) {
 
@@ -108,6 +110,7 @@ class ImportantAppsViewModel @Inject constructor(
     override fun onMapModelToVM(): (UserAppModel) -> AppListItemViewModel {
         return { model: UserAppModel -> ConfigurableAppListItemViewModel(model,
             settingsRepository,
+            ttsManager,
         )
         }
     }

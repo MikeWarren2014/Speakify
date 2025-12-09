@@ -2,6 +2,7 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 
 import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.viewsAndViewModels.widgets.BaseTTSAutoCompletableViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,10 +13,11 @@ import kotlinx.coroutines.launch
 
 class AnnouncerVoiceSectionViewModel(
     override var settingsRepository: SettingsRepository,
+    ttsManager: TTSManager,
     private var initialVoice: String,
     val onSave: (String) -> Unit,
 ) : IAppSettingsSectionViewModel,
-    BaseTTSAutoCompletableViewModel(settingsRepository) {
+    BaseTTSAutoCompletableViewModel(settingsRepository, ttsManager) {
 
     var _selectedVoice = MutableStateFlow("")
     val selectedVoice: StateFlow<String> = _selectedVoice.asStateFlow()

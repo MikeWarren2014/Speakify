@@ -4,16 +4,16 @@ import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.services.TTSManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 abstract class BaseTTSAutoCompletableViewModel(
-    protected open val settingsRepository: SettingsRepository) : BaseAutoCompletableViewModel() {
-    // Text-to-speech settings
-    @Inject
-    lateinit var ttsManager: TTSManager
+    protected open val settingsRepository: SettingsRepository,
+    val ttsManager: TTSManager,
+    ) : BaseAutoCompletableViewModel() {
 
     override fun getLabel(): String {
         return "TTS Voice"

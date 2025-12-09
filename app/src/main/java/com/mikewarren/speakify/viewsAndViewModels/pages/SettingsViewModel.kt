@@ -13,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mikewarren.speakify.data.BackupRepository
 import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
 import com.mikewarren.speakify.viewsAndViewModels.widgets.BaseTTSAutoCompletableViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,8 +29,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     settingsRepository: SettingsRepository,
+    ttsManager: TTSManager,
     private val backupRepository: BackupRepository,
-) : BaseTTSAutoCompletableViewModel(settingsRepository) {
+) : BaseTTSAutoCompletableViewModel(settingsRepository, ttsManager) {
 
     val childMainVM = MainViewModel()
     val useDarkTheme: Flow<Boolean?> = settingsRepository.useDarkTheme
