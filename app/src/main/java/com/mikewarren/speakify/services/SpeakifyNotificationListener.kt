@@ -1,14 +1,20 @@
 package com.mikewarren.speakify.services
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.telephony.TelephonyManager
 import android.util.Log
 import android.util.LruCache
+import androidx.core.app.NotificationCompat
 import com.clerk.api.Clerk
-import com.mikewarren.speakify.di.ApplicationScope
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
@@ -16,6 +22,7 @@ import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.NotificationSourcesDao
 import com.mikewarren.speakify.data.db.UserAppsDao
+import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.receivers.PhoneStateReceiver
 import com.mikewarren.speakify.strategies.NotificationStrategyFactory
 import com.mikewarren.speakify.utils.log.ITaggable
@@ -79,6 +86,61 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
             addAction(Intent.ACTION_USER_PRESENT)
         }
         registerReceiver(screenStateReceiver, screenStateFilter)
+
+    }
+
+    override fun onListenerConnected() {
+        super.onListenerConnected()
+        Log.d(TAG, "Listener connected. Attempting to start Foreground Service.")
+
+        val notification = createForegroundServiceNotification()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            try {
+                // Attempt to promote to Foreground
+                startForeground(
+                    1,
+                    notification,
+                    android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+                )
+                Log.d(TAG, "Foreground service started successfully!")
+            } catch (e: Exception) {
+                // If the system blocks us (AppOps error), we catch it here.
+                // The service is NOT dead; it just continues as a standard background NotificationListener.
+                // This typically happens only during development installs/updates.
+                Log.w(TAG, "System blocked Foreground Service start (Background Restrictions). Running as standard listener. Error: ${e.message}")
+            }
+        } else {
+            try {
+                startForeground(1, notification)
+                Log.d(TAG, "Foreground service started the old fashioned way!")
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to start legacy foreground service: ${e.message}")
+            }
+        }
+    }
+
+    private fun createForegroundServiceNotification(): Notification {
+        // Create a minimal notification for the foreground service.
+        // This notification is visible to the user and indicates your app is active.
+        val channelId = "SpeakifyForegroundServiceChannel"
+        val channelName = "Speakify Background Service"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_LOW
+            )
+            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(notificationChannel)
+        }
+
+        return NotificationCompat.Builder(this, channelId)
+            .setContentTitle("Speakify Active")
+            .setContentText("Processing notifications in the background.")
+            .setSmallIcon(R.mipmap.ic_launcher_round)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .build()
     }
 
     private fun startListeningForNotifications() {
@@ -151,8 +213,6 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
-
         ttsManager.shutdown()
 
         Log.d(TAG, "Service destroyed. Unregistering PhoneStateReceiver.")
@@ -170,5 +230,8 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         } catch (e: Exception) {
             LogUtils.LogNonFatalError(TAG, "Error unregistering ScreenStateReceiver", e)
         }
+
+        super.onDestroy()
     }
+
 }
