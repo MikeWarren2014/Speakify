@@ -9,9 +9,8 @@ fun TTSAutoCompletableView(viewModel: BaseTTSAutoCompletableViewModel,
     AutoCompletableView(
         viewModel,
         onGetDefaultValues = { viewModel ->
-            (viewModel as BaseTTSAutoCompletableViewModel).tts?.let {
-                TTSUtils.GetRecommendedDefaultVoiceNames(it)
-            }!!
+            (viewModel as BaseTTSAutoCompletableViewModel).ttsManager
+                .getRecommendedDefaultVoiceNames()
         },
         onHandleSelection = { viewModel, selection: String ->
             onHandleSelection((viewModel as BaseTTSAutoCompletableViewModel), selection)

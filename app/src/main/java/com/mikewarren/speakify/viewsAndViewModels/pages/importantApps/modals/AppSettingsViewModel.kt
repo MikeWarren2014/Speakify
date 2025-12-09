@@ -11,6 +11,7 @@ import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.UserAppModel
+import com.mikewarren.speakify.services.TTSManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +27,7 @@ class AppSettingsViewModel(
     val appModel: UserAppModel,
     val initialSettingsModel: AppSettingsModel,
     private val settingsRepository: SettingsRepository,
+    private val ttsManager: TTSManager,
 ) : ViewModel() {
     var isOpen by mutableStateOf(false)
 
@@ -66,7 +68,8 @@ class AppSettingsViewModel(
 
 
                 childAnnouncerVoiceSectionViewModel = AnnouncerVoiceSectionViewModel(
-                    settingsRepository = settingsRepository,
+                    settingsRepository,
+                    ttsManager,
                     initialVoice = model.announcerVoice ?: Constants.DefaultTTSVoice,
                     onSave = { voiceName: String ->
                         _settings.update { model: AppSettingsModel ->

@@ -5,11 +5,13 @@ import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.db.UserAppModel
+import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AppSettingsViewModel
 
 class ConfigurableAppListItemViewModel(
     override val model: UserAppModel,
     private val settingsRepository: SettingsRepository,
+    private val ttsManager: TTSManager,
 ):
     AppListItemViewModel(model){
     var childViewModel: AppSettingsViewModel = AppSettingsViewModel(
@@ -20,7 +22,8 @@ class ConfigurableAppListItemViewModel(
             announcerVoice = Constants.DefaultTTSVoice,
             notificationSources = emptyList(),
         ),
-        settingsRepository = settingsRepository,
+        settingsRepository,
+        ttsManager,
     )
 
 }

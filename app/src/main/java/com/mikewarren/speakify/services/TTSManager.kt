@@ -11,6 +11,7 @@ import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.utils.TTSUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.TimeoutCancellationException
@@ -70,6 +71,9 @@ class TTSManager @Inject constructor(
         }
     }
 
+    /**
+     * This callback is fired when the TTS engine is ready.
+     */
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             isInitialized = true
@@ -155,6 +159,28 @@ class TTSManager @Inject constructor(
             }
         }
     }
+
+    fun getRecommendedDefaultVoiceNames(): List<String> {
+        if (isInitialized)
+            return TTSUtils.GetRecommendedDefaultVoiceNames(tts!!)
+
+        return emptyList()
+    }
+
+    fun getAllVoiceNames(): List<String> {
+        if (isInitialized)
+            return tts!!.voices.map { it.name }
+
+        return emptyList()
+    }
+
+    fun setVoice(voiceName: String? = Constants.DefaultTTSVoice) {
+        if (!isInitialized)
+            return
+
+        TTSUtils.SetTTSVoice(tts!!, voiceName)
+    }
+
 
     fun stop() {
         tts?.stop()

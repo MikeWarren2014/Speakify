@@ -31,10 +31,11 @@ abstract class BaseNotificationStrategy(
         doLog("isOngoing: " + notification.isOngoing());
         doLog("PostTime: " + notification.getPostTime());
 
-        notification.getNotification().actions.forEach { action ->
-            doLog("ACTION: ${action.title}")
+        if (notification.getNotification().actions != null) {
+            notification.getNotification().actions.forEach { action ->
+                doLog("ACTION: ${action.title}")
+            }
         }
-
 
         // --- Notification Content Details (from getNotification().getExtras()) ---
         val extras: Bundle = notification.getNotification().extras
