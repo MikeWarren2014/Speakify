@@ -1,7 +1,10 @@
 package com.mikewarren.speakify.activities
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.ComponentActivity
@@ -12,6 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -64,27 +68,24 @@ class MainActivity : ComponentActivity()  {
             }
         }
 
-        // Check for permission when the activity is created
-        checkAndRequestNotificationAccess()
+        checkPermissions()
 
     }
 
-    private fun checkAndRequestNotificationAccess() {
-        // Check if the permission is already granted
-        if (!NotificationPermissionHelper(this).isNotificationServiceEnabled()) {
-            // Permission not granted, show a dialog to the user
-            AlertDialog.Builder(this)
-                .setTitle("Notification Access Required")
-                .setMessage("Speakify needs access to your notifications to read them aloud. Please enable it in the upcoming settings screen.")
-                .setPositiveButton("Go to Settings") { _, _ ->
-                    // Create an intent to open the notification listener settings
-                    val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
-                    startActivity(intent)
-                }
-                .setNegativeButton("Cancel", null)
-                .show()
+    private fun checkPermissions() {
+        val helper = NotificationPermissionHelper(this)
+        val needsListener = !helper.isNotificationServiceEnabled()
+
+        // Check Post Notifications (Android 13+)
+        val needsPost = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) &&
+                (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
+
+        if (needsListener || needsPost) {
+            val intent = Intent(this, NotificationPermissionsActivity::class.java)
+            startActivity(intent)
         }
     }
+
 
 
 }
