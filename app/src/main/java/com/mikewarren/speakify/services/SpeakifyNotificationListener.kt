@@ -22,6 +22,8 @@ import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.NotificationSourcesDao
 import com.mikewarren.speakify.data.db.UserAppsDao
+import com.mikewarren.speakify.data.events.NotificationPermissionEvent
+import com.mikewarren.speakify.data.events.NotificationPermissionEventBus
 import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.receivers.PhoneStateReceiver
 import com.mikewarren.speakify.strategies.NotificationStrategyFactory
@@ -46,8 +48,8 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
     @Inject
     lateinit var notificationSourcesDao: NotificationSourcesDao
 
+    val notificationPermissionEventBus: NotificationPermissionEventBus = NotificationPermissionEventBus.GetInstance()
 
-    // Inject the application-level CoroutineScope
     @Inject
     @ApplicationScope
     lateinit var applicationScope: CoroutineScope
@@ -72,6 +74,8 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         // This ensures it's always listening as long as the service process is alive.
         startListeningForNotifications()
 
+        listenForPermissionEvents()
+
         Log.d(TAG, "Service created. Registering PhoneStateReceiver.")
 
         // Define the intent filter for the broadcast we want to receive.
@@ -89,10 +93,36 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
 
     }
 
+    private fun listenForPermissionEvents() {
+        applicationScope.launch {
+            notificationPermissionEventBus.events().collect { event ->
+                when (event) {
+                    is NotificationPermissionEvent.PermissionGranted -> {
+                        Log.d(TAG, "Notification permission granted event received.")
+                        // Retry starting foreground service if we are already connected
+                        // We rely on the try-catch inside startForegroundService logic
+                        // to handle if we are technically in the background (though usually
+                        // granting a permission brings the app/service interaction to foreground).
+                        attemptStartForeground()
+                    }
+                    is NotificationPermissionEvent.PermissionDenied -> {
+                        Log.w(TAG, "Notification permission denied event received. Service may run with reduced priority.")
+                    }
+                    else -> { /* Ignore others */ }
+                }
+            }
+        }
+    }
+
+
     override fun onListenerConnected() {
         super.onListenerConnected()
         Log.d(TAG, "Listener connected. Attempting to start Foreground Service.")
+        attemptStartForeground()
+    }
 
+    // --- REFACTORED: Moved logic to helper method to be called from onListenerConnected OR EventBus ---
+    private fun attemptStartForeground() {
         val notification = createForegroundServiceNotification()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -110,13 +140,13 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
                 // This typically happens only during development installs/updates.
                 Log.w(TAG, "System blocked Foreground Service start (Background Restrictions). Running as standard listener. Error: ${e.message}")
             }
-        } else {
-            try {
-                startForeground(1, notification)
-                Log.d(TAG, "Foreground service started the old fashioned way!")
-            } catch (e: Exception) {
-                Log.w(TAG, "Failed to start legacy foreground service: ${e.message}")
-            }
+            return
+        }
+        try {
+            startForeground(1, notification)
+            Log.d(TAG, "Foreground service started the old fashioned way!")
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to start legacy foreground service: ${e.message}")
         }
     }
 
