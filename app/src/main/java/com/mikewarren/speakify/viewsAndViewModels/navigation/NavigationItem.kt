@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -14,6 +15,7 @@ object Titles {
     const val ImportantApps = "Important Apps"
     const val Settings = "Settings"
     const val Support = "Support & Feedback"
+    const val Legal = "Legal"
 }
 
 val navItems = listOf(
@@ -24,5 +26,6 @@ val navItems = listOf(
         icon = Icons.Default.Email, // or Icons.Default.Feedback
         route = "support"
     ),
+    NavigationItem(Titles.Legal, Icons.Default.PrivacyTip, "legal"),
     NavigationItem(Titles.About, Icons.Filled.Info, "about"),
 )
