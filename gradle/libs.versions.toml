@@ -21,8 +21,6 @@ composeBom = "2025.06.00"
 navigationRuntimeKtx = "2.9.0"
 playServicesBase = "18.7.0"
 playServicesBasement = "18.7.0"
-protobufJava = "4.30.2"
-protoc = "3.17.2"
 roomRuntime = "2.7.1"
 runner = "1.6.2"
 storage = "1.5.0"
@@ -80,8 +78,6 @@ libphonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", vers
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 play-services-base = { module = "com.google.android.gms:play-services-base", version.ref = "playServicesBase" }
 play-services-basement = { module = "com.google.android.gms:play-services-basement", version.ref = "playServicesBasement" }
-protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobufJava" }
-protoc = { module = "com.google.protobuf:protoc", version.ref = "protoc" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
 
