@@ -47,8 +47,13 @@ object NotificationExtractionUtils: ITaggable {
                 textToSearch = text.substring(0, phoneNumberMatch.second)
             }
 
-            if (!isPossibleContactName(textToSearch, phoneNumberMatch))
+            if (!isPossibleContactName(textToSearch, phoneNumberMatch)) {
+                if ((textToSearch.isNullOrEmpty()) && (contactModel.phoneNumber.isNotEmpty())) {
+                    contactModel = contactModel.copy(name = GetDisplayNameForPhoneNumber(context, contactModel.phoneNumber))
+                }
+
                 return@forEach
+            }
 
             val nameMatchResult = """(?<prefix>Call from |Work |Possible spam: )?(?<contactName>([\w@]+)([ \t][\w@]+)*)"""
                 .toRegex()
@@ -243,7 +248,7 @@ object NotificationExtractionUtils: ITaggable {
     }
 
     private fun isPossibleContactName(text: String?, existingPhoneNumberSearch: Pair<String, Int>?): Boolean {
-        if (text == null) return false
+        if (text.isNullOrEmpty()) return false
 
         if ((existingPhoneNumberSearch != null) &&
             (existingPhoneNumberSearch.second == 0) &&
