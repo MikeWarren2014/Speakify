@@ -4,6 +4,7 @@ import android.app.Notification
 import android.content.Context
 import android.os.Build
 import android.service.notification.StatusBarNotification
+import android.util.Log
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.services.TTSManager
@@ -50,7 +51,7 @@ ITaggable {
     override fun getPossiblePersonExtras(): Array<String> {
         return arrayOf(
             Notification.EXTRA_CONVERSATION_TITLE,
-
+            IMessageNotificationHandler.EXTRA_IM_PARTICIPANT_NORMALIZED_DESTINATION,
         )
     }
 

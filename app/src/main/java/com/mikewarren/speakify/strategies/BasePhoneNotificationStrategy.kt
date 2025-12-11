@@ -3,9 +3,11 @@ package com.mikewarren.speakify.strategies
 import android.app.Notification
 import android.content.Context
 import android.service.notification.StatusBarNotification
+import android.util.Log
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.services.TTSManager
+import com.mikewarren.speakify.utils.SearchUtils
 
 abstract class BasePhoneNotificationStrategy(notification: StatusBarNotification,
                                              appSettingsModel: AppSettingsModel?,
@@ -31,7 +33,7 @@ abstract class BasePhoneNotificationStrategy(notification: StatusBarNotification
             return true;
 
         // get the phone number from the status bar notification, and compare it against the app settings notification sources
-        return appSettingsModel?.notificationSources?.contains(extractedContactModel.phoneNumber) ?: false
+        return SearchUtils.IsInPhoneNumberList(appSettingsModel?.notificationSources!!, extractedContactModel.phoneNumber)
     }
 
 }

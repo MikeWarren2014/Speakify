@@ -14,6 +14,7 @@ interface IMessageNotificationHandler<EnumType>: ITaggable {
 
     companion object {
         val SelfName = "Self"
+        val EXTRA_IM_PARTICIPANT_NORMALIZED_DESTINATION = "extra_im_notification_participant_normalized_destination"
     }
 
     val notification: StatusBarNotification
@@ -36,6 +37,13 @@ interface IMessageNotificationHandler<EnumType>: ITaggable {
             if (isMarkAsReadAction(action)) {
                 return getIncomingSMSType()
             }
+        }
+        
+        // Fallback: If we have a participant destination but no clear actions, assume incoming
+        // This handles cases where actions might be hidden or different in "sensitive" mode
+        val extras = notification.notification.extras
+        if (extras.containsKey(EXTRA_IM_PARTICIPANT_NORMALIZED_DESTINATION)) {
+            return getIncomingSMSType()
         }
 
         return getOtherType()
@@ -67,9 +75,23 @@ interface IMessageNotificationHandler<EnumType>: ITaggable {
     fun getOtherType() : EnumType
 
     fun getLastSenderPerson(): Person? {
-        return getMessages()
-            .last()
-            .person
+        val messages = getMessages()
+        if (messages.isNotEmpty()) {
+            return messages.last().person
+        }
+
+        // If messages are empty (e.g., hidden content), check for the participant extra
+        val extras = notification.notification.extras
+        val participantDestination = extras.getString(EXTRA_IM_PARTICIPANT_NORMALIZED_DESTINATION)
+        if (!participantDestination.isNullOrEmpty()) {
+            Log.d(TAG, "Content hidden, but found participant destination: $participantDestination")
+            return Person.Builder()
+                .setName(participantDestination) // Use the phone number as the name
+                .setKey(participantDestination)
+                .build()
+        }
+
+        return null
     }
 
     fun getMessages(): List<NotificationCompat.MessagingStyle.Message> {

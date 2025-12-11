@@ -22,25 +22,4 @@ object PhoneNumberUtils {
         return Pair("", -1)
     }
 
-    public fun IsValidPhoneNumber(phoneNumber: String, regionCode: String = "US"): Boolean{
-        if (phoneNumber.isEmpty())
-            return false
-        if ("""/[A-Za-z]+""".toRegex()
-            .find(phoneNumber) != null)
-            return false
-        return PhoneNumberUtil.getInstance()
-            .isPossibleNumber(phoneNumber, regionCode)
-    }
-
-    public fun ToI164Format(phoneNumber: String, regionCode: String = "US"): String{
-        if (!IsValidPhoneNumber(phoneNumber, regionCode))
-            return ""
-
-        return PhoneNumberUtil.getInstance().format(PhoneNumberUtil.getInstance()
-            .parse(phoneNumber, regionCode),
-            PhoneNumberUtil.PhoneNumberFormat.E164)
-
-
-    }
-
 }
