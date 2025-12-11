@@ -61,7 +61,7 @@ fun SupportView() {
 
             val intent = Intent(Intent.ACTION_SENDTO).apply {
                 data = Uri.parse("mailto:")
-                putExtra(Intent.EXTRA_EMAIL, arrayOf("mwarren04011990@gmail.com"))
+                putExtra(Intent.EXTRA_EMAIL, arrayOf("support@speakify.it"))
                 putExtra(Intent.EXTRA_SUBJECT, emailSubject)
                 putExtra(Intent.EXTRA_TEXT, emailBody)
             }
