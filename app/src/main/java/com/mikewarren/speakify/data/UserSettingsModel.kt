@@ -15,4 +15,5 @@ data class UserSettingsModel(
     val minVolume: Int = 0,
 
     val hasRequestedPhonePermissions: Boolean = false,
+    val isCrashlyticsEnabled: Boolean = false,
 )

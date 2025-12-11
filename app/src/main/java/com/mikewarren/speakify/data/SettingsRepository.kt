@@ -16,6 +16,8 @@ interface SettingsRepository {
 
     val minVolume: Flow<Int>
 
+    val isCrashlyticsEnabled: Flow<Boolean>
+
     suspend fun updateUseDarkTheme(useDarkTheme: Boolean)
     suspend fun saveSelectedVoice(voiceName: String)
     suspend fun saveAppSettings(appSettingsModel: AppSettingsModel)
@@ -23,6 +25,8 @@ interface SettingsRepository {
     suspend fun setMaximizeVolumeOnScreenOff(shouldMaximize: Boolean)
 
     suspend fun setMinVolume(volume: Int)
+
+    suspend fun setCrashlyticsEnabled(isEnabled: Boolean)
 
     fun getContext() : Context
 

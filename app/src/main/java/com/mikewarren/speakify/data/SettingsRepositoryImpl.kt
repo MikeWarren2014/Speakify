@@ -69,6 +69,11 @@ class SettingsRepositoryImpl @Inject constructor(
             model.minVolume
         }
 
+    override val isCrashlyticsEnabled: Flow<Boolean> = userSettingsDataStore.data
+        .map { model: UserSettingsModel ->
+            model.isCrashlyticsEnabled
+        }
+
 
     override suspend fun updateUseDarkTheme(useDarkTheme: Boolean) {
         userSettingsDataStore.updateData { model: UserSettingsModel ->
@@ -91,6 +96,17 @@ class SettingsRepositoryImpl @Inject constructor(
     override suspend fun setMinVolume(volume: Int) {
         userSettingsDataStore.updateData { model: UserSettingsModel ->
             model.copy(minVolume = volume)
+        }
+    }
+
+    override suspend fun setCrashlyticsEnabled(isEnabled: Boolean) {
+        userSettingsDataStore.updateData { model: UserSettingsModel ->
+            model.copy(isCrashlyticsEnabled = isEnabled)
+        }
+        try {
+            com.google.firebase.crashlytics.FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(isEnabled)
+        } catch (e: Exception) {
+            Log.e("SettingsRepo", "Failed to update Crashlytics status", e)
         }
     }
 
