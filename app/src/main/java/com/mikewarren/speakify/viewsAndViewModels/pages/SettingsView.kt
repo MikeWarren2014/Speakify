@@ -45,6 +45,7 @@ fun SettingsView() {
     val viewModel: SettingsViewModel = hiltViewModel() // Use hiltViewModel()
     val isDarkThemePreferred by viewModel.useDarkTheme.collectAsState(initial = isSystemInDarkTheme())
     val shouldMaximizeVolumeOnScreenOff by viewModel.maximizeVolumeOnScreenOff.collectAsState()
+    val isCrashlyticsEnabled by viewModel.isCrashlyticsEnabled.collectAsStateWithLifecycle()
 
     val minVolume by viewModel.minVolume.collectAsStateWithLifecycle()
 
@@ -104,7 +105,6 @@ fun SettingsView() {
                 onCheckedChange = { viewModel.updateUseDarkTheme(it) },
             )
 
-            // Refactored TTS Voice Selection Card
             SettingsItemCard(
                 title = "TTS Voice",
                 description = "Select the voice for spoken notifications.",
@@ -129,6 +129,19 @@ fun SettingsView() {
                 description = "Boosts notification volume to maximum when the screen is locked to ensure you hear it",
                 isChecked = shouldMaximizeVolumeOnScreenOff,
                 onCheckedChange = { viewModel.setMaximizeVolumeOnScreenOff(it) },
+            )
+
+            Text(
+                text = "Privacy",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+
+            SettingsToggleCard(
+                title = "Share Usage Data",
+                description = "Help improve Speakify by sharing anonymous crash reports and usage statistics via Firebase.",
+                isChecked = isCrashlyticsEnabled,
+                onCheckedChange = { viewModel.setCrashlyticsEnabled(it) },
             )
 
             Text(
@@ -246,4 +259,4 @@ fun SettingsItemCard(title: String,
             content()
         }
     }
- }
+}

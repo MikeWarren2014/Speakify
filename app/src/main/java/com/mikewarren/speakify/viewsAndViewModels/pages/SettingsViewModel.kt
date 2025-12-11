@@ -52,6 +52,13 @@ class SettingsViewModel @Inject constructor(
             initialValue = 0 // Default to 0
         )
 
+    val isCrashlyticsEnabled: StateFlow<Boolean> = settingsRepository.isCrashlyticsEnabled
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = false // Default to false
+        )
+
     sealed class UiEvent {
         data class ShowSnackbar(val message: String) : UiEvent()
     }
@@ -98,6 +105,12 @@ class SettingsViewModel @Inject constructor(
     fun setMinVolume(volume: Int) {
         viewModelScope.launch {
             settingsRepository.setMinVolume(volume)
+        }
+    }
+
+    fun setCrashlyticsEnabled(isEnabled: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.setCrashlyticsEnabled(isEnabled)
         }
     }
 
