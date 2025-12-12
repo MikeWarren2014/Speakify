@@ -36,6 +36,9 @@ class ImportantAppsViewModel @Inject constructor(
     private val _importantApps = MutableStateFlow<List<AppListItemViewModel>>(emptyList())
     val importantApps: StateFlow<List<AppListItemViewModel>> = _importantApps.asStateFlow()
 
+    private val _selectedCount = MutableStateFlow(0)
+    val selectedCount: StateFlow<Int> = _selectedCount.asStateFlow()
+
     val packageListDataSource = PackageListDataSource(settingsRepository.getContext())
     private val _allAppsFlow : StateFlow<List<ApplicationInfo>> = packageListDataSource.observeData()
 
@@ -74,9 +77,8 @@ class ImportantAppsViewModel @Inject constructor(
         viewModelScope.launch {
             repository.importantApps.collect { newAppsList ->
                 checkForPhoneAppsAndRequestPermissions(newAppsList)
-
-                val viewModels = newAppsList.map(onMapModelToVM())
-                _importantApps.value = viewModels
+                // We do NOT update _importantApps here anymore.
+                // BaseSearchableViewModel.onInit handles it by observing getRawDataStateFlow()
             }
         }
     }
@@ -109,10 +111,17 @@ class ImportantAppsViewModel @Inject constructor(
 
     override fun onMapModelToVM(): (UserAppModel) -> AppListItemViewModel {
         return { model: UserAppModel -> ConfigurableAppListItemViewModel(model,
-            settingsRepository,
-            ttsManager,
-        )
+                settingsRepository,
+                ttsManager,
+                {
+                    updateSelectedCount()
+                },
+            )
         }
+    }
+
+    private fun updateSelectedCount() {
+        _selectedCount.value = getSelectedApps().count()
     }
 
     override fun getMainMutableStateFlow(): MutableStateFlow<List<AppListItemViewModel>> {
@@ -120,12 +129,11 @@ class ImportantAppsViewModel @Inject constructor(
     }
 
     override fun getRawDataStateFlow(): StateFlow<List<UserAppModel>> {
-        return importantApps.map { appListItemViewModels ->
-            appListItemViewModels.map { it.model }
-        }.stateIn(
-            scope = viewModelScope, // Ties the flow to the ViewModel's lifecycle
-            started = SharingStarted.WhileSubscribed(5000), // Stops when UI isn't listening
-            initialValue = emptyList() // You MUST provide a default starting value
+        // Return the repository flow directly, breaking the circular dependency
+        return repository.importantApps.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
         )
     }
 
@@ -150,6 +158,8 @@ class ImportantAppsViewModel @Inject constructor(
                 model.enabled = false
             })
             repository.removeImportantApps(selectedApps)
+            // Reset selection count after deletion
+            _selectedCount.value = 0
         }
     }
 
