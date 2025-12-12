@@ -12,8 +12,9 @@ class ConfigurableAppListItemViewModel(
     override val model: UserAppModel,
     private val settingsRepository: SettingsRepository,
     private val ttsManager: TTSManager,
+    onSelectionChanged: (() -> Unit)?,
 ):
-    AppListItemViewModel(model){
+    AppListItemViewModel(model, onSelectionChanged){
     var childViewModel: AppSettingsViewModel = AppSettingsViewModel(
         appModel = model,
         initialSettingsModel = AppSettingsModel(
