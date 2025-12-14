@@ -1,11 +1,14 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps
 
 import android.content.pm.ApplicationInfo
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.events.PackageListDataSource
+import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.AppNameHelper
 import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AddAppMenuViewModel
@@ -15,6 +18,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,10 +29,15 @@ import javax.inject.Inject
 class ImportantAppsViewModel @Inject constructor(
     override var repository: AppsRepository,
     private var settingsRepository: SettingsRepository,
+    private val ttsManager: TTSManager,
+    private val phonePermissionDataSource: PhonePermissionDataSource,
 ) : BaseSearchableViewModel(repository) {
 
     private val _importantApps = MutableStateFlow<List<AppListItemViewModel>>(emptyList())
     val importantApps: StateFlow<List<AppListItemViewModel>> = _importantApps.asStateFlow()
+
+    private val _selectedCount = MutableStateFlow(0)
+    val selectedCount: StateFlow<Int> = _selectedCount.asStateFlow()
 
     val packageListDataSource = PackageListDataSource(settingsRepository.getContext())
     private val _allAppsFlow : StateFlow<List<ApplicationInfo>> = packageListDataSource.observeData()
@@ -60,8 +71,37 @@ class ImportantAppsViewModel @Inject constructor(
             )
         )
 
+    }
+
+    fun handleNewAppPermissions() {
         viewModelScope.launch {
-            repository.loadApps()
+            repository.importantApps.collect { newAppsList ->
+                checkForPhoneAppsAndRequestPermissions(newAppsList)
+                // We do NOT update _importantApps here anymore.
+                // BaseSearchableViewModel.onInit handles it by observing getRawDataStateFlow()
+            }
+        }
+    }
+
+
+    private suspend fun checkForPhoneAppsAndRequestPermissions(apps: List<UserAppModel>) {
+        // First, quick check: Do we even have any phone apps in the list?
+        val hasPhoneApp = apps.any { PackageNames.PhoneAppList.contains(it.packageName) }
+
+        if (!hasPhoneApp) return
+
+        // Second, check if we have already requested permissions in the past.
+        // We read this from the SettingsRepository to persist the state across app restarts/restores.
+        val alreadyRequested = settingsRepository.hasRequestedPhonePermissions.first()
+
+        if (!alreadyRequested) {
+            Log.d("ImportantAppsVM", "Found phone app in list and haven't requested permissions yet. Requesting now.")
+
+            // Trigger the request
+            phonePermissionDataSource.requestPermissions()
+
+            // Mark as requested so we never do this again
+            settingsRepository.setPhonePermissionsRequested(true)
         }
     }
 
@@ -71,9 +111,17 @@ class ImportantAppsViewModel @Inject constructor(
 
     override fun onMapModelToVM(): (UserAppModel) -> AppListItemViewModel {
         return { model: UserAppModel -> ConfigurableAppListItemViewModel(model,
-            settingsRepository,
-        )
+                settingsRepository,
+                ttsManager,
+                {
+                    updateSelectedCount()
+                },
+            )
         }
+    }
+
+    private fun updateSelectedCount() {
+        _selectedCount.value = getSelectedApps().count()
     }
 
     override fun getMainMutableStateFlow(): MutableStateFlow<List<AppListItemViewModel>> {
@@ -81,7 +129,12 @@ class ImportantAppsViewModel @Inject constructor(
     }
 
     override fun getRawDataStateFlow(): StateFlow<List<UserAppModel>> {
-        return repository.importantApps
+        // Return the repository flow directly, breaking the circular dependency
+        return repository.importantApps.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
     }
 
 
@@ -105,6 +158,8 @@ class ImportantAppsViewModel @Inject constructor(
                 model.enabled = false
             })
             repository.removeImportantApps(selectedApps)
+            // Reset selection count after deletion
+            _selectedCount.value = 0
         }
     }
 

@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.mikewarren.speakify.data.AppSettingsWithNotificationSources
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AppSettingsDao {
@@ -16,9 +16,16 @@ interface AppSettingsDao {
     suspend fun getAll(): List<AppSettingsWithNotificationSources>
 
     @Transaction
+    @Query("SELECT * FROM app_settings")
+    fun getAllFlow(): Flow<List<AppSettingsWithNotificationSources>>
+
+    @Transaction
+
+    @Query("SELECT * FROM app_settings")
+    suspend fun getAllRaw(): List<AppSettingsDbModel>
+    @Transaction
     @Query("SELECT * FROM app_settings WHERE package_name = :packageName")
     suspend fun getByPackageName(packageName: String): AppSettingsWithNotificationSources?
-
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(appSettings: AppSettingsDbModel): Long

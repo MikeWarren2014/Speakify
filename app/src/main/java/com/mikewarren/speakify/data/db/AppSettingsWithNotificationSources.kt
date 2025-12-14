@@ -1,9 +1,7 @@
-package com.mikewarren.speakify.data
+package com.mikewarren.speakify.data.db
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.mikewarren.speakify.data.db.AppSettingsDbModel
-import com.mikewarren.speakify.data.db.NotificationSourceModel
 
 data class AppSettingsWithNotificationSources(
     @Embedded val appSettings: AppSettingsDbModel,

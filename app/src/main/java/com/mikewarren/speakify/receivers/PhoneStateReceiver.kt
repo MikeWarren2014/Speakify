@@ -3,27 +3,31 @@ package com.mikewarren.speakify.receivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.speech.tts.TextToSpeech
 import android.telephony.TelephonyManager
 import android.util.Log
-import com.mikewarren.speakify.ApplicationScope
+import com.clerk.api.Clerk
+import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.NotificationSourcesDao
 import com.mikewarren.speakify.data.db.UserAppsDao
 import com.mikewarren.speakify.services.PhoneCallAnnouncer
 import com.mikewarren.speakify.utils.PackageHelper
 import com.mikewarren.speakify.utils.SearchUtils
+<<<<<<< HEAD
 import com.mikewarren.speakify.utils.TTSUtils
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
+=======
+>>>>>>> 4f0276ab8e2cb662519cb6af98450881744f1cc8
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.collections.set
 
 @AndroidEntryPoint
 class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
@@ -49,28 +53,33 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
 
     private lateinit var defaultVoice: String;
 
-    private var tts: TextToSpeech? = null;
-
-
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != TelephonyManager.ACTION_PHONE_STATE_CHANGED) {
             return
         }
+
+        if (Clerk.user == null) {
+            Log.w("PhoneStateReceiver", "User is not logged in. Skipping call processing.")
+            return
+        }
+
+        val pendingResult = goAsync()
         applicationScope.launch {
-            settingsRepository.selectedTTSVoice.collect { selectedTTSVoice ->
-                // Logic to process app settings and maybe update TTS instances
-                defaultVoice = selectedTTSVoice ?: Constants.DefaultTTSVoice
+            try {
+                settingsRepository.selectedTTSVoice.first().let { selectedTTSVoice ->
+                    // Logic to process app settings and maybe update TTS instances
+                    defaultVoice = selectedTTSVoice ?: Constants.DefaultTTSVoice
 
-                // This collector will run continuously in the background.
-                Log.d("PhoneStateReceiver", "Ready to listen for calls!")
-                val importantApps = userAppsDao.getAll()
+                    // This collector will run continuously in the background.
+                    Log.d("PhoneStateReceiver", "Ready to listen for calls!")
+                    val importantApps = userAppsDao.getAll()
 
-                // TODO: we should consider when the user has designated some third-party App as a Phone app
-                if (!SearchUtils.HasAnyOverlap(Constants.PhoneAppPackageNames, importantApps.map { it.packageName }))
-                    return@collect
+                    // TODO: we should consider when the user has designated some third-party App as a Phone app
+                    if (!SearchUtils.HasAnyOverlap(Constants.PhoneAppPackageNames, importantApps.map { it.packageName }))
+                        return@collect
 
-                process(context, intent)
+                    process(context, intent)
                     if (importantApps.isEmpty()) {
                         LogUtils.LogWarning(TAG, "No important apps found. This could be a database-access issue....")
                     }
@@ -101,9 +110,8 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
             appSettingsModel = AppSettingsModel(packageName, defaultVoice)
         }
 
-        Log.d("PhoneStateReceiver", "State: $state, incoming number: $incomingNumber")
         if (state == TelephonyManager.EXTRA_STATE_RINGING) {
-            LogUtils.LogBreadcrumb("PhoneStateReceiver", "Phone is RINGING. Incoming number: $incomingNumber")
+            Log.d("PhoneStateReceiver", "Phone is RINGING. Incoming number: $incomingNumber")
             if (incomingNumber.isNullOrEmpty())
                 return
             if ((appSettingsModel.notificationSources.isNotEmpty()) && (!SearchUtils.IsInPhoneNumberList(appSettingsModel.notificationSources, incomingNumber)))

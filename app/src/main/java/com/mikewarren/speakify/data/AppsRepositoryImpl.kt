@@ -16,25 +16,15 @@ class AppsRepositoryImpl @Inject constructor(
 ): AppsRepository {
     private val userAppsDao : UserAppsDao = DbProvider.GetDb(context).userAppsDao()
 
-    private val _importantApps = MutableStateFlow<List<UserAppModel>>(emptyList())
-    override val importantApps: StateFlow<List<UserAppModel>> = _importantApps.asStateFlow()
-
-    override suspend fun loadApps() {
-        _importantApps.value = userAppsDao.getAll()
-    }
+    override val importantApps = userAppsDao.getAllFlow()
 
 
     override suspend fun addImportantApp(appModel: UserAppModel) {
         userAppsDao.insert(appModel)
-
-        _importantApps.update { it + appModel }
     }
 
     override suspend fun removeImportantApps(appsToRemove: List<UserAppModel>) {
         userAppsDao.deleteAll(*appsToRemove.toTypedArray())
-        
-        val setOfAppsToRemove: Set<UserAppModel> = appsToRemove.toSet()
-        _importantApps.update { it - setOfAppsToRemove }
 
     }
 

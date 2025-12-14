@@ -4,21 +4,22 @@ import android.app.Notification
 import android.content.Context
 import android.os.Build
 import android.service.notification.StatusBarNotification
-import android.speech.tts.TextToSpeech
 import android.util.Log
-import androidx.core.app.NotificationCompat
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
+import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
+import com.mikewarren.speakify.utils.log.ITaggable
+import com.mikewarren.speakify.utils.log.LogUtils
 
 class SMSNotificationStrategy(notification: StatusBarNotification,
-                              appSettings: AppSettingsModel?,
+                              appSettingsModel: AppSettingsModel?,
                               context: Context,
-                              tts: TextToSpeech?,
-) : BasePhoneNotificationStrategy(notification, appSettings, context, tts) {
-    companion object {
-        val SelfName = "Self"
-    }
+                              ttsManager: TTSManager,
+) : BasePhoneNotificationStrategy(notification, appSettingsModel, context, ttsManager),
+IMessageNotificationHandler<SMSNotificationStrategy.SMSNotificationType>,
+ITaggable {
+
 
     enum class SMSNotificationType(val stringValue: String) {
         IncomingSMS("incoming sms"),
@@ -26,31 +27,11 @@ class SMSNotificationStrategy(notification: StatusBarNotification,
         Other("other"),
     }
 
-    fun getSMSNotificationType() : SMSNotificationType {
-        val actions = notification.notification.actions
-        if (actions == null)
-            return SMSNotificationType.Other
-        for (action in actions) {
-            val actionTitle = action.title?.toString() ?: ""
-            if (actionTitle.equals("Reply", ignoreCase = true) ||
-                actionTitle.equals("Répondre", ignoreCase = true) ||
-                actionTitle.equals("Responder", ignoreCase = true)) {
-                // Check if it has RemoteInput for inline reply (stronger signal for actual reply)
-                if (action.remoteInputs?.isNotEmpty() == true) {
-                    Log.d(this.javaClass.name, "Notification has 'Reply' action. Likely an incoming message")
-                    return SMSNotificationType.IncomingSMS
-                }
-            }
-            if (actionTitle.equals("Mark as read", ignoreCase = true) ||
-                actionTitle.equals("Mark Read", ignoreCase = true) || // Common variation
-                actionTitle.equals("Marquer comme lu", ignoreCase = true) ||
-                actionTitle.equals("Marquer lu", ignoreCase = true) ||
-                actionTitle.equals("Marcar como leído", ignoreCase = true) ||
-                actionTitle.equals("Marcar leído", ignoreCase = true)) {
-                Log.d(this.javaClass.name, "Notification has 'Mark as read' action. Likely an incoming message")
-                return SMSNotificationType.IncomingSMS
-            }
-        }
+    override fun getNotificationType() : SMSNotificationType {
+        val baseNotificationType = super.getNotificationType()
+        if ((baseNotificationType != getOtherType()) ||
+                (notification.notification.actions.isNullOrEmpty()))
+            return baseNotificationType
 
         // --- Fallback or further checks if actions aren't definitive ---
         // If it's identified as MessagingStyle and has messages, that's also very strong.
@@ -59,11 +40,10 @@ class SMSNotificationStrategy(notification: StatusBarNotification,
             // If we reached here, it means the explicit action check above might not have passed,
             // but it IS a messaging style notification with messages.
             // We already filtered for "Self" in the extractedContactModel check.
-            Log.d(this.javaClass.name, "Is MessagingStyle with messages. Likely an incoming message.")
             return SMSNotificationType.IncomingSMS
         }
 
-        Log.w(this.javaClass.name, "Notification does not appear to be a standard speakable incoming message based on actions or MessagingStyle content.")
+        LogUtils.LogWarning(TAG, "Notification does not appear to be a standard speakable incoming message based on actions or MessagingStyle content.")
 
         return SMSNotificationType.Other
     }
@@ -71,7 +51,7 @@ class SMSNotificationStrategy(notification: StatusBarNotification,
     override fun getPossiblePersonExtras(): Array<String> {
         return arrayOf(
             Notification.EXTRA_CONVERSATION_TITLE,
-
+            IMessageNotificationHandler.EXTRA_IM_PARTICIPANT_NORMALIZED_DESTINATION,
         )
     }
 
@@ -80,11 +60,10 @@ class SMSNotificationStrategy(notification: StatusBarNotification,
             return false
 
         if (extractedContactModel == ContactModel()) {
-            Log.w(this.javaClass.name, "Could not extract contact model from notification.")
             return false
         }
 
-        return (getSMSNotificationType() == SMSNotificationType.IncomingSMS) && (extractedContactModel.name != SelfName)
+        return (getNotificationType() == SMSNotificationType.IncomingSMS) && (extractedContactModel.name != IMessageNotificationHandler.SelfName)
     }
 
     override fun textToSpeakify(): String {
@@ -116,14 +95,13 @@ class SMSNotificationStrategy(notification: StatusBarNotification,
         val notificationExtras = notification.notification.extras
 
         val notificationTitleExtra = notificationExtras.getString(Notification.EXTRA_TITLE)
-        if ((notificationTitleExtra.isNullOrEmpty()) || (notificationTitleExtra.contains("MessagingStyle")))
-            return simplyExtractedContactModel
+        if ((notificationTitleExtra.isNullOrEmpty()) || (!notificationTitleExtra.contains("MessagingStyle")))
+            return ContactModel()
 
         val allMessages = getMessages()
 
         if (allMessages.isEmpty()) {
-            Log.d("SMSNotificationStrategy", "No messages found in MessagingStyle.")
-            return simplyExtractedContactModel // Or handle as appropriate
+            return ContactModel()
         }
 
         // Now you can work with the 'allMessages' list
@@ -135,7 +113,7 @@ class SMSNotificationStrategy(notification: StatusBarNotification,
         if (senderPerson != null) {
             var name = senderPerson.name?.toString() ?: ""
             if ((!senderPerson.uri.isNullOrEmpty()) && (getMessagingStyle()!!.user.uri == senderPerson.uri))
-                name = SelfName
+                name = IMessageNotificationHandler.SelfName
 
             var phoneNumber = ""
             senderPerson.uri?.let { uriString ->
@@ -147,22 +125,21 @@ class SMSNotificationStrategy(notification: StatusBarNotification,
 
             return ContactModel(name, phoneNumber)
         }
+        logNotification()
         throw IllegalStateException("Somehow we got the notification, and messages, but no person was found.")
     }
 
-    fun getMessages(): List<NotificationCompat.MessagingStyle.Message> {
-        val messagingStyle = getMessagingStyle()
-
-        if (messagingStyle != null)
-            return messagingStyle.messages
-
-        Log.w("SMSNotificationStrategy", "Could not extract MessagingStyle, though EXTRA_MESSAGES might be present.")
-        if (notification.notification.extras.containsKey(Notification.EXTRA_MESSAGES))
-            Log.d("SMSNotificationStrategy", "EXTRA_MESSAGES is present.")
-        return emptyList()
+    override fun getOutgoingSMSType(): SMSNotificationType {
+        return SMSNotificationType.OutgoingSMS
     }
 
-    fun getMessagingStyle() : NotificationCompat.MessagingStyle? {
-        return NotificationCompat.MessagingStyle.extractMessagingStyleFromNotification(notification.notification)
+    override fun getIncomingSMSType(): SMSNotificationType {
+        return SMSNotificationType.IncomingSMS
     }
+
+    override fun getOtherType(): SMSNotificationType {
+        return SMSNotificationType.Other
+    }
+
+
 }

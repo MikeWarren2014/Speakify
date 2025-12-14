@@ -3,16 +3,34 @@ package com.mikewarren.speakify.data.events
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.core.content.ContextCompat
-import com.mikewarren.speakify.ContactsFetcherActivity
+import com.mikewarren.speakify.activities.ContactsFetcherActivity
 import com.mikewarren.speakify.data.ContactModel
-
+import com.mikewarren.speakify.utils.log.ITaggable
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
-class ContactListDataSource(context: Context): BaseDataSource<ContactModel, ContactEvent>(context) {
+class ContactListDataSource protected constructor(
+    context: Context
+): BaseDataSource<ContactModel, ContactEvent>(context.applicationContext), ITaggable {
+
+    companion object {
+        private var _instance: ContactListDataSource? = null
+        fun GetInstance(context: Context) : ContactListDataSource {
+            if (_instance == null) {
+                _instance = ContactListDataSource(context.applicationContext)
+            }
+
+            return _instance!!
+        }
+    }
     override val eventBus = ContactEventBus.GetInstance()
 
 
+    private val fetchMutex = Mutex()
+
+    @Volatile
+    private var isFetching = false
 
 
 
@@ -22,21 +40,32 @@ class ContactListDataSource(context: Context): BaseDataSource<ContactModel, Cont
             eventBus.events().collect { event: ContactEvent ->
                 when (event) {
                     is ContactEvent.DataFetched -> {
+                        isFetching = false
+                        Log.d(TAG, "Contacts fetched successfully. Count: ${event.data.size}")
                         dataFlow.emit(event.data)
                     }
 
                     is ContactEvent.FetchFailed -> {
+                        isFetching = false
                         // Handle error case
-                        Log.e(this.javaClass.name, "Error when fetching the contacts")
+                        Log.e(TAG, "Error when fetching the contacts: ${event.message}")
                     }
 
                     is ContactEvent.PermissionDenied -> {
-                        // TODO: handle the PermissionDenied case
-                        Log.w(this.javaClass.name, "Permission denied for fetching the contacts")
+                        isFetching = false
+                        Log.w(TAG, "Permission denied for fetching the contacts")
                     }
 
                     is ContactEvent.RequestData -> {
-                        onRequestData()
+                        fetchMutex.withLock {
+                            if (!isFetching) {
+                                Log.d(TAG, "RequestData event received. Launching ContactsFetcherActivity.")
+                                isFetching = true
+                                onRequestData()
+                                return@collect
+                            }
+                            Log.d(TAG, "RequestData ignored - Fetch already in progress.")
+                        }
                     }
                 }
             }
@@ -44,7 +73,7 @@ class ContactListDataSource(context: Context): BaseDataSource<ContactModel, Cont
     }
 
     override fun onRequestData() {
-        ContextCompat.startActivity(context,
+        context.startActivity(
             Intent(context, ContactsFetcherActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
             null)

@@ -1,8 +1,5 @@
 package com.mikewarren.speakify.utils
 
-import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
-
 object SearchUtils {
     fun HasAnySubstringOverlap(firstList: List<String>, secondList: List<String>): Boolean{
         return firstList.any { firstItem: String ->
@@ -28,9 +25,9 @@ object SearchUtils {
 
     fun IsInPhoneNumberList(listOfPhoneNumbers: List<String>, phoneNumber: String): Boolean {
         return listOfPhoneNumbers.any { firstPhoneNumber: String ->
-            val firstPhoneNumberIntlFormat = NotificationExtractionUtils.ExtractPhoneNumberWithLib(firstPhoneNumber)
+            val firstPhoneNumberIntlFormat = PhoneNumberUtils.ExtractPhoneNumberWithLib(firstPhoneNumber)
                 .first
-            val phoneNumberIntlFormat = NotificationExtractionUtils.ExtractPhoneNumberWithLib(phoneNumber)
+            val phoneNumberIntlFormat = PhoneNumberUtils.ExtractPhoneNumberWithLib(phoneNumber)
                 .first
 
             return@any firstPhoneNumberIntlFormat == phoneNumberIntlFormat

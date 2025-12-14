@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -70,7 +71,7 @@ fun AutoCompletableView(
         )
 
         if (filteredChoices.isNotEmpty() && viewModel.isAutocompleteDropdownOpen) {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.height(200.dp)) {
                 items(filteredChoices.take(Constants.AutoCompleteListSizeLimit)) { choice ->
                     val annotatedString = buildAnnotatedString {
                         withStyle(

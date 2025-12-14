@@ -2,20 +2,25 @@ package com.mikewarren.speakify.strategies
 
 import android.content.Context
 import android.service.notification.StatusBarNotification
-import android.speech.tts.TextToSpeech
 import com.mikewarren.speakify.data.AppSettingsModel
-import com.mikewarren.speakify.data.Constants
-import com.mikewarren.speakify.utils.AppNameHelper
+import com.mikewarren.speakify.data.constants.PackageNames
+import com.mikewarren.speakify.services.TTSManager
 
 object NotificationStrategyFactory {
     fun CreateFrom(notification: StatusBarNotification,
-                   appSettings: AppSettingsModel?,
+                   appSettingsModel: AppSettingsModel?,
                    context: Context,
-                   tts: TextToSpeech?,
+                   ttsManager: TTSManager,
     ) : BaseNotificationStrategy {
-        if (Constants.MessagingAppPackageNames.contains(notification.packageName))
-            return SMSNotificationStrategy(notification, appSettings, context, tts)
+        if (PackageNames.MessagingAppList.contains(notification.packageName))
+            return SMSNotificationStrategy(notification, appSettingsModel, context, ttsManager)
 
-        return SimpleNotificationStrategy(notification, appSettings, context, tts)
+        if (notification.packageName == PackageNames.GoogleVoice)
+            return GoogleVoiceNotificationStrategy(notification, appSettingsModel, context, ttsManager)
+
+        if (notification.packageName == PackageNames.GoogleCalendar)
+            return GoogleCalendarNotificationStrategy(notification, appSettingsModel, context, ttsManager)
+
+        return SimpleNotificationStrategy(notification, appSettingsModel, context, ttsManager)
     }
 }

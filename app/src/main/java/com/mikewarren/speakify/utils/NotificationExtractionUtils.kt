@@ -6,19 +6,21 @@ import android.app.Person
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
+import android.os.Bundle
 import android.os.Parcelable
 import android.provider.ContactsContract
 import android.service.notification.StatusBarNotification
 import androidx.annotation.OptIn
+import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
-import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
 import com.mikewarren.speakify.data.ContactModel
+import com.mikewarren.speakify.utils.log.ITaggable
+import com.mikewarren.speakify.utils.log.LogUtils
 import java.net.URLDecoder
 
-object NotificationExtractionUtils {
+object NotificationExtractionUtils: ITaggable {
     fun ExtractContactModel(context: Context,
                             sbn: StatusBarNotification,
                             possiblePersonExtras: Array<String>,
@@ -36,7 +38,7 @@ object NotificationExtractionUtils {
             if (!onPreCheckKey(sbn, text))
                 return@forEach
 
-            val phoneNumberMatch = ExtractPhoneNumberWithLib(text)
+            val phoneNumberMatch = PhoneNumberUtils.ExtractPhoneNumberWithLib(text)
             if (phoneNumberMatch.first.isNotEmpty())
                 contactModel = contactModel.copy(phoneNumber = phoneNumberMatch.first)
 
@@ -45,8 +47,13 @@ object NotificationExtractionUtils {
                 textToSearch = text.substring(0, phoneNumberMatch.second)
             }
 
-            if (!isPossibleContactName(textToSearch, phoneNumberMatch))
+            if (!isPossibleContactName(textToSearch, phoneNumberMatch)) {
+                if ((textToSearch.isNullOrEmpty()) && (contactModel.phoneNumber.isNotEmpty())) {
+                    contactModel = contactModel.copy(name = GetDisplayNameForPhoneNumber(context, contactModel.phoneNumber))
+                }
+
                 return@forEach
+            }
 
             val nameMatchResult = """(?<prefix>Call from |Work |Possible spam: )?(?<contactName>([\w@]+)([ \t][\w@]+)*)"""
                 .toRegex()
@@ -88,7 +95,7 @@ object NotificationExtractionUtils {
         // If we got a name but couldn't find a phone number (because URI was null),
         // we now try to find the phone number using the name.
         if (phoneNumber.isEmpty() && name.isNotEmpty()) {
-            phoneNumber = getPhoneNumberForDisplayName(context, name)
+            phoneNumber = GetPhoneNumberForDisplayName(context, name)
         }
 
         return ContactModel(
@@ -111,7 +118,7 @@ object NotificationExtractionUtils {
             val contactId = getContactIdFromUri(context, contactUri)
 
             if (contactId == null) {
-                Log.e("NotificationUtils", "Could not find Contact ID for URI: $contactUri")
+                LogUtils.LogWarning(TAG, "Could not find Contact ID for URI: $contactUri")
                 return ""
             }
 
@@ -156,7 +163,7 @@ object NotificationExtractionUtils {
                 contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
             }
         } catch (e: Exception) {
-            Log.e("NotificationUtils", "Error getting contact ID", e)
+            LogUtils.LogNonFatalError(TAG, "Error getting contact ID", e)
         } finally {
             cursor?.close()
         }
@@ -176,7 +183,7 @@ object NotificationExtractionUtils {
                 displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME))
             }
         } catch (e: Exception) {
-            Log.e("NotificationUtils", "Error getting display name for phone number", e)
+            LogUtils.LogNonFatalError(TAG, "Error getting display name for phone number", e)
         } finally {
             cursor?.close()
         }
@@ -185,7 +192,7 @@ object NotificationExtractionUtils {
 
     @OptIn(UnstableApi::class)
     @SuppressLint("Range")
-    private fun getPhoneNumberForDisplayName(context: Context, displayName: String): String {
+    public fun GetPhoneNumberForDisplayName(context: Context, displayName: String): String {
         val uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
         // Search in the Data table where the display name matches and the entry is a phone number.
         val selection = "${ContactsContract.Data.DISPLAY_NAME_PRIMARY} = ? AND ${ContactsContract.Data.MIMETYPE} = ?"
@@ -201,7 +208,7 @@ object NotificationExtractionUtils {
                 phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
             }
         } catch (e: Exception) {
-            Log.e("NotificationUtils", "Error getting phone number for display name: $displayName", e)
+            LogUtils.LogNonFatalError(TAG, "Error getting phone number for display name: $displayName", e)
         } finally {
             cursor?.close()
         }
@@ -233,31 +240,15 @@ object NotificationExtractionUtils {
                 data = cursor.getString(cursor.getColumnIndex(dataField))
             }
         } catch (e: Exception) {
-            Log.e("NotificationUtils", "Error querying for dataField: $dataField for mimeType: $mimeType", e)
+            LogUtils.LogNonFatalError(TAG, "Error querying for dataField: $dataField for mimeType: $mimeType", e)
         } finally {
             cursor?.close()
         }
         return data ?: ""
     }
 
-    public fun ExtractPhoneNumberWithLib(text: String?, regionCode: String = "US"): Pair<String, Int> {
-        if (text == null) return Pair("", -1)
-        val numbersIterator = PhoneNumberUtil.getInstance().findNumbers(text, regionCode)
-            .iterator();
-        if (numbersIterator.hasNext()) {
-            val phoneNumberMatch = numbersIterator.next()
-            val number: Phonenumber.PhoneNumber = phoneNumberMatch.number()
-            return Pair(
-                PhoneNumberUtil.getInstance()
-                    .format(number, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL),
-                phoneNumberMatch.start(),
-            )
-        }
-        return Pair("", -1)
-    }
-
     private fun isPossibleContactName(text: String?, existingPhoneNumberSearch: Pair<String, Int>?): Boolean {
-        if (text == null) return false
+        if (text.isNullOrEmpty()) return false
 
         if ((existingPhoneNumberSearch != null) &&
             (existingPhoneNumberSearch.second == 0) &&
@@ -274,4 +265,46 @@ object NotificationExtractionUtils {
         return true
     }
 
+    @OptIn(UnstableApi::class)
+    public fun ExtractMessagesManually(extras: Bundle): List<NotificationCompat.MessagingStyle.Message> {
+        try {
+            val rawMessages = extras.getParcelableArray(Notification.EXTRA_MESSAGES)
+            if (rawMessages.isNullOrEmpty())
+                return emptyList()
+            // These come in as Bundles, and we can use the Compat class to parse them
+            return rawMessages.mapNotNull {
+                if (it is Bundle) {
+                    try {
+                        // Manual extraction since there is no public Bundle constructor
+                        val text = it.getCharSequence("text")
+                        val time = it.getLong("time")
+                        val person: androidx.core.app.Person? = if (it.containsKey("person")) {
+                            // Try to get the Person object from the bundle
+                            it.getParcelable("person") as? androidx.core.app.Person
+                                ?: it.getBundle("person")
+                                    ?.let { bundle -> androidx.core.app.Person.fromBundle(bundle) }
+                        } else if (it.containsKey("sender")) {
+                            // Fallback for older versions that used "sender" CharSequence
+                            androidx.core.app.Person.Builder()
+                                .setName(it.getCharSequence("sender")).build()
+                        } else {
+                            null
+                        }
+
+                        return@mapNotNull NotificationCompat.MessagingStyle.Message(
+                            text,
+                            time,
+                            person
+                        )
+                    } catch (e: Exception) {
+                        return@mapNotNull null
+                    }
+                }
+                return@mapNotNull null
+            }
+        } catch (e: Exception) {
+            LogUtils.LogNonFatalError(TAG, "Failed to manually parse EXTRA_MESSAGES", e)
+        }
+        return emptyList()
+    }
 }

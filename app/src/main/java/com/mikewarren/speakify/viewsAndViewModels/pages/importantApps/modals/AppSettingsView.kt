@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.data.constants.PackageNames
 
 @Composable
 fun AppSettingsView(
@@ -73,8 +73,9 @@ fun AppSettingsView(
 
 @Composable
 fun GetChildListView(viewModel: AppSettingsViewModel) {
-    if ((viewModel.getPackageName() in Constants.PhoneAppPackageNames) ||
-        (viewModel.getPackageName() in Constants.MessagingAppPackageNames)) {
+    if ((viewModel.getPackageName() in PackageNames.PhoneAppList) ||
+        (viewModel.getPackageName() in PackageNames.MessagingAppList) ||
+        (viewModel.getPackageName() == PackageNames.GoogleVoice)) {
         return ImportantContactsListView(viewModel.childNotificationListViewModel as BaseImportantContactsListViewModel)
     }
 

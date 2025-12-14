@@ -28,11 +28,11 @@ class PhoneCallAnnouncer @Inject constructor(
     private val announcerScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     private var announcementJob: Job? = null
 
-    private var startTimestamp: Timestamp = Timestamp.now()
-
     @OptIn(UnstableApi::class)
     fun announceCall(phoneNumber: String) {
-        // Here, you'd resolve the contact name from the phone number
+        // Stop any previous announcement loops
+        stopAnnouncing()
+
         val contactName = NotificationExtractionUtils.GetDisplayNameForPhoneNumber(context, phoneNumber)
 
         val announcement = if (contactName.isNotEmpty()) {
@@ -58,7 +58,11 @@ class PhoneCallAnnouncer @Inject constructor(
 
     @OptIn(UnstableApi::class)
     fun stopAnnouncing() {
-        Log.d("PhoneCallAnnouncer", "STOPPING announcement.")
+        if (announcementJob?.isActive == true) {
+            Log.d("PhoneCallAnnouncer", "STOPPING announcement loop.")
+            announcementJob?.cancel()
+        }
+        announcementJob = null
         ttsManager.stop()
     }
 }

@@ -8,10 +8,8 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Build
-import android.text.TextUtils
-import androidx.core.app.NotificationManagerCompat
-
 import android.provider.Settings
+import android.text.TextUtils
 
 
 class NotificationPermissionHelper(private val context: Context) {

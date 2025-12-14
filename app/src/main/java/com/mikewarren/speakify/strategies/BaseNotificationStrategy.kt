@@ -5,28 +5,37 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.service.notification.StatusBarNotification
-import android.speech.tts.TextToSpeech
 import android.util.Log
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mikewarren.speakify.data.AppSettingsModel
+import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.services.TTSManager
+import com.mikewarren.speakify.utils.log.ITaggable
 
 
 abstract class BaseNotificationStrategy(
     val notification: StatusBarNotification,
-    val appSettings: AppSettingsModel?,
+    val appSettingsModel: AppSettingsModel?,
     val context: Context,
-    val tts: TextToSpeech?,
-) {
+    val ttsManager: TTSManager,
+): ITaggable {
 
     fun logNotification() {
-        Log.d(this.javaClass.name, "================================================");
-        Log.d(this.javaClass.name, "Notification POSTED from : ${notification.getPackageName()}")
+
+        doLog("================================================");
+        doLog("Notification POSTED from : ${notification.getPackageName()}")
 
         // --- Core SBN Details ---
-        Log.d(this.javaClass.name, "ID: " + notification.getId());
-        Log.d(this.javaClass.name, "Tag: " + notification.getTag());
-        Log.d(this.javaClass.name, "isOngoing: " + notification.isOngoing());
-        Log.d(this.javaClass.name, "PostTime: " + notification.getPostTime());
+        doLog("ID: " + notification.getId());
+        doLog("Tag: " + notification.getTag());
+        doLog("isOngoing: " + notification.isOngoing());
+        doLog("PostTime: " + notification.getPostTime());
 
+        if (notification.getNotification().actions != null) {
+            notification.getNotification().actions.forEach { action ->
+                doLog("ACTION: ${action.title}")
+            }
+        }
 
         // --- Notification Content Details (from getNotification().getExtras()) ---
         val extras: Bundle = notification.getNotification().extras
@@ -35,36 +44,42 @@ abstract class BaseNotificationStrategy(
         val text = extras.getCharSequence(Notification.EXTRA_TEXT)
         val subText = extras.getCharSequence(Notification.EXTRA_SUB_TEXT)
 
-        Log.d(this.javaClass.name, "TITLE: ${title ?: "null"}")
-        Log.d(this.javaClass.name, "TEXT: ${text ?: "null"}")
-        Log.d(this.javaClass.name, "SUB_TEXT: ${subText ?: "null"}")
+        doLog("TITLE: ${title ?: "null"}")
+        doLog("TEXT: ${text ?: "null"}")
+        doLog("SUB_TEXT: ${subText ?: "null"}")
 
 
         // --- Log all Extras for full visibility (Crucial for rich notifications like Messenger/Messages) ---
-        Log.d(this.javaClass.name, "--- All Extras Key/Values ---")
+        doLog("--- All Extras Key/Values ---")
         for (key in extras.keySet()) {
-            Log.d(this.javaClass.name, "  [${key}]: ${extras.get(key)}")
+            doLog("  [${key}]: ${extras.get(key)}")
         }
 
 
         // --- Other Key Notification Fields ---
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Log.d(this.javaClass.name, "Channel ID: ${notification.getNotification().getChannelId()}")
+            doLog("Channel ID: ${notification.getNotification().getChannelId()}")
         }
 
-        Log.d(this.javaClass.name, "================================================")
+        doLog("================================================")
     }
 
-    fun speakify() {
+    protected fun doLog(message: String) {
+        FirebaseCrashlytics.getInstance().log(message)
+        Log.d(TAG, message)
+    }
+
+    suspend fun speakify() {
         val text: String = textToSpeakify()
-        Log.d(this.javaClass.name, "Now speakifying : '${text}'")
-        tts?.speak(text, TextToSpeech.QUEUE_ADD, null, null)
+        // we log this normally (i.e. NOT to Firebase Crashlytics)
+        Log.d(TAG, "Now speakifying : '${text}'")
+        ttsManager.speak(text, appSettingsModel?.announcerVoice?: Constants.DefaultTTSVoice)
     }
-
     abstract fun textToSpeakify() : String
+
     open fun shouldSpeakify() : Boolean {
         // if the app settings is null or notification sources is empty, we should speakify
-        return (appSettings == null || appSettings.notificationSources.isEmpty())
+        return (appSettingsModel == null || appSettingsModel.notificationSources.isEmpty())
     }
 
 }

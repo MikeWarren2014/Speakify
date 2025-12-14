@@ -1,11 +1,12 @@
-package com.mikewarren.speakify
+package com.mikewarren.speakify.di
 
-import android.app.Application
 import android.content.Context
+import androidx.datastore.core.DataStore
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.AppsRepositoryImpl
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.SettingsRepositoryImpl
+import com.mikewarren.speakify.data.UserSettingsModel
 import com.mikewarren.speakify.data.db.AppDatabase
 import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.DbProvider
@@ -40,13 +41,15 @@ abstract class AppModule {
         @Provides
         @Singleton
         fun provideSettingsRepositoryImpl(
-            @ApplicationContext context: Context
-        ): SettingsRepositoryImpl = SettingsRepositoryImpl(context)
+            @ApplicationContext context: Context,
+            userSettingsDataStore: DataStore<UserSettingsModel>,
+        ): SettingsRepositoryImpl = SettingsRepositoryImpl(context, userSettingsDataStore)
 
         @Provides
         @Singleton
         fun provideAppsRepository(
-            @ApplicationContext context: Context
+            @ApplicationContext context: Context,
+            
         ): AppsRepositoryImpl = AppsRepositoryImpl(context)
 
         @Provides

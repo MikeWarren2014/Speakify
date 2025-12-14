@@ -3,7 +3,9 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.events.ContactListDataSource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
 class BaseImportantContactsListViewModel(
     override var settingsRepository: SettingsRepository,
@@ -13,7 +15,8 @@ class BaseImportantContactsListViewModel(
     notificationSourceList,
     onSave,
 ) {
-    protected val dataSource = ContactListDataSource(settingsRepository.getContext())
+
+    protected val dataSource = ContactListDataSource.GetInstance(settingsRepository.getContext())
 
     override val allData: StateFlow<List<ContactModel>> = dataSource.observeData()
 

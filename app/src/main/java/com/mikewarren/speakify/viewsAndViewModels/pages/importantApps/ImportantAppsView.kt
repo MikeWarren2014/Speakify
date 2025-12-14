@@ -40,12 +40,14 @@ fun ImportantAppsView() {
     val viewModel: ImportantAppsViewModel = hiltViewModel()
     val appVMs by viewModel.filteredApps.collectAsState()
     val searchText by viewModel.searchText.collectAsState()
-    val selectedApps = remember { mutableStateListOf<UserAppModel>() }
+    val selectedCount by viewModel.selectedCount.collectAsState() // Observe selection count
+    
     var isAddMenuExpanded by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.fetchApps()
+        viewModel.handleNewAppPermissions()
     }
 
     Column(modifier = Modifier.padding(16.dp)) {
@@ -97,9 +99,7 @@ fun ImportantAppsView() {
         }
         Spacer(Modifier.height(16.dp))
 
-        // Add/Delete Button
-        val selectedCount = viewModel.getSelectedApps().count()
-
+        // Add/Delete Button (Use observed selectedCount)
         var buttonText: String = "Add App"
         var colors = ButtonDefaults.buttonColors()
         if (selectedCount > 0) {

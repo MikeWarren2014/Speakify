@@ -1,0 +1,91 @@
+package com.mikewarren.speakify.activities
+
+import android.Manifest
+import android.app.AlertDialog
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Bundle
+import android.provider.Settings
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import com.mikewarren.speakify.data.uiStates.MainUiState
+import com.mikewarren.speakify.ui.theme.MyApplicationTheme
+import com.mikewarren.speakify.utils.NotificationPermissionHelper
+import com.mikewarren.speakify.viewsAndViewModels.AppView
+import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+
+@AndroidEntryPoint
+class MainActivity : ComponentActivity()  {
+
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
+        val viewModel: SettingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
+
+
+        lifecycleScope.launch {
+            viewModel.useDarkTheme.collectLatest { useDarkTheme ->
+                setContent {
+                    val state by viewModel.childMainVM.uiState.collectAsStateWithLifecycle()
+
+                    if (state is MainUiState.SignedOut) {
+                        LaunchedEffect(state) {
+                            val intent = Intent(this@MainActivity, LoginActivity::class.java).apply {
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            }
+                            startActivity(intent)
+                        }
+                    }
+
+                    MyApplicationTheme(darkTheme = useDarkTheme == true, content = {
+                        when (state) {
+                            is MainUiState.Loading -> CircularProgressIndicator()
+                            is MainUiState.SignedOut -> Text("Successfully signed out. Redirecting back to login page...")
+                            is MainUiState.SignedIn -> {
+                                AppView()
+                            }
+                        }
+
+                    })
+                }
+            }
+        }
+
+        checkPermissions()
+
+    }
+
+    private fun checkPermissions() {
+        val helper = NotificationPermissionHelper(this)
+        val needsListener = !helper.isNotificationServiceEnabled()
+
+        // Check Post Notifications (Android 13+)
+        val needsPost = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) &&
+                (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
+
+        if (needsListener || needsPost) {
+            val intent = Intent(this, NotificationPermissionsActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+
+
+}

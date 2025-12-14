@@ -16,6 +16,8 @@ class UserSettingsSerializer @Inject constructor() : Serializer<UserSettingsMode
         useDarkTheme = true,
         appSettings = emptyMap(),
         selectedTTSVoice = "",
+        maximizeVolumeOnScreenOff = false,
+        minVolume = 0,
     )
 
     override suspend fun readFrom(input: InputStream): UserSettingsModel {
@@ -25,7 +27,8 @@ class UserSettingsSerializer @Inject constructor() : Serializer<UserSettingsMode
     override suspend fun writeTo(t: UserSettingsModel, output: OutputStream) {
         withContext(Dispatchers.IO) {
             output.write(
-                Json.encodeToString(UserSettingsModel.serializer(), t)
+                Json
+                    .encodeToString(UserSettingsModel.serializer(), t)
                     .encodeToByteArray()
             )
         }
