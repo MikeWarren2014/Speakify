@@ -4,8 +4,19 @@ import android.content.Context
 import androidx.annotation.OptIn
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
+import com.google.firebase.Timestamp
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
+import com.mikewarren.speakify.utils.log.LogUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,6 +25,11 @@ class PhoneCallAnnouncer @Inject constructor(
     @ApplicationContext private val context: Context,
     private val ttsManager: TTSManager
 ) {
+    private val announcerScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    private var announcementJob: Job? = null
+
+    private var startTimestamp: Timestamp = Timestamp.now()
+
     @OptIn(UnstableApi::class)
     fun announceCall(phoneNumber: String) {
         // Here, you'd resolve the contact name from the phone number
@@ -25,8 +41,19 @@ class PhoneCallAnnouncer @Inject constructor(
             "Incoming call from ${phoneNumber.toCharArray().joinToString(" ")}" // Spells out the number
         }
 
-        Log.d("PhoneCallAnnouncer", "SPEAKING: $announcement")
-        ttsManager.speak(announcement)
+        announcementJob = announcerScope.launch {
+            try {
+                withTimeout(45000L) { // 45 seconds timeout
+                    while (isActive) {
+                        Log.d("PhoneCallAnnouncer", "SPEAKING: $announcement")
+                        ttsManager.speak(announcement) // This should be a suspend function
+                        delay(500) // Wait half a second after speech finishes
+                    }
+                }
+            } catch (e: TimeoutCancellationException) {
+                LogUtils.LogNonFatalError("PhoneCallAnnouncer", "Phone call announcement exceeded 45 seconds limit!", e)
+            }
+        }
     }
 
     @OptIn(UnstableApi::class)

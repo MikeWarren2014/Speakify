@@ -17,6 +17,8 @@ import com.mikewarren.speakify.services.PhoneCallAnnouncer
 import com.mikewarren.speakify.utils.PackageHelper
 import com.mikewarren.speakify.utils.SearchUtils
 import com.mikewarren.speakify.utils.TTSUtils
+import com.mikewarren.speakify.utils.log.ITaggable
+import com.mikewarren.speakify.utils.log.LogUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -24,7 +26,7 @@ import javax.inject.Inject
 import kotlin.collections.set
 
 @AndroidEntryPoint
-class PhoneStateReceiver : BroadcastReceiver() {
+class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
     @Inject
     lateinit var settingsRepository: SettingsRepository
 
@@ -69,6 +71,20 @@ class PhoneStateReceiver : BroadcastReceiver() {
                     return@collect
 
                 process(context, intent)
+                    if (importantApps.isEmpty()) {
+                        LogUtils.LogWarning(TAG, "No important apps found. This could be a database-access issue....")
+                    }
+
+                    // TODO: we should consider when the user has designated some third-party App as a Phone app
+                    if (SearchUtils.HasAnyOverlap(
+                            PackageNames.PhoneAppList,
+                            importantApps.map { it.packageName })
+                    ) {
+                        process(context, intent)
+                    }
+                }
+            } finally {
+                pendingResult.finish()
             }
         }
     }
@@ -86,25 +102,23 @@ class PhoneStateReceiver : BroadcastReceiver() {
         }
 
         Log.d("PhoneStateReceiver", "State: $state, incoming number: $incomingNumber")
-
-        when (state) {
-            TelephonyManager.EXTRA_STATE_RINGING -> {
-                Log.d("PhoneStateReceiver", "Phone is RINGING. Incoming number: $incomingNumber")
-                if (incomingNumber.isNullOrEmpty())
-                    return
-                if ((appSettingsModel.notificationSources.isNotEmpty()) && (!SearchUtils.IsInPhoneNumberList(appSettingsModel.notificationSources, incomingNumber)))
-                    return
-                announcer.announceCall(incomingNumber)
-            }
-            TelephonyManager.EXTRA_STATE_OFFHOOK -> {
-                Log.d("PhoneStateReceiver", "Phone is OFFHOOK (call answered or dialing out).")
-                announcer.stopAnnouncing()
-            }
-            TelephonyManager.EXTRA_STATE_IDLE -> {
-                Log.d("PhoneStateReceiver", "Phone is IDLE (call ended or hung up).")
-                announcer.stopAnnouncing()
-            }
+        if (state == TelephonyManager.EXTRA_STATE_RINGING) {
+            LogUtils.LogBreadcrumb("PhoneStateReceiver", "Phone is RINGING. Incoming number: $incomingNumber")
+            if (incomingNumber.isNullOrEmpty())
+                return
+            if ((appSettingsModel.notificationSources.isNotEmpty()) && (!SearchUtils.IsInPhoneNumberList(appSettingsModel.notificationSources, incomingNumber)))
+                return
+            announcer.announceCall(incomingNumber)
+            return
         }
+        if (state == TelephonyManager.EXTRA_STATE_OFFHOOK) {
+            LogUtils.LogBreadcrumb("PhoneStateReceiver", "Phone is OFFHOOK (call answered or dialing out).")
+        }
+        if (state == TelephonyManager.EXTRA_STATE_IDLE) {
+            LogUtils.LogBreadcrumb("PhoneStateReceiver", "Phone is IDLE (call ended or hung up).")
+        }
+        announcer.stopAnnouncing()
+
         
     }
 
