@@ -17,6 +17,9 @@ import com.mikewarren.speakify.data.db.UserAppsDao
 import com.mikewarren.speakify.services.PhoneCallAnnouncer
 import com.mikewarren.speakify.utils.PackageHelper
 import com.mikewarren.speakify.utils.SearchUtils
+import com.mikewarren.speakify.utils.TTSUtils
+import com.mikewarren.speakify.utils.log.ITaggable
+import com.mikewarren.speakify.utils.log.LogUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
@@ -24,7 +27,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PhoneStateReceiver : BroadcastReceiver() {
+class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
     @Inject
     lateinit var settingsRepository: SettingsRepository
 
@@ -69,6 +72,12 @@ class PhoneStateReceiver : BroadcastReceiver() {
                     Log.d("PhoneStateReceiver", "Ready to listen for calls!")
                     val importantApps = userAppsDao.getAll()
 
+                    if (importantApps.isEmpty()) {
+                        LogUtils.LogWarning(TAG, "No important apps found. This could be a database-access issue....")
+                        announcer.stopAnnouncing()
+                        return@let
+                    }
+
                     // TODO: we should consider when the user has designated some third-party App as a Phone app
                     if (SearchUtils.HasAnyOverlap(
                             PackageNames.PhoneAppList,
@@ -105,13 +114,14 @@ class PhoneStateReceiver : BroadcastReceiver() {
             return
         }
         if (state == TelephonyManager.EXTRA_STATE_OFFHOOK) {
-            Log.d("PhoneStateReceiver", "Phone is OFFHOOK (call answered or dialing out).")
+            LogUtils.LogBreadcrumb("PhoneStateReceiver", "Phone is OFFHOOK (call answered or dialing out).")
         }
         if (state == TelephonyManager.EXTRA_STATE_IDLE) {
-            Log.d("PhoneStateReceiver", "Phone is IDLE (call ended or hung up).")
+            LogUtils.LogBreadcrumb("PhoneStateReceiver", "Phone is IDLE (call ended or hung up).")
         }
         announcer.stopAnnouncing()
 
+        
     }
 
 }

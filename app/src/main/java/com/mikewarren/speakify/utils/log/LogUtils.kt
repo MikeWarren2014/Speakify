@@ -15,4 +15,9 @@ object LogUtils {
         FirebaseCrashlytics.getInstance().recordException(error)
 
     }
+
+    fun LogBreadcrumb(tag: String, message: String) {
+        Log.d(tag, message)
+        FirebaseCrashlytics.getInstance().log(message)
+    }
 }

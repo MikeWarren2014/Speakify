@@ -4,15 +4,18 @@ import android.content.Context
 import androidx.annotation.OptIn
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
+import com.mikewarren.speakify.utils.log.LogUtils
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -38,10 +41,16 @@ class PhoneCallAnnouncer @Inject constructor(
         }
 
         announcementJob = announcerScope.launch {
-            while (isActive) {
-                Log.d("PhoneCallAnnouncer", "SPEAKING: $announcement")
-                ttsManager.speak(announcement) // This should be a suspend function
-                delay(500) // Wait half a second after speech finishes
+            try {
+                withTimeout(45000L) { // 45 seconds timeout
+                    while (isActive) {
+                        Log.d("PhoneCallAnnouncer", "SPEAKING: $announcement")
+                        ttsManager.speak(announcement) // This should be a suspend function
+                        delay(500) // Wait half a second after speech finishes
+                    }
+                }
+            } catch (e: TimeoutCancellationException) {
+                LogUtils.LogNonFatalError("PhoneCallAnnouncer", "Phone call announcement exceeded 45 seconds limit!", e)
             }
         }
     }
