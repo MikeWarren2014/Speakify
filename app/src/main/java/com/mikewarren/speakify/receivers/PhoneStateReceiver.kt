@@ -74,6 +74,8 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
 
                     if (importantApps.isEmpty()) {
                         LogUtils.LogWarning(TAG, "No important apps found. This could be a database-access issue....")
+                        announcer.stopAnnouncing()
+                        return@let
                     }
 
                     // TODO: we should consider when the user has designated some third-party App as a Phone app
