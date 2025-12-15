@@ -17,12 +17,9 @@ import com.mikewarren.speakify.data.db.UserAppsDao
 import com.mikewarren.speakify.services.PhoneCallAnnouncer
 import com.mikewarren.speakify.utils.PackageHelper
 import com.mikewarren.speakify.utils.SearchUtils
-<<<<<<< HEAD
 import com.mikewarren.speakify.utils.TTSUtils
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
-=======
->>>>>>> 4f0276ab8e2cb662519cb6af98450881744f1cc8
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
@@ -75,11 +72,6 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
                     Log.d("PhoneStateReceiver", "Ready to listen for calls!")
                     val importantApps = userAppsDao.getAll()
 
-                    // TODO: we should consider when the user has designated some third-party App as a Phone app
-                    if (!SearchUtils.HasAnyOverlap(Constants.PhoneAppPackageNames, importantApps.map { it.packageName }))
-                        return@collect
-
-                    process(context, intent)
                     if (importantApps.isEmpty()) {
                         LogUtils.LogWarning(TAG, "No important apps found. This could be a database-access issue....")
                     }

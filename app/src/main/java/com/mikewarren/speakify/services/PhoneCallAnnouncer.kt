@@ -4,9 +4,8 @@ import android.content.Context
 import androidx.annotation.OptIn
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
-import com.google.firebase.Timestamp
-import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import com.mikewarren.speakify.utils.log.LogUtils
+import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
