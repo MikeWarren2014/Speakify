@@ -26,6 +26,7 @@ import com.mikewarren.speakify.data.events.NotificationPermissionEvent
 import com.mikewarren.speakify.data.events.NotificationPermissionEventBus
 import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.receivers.PhoneStateReceiver
+import com.mikewarren.speakify.receivers.ScreenStateReceiver
 import com.mikewarren.speakify.strategies.NotificationStrategyFactory
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
