@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.annotation.OptIn
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
+import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.utils.log.LogUtils
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -28,7 +29,7 @@ class PhoneCallAnnouncer @Inject constructor(
     private var announcementJob: Job? = null
 
     @OptIn(UnstableApi::class)
-    fun announceCall(phoneNumber: String) {
+    suspend fun announceCall(phoneNumber: String) {
         // Stop any previous announcement loops
         stopAnnouncing()
 
@@ -42,7 +43,7 @@ class PhoneCallAnnouncer @Inject constructor(
 
         announcementJob = announcerScope.launch {
             try {
-                withTimeout(45000L) { // 45 seconds timeout
+                withTimeout(25 * Constants.OneSecond) {
                     while (isActive) {
                         Log.d("PhoneCallAnnouncer", "SPEAKING: $announcement")
                         ttsManager.speak(announcement) // This should be a suspend function
@@ -50,13 +51,13 @@ class PhoneCallAnnouncer @Inject constructor(
                     }
                 }
             } catch (e: TimeoutCancellationException) {
-                LogUtils.LogNonFatalError("PhoneCallAnnouncer", "Phone call announcement exceeded 45 seconds limit!", e)
+                LogUtils.LogNonFatalError("PhoneCallAnnouncer", "Phone call announcement exceeded 25 seconds limit!", e)
             }
         }
     }
 
     @OptIn(UnstableApi::class)
-    fun stopAnnouncing() {
+    suspend fun stopAnnouncing() {
         if (announcementJob?.isActive == true) {
             Log.d("PhoneCallAnnouncer", "STOPPING announcement loop.")
             announcementJob?.cancel()
