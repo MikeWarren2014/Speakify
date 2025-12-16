@@ -1,10 +1,13 @@
 package com.mikewarren.speakify.receivers
 
+import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.telephony.TelephonyManager
 import android.util.Log
+import androidx.annotation.RequiresPermission
 import com.clerk.api.Clerk
 import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.data.AppSettingsModel
@@ -51,6 +54,7 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
     private lateinit var defaultVoice: String;
 
 
+    @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != TelephonyManager.ACTION_PHONE_STATE_CHANGED) {
             return
@@ -83,6 +87,12 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
                             PackageNames.PhoneAppList,
                             importantApps.map { it.packageName })
                     ) {
+                        if (isStateStale(context, intent)) {
+                            Log.d(TAG, "Intent state is stale (Phone is likely already offhook/idle). Aborting processing.")
+                            announcer.stopAnnouncing()
+                            return@let
+                        }
+
                         process(context, intent)
                     }
                 }
@@ -90,6 +100,32 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
                 pendingResult.finish()
             }
         }
+    }
+
+    /**
+     * Checks if the intent's state matches the actual live TelephonyManager state.
+     * Returns true if the intent is "Ringing" but the phone is actually "Offhook" or "Idle".
+     */
+    @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
+    private fun isStateStale(context: Context, intent: Intent): Boolean {
+        val intentState = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
+
+        // If the intent says RINGING, we must verify the phone is STILL ringing.
+        if (intentState == TelephonyManager.EXTRA_STATE_RINGING) {
+            val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+            if (tm == null)
+                return false
+            var liveState = tm.callState
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                liveState = tm.callStateForSubscription
+
+            Log.d(TAG, "liveState == ${liveState}")
+
+            if (liveState != TelephonyManager.CALL_STATE_RINGING) {
+                return true // Stale! Don't announce.
+            }
+        }
+        return false
     }
 
     suspend fun process(context: Context, intent: Intent) {
