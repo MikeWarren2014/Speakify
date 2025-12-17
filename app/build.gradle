@@ -13,6 +13,11 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
+// Force exclusion of the profileinstaller to prevent installation errors
+configurations.all {
+    exclude group: "androidx.profileinstaller", module: "profileinstaller"
+}
+
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 if (keystorePropertiesFile.exists()) {
@@ -25,6 +30,9 @@ final String packageName = 'com.mikewarren.speakify'
 android {
     namespace packageName
     compileSdk androidSdkVersion
+
+    // Disable baseline profile generation to prevent installation errors (programmatic equivalent of gradle.properties)
+    experimentalProperties["android.experimental.enableBaselineProfile"] = false
 
     defaultConfig {
         applicationId packageName
@@ -79,6 +87,13 @@ android {
         viewBinding true
         buildConfig true
     }
+    
+    // Ensure no baseline profile is packaged
+    packaging {
+        resources {
+            excludes += "**/baseline.prof"
+        }
+    }
 }
 
 room {
@@ -95,7 +110,6 @@ dependencies {
     implementation libs.androidx.compose.foundation
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.protoc) // Use the same version as in your protobuf extension
     implementation(libs.datastore)
     implementation libs.androidx.core.ktx
     implementation libs.androidx.lifecycle.runtime.ktx
