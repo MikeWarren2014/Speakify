@@ -109,54 +109,54 @@ class TTSManager @Inject constructor(
         // 3. Proceed with normal speaking logic
         val minVolume = settingsRepository.minVolume.first()
 
-        return suspendCancellableCoroutine { continuation ->
-            val utteranceId = UUID.randomUUID().toString()
+        val currentVolume = audioManager.getVolume()
+        if (currentVolume < minVolume) {
+            audioManager.setVolume(minVolume)
+        }
+        try {
 
-            val currentVolume = audioManager.getVolume()
-            if (currentVolume < minVolume) {
-                audioManager.setVolume(minVolume)
-            }
+            return suspendCancellableCoroutine { continuation ->
+                val utteranceId = UUID.randomUUID().toString()
 
-            val listener = object : UtteranceProgressListener() {
-                override fun onStart(id: String?) {}
+                val listener = object : UtteranceProgressListener() {
+                    override fun onStart(id: String?) {}
 
-                override fun onDone(id: String?) {
-                    if (id == utteranceId && continuation.isActive) {
-                        audioManager.restoreVolume()
-                        continuation.resume(Unit)
+                    override fun onDone(id: String?) {
+                        if (id == utteranceId && continuation.isActive) {
+                            continuation.resume(Unit)
+                        }
+                    }
+
+                    @Deprecated("deprecated in API level 21")
+                    override fun onError(id: String?) {
+                        if (id == utteranceId && continuation.isActive) {
+                            continuation.resumeWithException(RuntimeException("TTS error"))
+                        }
+                    }
+
+                    override fun onError(id: String?, errorCode: Int) {
+                        if (id == utteranceId && continuation.isActive) {
+                            continuation.resumeWithException(RuntimeException("TTS error with code $errorCode"))
+                        }
                     }
                 }
 
-                @Deprecated("deprecated in API level 21")
-                override fun onError(id: String?) {
-                    if (id == utteranceId && continuation.isActive) {
-                        audioManager.restoreVolume()
-                        continuation.resumeWithException(RuntimeException("TTS error"))
-                    }
-                }
+                // Set listener specifically for this utterance if possible,
+                // but standard API sets it globally.
+                tts?.setOnUtteranceProgressListener(listener)
 
-                override fun onError(id: String?, errorCode: Int) {
-                    if (id == utteranceId && continuation.isActive) {
-                        audioManager.restoreVolume()
-                        continuation.resumeWithException(RuntimeException("TTS error with code $errorCode"))
+                TTSUtils.SetTTSVoice(tts, voiceName)
+
+                val result = tts?.speak(text, TextToSpeech.QUEUE_ADD, null, utteranceId)
+
+                if (result == TextToSpeech.ERROR) {
+                    if (continuation.isActive) {
+                        continuation.resumeWithException(RuntimeException("TTS engine returned ERROR"))
                     }
                 }
             }
-
-            // Set listener specifically for this utterance if possible,
-            // but standard API sets it globally.
-            tts?.setOnUtteranceProgressListener(listener)
-
-            TTSUtils.SetTTSVoice(tts, voiceName)
-
-            val result = tts?.speak(text, TextToSpeech.QUEUE_ADD, null, utteranceId)
-
-            if (result == TextToSpeech.ERROR) {
-                audioManager.restoreVolume()
-                if (continuation.isActive) {
-                    continuation.resumeWithException(RuntimeException("TTS engine returned ERROR"))
-                }
-            }
+        } finally {
+            audioManager.restoreVolume()
         }
     }
 
@@ -182,7 +182,7 @@ class TTSManager @Inject constructor(
     }
 
 
-    fun stop() {
+    suspend fun stop() {
         tts?.stop()
         audioManager.restoreVolume()
     }

@@ -1,10 +1,13 @@
 package com.mikewarren.speakify.receivers
 
+import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.telephony.TelephonyManager
 import android.util.Log
+import androidx.annotation.RequiresPermission
 import com.clerk.api.Clerk
 import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.data.AppSettingsModel
@@ -17,6 +20,9 @@ import com.mikewarren.speakify.data.db.UserAppsDao
 import com.mikewarren.speakify.services.PhoneCallAnnouncer
 import com.mikewarren.speakify.utils.PackageHelper
 import com.mikewarren.speakify.utils.SearchUtils
+import com.mikewarren.speakify.utils.TTSUtils
+import com.mikewarren.speakify.utils.log.ITaggable
+import com.mikewarren.speakify.utils.log.LogUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
@@ -24,7 +30,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PhoneStateReceiver : BroadcastReceiver() {
+class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
     @Inject
     lateinit var settingsRepository: SettingsRepository
 
@@ -48,6 +54,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
     private lateinit var defaultVoice: String;
 
 
+    @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != TelephonyManager.ACTION_PHONE_STATE_CHANGED) {
             return
@@ -69,11 +76,23 @@ class PhoneStateReceiver : BroadcastReceiver() {
                     Log.d("PhoneStateReceiver", "Ready to listen for calls!")
                     val importantApps = userAppsDao.getAll()
 
+                    if (importantApps.isEmpty()) {
+                        LogUtils.LogWarning(TAG, "No important apps found. This could be a database-access issue....")
+                        announcer.stopAnnouncing()
+                        return@let
+                    }
+
                     // TODO: we should consider when the user has designated some third-party App as a Phone app
                     if (SearchUtils.HasAnyOverlap(
                             PackageNames.PhoneAppList,
                             importantApps.map { it.packageName })
                     ) {
+                        if (isStateStale(context, intent)) {
+                            Log.d(TAG, "Intent state is stale (Phone is likely already offhook/idle). Aborting processing.")
+                            announcer.stopAnnouncing()
+                            return@let
+                        }
+
                         process(context, intent)
                     }
                 }
@@ -81,6 +100,32 @@ class PhoneStateReceiver : BroadcastReceiver() {
                 pendingResult.finish()
             }
         }
+    }
+
+    /**
+     * Checks if the intent's state matches the actual live TelephonyManager state.
+     * Returns true if the intent is "Ringing" but the phone is actually "Offhook" or "Idle".
+     */
+    @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
+    private fun isStateStale(context: Context, intent: Intent): Boolean {
+        val intentState = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
+
+        // If the intent says RINGING, we must verify the phone is STILL ringing.
+        if (intentState == TelephonyManager.EXTRA_STATE_RINGING) {
+            val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+            if (tm == null)
+                return false
+            var liveState = tm.callState
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                liveState = tm.callStateForSubscription
+
+            Log.d(TAG, "liveState == ${liveState}")
+
+            if (liveState != TelephonyManager.CALL_STATE_RINGING) {
+                return true // Stale! Don't announce.
+            }
+        }
+        return false
     }
 
     suspend fun process(context: Context, intent: Intent) {
@@ -105,13 +150,14 @@ class PhoneStateReceiver : BroadcastReceiver() {
             return
         }
         if (state == TelephonyManager.EXTRA_STATE_OFFHOOK) {
-            Log.d("PhoneStateReceiver", "Phone is OFFHOOK (call answered or dialing out).")
+            LogUtils.LogBreadcrumb("PhoneStateReceiver", "Phone is OFFHOOK (call answered or dialing out).")
         }
         if (state == TelephonyManager.EXTRA_STATE_IDLE) {
-            Log.d("PhoneStateReceiver", "Phone is IDLE (call ended or hung up).")
+            LogUtils.LogBreadcrumb("PhoneStateReceiver", "Phone is IDLE (call ended or hung up).")
         }
         announcer.stopAnnouncing()
 
+        
     }
 
 }
