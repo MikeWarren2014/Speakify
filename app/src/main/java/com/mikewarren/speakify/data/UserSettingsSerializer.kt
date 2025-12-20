@@ -15,7 +15,7 @@ class UserSettingsSerializer @Inject constructor() : Serializer<UserSettingsMode
         = UserSettingsModel(
         useDarkTheme = true,
         appSettings = emptyMap(),
-        selectedTTSVoice = "",
+        selectedTTSVoice = Constants.DefaultTTSVoice,
         maximizeVolumeOnScreenOff = false,
         minVolume = 0,
     )
