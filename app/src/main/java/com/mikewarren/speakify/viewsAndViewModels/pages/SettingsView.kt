@@ -97,7 +97,7 @@ fun SettingsView() {
                     isChecked = isDarkThemePreferred ?: false,
                     onCheckedChange = { viewModel.updateUseDarkTheme(it) },
                 )
-                SettingsItemCard(
+                SingleColumnSettingsItemCard(
                     title = "TTS Voice",
                     description = "Select the voice for spoken notifications.",
                 ) {
@@ -188,15 +188,10 @@ fun MinVolumeSettingCard(
     currentValue: Int,
     onValueChange: (Int) -> Unit
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
-        ) {
-            // Title and Description
-            Text(text = title, style = MaterialTheme.typography.bodyLarge)
-            Text(text = description, style = MaterialTheme.typography.bodySmall)
+
+    SingleColumnSettingsItemCard(title,
+        description,
+        {
             Spacer(modifier = Modifier.height(8.dp))
             // Slider and Value
             Row(
@@ -215,8 +210,7 @@ fun MinVolumeSettingCard(
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
-        }
-    }
+        })
 }
 
 @Composable
@@ -251,6 +245,27 @@ fun SettingsItemCard(title: String,
                 Text(text = title, style = MaterialTheme.typography.bodyLarge)
                 Text(text = description, style = MaterialTheme.typography.bodySmall)
             }
+            content()
+        }
+    }
+}
+
+@Composable
+fun SingleColumnSettingsItemCard(
+    title: String,
+    description: String,
+    content: @Composable () -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            // Title and Description
+            Text(text = title, style = MaterialTheme.typography.bodyLarge)
+            Text(text = description, style = MaterialTheme.typography.bodySmall)
             content()
         }
     }

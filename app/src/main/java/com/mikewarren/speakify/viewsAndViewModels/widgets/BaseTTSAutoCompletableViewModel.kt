@@ -28,7 +28,7 @@ abstract class BaseTTSAutoCompletableViewModel(
             getTTSFlow().collectLatest { voiceName ->
                 selection = voiceName // Update the state here
                 setTTSVoice(voiceName)
-                searchText = voiceName ?: ""
+                searchText = voiceName ?: Constants.DefaultTTSVoice
             }
         }
     }
