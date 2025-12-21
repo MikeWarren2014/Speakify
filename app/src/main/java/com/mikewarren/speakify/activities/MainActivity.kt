@@ -19,6 +19,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.ui.theme.MyApplicationTheme
 import com.mikewarren.speakify.utils.NotificationPermissionHelper
@@ -26,11 +28,15 @@ import com.mikewarren.speakify.viewsAndViewModels.AppView
 import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity()  {
 
+    @Inject
+    lateinit var settingsRepository: SettingsRepository
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +72,14 @@ class MainActivity : ComponentActivity()  {
                     })
                 }
             }
+        }
+
+        lifecycleScope.launch {
+            val selectedTTSVoice = settingsRepository.selectedTTSVoice.first()
+            if (selectedTTSVoice.isNullOrEmpty()) {
+                settingsRepository.saveSelectedVoice(Constants.DefaultTTSVoice)
+            }
+
         }
 
         checkPermissions()
