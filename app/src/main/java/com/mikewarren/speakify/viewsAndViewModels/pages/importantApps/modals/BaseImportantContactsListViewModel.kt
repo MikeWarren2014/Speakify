@@ -71,10 +71,10 @@ class BaseImportantContactsListViewModel(
                 .toRegex()
                 .find(choice)
             if (result == null)
-                throw IllegalStateException("Somehow we have a problem with the regex, as '${choice}' doesn't seem to match.")
+                return ""
             val matchGroup: MatchGroup? = result.groups["phone"]
             if (matchGroup == null)
-                throw IllegalStateException("Somehow we cannot retrieve the phone number from the string, as '${choice}' doesn't seem to match")
+                return ""
 
             return matchGroup.value
         }
