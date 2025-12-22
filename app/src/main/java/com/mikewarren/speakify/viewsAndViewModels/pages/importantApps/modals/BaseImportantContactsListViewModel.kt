@@ -3,9 +3,8 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.events.ContactListDataSource
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.mikewarren.speakify.utils.PhoneNumberUtils
 import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
 
 class BaseImportantContactsListViewModel(
     override var settingsRepository: SettingsRepository,
@@ -55,28 +54,34 @@ class BaseImportantContactsListViewModel(
     }
 
     override fun filterChoices(searchText: String): List<String> {
-        if ("\\d+".toRegex().matches(searchText)) {
+        if (("\\d+".toRegex().matches(searchText)) ||
+            (PHONE_NUMBER_REGEX.toRegex().matches(searchText))) {
             return getAllChoices().filter { choice: String ->
-
-                var choiceWithJustDigits: String = choice;
-                if (choice.last() == ')') {
-                    val result : MatchResult? = """(.*(?<=[^\d+]|[A-Za-z\d+]) )(?<phone>\([#*+\d()\- ]+\))"""
-                        .toRegex()
-                        .find(choice)
-                    if (result == null)
-                        throw IllegalStateException("Somehow we have a problem with the regex, as '${choice}' doesn't seem to match.")
-                    val matchGroup: MatchGroup? = result.groups["phone"]
-                    if (matchGroup == null)
-                        throw IllegalStateException("Somehow we cannot retrieve the phone number from the string, as '${choice}' doesn't seem to match")
-
-                    choiceWithJustDigits = matchGroup.value
-                }
-                return@filter choiceWithJustDigits
-                    .replace("""[^\d+]""".toRegex(), "")
-                    .contains(searchText);
+                return@filter PhoneNumberUtils.ExtractOnlyDigits(extractPhoneNumberFromChoice(choice))
+                    .contains(PhoneNumberUtils.ExtractOnlyDigits(searchText))
             }
         }
         return super.filterChoices(searchText)
 
+    }
+
+    private fun extractPhoneNumberFromChoice(choice: String): String {
+        if (choice.last() == ')') {
+            val result : MatchResult? = """(.*(?<=[^\d+]|[A-Za-z\d+]) )(?<phone>\(${PHONE_NUMBER_REGEX}\))"""
+                .toRegex()
+                .find(choice)
+            if (result == null)
+                throw IllegalStateException("Somehow we have a problem with the regex, as '${choice}' doesn't seem to match.")
+            val matchGroup: MatchGroup? = result.groups["phone"]
+            if (matchGroup == null)
+                throw IllegalStateException("Somehow we cannot retrieve the phone number from the string, as '${choice}' doesn't seem to match")
+
+            return matchGroup.value
+        }
+        return choice
+    }
+
+    companion object {
+        const val PHONE_NUMBER_REGEX = """[#*+\d()\- ;,px]+"""
     }
 }
