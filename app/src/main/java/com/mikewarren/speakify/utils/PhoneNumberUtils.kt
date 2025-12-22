@@ -22,4 +22,10 @@ object PhoneNumberUtils {
         return Pair("", -1)
     }
 
+    public fun ExtractOnlyDigits(text: String?): String {
+        if (text == null) return ""
+        return text
+            .replace("""[^\d+]""".toRegex(), "")
+    }
+
 }

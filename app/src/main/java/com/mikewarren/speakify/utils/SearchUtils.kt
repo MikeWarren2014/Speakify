@@ -25,12 +25,10 @@ object SearchUtils {
 
     fun IsInPhoneNumberList(listOfPhoneNumbers: List<String>, phoneNumber: String): Boolean {
         return listOfPhoneNumbers.any { firstPhoneNumber: String ->
-            val firstPhoneNumberIntlFormat = PhoneNumberUtils.ExtractPhoneNumberWithLib(firstPhoneNumber)
-                .first
-            val phoneNumberIntlFormat = PhoneNumberUtils.ExtractPhoneNumberWithLib(phoneNumber)
-                .first
+            val firstPhoneNumberDigits = PhoneNumberUtils.ExtractOnlyDigits(firstPhoneNumber)
+            val phoneNumberDigits = PhoneNumberUtils.ExtractOnlyDigits(phoneNumber)
 
-            return@any firstPhoneNumberIntlFormat == phoneNumberIntlFormat
+            return@any firstPhoneNumberDigits == phoneNumberDigits
         }
 
     }
