@@ -7,7 +7,6 @@ import com.clerk.api.Clerk
 import com.clerk.api.network.serialization.longErrorMessageOrNull
 import com.clerk.api.network.serialization.onFailure
 import com.clerk.api.network.serialization.onSuccess
-import com.clerk.api.user.delete
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,19 +37,6 @@ class MainViewModel: ViewModel() {
                 .onFailure {
                     // See https://clerk.com/docs/guides/development/custom-flows/error-handling
                     // for more info on error handling
-                    Log.e("MainViewModel", it.longErrorMessageOrNull, it.throwable)
-                }
-        }
-    }
-
-    fun deleteAccount() {
-        viewModelScope.launch() {
-            if (Clerk.user == null)
-                return@launch
-
-            Clerk.user!!.delete()
-                .onSuccess { _uiState.value = MainUiState.AccountDeleted }
-                .onFailure {
                     Log.e("MainViewModel", it.longErrorMessageOrNull, it.throwable)
                 }
         }
