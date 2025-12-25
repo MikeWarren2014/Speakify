@@ -63,6 +63,9 @@ class LoginActivity : ComponentActivity() {
                             is MainUiState.SignedIn -> {
                                 Text("Successfully signed in. Redirecting to app...")
                             }
+                            is MainUiState.AccountDeleted -> {
+                                TODO("Implement prompt asking users for feedback, and a way to send that feedback.")
+                            }
                         }
                     }
                 }
