@@ -77,32 +77,22 @@ class ImportantAppsViewModel @Inject constructor(
         viewModelScope.launch {
             repository.importantApps.collect { newAppsList ->
                 checkForPhoneAppsAndRequestPermissions(newAppsList)
-                // We do NOT update _importantApps here anymore.
-                // BaseSearchableViewModel.onInit handles it by observing getRawDataStateFlow()
             }
         }
     }
 
 
-    private suspend fun checkForPhoneAppsAndRequestPermissions(apps: List<UserAppModel>) {
+    private fun checkForPhoneAppsAndRequestPermissions(apps: List<UserAppModel>) {
         // First, quick check: Do we even have any phone apps in the list?
         val hasPhoneApp = apps.any { PackageNames.PhoneAppList.contains(it.packageName) }
 
         if (!hasPhoneApp) return
 
-        // Second, check if we have already requested permissions in the past.
-        // We read this from the SettingsRepository to persist the state across app restarts/restores.
-        val alreadyRequested = settingsRepository.hasRequestedPhonePermissions.first()
+        Log.d("ImportantAppsVM", "Found phone app in list and haven't requested permissions yet. Requesting now.")
 
-        if (!alreadyRequested) {
-            Log.d("ImportantAppsVM", "Found phone app in list and haven't requested permissions yet. Requesting now.")
+        // Trigger the request. It does NOTHING if we already have the phone-related permissions
+        phonePermissionDataSource.requestPermissions()
 
-            // Trigger the request
-            phonePermissionDataSource.requestPermissions()
-
-            // Mark as requested so we never do this again
-            settingsRepository.setPhonePermissionsRequested(true)
-        }
     }
 
     fun fetchApps() {

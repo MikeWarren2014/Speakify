@@ -14,7 +14,6 @@ data class UserSettingsModel(
     val maximizeVolumeOnScreenOff: Boolean = false,
     val minVolume: Int = 0,
 
-    val hasRequestedPhonePermissions: Boolean = false,
     val isCrashlyticsEnabled: Boolean = false,
     val originalVolume: Int = -1,
 )

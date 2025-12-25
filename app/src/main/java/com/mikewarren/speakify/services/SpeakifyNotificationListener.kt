@@ -84,7 +84,11 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
 
         // Register the receiver dynamically.
         // For Android O (API 26) and above, you must specify if the receiver is exported.
-        registerReceiver(phoneStateReceiver, intentFilter, RECEIVER_EXPORTED)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            registerReceiver(phoneStateReceiver, intentFilter, RECEIVER_EXPORTED)
+        else
+            registerReceiver(phoneStateReceiver, intentFilter)
+
         val screenStateFilter = IntentFilter().apply {
             addAction(Intent.ACTION_SCREEN_OFF)
             addAction(Intent.ACTION_SCREEN_ON)
