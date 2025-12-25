@@ -1,14 +1,6 @@
 package com.mikewarren.speakify.utils
 
 object SearchUtils {
-    fun HasAnySubstringOverlap(firstList: List<String>, secondList: List<String>): Boolean{
-        return firstList.any { firstItem: String ->
-            secondList.any { secondItem: String ->
-                firstItem.contains(secondItem, ignoreCase = true) || secondItem.contains(firstItem, ignoreCase = true)
-            }
-        }
-    }
-
     fun HasAnyOverlap(firstList: List<String>, secondList: List<String>): Boolean {
         return firstList.any { firstItem: String ->
             secondList.any { secondItem: String ->
@@ -25,10 +17,12 @@ object SearchUtils {
 
     fun IsInPhoneNumberList(listOfPhoneNumbers: List<String>, phoneNumber: String): Boolean {
         return listOfPhoneNumbers.any { firstPhoneNumber: String ->
-            val firstPhoneNumberDigits = PhoneNumberUtils.ExtractOnlyDigits(firstPhoneNumber)
-            val phoneNumberDigits = PhoneNumberUtils.ExtractOnlyDigits(phoneNumber)
+            val firstPhoneNumberIntlFormat = PhoneNumberUtils.ExtractPhoneNumberWithLib(firstPhoneNumber)
+                .first
+            val phoneNumberIntlFormat = PhoneNumberUtils.ExtractPhoneNumberWithLib(phoneNumber)
+                .first
 
-            return@any firstPhoneNumberDigits == phoneNumberDigits
+            return@any firstPhoneNumberIntlFormat == phoneNumberIntlFormat
         }
 
     }
