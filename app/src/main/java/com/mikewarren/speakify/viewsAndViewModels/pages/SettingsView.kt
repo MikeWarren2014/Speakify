@@ -116,7 +116,11 @@ fun SettingsView() {
                 )
                 SettingsToggleCard(
                     title = "Maximize volume on screen off",
-                    description = "Boosts notification volume to maximum when the screen is locked to ensure you hear it",
+                    description = """
+Boosts notification volume to maximum when the screen is locked. 
+
+WARNING: This may affect other audio like music or podcasts. Turn this off if you listen to other media.
+                    """,
                     isChecked = shouldMaximizeVolumeOnScreenOff,
                     onCheckedChange = { viewModel.setMaximizeVolumeOnScreenOff(it) },
                 )
