@@ -30,6 +30,11 @@ class SpeakifyAudioManager @Inject constructor(
     }
 
     suspend fun setVolume(volume: Int) {
+        if (isMusicActive()) {
+            Log.d("SpeakifyAudioManager", "Aborted setting volume because other audio is playing.")
+            return
+        }
+
         val originalVolume = settingsRepository.originalVolume.first()
         if (originalVolume == -1) {
             val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
@@ -37,6 +42,13 @@ class SpeakifyAudioManager @Inject constructor(
             Log.d("SpeakifyAudioManager", "Saved original music volume: $currentVolume")
         }
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0)
+    }
+
+    /**
+     * Checks if music is actively playing on the device.
+     */
+    private fun isMusicActive(): Boolean {
+        return audioManager.isMusicActive
     }
 
     /**
