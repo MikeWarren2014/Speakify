@@ -4,6 +4,7 @@ data class UserModel(val email: String,
                      val password: String,
                      val firstName: String,
                      val lastName: String,
+        val agreedToTerms: Boolean = false,
     ) {
     constructor() : this("", "", "", "")
 }

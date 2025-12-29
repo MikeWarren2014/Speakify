@@ -150,7 +150,7 @@ dependencies {
 
     implementation(libs.coil.compose)
 
-    implementation("com.clerk:clerk-android:0.1.17")
+    implementation("com.clerk:clerk-android:0.1.24")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
 
     implementation platform('com.google.firebase:firebase-bom:34.5.0')
