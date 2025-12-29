@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.mikewarren.speakify.viewsAndViewModels.widgets.card.ActionCard
 import androidx.core.net.toUri
+import com.mikewarren.speakify.data.constants.DocumentURLs
 
 @Composable
 fun LegalView() {
@@ -45,10 +46,9 @@ fun LegalView() {
             buttonText = "View Policy",
             icon = Icons.Default.PrivacyTip
         ) {
-            // TODO: Replace this URL with your actual Privacy Policy link
-            val privacyPolicyUrl = "https://doc-hosting.flycricket.io/speakify-privacy-policy/b5748f69-011e-427e-9114-071d734c1d6e/privacy"
-            val intent = Intent(Intent.ACTION_VIEW, privacyPolicyUrl.toUri())
-            context.startActivity(intent)
+            context.startActivity(Intent(
+                Intent.ACTION_VIEW,
+                DocumentURLs.PrivacyPolicy.toUri()))
         }
 
         ActionCard(
@@ -57,10 +57,9 @@ fun LegalView() {
             buttonText = "View Terms",
             icon = Icons.Default.Description
         ) {
-            // TODO: Replace this URL with your actual Terms of Service link
-            val termsUrl = "https://doc-hosting.flycricket.io/speakify-terms-of-use/2124491a-1cd9-4df5-b9a8-ab4e487f504a/terms"
-            val intent = Intent(Intent.ACTION_VIEW, termsUrl.toUri())
-            context.startActivity(intent)
+            context.startActivity(Intent(
+                Intent.ACTION_VIEW,
+                DocumentURLs.TermsOfService.toUri()))
         }
     }
 }

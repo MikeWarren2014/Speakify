@@ -51,6 +51,10 @@ class SignUpViewModel : ViewModel() {
         } else if (model.password.length < 8) {
             newErrors["password"] = "Password must be at least 8 characters."
         }
+        if (!model.agreedToTerms) {
+            newErrors["agreedToTerms"] = "You must agree to the terms to continue."
+        }
+
         errorsDict = newErrors
         return newErrors.isEmpty()
     }
@@ -66,6 +70,7 @@ class SignUpViewModel : ViewModel() {
                 password = model.password,
                 firstName = model.firstName,
                 lastName = model.lastName,
+                legalAccepted = model.agreedToTerms,
                 ))
                 .onSuccess {
                     if (it.status == SignUp.Status.COMPLETE) {
