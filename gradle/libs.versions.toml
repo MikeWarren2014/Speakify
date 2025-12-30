@@ -35,6 +35,7 @@ preference = "1.2.1"
 material = "1.4.+"
 ui = "1.9.4"
 foundation = "1.9.4"
+uiVersion = "1.10.0"
 
 [libraries]
 androidx-core = { module = "androidx.test:core", version.ref = "core" }
@@ -80,6 +81,7 @@ play-services-base = { module = "com.google.android.gms:play-services-base", ver
 play-services-basement = { module = "com.google.android.gms:play-services-basement", version.ref = "playServicesBasement" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+ui = { group = "androidx.compose.ui", name = "ui", version.ref = "uiVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

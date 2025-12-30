@@ -38,7 +38,7 @@ android {
         applicationId packageName
         minSdk 28
         targetSdk androidSdkVersion
-        versionCode 11
+        versionCode 12
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -108,6 +108,7 @@ dependencies {
     implementation libs.material
     implementation libs.androidx.compose.ui
     implementation libs.androidx.compose.foundation
+    implementation libs.ui
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.datastore)

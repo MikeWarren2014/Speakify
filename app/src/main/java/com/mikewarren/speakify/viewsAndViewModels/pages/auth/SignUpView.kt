@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
@@ -45,6 +46,8 @@ import com.mikewarren.speakify.data.uiStates.SignUpUiState
 import com.mikewarren.speakify.viewsAndViewModels.widgets.PasswordField
 import kotlin.text.append
 import kotlin.text.firstOrNull
+import com.mikewarren.speakify.R
+import kotlin.text.replace
 
 @Composable
 fun SignUpView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
@@ -72,31 +75,8 @@ fun SignUpScreenView(viewModel: SignUpViewModel = viewModel(), state: SignUpUiSt
 
 @Composable
 fun VerificationView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
-    var code by remember { mutableStateOf("") }
-    val focusManager = LocalFocusManager.current
-
-    Text(
-        "Check your email inbox for the verification code and enter it here. " +
-                "Please note, it could take a couple minutes to arrive and could be in the spam folder.",
-        textAlign = TextAlign.Center,
-        modifier = Modifier.padding(horizontal = 32.dp)
-    )
-
-
-    TextField(value = code,
-        onValueChange = { code = it },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Number,
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                focusManager.clearFocus()
-                viewModel.checkVerification(code, onDone)
-            }
-        ))
-
-    Button(onClick = { viewModel.checkVerification(code, onDone) }) { Text("Verify") }
+    EmailVerificationView(stringResource(R.string.sign_up_verification_message).replace("\n", "\n\n"),
+        onDone = { code -> viewModel.checkVerification(code, onDone) })
 }
 
 @Composable
