@@ -65,99 +65,66 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
             return
         }
 
+        val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
+        val incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
+
+        // If the phone is NOT ringing, the only possible action is to stop announcing.
+        // This immediately handles OFFHOOK and IDLE states and prevents race conditions.
+        if (state != TelephonyManager.EXTRA_STATE_RINGING) {
+            Log.d(TAG, "Phone state is '$state'. Stopping any active announcement.")
+            applicationScope.launch {
+                announcer.stopAnnouncing()
+            }
+            return
+        }
+
+        // If we reach here, the state is definitely RINGING.
+        // Now, perform all checks inside a coroutine.
         val pendingResult = goAsync()
         applicationScope.launch {
             try {
-                settingsRepository.selectedTTSVoice.first().let { selectedTTSVoice ->
-                    // Logic to process app settings and maybe update TTS instances
-                    defaultVoice = selectedTTSVoice ?: Constants.DefaultTTSVoice
+                // Verify the phone is STILL ringing before doing any work.
+                // This is our robust stale check.
+                val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                val liveState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) tm.callStateForSubscription else tm.callState
 
-                    // This collector will run continuously in the background.
-                    Log.d("PhoneStateReceiver", "Ready to listen for calls!")
-                    val importantApps = userAppsDao.getAll()
-
-                    if (importantApps.isEmpty()) {
-                        LogUtils.LogWarning(TAG, "No important apps found. This could be a database-access issue....")
-                        announcer.stopAnnouncing()
-                        return@let
-                    }
-
-                    // TODO: we should consider when the user has designated some third-party App as a Phone app
-                    if (SearchUtils.HasAnyOverlap(
-                            PackageNames.PhoneAppList,
-                            importantApps.map { it.packageName })
-                    ) {
-                        if (isStateStale(context, intent)) {
-                            Log.d(TAG, "Intent state is stale (Phone is likely already offhook/idle). Aborting processing.")
-                            announcer.stopAnnouncing()
-                            return@let
-                        }
-
-                        process(context, intent)
-                    }
+                if (liveState != TelephonyManager.CALL_STATE_RINGING) {
+                    Log.d(TAG, "State was RINGING, but is now '$liveState'. Stale event, aborting.")
+                    announcer.stopAnnouncing() // Ensure we are silent
+                    return@launch
                 }
+
+                // All conditions are met. Proceed with announcement logic.
+                Log.d(TAG, "Phone is ringing. Processing announcement.")
+                val importantApps = userAppsDao.getAll().map { it.packageName }
+                if (importantApps.none { PackageNames.PhoneAppList.contains(it) }) {
+                    Log.d(TAG, "No configured phone app found in user's important apps.")
+                    return@launch
+                }
+
+                if (incomingNumber.isNullOrEmpty()) {
+                    Log.d(TAG, "Incoming number is null or empty. Cannot announce.")
+                    return@launch
+                }
+
+                // Fetch settings and announce
+                defaultVoice = settingsRepository.selectedTTSVoice.first() ?: Constants.DefaultTTSVoice
+                val packageName = PackageHelper.GetDefaultDialerApp(context)
+                var appSettingsModel = appSettingsDao.getByPackageName(packageName!!)?.let { AppSettingsModel.FromDbModel(it) }
+                if (appSettingsModel == null) {
+                    appSettingsModel = AppSettingsModel(packageName, defaultVoice)
+                }
+
+                if (appSettingsModel.notificationSources.isNotEmpty() && !SearchUtils.IsInPhoneNumberList(appSettingsModel.notificationSources, incomingNumber)) {
+                    Log.d(TAG, "Number $incomingNumber is not in the allowed list.")
+                    return@launch
+                }
+
+                announcer.announceCall(incomingNumber)
             } finally {
                 pendingResult.finish()
             }
         }
-    }
-
-    /**
-     * Checks if the intent's state matches the actual live TelephonyManager state.
-     * Returns true if the intent is "Ringing" but the phone is actually "Offhook" or "Idle".
-     */
-    @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
-    private fun isStateStale(context: Context, intent: Intent): Boolean {
-        val intentState = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
-
-        // If the intent says RINGING, we must verify the phone is STILL ringing.
-        if (intentState == TelephonyManager.EXTRA_STATE_RINGING) {
-            val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
-            if (tm == null)
-                return false
-            var liveState = tm.callState
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-                liveState = tm.callStateForSubscription
-
-            Log.d(TAG, "liveState == ${liveState}")
-
-            if (liveState != TelephonyManager.CALL_STATE_RINGING) {
-                return true // Stale! Don't announce.
-            }
-        }
-        return false
-    }
-
-    suspend fun process(context: Context, intent: Intent) {
-        val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
-        val incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
-
-        // TODO: get the dialer package. For now, let's assume default
-        val packageName = PackageHelper.GetDefaultDialerApp(context)
-
-        var appSettingsModel = AppSettingsModel.FromDbModel(appSettingsDao.getByPackageName(packageName!!))
-        if (appSettingsModel == null) {
-            appSettingsModel = AppSettingsModel(packageName, defaultVoice)
-        }
-
-        if (state == TelephonyManager.EXTRA_STATE_RINGING) {
-            Log.d("PhoneStateReceiver", "Phone is RINGING. Incoming number: $incomingNumber")
-            if (incomingNumber.isNullOrEmpty())
-                return
-            if ((appSettingsModel.notificationSources.isNotEmpty()) && (!SearchUtils.IsInPhoneNumberList(appSettingsModel.notificationSources, incomingNumber)))
-                return
-            announcer.announceCall(incomingNumber)
-            return
-        }
-        if (state == TelephonyManager.EXTRA_STATE_OFFHOOK) {
-            LogUtils.LogBreadcrumb("PhoneStateReceiver", "Phone is OFFHOOK (call answered or dialing out).")
-        }
-        if (state == TelephonyManager.EXTRA_STATE_IDLE) {
-            LogUtils.LogBreadcrumb("PhoneStateReceiver", "Phone is IDLE (call ended or hung up).")
-        }
-        announcer.stopAnnouncing()
-
-        
     }
 
 }
