@@ -1,5 +1,6 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.auth.accountDeletion
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,15 +23,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
-import com.mikewarren.speakify.viewsAndViewModels.pages.auth.EmailVerificationView
-
-import com.mikewarren.speakify.R
 
 @Composable
 fun AccountDeletionView(onCancel: () -> Unit, onDeleted: () -> Unit) {
@@ -41,14 +38,13 @@ fun AccountDeletionView(onCancel: () -> Unit, onDeleted: () -> Unit) {
         AccountDeletionUiState.RequestMade -> {
             AreYouSureView(viewModel, onCancel)
         }
-        AccountDeletionUiState.RequestConfirmed -> {
-            VerifyEmailView(viewModel)
+        AccountDeletionUiState.SigningOut -> {
+            SigningOutView(viewModel)
         }
         AccountDeletionUiState.Verified -> {
             DeletingAccountView(viewModel)
         }
         AccountDeletionUiState.Deleted -> {
-            // TODO: Show deleted screen
             onDeleted()
         }
 
@@ -78,6 +74,17 @@ fun AreYouSureView(viewModel: AccountDeletionViewModel, onCancel: () -> Unit) {
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center
             )
+
+            AnimatedVisibility(visible = viewModel.shouldReverify()) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "For your security, you will be signed out and must sign back in to confirm account deletion.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
+                )
+            }
+            // Conditionally show the re-verification warning
             Spacer(modifier = Modifier.height(32.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -104,15 +111,27 @@ fun AreYouSureView(viewModel: AccountDeletionViewModel, onCancel: () -> Unit) {
 }
 
 @Composable
-fun VerifyEmailView(viewModel: AccountDeletionViewModel) {
-    val isLoading by viewModel.isLoading.collectAsState()
-
-    EmailVerificationView(text = stringResource(R.string.delete_account_verification_message),
-        isLoading,
-        buttonText = "Verify & Delete Account",
-        onDone = viewModel::verify)
-
+fun SigningOutView(viewModel: AccountDeletionViewModel) {
+    Scaffold { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            CircularProgressIndicator(modifier = Modifier.size(48.dp))
+            Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = "Signing you out...",
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
 }
+
 
 @Composable
 fun DeletingAccountView(viewModel: AccountDeletionViewModel) {

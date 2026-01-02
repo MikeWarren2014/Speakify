@@ -32,7 +32,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mikewarren.speakify.viewsAndViewModels.navigation.NavigationItem
-import com.mikewarren.speakify.viewsAndViewModels.navigation.Route
 import com.mikewarren.speakify.viewsAndViewModels.navigation.Titles
 import com.mikewarren.speakify.viewsAndViewModels.navigation.navItems
 import com.mikewarren.speakify.viewsAndViewModels.pages.AboutView
@@ -40,7 +39,6 @@ import com.mikewarren.speakify.viewsAndViewModels.pages.DefaultView
 import com.mikewarren.speakify.viewsAndViewModels.pages.LegalView
 import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsView
 import com.mikewarren.speakify.viewsAndViewModels.pages.SupportView
-import com.mikewarren.speakify.viewsAndViewModels.pages.auth.accountDeletion.AccountDeletionView
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.ImportantAppsView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

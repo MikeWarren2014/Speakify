@@ -44,6 +44,11 @@
             android:theme="@style/Theme.MyApplication" >
         </activity>
         <activity
+            android:name=".activities.AccountDeletedActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MyApplication" >
+        </activity>
+        <activity
             android:name=".activities.NotificationPermissionsActivity"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" >

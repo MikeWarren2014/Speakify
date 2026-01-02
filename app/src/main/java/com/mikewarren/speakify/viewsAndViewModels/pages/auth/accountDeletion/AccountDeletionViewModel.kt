@@ -10,15 +10,22 @@ import com.clerk.api.network.serialization.longErrorMessageOrNull
 import com.clerk.api.network.serialization.onFailure
 import com.clerk.api.network.serialization.onSuccess
 import com.clerk.api.user.delete
+import com.mikewarren.speakify.activities.AccountDeletedActivity
+import com.mikewarren.speakify.activities.ActivityProvider
+import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
+import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class AccountDeletionViewModel : ViewModel(), ITaggable {
+
+    val childMainVM = MainViewModel()
+
     private val _uiState = MutableStateFlow<AccountDeletionUiState>(AccountDeletionUiState.RequestMade)
     val uiState = _uiState.asStateFlow()
 
@@ -30,39 +37,33 @@ class AccountDeletionViewModel : ViewModel(), ITaggable {
         .first()
 
 
+    fun shouldReverify() : Boolean {
+        return Clerk.session!!.createdAt - System.currentTimeMillis() >= 10 * 60 * Constants.OneSecond
+    }
+
     fun startDeletionProcess(onFailure: () -> Unit) {
 
         viewModelScope.launch(Dispatchers.IO) {
             userEmailAddress
                 .prepareVerification(EmailAddress.PrepareVerificationParams.EmailCode())
                 .onSuccess {
-                    _uiState.value = AccountDeletionUiState.RequestConfirmed
+                    if (shouldReverify()) {
+                        ActivityProvider.GetInstance().setActivityClass(AccountDeletedActivity::class.java,
+                            {
+                                _uiState.value = AccountDeletionUiState.Verified
+                                ActivityProvider.GetInstance().resetActivityClass()
+                            })
+
+                        childMainVM.signOut()
+                        return@onSuccess
+                    }
+                    _uiState.value = AccountDeletionUiState.Verified
                 }
                 .onFailure {
                     LogUtils.LogWarning(TAG, "Error preparing email verification")
                     onFailure()
                 }
         }
-    }
-
-    fun verify(code: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _isLoading.value = true
-            userEmailAddress
-                .attemptVerification(code)
-                .onSuccess {
-                    _uiState.value = AccountDeletionUiState.Verified
-                    _isLoading.value = false
-                }
-                .onFailure {
-                    // FIXME: somehow, we get an "already verified" error
-                    LogUtils.LogWarning(TAG, "Error verifying email: ${it.longErrorMessageOrNull}")
-                    _isLoading.value = false
-                    // TODO: should probably re-attempt this, somehow, and possibly do a shake event
-                }
-
-        }
-
     }
 
     fun deleteUser() {

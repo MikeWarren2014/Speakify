@@ -1,6 +1,6 @@
 package com.mikewarren.speakify.data.events
 
-class ContactEventBus : BaseEventBus<ContactEvent>() {
+class ContactEventBus private constructor() : BaseEventBus<ContactEvent>() {
 
     companion object {
         private var _instance: ContactEventBus? = null
