@@ -38,7 +38,7 @@ class LoginActivity : ComponentActivity() {
             val state by viewModel.uiState.collectAsStateWithLifecycle()
             val useDarkTheme by settingsViewModel.useDarkTheme.collectAsStateWithLifecycle(isSystemInDarkTheme())
 
-            // When the state becomes SignedIn, navigate to the Activity provided by the ActivityProvider
+            // When the state becomes SignedIn, navigate to MainActivity
             if (state is MainUiState.SignedIn) {
                 LaunchedEffect(state) {
                     handleLoginSuccess(intent.getStringExtra(ActionConstants.PostLoginActionKey), viewModel)

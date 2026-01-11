@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -56,9 +55,6 @@ class MainActivity : ComponentActivity()  {
 
                     if (state is MainUiState.SignedOut) {
                         LaunchedEffect(state) {
-                            Log.d("MainActivity", "Signing out and going to the LoginActivity from the MainActivity itself...")
-
-
                             val intent = Intent(this@MainActivity, LoginActivity::class.java).apply {
                                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                 if (accountDeletionUiState is AccountDeletionUiState.Deleted) {
