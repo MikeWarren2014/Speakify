@@ -87,7 +87,6 @@ class SignUpViewModel : ViewModel() {
                     // See https://clerk.com/docs/guides/development/custom-flows/error-handling
                     // for more info on error handling
                     it.error?.errors?.forEach { error ->
-                        // TODO: concatenate each error message onto its respective map entry in errors
                         arrayOf("email", "password")
                             .forEach { key ->
                                 if (!error.message.lowercase().contains(key)) return@forEach

@@ -18,6 +18,10 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="title_activity_main2">MainActivity2</string>
 
+    <string name="sign_up_verification_message">
+        Check your email inbox for the verification code and enter it here. \n
+        Please note, it could take a couple minutes to arrive and could be in the spam folder.
+    </string>
 
     <string name="feedback_email_subject">Speakify Feedback / Feature Request</string>
 

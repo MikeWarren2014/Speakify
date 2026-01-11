@@ -18,14 +18,39 @@ object Titles {
     const val Legal = "Legal"
 }
 
+object Routes {
+    const val About = "about"
+    const val ImportantApps = "important_apps"
+    const val Settings = "settings"
+    const val Support = "support"
+    const val Legal = "legal"
+    const val AccountDeletion = "account_deletion"
+}
+
 val navItems = listOf(
-    NavigationItem(Titles.ImportantApps, Icons.AutoMirrored.Filled.List, "important_apps"),
-    NavigationItem(Titles.Settings, Icons.Filled.Settings, "settings"),
     NavigationItem(
-        title = Titles.Support,
-        icon = Icons.Default.Email, // or Icons.Default.Feedback
-        route = "support"
+        Titles.ImportantApps,
+        Icons.AutoMirrored.Filled.List,
+        Routes.ImportantApps,
     ),
-    NavigationItem(Titles.Legal, Icons.Default.PrivacyTip, "legal"),
-    NavigationItem(Titles.About, Icons.Filled.Info, "about"),
+    NavigationItem(
+        Titles.Settings,
+        Icons.Filled.Settings,
+        Routes.Settings,
+    ),
+    NavigationItem(
+        Titles.Support,
+        Icons.Default.Email, // or Icons.Default.Feedback
+        Routes.Support,
+    ),
+    NavigationItem(
+        Titles.Legal,
+        Icons.Default.PrivacyTip,
+        Routes.Legal,
+    ),
+    NavigationItem(
+        Titles.About,
+        Icons.Filled.Info,
+        Routes.About,
+    ),
 )
