@@ -5,10 +5,25 @@ import androidx.navigation.NavController
 
 class NavDrawerViewModel : ViewModel() {
 
-    fun navigate(navController: NavController, route: String) {
+    lateinit var navController: NavController
+
+    fun goBack() {
+        navController.popBackStack()
+    }
+
+    fun navigate(route: String) {
+        navController.navigate(route)
+    }
+
+    fun navigateAndPopUpTo(route: String) {
         navController.navigate(route, {
             popUpTo(navController.graph.startDestinationId)
             launchSingleTop = true
         })
+    }
+
+    fun clearNavigationHistory() {
+        navController.popBackStack(navController.graph.startDestinationId, false)
+
     }
 }

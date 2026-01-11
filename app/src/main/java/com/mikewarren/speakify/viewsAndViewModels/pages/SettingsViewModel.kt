@@ -1,30 +1,22 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages
 
 import android.net.Uri
-import android.speech.tts.TextToSpeech
-import android.util.Log
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mikewarren.speakify.data.BackupRepository
+import com.mikewarren.speakify.data.SessionRepository
 import com.mikewarren.speakify.data.SettingsRepository
-import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
 import com.mikewarren.speakify.viewsAndViewModels.widgets.BaseTTSAutoCompletableViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,9 +26,10 @@ class SettingsViewModel @Inject constructor(
     settingsRepository: SettingsRepository,
     ttsManager: TTSManager,
     private val backupRepository: BackupRepository,
+    private val sessionRepository: SessionRepository,
 ) : BaseTTSAutoCompletableViewModel(settingsRepository, ttsManager) {
 
-    val childMainVM = MainViewModel()
+    val childMainVM = MainViewModel(sessionRepository)
     val useDarkTheme: Flow<Boolean?> = settingsRepository.useDarkTheme
     var isDarkThemePreferred by mutableStateOf<Boolean?>(null)
         private set
@@ -68,9 +61,6 @@ class SettingsViewModel @Inject constructor(
 
     private val _uiEvent = MutableSharedFlow<UiEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
-
-    private val _isAccountDeleteBtnClicked = MutableStateFlow(false)
-    val isAccountDeleteBtnClicked: StateFlow<Boolean> = _isAccountDeleteBtnClicked.asStateFlow()
 
     init {
         observeThemePreference()
@@ -144,13 +134,5 @@ class SettingsViewModel @Inject constructor(
                 _uiEvent.emit(UiEvent.ShowSnackbar("Import failed: ${result.exceptionOrNull()?.message}"))
             }
         }
-    }
-
-    fun onAccountDeleteBtnClicked() {
-        _isAccountDeleteBtnClicked.value = true
-    }
-
-    fun onAccountDeleteCancel() {
-        _isAccountDeleteBtnClicked.value = false
     }
 }

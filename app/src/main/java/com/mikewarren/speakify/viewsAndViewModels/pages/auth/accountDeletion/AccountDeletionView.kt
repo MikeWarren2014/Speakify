@@ -10,9 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -26,12 +29,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 
 @Composable
-fun AccountDeletionView(onCancel: () -> Unit, onDeleted: () -> Unit) {
-    val viewModel: AccountDeletionViewModel = viewModel()
+fun AccountDeletionView(viewModel: AccountDeletionViewModel = hiltViewModel(), onCancel: () -> Unit, onDeleted: () -> Unit) {
 
     val uiState by viewModel.uiState.collectAsState()
     when (uiState) {
@@ -39,7 +41,7 @@ fun AccountDeletionView(onCancel: () -> Unit, onDeleted: () -> Unit) {
             AreYouSureView(viewModel, onCancel)
         }
         AccountDeletionUiState.SigningOut -> {
-            SigningOutView(viewModel)
+            SigningOutView()
         }
         AccountDeletionUiState.Verified -> {
             DeletingAccountView(viewModel)
@@ -48,6 +50,9 @@ fun AccountDeletionView(onCancel: () -> Unit, onDeleted: () -> Unit) {
             onDeleted()
         }
 
+        AccountDeletionUiState.NotRequested -> {
+            // do nothing here, as the account deletion was NOT requested !
+        }
     }
 }
 
@@ -91,18 +96,27 @@ fun AreYouSureView(viewModel: AccountDeletionViewModel, onCancel: () -> Unit) {
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 OutlinedButton(
-                    onClick = onCancel,
+                    onClick = {
+                        viewModel.cancelAccountDeletion()
+                        onCancel()
+                    },
                     modifier = Modifier.weight(1f)
                 ) {
                     Text("Cancel")
                 }
                 Button(
-                    onClick = { viewModel.startDeletionProcess(onCancel) },
+                    onClick = { viewModel.startDeletionProcess() },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error
                     ),
                     modifier = Modifier.weight(1f)
                 ) {
+                    Icon(
+                        Icons.Filled.Warning,
+                        contentDescription = "Warning",
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                     Text("Delete My Account")
                 }
             }
@@ -111,7 +125,7 @@ fun AreYouSureView(viewModel: AccountDeletionViewModel, onCancel: () -> Unit) {
 }
 
 @Composable
-fun SigningOutView(viewModel: AccountDeletionViewModel) {
+fun SigningOutView() {
     Scaffold { paddingValues ->
         Column(
             modifier = Modifier
