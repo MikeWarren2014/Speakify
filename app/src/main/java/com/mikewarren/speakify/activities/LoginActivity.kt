@@ -16,8 +16,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mikewarren.speakify.data.constants.ActionConstants
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.ui.theme.MyApplicationTheme
 import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsViewModel
@@ -34,17 +34,14 @@ class LoginActivity : ComponentActivity() {
         setContent {
 
             val viewModel: MainViewModel by viewModels()
-            val settingsViewModel: SettingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
+            val settingsViewModel: SettingsViewModel by viewModels()
             val state by viewModel.uiState.collectAsStateWithLifecycle()
             val useDarkTheme by settingsViewModel.useDarkTheme.collectAsStateWithLifecycle(isSystemInDarkTheme())
 
             // When the state becomes SignedIn, navigate to MainActivity
             if (state is MainUiState.SignedIn) {
                 LaunchedEffect(state) {
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    }
-                    startActivity(intent)
+                    handleLoginSuccess(intent.getStringExtra(ActionConstants.PostLoginActionKey), viewModel)
                 }
             }
 
@@ -68,5 +65,18 @@ class LoginActivity : ComponentActivity() {
                 }
             })
         }
+    }
+
+    private fun handleLoginSuccess(postLoginAction: String?, viewModel: MainViewModel) {
+        startActivity(Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            if (postLoginAction == ActionConstants.ActionDeleteAccount) {
+                viewModel.markAccountVerified()
+
+                putExtra(ActionConstants.PostLoginActionKey, ActionConstants.ActionDeleteAccount)
+            }
+        })
+
+
     }
 }

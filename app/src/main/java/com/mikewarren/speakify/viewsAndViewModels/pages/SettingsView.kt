@@ -2,7 +2,6 @@ package com.mikewarren.speakify.viewsAndViewModels.pages
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,11 +11,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
@@ -28,12 +31,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -41,7 +41,7 @@ import com.mikewarren.speakify.viewsAndViewModels.widgets.TTSAutoCompletableView
 import kotlin.math.roundToInt
 
 @Composable
-fun SettingsView() {
+fun SettingsView(onNavigateToDeleteAccount: () -> Unit) {
     val viewModel: SettingsViewModel = hiltViewModel() // Use hiltViewModel()
     val isDarkThemePreferred by viewModel.useDarkTheme.collectAsState(initial = isSystemInDarkTheme())
     val shouldMaximizeVolumeOnScreenOff by viewModel.maximizeVolumeOnScreenOff.collectAsState()
@@ -90,99 +90,121 @@ fun SettingsView() {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Text(
-                text = "Settings",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 18.dp),
-            )
+            SettingsSection("General") {
+                SettingsToggleCard(
+                    title = "Dark Theme",
+                    description = "Enable or disable dark mode for the app.",
+                    isChecked = isDarkThemePreferred ?: false,
+                    onCheckedChange = { viewModel.updateUseDarkTheme(it) },
+                )
+                SingleColumnSettingsItemCard(
+                    title = "TTS Voice",
+                    description = "Select the voice for spoken notifications.",
+                ) {
+                    TTSAutoCompletableView(
+                        viewModel,
+                        onHandleSelection = { vm, selectedVoice ->
+                            vm.onSelectedVoice(selectedVoice)
+                        },
+                    )
+                }
+                MinVolumeSettingCard(
+                    title = "Minimum Volume",
+                    description = "The lowest volume level the app will use when speaking notifications.",
+                    currentValue = minVolume,
+                    onValueChange = { viewModel.setMinVolume(it) }
+                )
+                SettingsToggleCard(
+                    title = "Maximize volume on screen off",
+                    description = """
+Boosts notification volume to maximum when the screen is locked. 
 
-            // Refactored Theme Toggle Card
-            SettingsToggleCard(
-                title = "Dark Theme",
-                description = "Enable or disable dark mode for the app.",
-                isChecked = isDarkThemePreferred ?: false,
-                onCheckedChange = { viewModel.updateUseDarkTheme(it) },
-            )
-
-            SettingsItemCard(
-                title = "TTS Voice",
-                description = "Select the voice for spoken notifications.",
-            ) {
-                TTSAutoCompletableView(
-                    viewModel,
-                    onHandleSelection = { vm, selectedVoice ->
-                        vm.onSelectedVoice(selectedVoice)
-                    },
+WARNING: This may affect other audio like music or podcasts. Turn this off if you listen to other media.
+                    """,
+                    isChecked = shouldMaximizeVolumeOnScreenOff,
+                    onCheckedChange = { viewModel.setMaximizeVolumeOnScreenOff(it) },
                 )
             }
 
-            MinVolumeSettingCard(
-                title = "Minimum Volume",
-                description = "The lowest volume level the app will use when speaking notifications.",
-                currentValue = minVolume,
-                onValueChange = { viewModel.setMinVolume(it) }
-            )
-
-            SettingsToggleCard(
-                title = "Maximize volume on screen off",
-                description = "Boosts notification volume to maximum when the screen is locked to ensure you hear it",
-                isChecked = shouldMaximizeVolumeOnScreenOff,
-                onCheckedChange = { viewModel.setMaximizeVolumeOnScreenOff(it) },
-            )
-
-            Text(
-                text = "Privacy",
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-
-            SettingsToggleCard(
-                title = "Share Usage Data",
-                description = "Help improve Speakify by sharing anonymous crash reports and usage statistics via Firebase.",
-                isChecked = isCrashlyticsEnabled,
-                onCheckedChange = { viewModel.setCrashlyticsEnabled(it) },
-            )
-
-            Text(
-                text = "Data Management",
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-
-            SettingsItemCard(
-                title = "Backup Data",
-                description = "Save your settings and app list to a file."
-            ) {
-                Button(onClick = {
-                    // Suggest a filename
-                    exportLauncher.launch("speakify_backup_${System.currentTimeMillis()}.json")
-                }) {
-                    Text("Export")
-                }
+            SettingsSection("Privacy") {
+                SettingsToggleCard(
+                    title = "Share Usage Data",
+                    description = "Help improve Speakify by sharing anonymous crash reports and usage statistics via Firebase.",
+                    isChecked = isCrashlyticsEnabled,
+                    onCheckedChange = { viewModel.setCrashlyticsEnabled(it) },
+                )
             }
 
-            SettingsItemCard(
-                title = "Restore Data",
-                description = "Import settings from a backup file."
-            ) {
-                Button(onClick = {
-                    // Filter for JSON files
-                    importLauncher.launch(arrayOf("application/json"))
-                }) {
-                    Text("Import")
+            SettingsSection("Data Management") {
+                SettingsItemCard(
+                    title = "Backup Data",
+                    description = "Save your settings and app list to a file."
+                ) {
+                    Button(onClick = {
+                        exportLauncher.launch("speakify_backup_${System.currentTimeMillis()}.json")
+                    }) {
+                        Text("Export")
+                    }
+                }
+                SettingsItemCard(
+                    title = "Restore Data",
+                    description = "Import settings from a backup file."
+                ) {
+                    Button(onClick = {
+                        importLauncher.launch(arrayOf("application/json"))
+                    }) {
+                        Text("Import")
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            Button(
-                onClick = { viewModel.childMainVM.signOut() },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Sign Out")
+            SettingsSection("Danger Zone") {
+
+                Button(
+                    onClick = { viewModel.childMainVM.signOut() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Sign Out")
+                }
+
+                Button(
+                    onClick = {
+                        viewModel.childMainVM.markAccountForDeletion()
+                        onNavigateToDeleteAccount()
+                  },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error,
+                        contentColor = MaterialTheme.colorScheme.onError
+                    )
+                ) {
+                    Icon(
+                        Icons.Filled.Warning,
+                        contentDescription = "Warning",
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Text("Delete Account")
+                }
             }
         }
+    }
+}
+
+@Composable
+fun SettingsSection(
+    title: String,
+    content: @Composable () -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+        )
+        content()
     }
 }
 
@@ -193,15 +215,10 @@ fun MinVolumeSettingCard(
     currentValue: Int,
     onValueChange: (Int) -> Unit
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
-        ) {
-            // Title and Description
-            Text(text = title, style = MaterialTheme.typography.bodyLarge)
-            Text(text = description, style = MaterialTheme.typography.bodySmall)
+
+    SingleColumnSettingsItemCard(title,
+        description,
+        {
             Spacer(modifier = Modifier.height(8.dp))
             // Slider and Value
             Row(
@@ -220,8 +237,7 @@ fun MinVolumeSettingCard(
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
-        }
-    }
+        })
 }
 
 @Composable
@@ -256,6 +272,27 @@ fun SettingsItemCard(title: String,
                 Text(text = title, style = MaterialTheme.typography.bodyLarge)
                 Text(text = description, style = MaterialTheme.typography.bodySmall)
             }
+            content()
+        }
+    }
+}
+
+@Composable
+fun SingleColumnSettingsItemCard(
+    title: String,
+    description: String,
+    content: @Composable () -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            // Title and Description
+            Text(text = title, style = MaterialTheme.typography.bodyLarge)
+            Text(text = description, style = MaterialTheme.typography.bodySmall)
             content()
         }
     }

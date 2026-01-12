@@ -32,8 +32,4 @@ interface SettingsRepository {
 
     fun getContext() : Context
 
-    // TODO: this shouldn't be here in SettingsRepository, but right now I can't think of a better place to put it
-    val hasRequestedPhonePermissions: Flow<Boolean>
-
-    suspend fun setPhonePermissionsRequested(hasRequested: Boolean)
 }

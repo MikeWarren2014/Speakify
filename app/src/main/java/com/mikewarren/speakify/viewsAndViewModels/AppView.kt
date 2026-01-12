@@ -1,5 +1,6 @@
 package com.mikewarren.speakify.viewsAndViewModels
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -21,9 +22,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -31,7 +34,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.mikewarren.speakify.activities.LoginActivity
+import com.mikewarren.speakify.data.constants.ActionConstants
 import com.mikewarren.speakify.viewsAndViewModels.navigation.NavigationItem
+import com.mikewarren.speakify.viewsAndViewModels.navigation.Routes
 import com.mikewarren.speakify.viewsAndViewModels.navigation.Titles
 import com.mikewarren.speakify.viewsAndViewModels.navigation.navItems
 import com.mikewarren.speakify.viewsAndViewModels.pages.AboutView
@@ -39,6 +45,7 @@ import com.mikewarren.speakify.viewsAndViewModels.pages.DefaultView
 import com.mikewarren.speakify.viewsAndViewModels.pages.LegalView
 import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsView
 import com.mikewarren.speakify.viewsAndViewModels.pages.SupportView
+import com.mikewarren.speakify.viewsAndViewModels.pages.auth.accountDeletion.AccountDeletionView
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.ImportantAppsView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -46,6 +53,20 @@ import kotlinx.coroutines.launch
 @Composable
 fun AppView(navController: NavHostController = rememberNavController(),
             viewModel: AppViewModel = viewModel()) {
+    viewModel.childNavDrawerViewModel.navController = navController
+
+    val context = LocalContext.current
+    val activity = context as androidx.activity.ComponentActivity
+
+    LaunchedEffect(Unit) {
+        val postLoginAction = activity.intent.getStringExtra(ActionConstants.PostLoginActionKey)
+        if (postLoginAction == ActionConstants.ActionDeleteAccount) {
+            viewModel.childNavDrawerViewModel.navigate(Routes.AccountDeletion)
+            activity.intent.removeExtra(ActionConstants.PostLoginActionKey)
+        }
+
+    }
+
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
@@ -65,7 +86,7 @@ fun AppView(navController: NavHostController = rememberNavController(),
                             // Direct drawer closing within the Composable's coroutineScope:
                             scope.launch {
                                 drawerState.close()
-                                viewModel.childNavDrawerViewModel.navigate(navController, item.route) // Simpler ViewModel call
+                                viewModel.childNavDrawerViewModel.navigateAndPopUpTo(item.route)
                             }
                         }
                     )
@@ -73,10 +94,30 @@ fun AppView(navController: NavHostController = rememberNavController(),
             }
         }
     ) {
-        NavHost(navController, startDestination = "important_apps") {
+        NavHost(navController, startDestination = Routes.ImportantApps) {
             navItems.forEach { navItem : NavigationItem ->
                 composable(navItem.route) { ScreenContent(viewModel, navItem.title, drawerState, scope) }
             }
+
+            composable(Routes.AccountDeletion) {
+                val context = LocalContext.current
+
+                AccountDeletionView(
+                    onCancel = {
+                        viewModel.childNavDrawerViewModel.goBack()
+                    },
+                    onDeleted = {
+                        // After deletion, navigate to the login screen
+                        viewModel.childNavDrawerViewModel.clearNavigationHistory()
+                        //
+                        context.startActivity(Intent(context, LoginActivity::class.java)
+                            .apply {
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            })
+                    },
+                )
+            }
+
         }
     }
 }
@@ -100,13 +141,13 @@ fun ScreenContent(viewModel: AppViewModel, title: String, drawerState: DrawerSta
     , content = { paddingValues ->
         Column(modifier = Modifier.fillMaxSize().padding(paddingValues),
             content = {
-                ChildView(title, paddingValues)
+                ChildView(viewModel, title, paddingValues)
             })
     })
 }
 
 @Composable
-fun ChildView(title: String, paddingValues: PaddingValues) {
+fun ChildView(viewModel: AppViewModel, title: String, paddingValues: PaddingValues) {
     if (title == Titles.ImportantApps)
         return ImportantAppsView()
 
@@ -117,7 +158,9 @@ fun ChildView(title: String, paddingValues: PaddingValues) {
         return SupportView()
 
     if (title == Titles.Settings)
-        return SettingsView()
+        return SettingsView({
+            viewModel.childNavDrawerViewModel.navigate(Routes.AccountDeletion)
+        })
 
     if (title == Titles.Legal)
         return LegalView()

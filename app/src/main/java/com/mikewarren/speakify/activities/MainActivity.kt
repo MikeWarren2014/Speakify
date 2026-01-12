@@ -1,12 +1,10 @@
 package com.mikewarren.speakify.activities
 
 import android.Manifest
-import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -19,6 +17,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.data.constants.ActionConstants
+import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.ui.theme.MyApplicationTheme
 import com.mikewarren.speakify.utils.NotificationPermissionHelper
@@ -26,11 +28,15 @@ import com.mikewarren.speakify.viewsAndViewModels.AppView
 import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity()  {
 
+    @Inject
+    lateinit var settingsRepository: SettingsRepository
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,11 +51,24 @@ class MainActivity : ComponentActivity()  {
                 setContent {
                     val state by viewModel.childMainVM.uiState.collectAsStateWithLifecycle()
 
+                    val accountDeletionUiState by viewModel.childMainVM.accountDeletionUiState.collectAsStateWithLifecycle()
+
                     if (state is MainUiState.SignedOut) {
                         LaunchedEffect(state) {
                             val intent = Intent(this@MainActivity, LoginActivity::class.java).apply {
                                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                if (accountDeletionUiState is AccountDeletionUiState.Deleted) {
+                                    viewModel.childMainVM.cancelAccountDeletion()
+                                    return@apply
+                                }
+                                if (accountDeletionUiState !is AccountDeletionUiState.NotRequested) {
+                                    putExtra(
+                                        ActionConstants.PostLoginActionKey,
+                                        ActionConstants.ActionDeleteAccount
+                                    )
+                                }
                             }
+
                             startActivity(intent)
                         }
                     }
@@ -66,6 +85,14 @@ class MainActivity : ComponentActivity()  {
                     })
                 }
             }
+        }
+
+        lifecycleScope.launch {
+            val selectedTTSVoice = settingsRepository.selectedTTSVoice.first()
+            if (selectedTTSVoice.isNullOrEmpty()) {
+                settingsRepository.saveSelectedVoice(Constants.DefaultTTSVoice)
+            }
+
         }
 
         checkPermissions()

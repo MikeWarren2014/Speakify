@@ -160,16 +160,4 @@ class SettingsRepositoryImpl @Inject constructor(
         return context
     }
 
-    // TODO: this shouldn't be here in SettingsRepository, but right now I can't think of a better place to put it
-
-    override val hasRequestedPhonePermissions: Flow<Boolean> = userSettingsDataStore.data
-        .map { model: UserSettingsModel ->
-            model.hasRequestedPhonePermissions
-        }
-
-    override suspend fun setPhonePermissionsRequested(hasRequested: Boolean) {
-        userSettingsDataStore.updateData { model: UserSettingsModel ->
-            model.copy(hasRequestedPhonePermissions = hasRequested)
-        }
-    }
 }

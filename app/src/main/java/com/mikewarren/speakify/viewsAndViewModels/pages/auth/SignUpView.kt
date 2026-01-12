@@ -1,14 +1,19 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.auth
 
+import androidx.compose.animation.core.copy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -24,15 +29,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mikewarren.speakify.data.constants.DocumentURLs
 import com.mikewarren.speakify.data.uiStates.SignUpUiState
 import com.mikewarren.speakify.viewsAndViewModels.widgets.PasswordField
+import kotlin.text.append
+import kotlin.text.firstOrNull
+import com.mikewarren.speakify.R
+import kotlin.text.replace
 
 @Composable
 fun SignUpView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
@@ -60,37 +75,14 @@ fun SignUpScreenView(viewModel: SignUpViewModel = viewModel(), state: SignUpUiSt
 
 @Composable
 fun VerificationView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
-    var code by remember { mutableStateOf("") }
-    val focusManager = LocalFocusManager.current
-
-    Text(
-        "Check your email inbox for the verification code and enter it here. " +
-                "Please note, it could take a couple minutes to arrive and could be in the spam folder.",
-        textAlign = TextAlign.Center,
-        modifier = Modifier.padding(horizontal = 32.dp)
-    )
-
-
-    TextField(value = code,
-        onValueChange = { code = it },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Number,
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                focusManager.clearFocus()
-                viewModel.checkVerification(code, onDone)
-            }
-        ))
-
-    Button(onClick = { viewModel.checkVerification(code, onDone) }) { Text("Verify") }
+    EmailVerificationView(stringResource(R.string.sign_up_verification_message).replace("\n", "\n\n"),
+        onDone = { code -> viewModel.checkVerification(code, onDone) })
 }
 
 @Composable
 fun SignUpFormView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
-    var passwordVisible by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
+    val uriHandler = LocalUriHandler.current
 
     TextField(
         value = viewModel.model.firstName,
@@ -152,6 +144,58 @@ fun SignUpFormView(viewModel: SignUpViewModel = viewModel(), onDone: (success: B
         },
         focusManager = focusManager,
     )
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Checkbox(
+            checked = viewModel.model.agreedToTerms,
+            onCheckedChange = { viewModel.onModelChange(viewModel.model.copy(agreedToTerms = it)) }
+        )
+        LegalText(
+            onTermsClick = { uriHandler.openUri(DocumentURLs.TermsOfService) },
+            onPrivacyClick = { uriHandler.openUri(DocumentURLs.PrivacyPolicy) }
+        )
+    }
+    if (viewModel.errorsDict.containsKey("agreedToTerms")) {
+        Text(
+            text = viewModel.errorsDict["agreedToTerms"]!!,
+            color = MaterialTheme.colorScheme.error,
+            modifier = Modifier.padding(start = 12.dp)
+        )
+    }
     Button(onClick = { viewModel.signUp( onDone) }) { Text("Sign Up") }
 
+}
+
+
+@Composable
+private fun LegalText(onTermsClick: () -> Unit, onPrivacyClick: () -> Unit) {
+    val annotatedString = buildAnnotatedString {
+        append("I agree to the ")
+        pushStringAnnotation(tag = "TERMS", annotation = "Terms of Service")
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+            append("Terms of Service")
+        }
+        pop()
+        append(" and ")
+        pushStringAnnotation(tag = "PRIVACY", annotation = "Privacy Policy")
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+            append("Privacy Policy")
+        }
+        pop()
+        append(".")
+    }
+
+    ClickableText(
+        text = annotatedString,
+        style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
+        onClick = { offset ->
+            annotatedString.getStringAnnotations(tag = "TERMS", start = offset, end = offset)
+                .firstOrNull()?.let { onTermsClick() }
+            annotatedString.getStringAnnotations(tag = "PRIVACY", start = offset, end = offset)
+                .firstOrNull()?.let { onPrivacyClick() }
+        }
+    )
 }
