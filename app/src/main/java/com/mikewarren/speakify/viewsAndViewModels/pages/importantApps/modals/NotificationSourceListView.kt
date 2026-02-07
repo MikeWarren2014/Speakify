@@ -22,9 +22,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.mikewarren.speakify.viewsAndViewModels.widgets.AutoCompletableView
+import androidx.compose.ui.unit.sp
+import com.mikewarren.speakify.viewsAndViewModels.widgets.ModelAutoCompletableView
+import com.mikewarren.speakify.viewsAndViewModels.widgets.SimpleAutoCompletableView
 
 @Composable
 fun <T : Any?> NotificationSourceListView(
@@ -93,18 +99,38 @@ fun <T : Any?> NotificationSourceListView(
         }
     }
 
-    AutoCompletableView(
+    ModelAutoCompletableView(
         viewModel,
         onGetDefaultValues = { viewModel ->
             val vm = viewModel as BaseNotificationSourceListViewModel<T>
             if (vm.isLoading) {
-                return@AutoCompletableView emptyList()
+                return@ModelAutoCompletableView emptyList()
             }
             vm.allAddableSourceModels
                 .value
-                .map { model -> viewModel.toViewString(model) }
         },
-        onHandleSelection = { viewModel, selection -> (viewModel as BaseNotificationSourceListViewModel<T>).addNotificationSource(selection) }
+        onHandleSelection = { viewModel, selection -> (viewModel as BaseNotificationSourceListViewModel<T>).addNotificationSource(selection) },
+        onGetAnnotatedString = { choice: T ->
+            val viewString = viewModel.toViewString(choice)
+
+            buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Normal,
+                    )
+                ) {
+                    append(viewString)
+                }
+                addStringAnnotation(
+                    tag = "Clickable",
+                    annotation = viewString, 
+                    start = 0,
+                    end = viewString.length
+                )
+            }
+        },
     )
 }
 

@@ -21,21 +21,23 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mikewarren.speakify.data.Constants
 
 @Composable
-fun AutoCompletableView(
-    viewModel: BaseAutoCompletableViewModel,
-    onGetDefaultValues: (BaseAutoCompletableViewModel) -> List<String>,
-    onHandleSelection: (BaseAutoCompletableViewModel, String) -> Any,
+fun <T>AutoCompletableView(
+    viewModel: BaseAutoCompletableViewModel<T>,
+    onGetDefaultValues: (BaseAutoCompletableViewModel<T>) -> List<T>,
+    onHandleSelection: (BaseAutoCompletableViewModel<T>, String) -> Any,
+    onGetAnnotatedString: @Composable (T) -> AnnotatedString,
+    onCheckSearchValue: (String, List<T>) -> Boolean,
+    itemLineHeight: TextUnit = TextUnit.Unspecified,
+    supportingText: @Composable (() -> Unit)? = null,
 ) {
-    val filteredChoices : List<String> = remember(viewModel.searchText) {
+    val filteredChoices : List<T> = remember(viewModel.searchText) {
         (if (viewModel.searchText.isBlank()) {
             onGetDefaultValues(viewModel)
         } else {
@@ -57,7 +59,7 @@ fun AutoCompletableView(
             onValueChange = { text: String ->
                 viewModel.setAutocompleteDropdownState(true)
                 viewModel.onSearchTextChanged(text, { newValue:String ->
-                    if ((filteredChoices.size == 1) && (newValue in filteredChoices)) {
+                    if ((filteredChoices.size == 1) && (onCheckSearchValue(newValue, filteredChoices))) {
                         onHandleSelection(viewModel, newValue)
                     }
                 })
@@ -67,33 +69,16 @@ fun AutoCompletableView(
                 .onFocusChanged { focusState: FocusState ->
                     viewModel.setAutocompleteDropdownState(focusState.isFocused)
                 },
-            label = { Text("Search for ${viewModel.getLabel()}") }
+            label = { Text("Search for ${viewModel.getLabel()}") },
+            supportingText = supportingText
         )
 
         if (filteredChoices.isNotEmpty() && viewModel.isAutocompleteDropdownOpen) {
             LazyColumn(modifier = Modifier.height(200.dp)) {
                 items(filteredChoices.take(Constants.AutoCompleteListSizeLimit)) { choice ->
-                    val annotatedString = buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                color = MaterialTheme.colorScheme.onSurface,
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Normal,
-                                // Add more style attributes as needed
-                            )
-                        ) {
-                            append(choice)
-                        }
-                        addStringAnnotation(
-                            tag = "Clickable",
-                            annotation = choice, // Store choice as annotation
-                            start = 0,
-                            end = choice.length
-                        )
-                    }
+                    val annotatedString = onGetAnnotatedString(choice)
 
                     Text(
-                        // Use Text Composable
                         text = annotatedString,
                         modifier = Modifier
                             .clickable {
@@ -106,6 +91,7 @@ fun AutoCompletableView(
                             }
                             .padding(16.dp),
                         style = LocalTextStyle.current,
+                        lineHeight = itemLineHeight,
                     )
                 }
             }
