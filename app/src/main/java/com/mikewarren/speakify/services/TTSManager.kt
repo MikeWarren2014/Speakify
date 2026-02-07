@@ -1,7 +1,6 @@
 package com.mikewarren.speakify.services
 
 import android.content.Context
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.speech.tts.TextToSpeech
@@ -10,14 +9,14 @@ import androidx.annotation.OptIn
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.data.models.VoiceInfoModel
 import com.mikewarren.speakify.utils.TTSUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
 import java.util.UUID
@@ -160,18 +159,26 @@ class TTSManager @Inject constructor(
         }
     }
 
-    fun getRecommendedDefaultVoiceNames(): List<String> {
+    fun getRecommendedDefaultVoiceModels(): List<VoiceInfoModel> {
         if (isInitialized)
-            return TTSUtils.GetRecommendedDefaultVoiceNames(tts!!)
+            return TTSUtils.GetRecommendedDefaultVoiceModels(tts!!)
 
         return emptyList()
     }
 
-    fun getAllVoiceNames(): List<String> {
-        if (isInitialized)
-            return tts!!.voices.map { it.name }
+    /**
+     * Retrieves a structured list of all available TTS voices with user-friendly display names.
+     * @return A list of VoiceInfoModel objects, or an empty list if the TTS engine is not ready.
+     */
+    fun getVoiceInfoList(): List<VoiceInfoModel> {
+        if (!isInitialized || tts?.voices == null) {
+            Log.w("TTSManager", "getVoiceInfoList called but TTS is not initialized or has no voices.")
+            return emptyList()
+        }
 
-        return emptyList()
+        return tts!!.voices.mapNotNull { voice ->
+            TTSUtils.ToVoiceInfoModel(voice)
+        }
     }
 
     fun setVoice(voiceName: String? = Constants.DefaultTTSVoice) {

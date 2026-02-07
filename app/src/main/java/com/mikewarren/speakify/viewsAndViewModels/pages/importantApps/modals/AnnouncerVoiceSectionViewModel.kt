@@ -30,13 +30,15 @@ class AnnouncerVoiceSectionViewModel(
     }
 
     override fun onOpen() {
-        searchText = initialVoice
+        searchText = choicesMap[initialVoice]?.let { toViewString(it) } ?: initialVoice
     }
 
     override fun onSelectedVoice(voiceName: String) {
         viewModelScope.launch {
-            searchText = voiceName
             _selectedVoice.update { voiceName }
+            // searchText is already updated by observeVoicePreference or caller if needed
+            // but for immediate UI feedback:
+            searchText = choicesMap[voiceName]?.let { toViewString(it) } ?: voiceName
         }
     }
 

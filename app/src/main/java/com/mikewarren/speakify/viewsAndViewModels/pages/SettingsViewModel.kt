@@ -87,7 +87,7 @@ class SettingsViewModel @Inject constructor(
 
     override fun onSelectedVoice(voiceName: String) {
         viewModelScope.launch {
-            searchText = voiceName
+            searchText = choicesMap[voiceName]?.let { toViewString(it) } ?: voiceName
             settingsRepository.saveSelectedVoice(voiceName)
         }
     }
