@@ -108,7 +108,6 @@ fun <T : Any?> NotificationSourceListView(
             }
             vm.allAddableSourceModels
                 .value
-//                .map { model -> viewModel.toViewString(model) }
         },
         onHandleSelection = { viewModel, selection -> (viewModel as BaseNotificationSourceListViewModel<T>).addNotificationSource(selection) },
         onGetAnnotatedString = { choice: T ->
@@ -120,14 +119,13 @@ fun <T : Any?> NotificationSourceListView(
                         color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Normal,
-                        // Add more style attributes as needed
                     )
                 ) {
                     append(viewString)
                 }
                 addStringAnnotation(
                     tag = "Clickable",
-                    annotation = viewString, // Store choice as annotation
+                    annotation = viewString, 
                     start = 0,
                     end = viewString.length
                 )
