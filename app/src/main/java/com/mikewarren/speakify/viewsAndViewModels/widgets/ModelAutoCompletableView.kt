@@ -12,6 +12,7 @@ fun <T> ModelAutoCompletableView(
     onHandleSelection: (BaseAutoCompletableViewModel<T>, String) -> Any,
     onGetAnnotatedString: @Composable (T) -> AnnotatedString,
     itemLineHeight: TextUnit = TextUnit.Unspecified,
+    supportingText: @Composable (() -> Unit)? = null,
 ) {
     AutoCompletableView(
         viewModel = viewModel,
@@ -22,10 +23,6 @@ fun <T> ModelAutoCompletableView(
             filteredChoices.any { viewModel.toSourceString(it) == newValue }
         },
         itemLineHeight = itemLineHeight,
-        supportingText = {
-            viewModel.selection?.let {
-                Text(text = viewModel.toSourceString(it))
-            }
-        }
+        supportingText = supportingText,
     )
 }
