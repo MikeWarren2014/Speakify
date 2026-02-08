@@ -1,5 +1,6 @@
 package com.mikewarren.speakify.viewsAndViewModels.widgets
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
@@ -38,6 +39,11 @@ fun TTSAutoCompletableView(viewModel: BaseTTSAutoCompletableViewModel,
             }
         },
         itemLineHeight = 18.sp,
+        {
+            viewModel.selection?.let {
+                Text(text = viewModel.toSourceString(it))
+            }
+        },
     )
 
 }
