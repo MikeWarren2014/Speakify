@@ -32,6 +32,9 @@ class BaseImportantContactsListViewModel(
     }
 
     override fun toViewString(sourceModel: ContactModel): String {
+        if (sourceModel.name.isEmpty())
+            return sourceModel.phoneNumber
+
         return "${sourceModel.name} (${sourceModel.phoneNumber})"
     }
 
@@ -39,25 +42,20 @@ class BaseImportantContactsListViewModel(
         return "Contact Name/Phone Number"
     }
 
-    override fun getAllChoices(): List<String> {
+    override fun getAllChoices(): List<ContactModel> {
         if (allData.value.isEmpty())
             return emptyList()
 
         return allAddableSourceModels.value
             ?.filter { model: ContactModel -> model.phoneNumber.isNotEmpty() }
-            ?.map { model: ContactModel ->
-            if (model.name.isNotEmpty())
-                return@map "${model.name} (${model.phoneNumber})"
-
-            return@map model.phoneNumber
-        } ?: emptyList()
+            ?: emptyList()
     }
 
-    override fun filterChoices(searchText: String): List<String> {
+    override fun filterChoices(searchText: String): List<ContactModel> {
         if (("\\d+".toRegex().matches(searchText)) ||
             (PHONE_NUMBER_REGEX.toRegex().matches(searchText))) {
-            return getAllChoices().filter { choice: String ->
-                return@filter PhoneNumberUtils.ExtractOnlyDigits(extractPhoneNumberFromChoice(choice))
+            return getAllChoices().filter { choice: ContactModel ->
+                return@filter PhoneNumberUtils.ExtractOnlyDigits(choice.phoneNumber)
                     .contains(PhoneNumberUtils.ExtractOnlyDigits(searchText))
             }
         }

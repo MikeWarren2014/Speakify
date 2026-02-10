@@ -3,13 +3,14 @@ package com.mikewarren.speakify.utils
 import android.speech.tts.TextToSpeech
 import android.speech.tts.Voice
 import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.data.models.VoiceInfoModel
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
 import java.util.Locale
 
 object TTSUtils: ITaggable {
 
-    fun GetRecommendedDefaultVoiceNames(ttsEngine: TextToSpeech): List<String> {
+    fun GetRecommendedDefaultVoiceModels(ttsEngine: TextToSpeech): List<VoiceInfoModel> {
         val availableVoices = ttsEngine.voices?.toList() ?: emptyList()
         val usEnglishVoices = availableVoices.filter {
             it.locale == Locale.US && it.name.contains("en-us", ignoreCase = true)
@@ -33,7 +34,18 @@ object TTSUtils: ITaggable {
         if (preferredVoices.isNotEmpty())
             voices = usEnglishVoices
 
-        return voices.map { voice: Voice -> voice.name }
+        return voices.mapNotNull { voice: Voice -> ToVoiceInfoModel(voice) }
+    }
+
+    fun ToVoiceInfoModel(voice: Voice): VoiceInfoModel? {
+        return voice.locale?.let { locale ->
+            VoiceInfoModel(
+                name = voice.name,
+                displayName = locale.displayLanguage, // "English"
+                language = locale.language,           // "en"
+                country = locale.displayCountry       // "United States"
+            )
+        }
     }
 
     fun SetTTSVoice(tts: TextToSpeech?, voiceName: String? = Constants.DefaultTTSVoice) {
