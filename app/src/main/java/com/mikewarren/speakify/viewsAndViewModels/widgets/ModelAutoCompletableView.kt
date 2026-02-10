@@ -15,14 +15,14 @@ fun <T> ModelAutoCompletableView(
     supportingText: @Composable (() -> Unit)? = null,
 ) {
     AutoCompletableView(
-        viewModel = viewModel,
-        onGetDefaultValues = onGetDefaultValues,
-        onHandleSelection = onHandleSelection,
-        onGetAnnotatedString = onGetAnnotatedString,
+        viewModel,
+        onGetDefaultValues,
+        onHandleSelection,
+        onGetAnnotatedString,
         onCheckSearchValue = { newValue, filteredChoices ->
             filteredChoices.any { viewModel.toSourceString(it) == newValue }
         },
-        itemLineHeight = itemLineHeight,
-        supportingText = supportingText,
+        itemLineHeight,
+        supportingText,
     )
 }
