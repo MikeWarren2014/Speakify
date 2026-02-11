@@ -13,6 +13,8 @@ import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.models.VoiceInfoModel
 import com.mikewarren.speakify.utils.TTSUtils
+import com.mikewarren.speakify.utils.log.ITaggable
+import com.mikewarren.speakify.utils.log.LogUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
@@ -23,7 +25,6 @@ import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 @OptIn(UnstableApi::class)
 @Singleton
@@ -31,7 +32,8 @@ class TTSManager @Inject constructor(
     @ApplicationContext private val context: Context,
     private val settingsRepository: SettingsRepository,
     private val audioManager: SpeakifyAudioManager,
-) : TextToSpeech.OnInitListener {
+) : ITaggable,
+    TextToSpeech.OnInitListener {
 
     private var tts: TextToSpeech? = null
 
@@ -129,13 +131,16 @@ class TTSManager @Inject constructor(
                     @Deprecated("deprecated in API level 21")
                     override fun onError(id: String?) {
                         if (id == utteranceId && continuation.isActive) {
-                            continuation.resumeWithException(RuntimeException("TTS error"))
+                            // Resume normally but log the error to avoid crashing the app
+                            Log.e("TTSManager", "TTS error for utterance: $id")
+                            continuation.resume(Unit)
                         }
                     }
 
                     override fun onError(id: String?, errorCode: Int) {
                         if (id == utteranceId && continuation.isActive) {
-                            continuation.resumeWithException(RuntimeException("TTS error with code $errorCode"))
+                            Log.e("TTSManager", "TTS error with code $errorCode for utterance: $id")
+                            continuation.resume(Unit)
                         }
                     }
                 }
@@ -149,11 +154,17 @@ class TTSManager @Inject constructor(
                 val result = tts?.speak(text, TextToSpeech.QUEUE_ADD, null, utteranceId)
 
                 if (result == TextToSpeech.ERROR) {
+                    Log.e("TTSManager", "TTS engine returned ERROR for text: $text")
+                    FirebaseCrashlytics.getInstance()
+                        .log("TTS engine returned ERROR for text: $text")
                     if (continuation.isActive) {
-                        continuation.resumeWithException(RuntimeException("TTS engine returned ERROR"))
+                        // Resume without exception to prevent fatal crash
+                        continuation.resume(Unit)
                     }
                 }
             }
+        } catch (e: Exception) {
+            LogUtils.LogNonFatalError(TAG, "An error occurred while speaking", e)
         } finally {
             audioManager.restoreVolume()
         }
