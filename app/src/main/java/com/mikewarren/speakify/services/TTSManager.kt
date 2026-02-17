@@ -44,7 +44,6 @@ class TTSManager @Inject constructor(
     private var isInitializationStarted = false
     private val initializationLock = Any()
 
-    // NEW: A simple way to proactively start init
     init {
         initialize()
     }
@@ -57,65 +56,57 @@ class TTSManager @Inject constructor(
             if (isInitializationStarted) {
                 return
             }
-            // The TextToSpeech constructor must be called on a thread with a Looper.
             Handler(Looper.getMainLooper()).post {
                 try {
                     tts = TextToSpeech(context, this)
                 } catch (e: Exception) {
-                    Log.e("TTSManager", "Failed to instantiate TextToSpeech", e)
+                    Log.e(TAG, "Failed to instantiate TextToSpeech", e)
                     FirebaseCrashlytics.getInstance().recordException(e)
-                    isInitializationStarted = false // Allow retry
+                    isInitializationStarted = false
                 }
             }
             isInitializationStarted = true
-            Log.d("TTSManager", "TTS engine initialization queued.")
+            Log.d(TAG, "TTS engine initialization queued.")
         }
     }
 
-    /**
-     * This callback is fired when the TTS engine is ready.
-     */
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             isInitialized = true
-            Log.d("TTSManager", "TTS engine successfully initialized.")
+            Log.d(TAG, "TTS engine successfully initialized.")
             return
         }
         isInitialized = false
-        isInitializationStarted = false // Reset so we can try again next time
-        Log.e("TTSManager", "TTS engine failed to initialize with status: $status")
+        isInitializationStarted = false
+        Log.e(TAG, "TTS engine failed to initialize with status: $status")
         FirebaseCrashlytics.getInstance().log("TTS engine failed to initialize with status: $status")
     }
 
     suspend fun speak(text: String, voiceName: String? = null) {
-        // 1. Ensure we are initialized or initializing
         initialize()
 
-        // 2. Wait for initialization (with a timeout to prevent infinite hanging)
         if (!isInitialized) {
-            Log.d("TTSManager", "TTS not ready. Waiting for initialization...")
+            Log.d(TAG, "TTS not ready. Waiting for initialization...")
             try {
-                withTimeout(5000) { // Wait up to 5 seconds
+                withTimeout(5000) {
                     while (!isInitialized) {
-                        delay(100) // Check every 100ms
+                        delay(100)
                     }
                 }
             } catch (e: TimeoutCancellationException) {
-                Log.e("TTSManager", "Timed out waiting for TTS initialization.")
-                FirebaseCrashlytics.getInstance().log("Timed out waiting for TTS initialization.")
-                return // Give up if it takes too long
+                Log.e(TAG, "Timed out waiting for TTS initialization.")
+//                FirebaseCrashlytics.getInstance().log("Timed out waiting for TTS initialization.")
+                isInitializationStarted = false
+                return
             }
         }
 
-        // 3. Proceed with normal speaking logic
         val minVolume = settingsRepository.minVolume.first()
-
         val currentVolume = audioManager.getVolume()
         if (currentVolume < minVolume) {
             audioManager.setVolume(minVolume)
         }
         try {
-
             return suspendCancellableCoroutine { continuation ->
                 val utteranceId = UUID.randomUUID().toString()
 
@@ -131,34 +122,35 @@ class TTSManager @Inject constructor(
                     @Deprecated("deprecated in API level 21")
                     override fun onError(id: String?) {
                         if (id == utteranceId && continuation.isActive) {
-                            // Resume normally but log the error to avoid crashing the app
-                            Log.e("TTSManager", "TTS error for utterance: $id")
+                            Log.e(TAG, "TTS error for utterance: $id")
                             continuation.resume(Unit)
                         }
                     }
 
                     override fun onError(id: String?, errorCode: Int) {
                         if (id == utteranceId && continuation.isActive) {
-                            Log.e("TTSManager", "TTS error with code $errorCode for utterance: $id")
+                            Log.e(TAG, "TTS error with code $errorCode for utterance: $id")
+                            continuation.resume(Unit)
+                        }
+                    }
+
+                    override fun onStop(id: String?, interrupted: Boolean) {
+                        if (id == utteranceId && continuation.isActive) {
+                            Log.d(TAG, "TTS utterance stopped: $id")
                             continuation.resume(Unit)
                         }
                     }
                 }
 
-                // Set listener specifically for this utterance if possible,
-                // but standard API sets it globally.
                 tts?.setOnUtteranceProgressListener(listener)
-
                 TTSUtils.SetTTSVoice(tts, voiceName)
 
                 val result = tts?.speak(text, TextToSpeech.QUEUE_ADD, null, utteranceId)
 
                 if (result == TextToSpeech.ERROR) {
-                    Log.e("TTSManager", "TTS engine returned ERROR for text: $text")
-                    FirebaseCrashlytics.getInstance()
-                        .log("TTS engine returned ERROR for text: $text")
+                    Log.e(TAG, "TTS engine returned ERROR for text: $text")
+                    FirebaseCrashlytics.getInstance().log("TTS engine returned ERROR for text: $text")
                     if (continuation.isActive) {
-                        // Resume without exception to prevent fatal crash
                         continuation.resume(Unit)
                     }
                 }
@@ -173,7 +165,6 @@ class TTSManager @Inject constructor(
     fun getRecommendedDefaultVoiceModels(): List<VoiceInfoModel> {
         if (isInitialized)
             return TTSUtils.GetRecommendedDefaultVoiceModels(tts!!)
-
         return emptyList()
     }
 
@@ -183,7 +174,7 @@ class TTSManager @Inject constructor(
      */
     fun getVoiceInfoList(): List<VoiceInfoModel> {
         if (!isInitialized || tts?.voices == null) {
-            Log.w("TTSManager", "getVoiceInfoList called but TTS is not initialized or has no voices.")
+            Log.w(TAG, "getVoiceInfoList called but TTS is not initialized or has no voices.")
             return emptyList()
         }
 
@@ -199,8 +190,10 @@ class TTSManager @Inject constructor(
         TTSUtils.SetTTSVoice(tts!!, voiceName)
     }
 
-
     suspend fun stop() {
+        Log.d(TAG, "Force stopping TTS engine.")
+        // Force flush the queue with an empty string to clear any hardware buffers
+        tts?.speak("", TextToSpeech.QUEUE_FLUSH, null, "stop_utterance")
         tts?.stop()
         audioManager.restoreVolume()
     }

@@ -20,9 +20,7 @@ import com.mikewarren.speakify.data.db.UserAppsDao
 import com.mikewarren.speakify.services.PhoneCallAnnouncer
 import com.mikewarren.speakify.utils.PackageHelper
 import com.mikewarren.speakify.utils.SearchUtils
-import com.mikewarren.speakify.utils.TTSUtils
 import com.mikewarren.speakify.utils.log.ITaggable
-import com.mikewarren.speakify.utils.log.LogUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
@@ -46,13 +44,13 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
     @Inject
     lateinit var announcer: PhoneCallAnnouncer
 
-    // Inject the application-level CoroutineScope
     @Inject
     @ApplicationScope
     lateinit var applicationScope: CoroutineScope
 
-    private lateinit var defaultVoice: String;
-
+    companion object {
+        private var lastProcessedState: String? = null
+    }
 
     @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
     override fun onReceive(context: Context, intent: Intent) {
@@ -65,11 +63,21 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
             return
         }
 
-        val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
         val incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
 
-        // If the phone is NOT ringing, the only possible action is to stop announcing.
-        // This immediately handles OFFHOOK and IDLE states and prevents race conditions.
+        val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
+
+        if (incomingNumber.isNullOrEmpty()) {
+            Log.d(TAG, "Incoming number is null or empty. Cannot announce.")
+            return
+        }
+
+        if (state == lastProcessedState) {
+            Log.d(TAG, "State is the same as last time. Skipping.")
+            return
+        }
+        lastProcessedState = state
+
         if (state != TelephonyManager.EXTRA_STATE_RINGING) {
             Log.d(TAG, "Phone state is '$state'. Stopping any active announcement.")
             applicationScope.launch {
@@ -78,23 +86,18 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
             return
         }
 
-        // If we reach here, the state is definitely RINGING.
-        // Now, perform all checks inside a coroutine.
         val pendingResult = goAsync()
         applicationScope.launch {
             try {
-                // Verify the phone is STILL ringing before doing any work.
-                // This is our robust stale check.
                 val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
                 val liveState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) tm.callStateForSubscription else tm.callState
 
                 if (liveState != TelephonyManager.CALL_STATE_RINGING) {
                     Log.d(TAG, "State was RINGING, but is now '$liveState'. Stale event, aborting.")
-                    announcer.stopAnnouncing() // Ensure we are silent
+                    announcer.stopAnnouncing()
                     return@launch
                 }
 
-                // All conditions are met. Proceed with announcement logic.
                 Log.d(TAG, "Phone is ringing. Processing announcement.")
                 val importantApps = userAppsDao.getAll().map { it.packageName }
                 if (importantApps.none { PackageNames.PhoneAppList.contains(it) }) {
@@ -102,13 +105,7 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
                     return@launch
                 }
 
-                if (incomingNumber.isNullOrEmpty()) {
-                    Log.d(TAG, "Incoming number is null or empty. Cannot announce.")
-                    return@launch
-                }
-
-                // Fetch settings and announce
-                defaultVoice = settingsRepository.selectedTTSVoice.first() ?: Constants.DefaultTTSVoice
+                val defaultVoice = settingsRepository.selectedTTSVoice.first() ?: Constants.DefaultTTSVoice
                 val packageName = PackageHelper.GetDefaultDialerApp(context)
                 var appSettingsModel = appSettingsDao.getByPackageName(packageName!!)?.let { AppSettingsModel.FromDbModel(it) }
                 if (appSettingsModel == null) {
@@ -126,5 +123,4 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
             }
         }
     }
-
 }

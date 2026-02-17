@@ -38,7 +38,7 @@ android {
         applicationId packageName
         minSdk 28
         targetSdk androidSdkVersion
-        versionCode 16
+        versionCode 17
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
