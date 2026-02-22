@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Speakify</string>
-    <string name="title_activity_contactsFetcher">ContactsFetcherActivity</string>
 
     <!-- Navigation Titles -->
     <string name="title_about">About</string>
@@ -8,6 +7,14 @@
     <string name="title_settings">Settings</string>
     <string name="title_support">Support &amp; Feedback</string>
     <string name="title_legal">Legal</string>
+
+    <!-- Important Apps View -->
+    <string name="filter_apps">Filter Apps</string>
+    <string name="search_apps">Search Apps</string>
+    <string name="no_apps_added">No apps added yet!</string>
+    <string name="add_app_instruction">Click the Add App button below to add some apps to be alerted when they send you notifications.</string>
+    <string name="add_app">Add App</string>
+    <string name="delete_apps">Delete Apps (%1$d)</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
