@@ -22,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -29,8 +30,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.viewsAndViewModels.widgets.ModelAutoCompletableView
-import com.mikewarren.speakify.viewsAndViewModels.widgets.SimpleAutoCompletableView
 
 @Composable
 fun <T : Any?> NotificationSourceListView(
@@ -39,7 +40,8 @@ fun <T : Any?> NotificationSourceListView(
     val notificationSources by viewModel.notificationSources.collectAsState()
     val allData by viewModel.allData.collectAsState()
 
-    Text(text = "Alert me to Notifications From", style = MaterialTheme.typography.titleMedium)
+    Text(text = stringResource(R.string.alert_me_to_notifications_from),
+        style = MaterialTheme.typography.titleMedium)
     Spacer(modifier = Modifier.height(8.dp))
     LazyColumn(modifier = Modifier
         .heightIn(max = 200.dp)
@@ -54,7 +56,7 @@ fun <T : Any?> NotificationSourceListView(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Loading....",
+                        text = stringResource(R.string.loading),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f) // A bit lighter
@@ -75,13 +77,15 @@ fun <T : Any?> NotificationSourceListView(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "No ${viewModel.getNotificationSourcesName()} yet.",
+                        text = stringResource(R.string.no_notification_sources_yet,
+                            viewModel.getNotificationSourcesName()),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f) // A bit lighter
                     )
                     Text(
-                        text = "Add some ${viewModel.getNotificationSourcesName()} to be notified about just them, or leave this blank to be notified about ALL ${viewModel.getNotificationSourcesName()}.",
+                        text = stringResource(R.string.no_notification_sources_instruction,
+                            viewModel.getNotificationSourcesName()),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
@@ -146,7 +150,7 @@ fun NotificationSourceItemView(source: String, onRemove: () -> Unit) {
         Text(modifier = Modifier.padding(horizontal = 16.dp),
             text = source)
         IconButton(onClick = onRemove) {
-            Icon(Icons.Filled.Delete, contentDescription = "Remove")
+            Icon(Icons.Filled.Delete, contentDescription = stringResource(R.string.remove))
         }
     }
 }

@@ -15,10 +15,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.constants.PackageNames
 
 @Composable
@@ -38,7 +40,10 @@ fun AppSettingsView(
                 .padding(16.dp)
                 .fillMaxWidth()) {
                 // Title
-                Text(text = "${viewModel.appModel.appName} Settings", style = MaterialTheme.typography.titleLarge)
+                Text(
+                    text = stringResource(R.string.app_settings_title, viewModel.appModel.appName),
+                    style = MaterialTheme.typography.titleLarge
+                )
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Announcer Voice Section (needs Autocomplete)
@@ -57,13 +62,13 @@ fun AppSettingsView(
                         viewModel.cancel()
                         onClose()
                     }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.cancel))
                     }
                     Button(onClick = {
                         viewModel.save()
                         onClose()
                     }) {
-                        Text("Save")
+                        Text(stringResource(R.string.save))
                     }
                 }
             }
@@ -94,14 +99,14 @@ fun NotSupportedView(appName: String) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Notifications not yet supported",
+            text = stringResource(R.string.notifications_not_supported),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
         )
         Spacer(modifier = Modifier.padding(8.dp))
         Text(
-            text = "Currently, we do not support important notification sources for $appName.",
+            text = stringResource(R.string.notifications_not_supported_description, appName),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)

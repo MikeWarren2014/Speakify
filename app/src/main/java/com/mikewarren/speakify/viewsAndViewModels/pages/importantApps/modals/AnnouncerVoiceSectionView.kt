@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.viewsAndViewModels.widgets.TTSAutoCompletableView
 
 @Composable
@@ -14,7 +16,7 @@ fun AnnouncerVoiceSectionView(
     viewModel: AnnouncerVoiceSectionViewModel,
 ) {
     Row {
-        Text(text = "Announcer Voice")
+        Text(text = stringResource(R.string.announcer_voice))
         Spacer(modifier = Modifier.width(16.dp))
         TTSAutoCompletableView(viewModel = viewModel,
             onHandleSelection = { viewModel, selection: String ->

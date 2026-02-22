@@ -16,6 +16,19 @@
     <string name="add_app">Add App</string>
     <string name="delete_apps">Delete Apps (%1$d)</string>
 
+    <!-- App Settings Dialog -->
+    <string name="app_settings_title">%1$s Settings</string>
+    <string name="announcer_voice">Announcer Voice</string>
+    <string name="alert_me_to_notifications_from">Alert me to Notifications From</string>
+    <string name="notifications_not_supported">Notifications not yet supported</string>
+    <string name="notifications_not_supported_description">Currently, we do not support important notification sources for %1$s.</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="loading">Loading…&#8230;</string>
+    <string name="no_notification_sources_yet">No %1$s yet.</string>
+    <string name="no_notification_sources_instruction">Add some %1$s to be notified about just them, or leave this blank to be notified about ALL %1$s.</string>
+    <string name="remove">Remove</string>
+
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>

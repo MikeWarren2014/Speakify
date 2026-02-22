@@ -47,8 +47,7 @@ class BaseImportantContactsListViewModel(
             return emptyList()
 
         return allAddableSourceModels.value
-            ?.filter { model: ContactModel -> model.phoneNumber.isNotEmpty() }
-            ?: emptyList()
+            .filter { model: ContactModel -> model.phoneNumber.isNotEmpty() }
     }
 
     override fun filterChoices(searchText: String): List<ContactModel> {
@@ -61,22 +60,6 @@ class BaseImportantContactsListViewModel(
         }
         return super.filterChoices(searchText)
 
-    }
-
-    private fun extractPhoneNumberFromChoice(choice: String): String {
-        if (choice.last() == ')') {
-            val result : MatchResult? = """(.*(?<=[^\d+]|[A-Za-z\d+]) )(?<phone>\(${PHONE_NUMBER_REGEX}\))"""
-                .toRegex()
-                .find(choice)
-            if (result == null)
-                return ""
-            val matchGroup: MatchGroup? = result.groups["phone"]
-            if (matchGroup == null)
-                return ""
-
-            return matchGroup.value
-        }
-        return choice
     }
 
     companion object {
