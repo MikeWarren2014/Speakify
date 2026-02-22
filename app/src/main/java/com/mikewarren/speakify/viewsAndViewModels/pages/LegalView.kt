@@ -29,11 +29,6 @@ fun LegalView() {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            text = "Legal",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
 
         Text(
             text = "Review our policies and terms of service.",

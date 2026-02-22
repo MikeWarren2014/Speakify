@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -38,7 +39,6 @@ import com.mikewarren.speakify.activities.LoginActivity
 import com.mikewarren.speakify.data.constants.ActionConstants
 import com.mikewarren.speakify.viewsAndViewModels.navigation.NavigationItem
 import com.mikewarren.speakify.viewsAndViewModels.navigation.Routes
-import com.mikewarren.speakify.viewsAndViewModels.navigation.Titles
 import com.mikewarren.speakify.viewsAndViewModels.navigation.navItems
 import com.mikewarren.speakify.viewsAndViewModels.pages.AboutView
 import com.mikewarren.speakify.viewsAndViewModels.pages.DefaultView
@@ -64,7 +64,6 @@ fun AppView(navController: NavHostController = rememberNavController(),
             viewModel.childNavDrawerViewModel.navigate(Routes.AccountDeletion)
             activity.intent.removeExtra(ActionConstants.PostLoginActionKey)
         }
-
     }
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -78,12 +77,12 @@ fun AppView(navController: NavHostController = rememberNavController(),
             ModalDrawerSheet {
                 Spacer(Modifier.width(12.dp))
                 navItems.forEach { item : NavigationItem ->
+                    val title = stringResource(item.titleResId)
                     NavigationDrawerItem(
-                        icon = { Icon(item.icon, contentDescription = item.title) },
-                        label = { Text(item.title) },
+                        icon = { Icon(item.icon, contentDescription = title) },
+                        label = { Text(title) },
                         selected = currentRoute == item.route,
                         onClick = {
-                            // Direct drawer closing within the Composable's coroutineScope:
                             scope.launch {
                                 drawerState.close()
                                 viewModel.childNavDrawerViewModel.navigateAndPopUpTo(item.route)
@@ -96,7 +95,9 @@ fun AppView(navController: NavHostController = rememberNavController(),
     ) {
         NavHost(navController, startDestination = Routes.ImportantApps) {
             navItems.forEach { navItem : NavigationItem ->
-                composable(navItem.route) { ScreenContent(viewModel, navItem.title, drawerState, scope) }
+                composable(navItem.route) { 
+                    ScreenContent(viewModel, navItem.titleResId, navItem.route, drawerState, scope) 
+                }
             }
 
             composable(Routes.AccountDeletion) {
@@ -107,9 +108,7 @@ fun AppView(navController: NavHostController = rememberNavController(),
                         viewModel.childNavDrawerViewModel.goBack()
                     },
                     onDeleted = {
-                        // After deletion, navigate to the login screen
                         viewModel.childNavDrawerViewModel.clearNavigationHistory()
-                        //
                         context.startActivity(Intent(context, LoginActivity::class.java)
                             .apply {
                                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -117,16 +116,14 @@ fun AppView(navController: NavHostController = rememberNavController(),
                     },
                 )
             }
-
         }
     }
 }
 
-// Reusable screen content
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenContent(viewModel: AppViewModel, title: String, drawerState: DrawerState, scope: CoroutineScope) {
+fun ScreenContent(viewModel: AppViewModel, titleResId: Int, route: String, drawerState: DrawerState, scope: CoroutineScope) {
+    val title = stringResource(titleResId)
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -141,29 +138,21 @@ fun ScreenContent(viewModel: AppViewModel, title: String, drawerState: DrawerSta
     , content = { paddingValues ->
         Column(modifier = Modifier.fillMaxSize().padding(paddingValues),
             content = {
-                ChildView(viewModel, title, paddingValues)
+                ChildView(viewModel, route, paddingValues)
             })
     })
 }
 
 @Composable
-fun ChildView(viewModel: AppViewModel, title: String, paddingValues: PaddingValues) {
-    if (title == Titles.ImportantApps)
-        return ImportantAppsView()
-
-    if (title == Titles.About)
-        return AboutView()
-
-    if (title == Titles.Support)
-        return SupportView()
-
-    if (title == Titles.Settings)
-        return SettingsView({
+fun ChildView(viewModel: AppViewModel, route: String, paddingValues: PaddingValues) {
+    when (route) {
+        Routes.ImportantApps -> ImportantAppsView()
+        Routes.About -> AboutView()
+        Routes.Support -> SupportView()
+        Routes.Settings -> SettingsView({
             viewModel.childNavDrawerViewModel.navigate(Routes.AccountDeletion)
         })
-
-    if (title == Titles.Legal)
-        return LegalView()
-
-    return DefaultView(title, paddingValues)
+        Routes.Legal -> LegalView()
+        else -> DefaultView(route, paddingValues)
+    }
 }

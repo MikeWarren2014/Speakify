@@ -21,11 +21,6 @@ fun AboutView() {
     val aboutInfo by viewModel.aboutInfo.collectAsState()
 
     Column(modifier = Modifier.padding(16.dp)) {
-        Text(
-            text = "About",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
-        )
         Spacer(modifier = Modifier.height(16.dp))
         HeaderView("What is this app?")
         Text(text = "Feeling bombarded by notifications, even from the same app? This app could help, as it lets you pick the ones you care most about, and read them to you when they pop up!")
