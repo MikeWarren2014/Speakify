@@ -13,7 +13,7 @@ class AppInfoProvider @Inject constructor(
 ) {
     fun getAboutInfo(): AboutInfo {
         val author = "Mike Warren"
-        
+
         return try {
             val packageManager = context.packageManager
             val packageInfo = packageManager.getPackageInfo(context.packageName, 0)

@@ -90,6 +90,16 @@
     <string name="account_deletion_deleting">Deleting your account…</string>
     <string name="account_deletion_please_wait">This may take a moment. Please do not close the app.</string>
 
+    <!-- AutoComplete widgets -->
+    <string name="search_for_entities">Search for %1$s</string>
+
+    <!-- AutoComplete labels -->
+    <string name="autocomplete_label_notifications">Notification Sources</string>
+    <string name="autocomplete_label_contacts">Contact Name/Phone Number</string>
+    <string name="autocomplete_label_tts">TTS Voice</string>
+
+
+
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>

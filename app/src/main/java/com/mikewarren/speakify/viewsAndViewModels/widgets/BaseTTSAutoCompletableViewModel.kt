@@ -1,6 +1,7 @@
 package com.mikewarren.speakify.viewsAndViewModels.widgets
 
 import androidx.lifecycle.viewModelScope
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.models.VoiceInfoModel
@@ -18,8 +19,8 @@ abstract class BaseTTSAutoCompletableViewModel(
         getAllChoices().associateBy { toSourceString(it) }
     }
 
-    override fun getLabel(): String {
-        return "TTS Voice"
+    override fun getLabel(): UiText {
+        return UiText.StringResource(R.string.autocomplete_label_tts)
     }
 
     override fun toViewString(sourceModel: VoiceInfoModel): String {

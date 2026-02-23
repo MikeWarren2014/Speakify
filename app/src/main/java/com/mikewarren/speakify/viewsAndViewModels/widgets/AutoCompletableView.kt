@@ -21,10 +21,12 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.Constants
 
 @Composable
@@ -69,7 +71,8 @@ fun <T>AutoCompletableView(
                 .onFocusChanged { focusState: FocusState ->
                     viewModel.setAutocompleteDropdownState(focusState.isFocused)
                 },
-            label = { Text("Search for ${viewModel.getLabel()}") },
+            label = { Text(stringResource(R.string.search_for_entities,
+                viewModel.getLabel().asString())) },
             supportingText = supportingText
         )
 
