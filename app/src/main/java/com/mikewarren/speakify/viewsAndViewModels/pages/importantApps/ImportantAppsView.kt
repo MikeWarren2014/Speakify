@@ -19,16 +19,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AddAppMenuView
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.DeleteConfirmationDialog
@@ -54,13 +55,13 @@ fun ImportantAppsView() {
         // Search Bar
         OutlinedTextField(
             leadingIcon = {
-                Icon(Icons.Filled.Search, contentDescription = "Filter Apps")
+                Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.filter_apps))
             },
             value = searchText,
             onValueChange = { viewModel.onSearchTextChange(it) },
             modifier = Modifier.fillMaxWidth()
                 .padding(top = 24.dp),
-            placeholder = { Text("Search Apps") }
+            placeholder = { Text(stringResource(R.string.search_apps)) }
         )
         Spacer(Modifier.height(16.dp))
 
@@ -75,13 +76,13 @@ fun ImportantAppsView() {
                 verticalArrangement = Arrangement.Center // Center vertically as well
             ) {
                 Text(
-                    text = "No apps added yet!",
+                    text = stringResource(R.string.no_apps_added),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
                 Text(
-                    text = "Click the Add App button below to add some apps to be alerted when they send you notifications.",
+                    text = stringResource(R.string.add_app_instruction),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
@@ -100,14 +101,14 @@ fun ImportantAppsView() {
         Spacer(Modifier.height(16.dp))
 
         // Add/Delete Button (Use observed selectedCount)
-        var buttonText: String = "Add App"
+        var buttonText: String = stringResource(R.string.add_app)
         var colors = ButtonDefaults.buttonColors()
         if (selectedCount > 0) {
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Red,
                 contentColor = Color.White,
             )
-            buttonText = "Delete Apps ($selectedCount)"
+            buttonText = stringResource(R.string.delete_apps, selectedCount)
         }
 
         Button(

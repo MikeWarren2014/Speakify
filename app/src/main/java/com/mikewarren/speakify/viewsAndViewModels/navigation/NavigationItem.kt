@@ -1,5 +1,6 @@
 package com.mikewarren.speakify.viewsAndViewModels.navigation
 
+import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Email
@@ -7,16 +8,9 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.mikewarren.speakify.R
 
-data class NavigationItem(val title: String, val icon: ImageVector, val route: String)
-
-object Titles {
-    const val About = "About"
-    const val ImportantApps = "Important Apps"
-    const val Settings = "Settings"
-    const val Support = "Support & Feedback"
-    const val Legal = "Legal"
-}
+data class NavigationItem(@StringRes val titleResId: Int, val icon: ImageVector, val route: String)
 
 object Routes {
     const val About = "about"
@@ -29,27 +23,27 @@ object Routes {
 
 val navItems = listOf(
     NavigationItem(
-        Titles.ImportantApps,
+        R.string.title_important_apps,
         Icons.AutoMirrored.Filled.List,
         Routes.ImportantApps,
     ),
     NavigationItem(
-        Titles.Settings,
+        R.string.title_settings,
         Icons.Filled.Settings,
         Routes.Settings,
     ),
     NavigationItem(
-        Titles.Support,
-        Icons.Default.Email, // or Icons.Default.Feedback
+        R.string.title_support,
+        Icons.Default.Email,
         Routes.Support,
     ),
     NavigationItem(
-        Titles.Legal,
+        R.string.title_legal,
         Icons.Default.PrivacyTip,
         Routes.Legal,
     ),
     NavigationItem(
-        Titles.About,
+        R.string.title_about,
         Icons.Filled.Info,
         Routes.About,
     ),

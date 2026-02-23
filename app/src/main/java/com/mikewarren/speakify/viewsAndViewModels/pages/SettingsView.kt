@@ -34,15 +34,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.viewsAndViewModels.widgets.TTSAutoCompletableView
 import kotlin.math.roundToInt
 
 @Composable
 fun SettingsView(onNavigateToDeleteAccount: () -> Unit) {
-    val viewModel: SettingsViewModel = hiltViewModel() // Use hiltViewModel()
+    val viewModel: SettingsViewModel = hiltViewModel()
     val isDarkThemePreferred by viewModel.useDarkTheme.collectAsState(initial = isSystemInDarkTheme())
     val shouldMaximizeVolumeOnScreenOff by viewModel.maximizeVolumeOnScreenOff.collectAsState()
     val isCrashlyticsEnabled by viewModel.isCrashlyticsEnabled.collectAsStateWithLifecycle()
@@ -90,16 +92,16 @@ fun SettingsView(onNavigateToDeleteAccount: () -> Unit) {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            SettingsSection("General") {
+            SettingsSection(stringResource(R.string.settings_section_general)) {
                 SettingsToggleCard(
-                    title = "Dark Theme",
-                    description = "Enable or disable dark mode for the app.",
+                    title = stringResource(R.string.settings_dark_theme_title),
+                    description = stringResource(R.string.settings_dark_theme_description),
                     isChecked = isDarkThemePreferred ?: false,
                     onCheckedChange = { viewModel.updateUseDarkTheme(it) },
                 )
                 SingleColumnSettingsItemCard(
-                    title = "TTS Voice",
-                    description = "Select the voice for spoken notifications.",
+                    title = stringResource(R.string.settings_tts_voice_title),
+                    description = stringResource(R.string.settings_tts_voice_description),
                 ) {
                     TTSAutoCompletableView(
                         viewModel,
@@ -109,64 +111,60 @@ fun SettingsView(onNavigateToDeleteAccount: () -> Unit) {
                     )
                 }
                 MinVolumeSettingCard(
-                    title = "Minimum Volume",
-                    description = "The lowest volume level the app will use when speaking notifications.",
+                    title = stringResource(R.string.settings_min_volume_title),
+                    description = stringResource(R.string.settings_min_volume_description),
                     currentValue = minVolume,
                     onValueChange = { viewModel.setMinVolume(it) }
                 )
                 SettingsToggleCard(
-                    title = "Maximize volume on screen off",
-                    description = """
-Boosts notification volume to maximum when the screen is locked. 
-
-WARNING: This may affect other audio like music or podcasts. Turn this off if you listen to other media.
-                    """,
+                    title = stringResource(R.string.settings_maximize_volume_title),
+                    description = stringResource(R.string.settings_maximize_volume_description),
                     isChecked = shouldMaximizeVolumeOnScreenOff,
                     onCheckedChange = { viewModel.setMaximizeVolumeOnScreenOff(it) },
                 )
             }
 
-            SettingsSection("Privacy") {
+            SettingsSection(stringResource(R.string.settings_section_privacy)) {
                 SettingsToggleCard(
-                    title = "Share Usage Data",
-                    description = "Help improve Speakify by sharing anonymous crash reports and usage statistics via Firebase.",
+                    title = stringResource(R.string.settings_crashlytics_title),
+                    description = stringResource(R.string.settings_crashlytics_description),
                     isChecked = isCrashlyticsEnabled,
                     onCheckedChange = { viewModel.setCrashlyticsEnabled(it) },
                 )
             }
 
-            SettingsSection("Data Management") {
+            SettingsSection(stringResource(R.string.settings_section_data)) {
                 SettingsItemCard(
-                    title = "Backup Data",
-                    description = "Save your settings and app list to a file."
+                    title = stringResource(R.string.settings_backup_title),
+                    description = stringResource(R.string.settings_backup_description)
                 ) {
                     Button(onClick = {
                         exportLauncher.launch("speakify_backup_${System.currentTimeMillis()}.json")
                     }) {
-                        Text("Export")
+                        Text(stringResource(R.string.settings_export))
                     }
                 }
                 SettingsItemCard(
-                    title = "Restore Data",
-                    description = "Import settings from a backup file."
+                    title = stringResource(R.string.settings_restore_title),
+                    description = stringResource(R.string.settings_restore_description)
                 ) {
                     Button(onClick = {
                         importLauncher.launch(arrayOf("application/json"))
                     }) {
-                        Text("Import")
+                        Text(stringResource(R.string.settings_import))
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            SettingsSection("Danger Zone") {
+            SettingsSection(stringResource(R.string.settings_section_danger)) {
 
                 Button(
                     onClick = { viewModel.childMainVM.signOut() },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Sign Out")
+                    Text(stringResource(R.string.settings_sign_out))
                 }
 
                 Button(
@@ -182,11 +180,11 @@ WARNING: This may affect other audio like music or podcasts. Turn this off if yo
                 ) {
                     Icon(
                         Icons.Filled.Warning,
-                        contentDescription = "Warning",
+                        contentDescription = stringResource(R.string.warning),
                         modifier = Modifier.size(ButtonDefaults.IconSize)
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text("Delete Account")
+                    Text(stringResource(R.string.settings_delete_account))
                 }
             }
         }

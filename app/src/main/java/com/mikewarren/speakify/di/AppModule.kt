@@ -12,6 +12,8 @@ import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.DbProvider
 import com.mikewarren.speakify.data.db.NotificationSourcesDao
 import com.mikewarren.speakify.data.db.UserAppsDao
+import com.mikewarren.speakify.utils.AppInfoProvider
+import com.mikewarren.speakify.viewsAndViewModels.pages.AboutInfo
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -30,11 +32,9 @@ abstract class AppModule {
     ): SettingsRepository
 
     @Binds
-    @Singleton // If you want a single instance
+    @Singleton
     abstract fun bindAppsRepository(
         appsRepositoryImpl: AppsRepositoryImpl
-        // If the repository has dependencies, list them as parameters here
-        // e.g., database: YourDatabase
     ): AppsRepository
 
     companion object {
@@ -49,7 +49,6 @@ abstract class AppModule {
         @Singleton
         fun provideAppsRepository(
             @ApplicationContext context: Context,
-            
         ): AppsRepositoryImpl = AppsRepositoryImpl(context)
 
         @Provides
@@ -76,5 +75,10 @@ abstract class AppModule {
             return database.notificationSourcesDao()
         }
 
+        @Provides
+        @Singleton
+        fun provideAboutInfo(provider: AppInfoProvider): AboutInfo {
+            return provider.getAboutInfo()
+        }
     }
 }
