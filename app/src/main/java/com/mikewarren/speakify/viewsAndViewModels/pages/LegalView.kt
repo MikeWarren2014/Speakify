@@ -1,7 +1,6 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.viewsAndViewModels.widgets.card.ActionCard
 import androidx.core.net.toUri
 import com.mikewarren.speakify.data.constants.DocumentURLs
@@ -31,14 +32,14 @@ fun LegalView() {
     ) {
 
         Text(
-            text = "Review our policies and terms of service.",
+            text = stringResource(R.string.legal_instruction),
             style = MaterialTheme.typography.bodyMedium
         )
 
         ActionCard(
-            title = "Privacy Policy",
-            description = "Read about how we handle and protect your data.",
-            buttonText = "View Policy",
+            title = stringResource(R.string.legal_privacy_policy_title),
+            description = stringResource(R.string.legal_privacy_policy_description),
+            buttonText = stringResource(R.string.legal_privacy_policy_button),
             icon = Icons.Default.PrivacyTip
         ) {
             context.startActivity(Intent(
@@ -47,9 +48,9 @@ fun LegalView() {
         }
 
         ActionCard(
-            title = "Terms of Service",
-            description = "Read our terms and conditions for using Speakify.",
-            buttonText = "View Terms",
+            title = stringResource(R.string.legal_terms_of_service_title),
+            description = stringResource(R.string.legal_terms_of_service_description),
+            buttonText = stringResource(R.string.legal_terms_of_service_button),
             icon = Icons.Default.Description
         ) {
             context.startActivity(Intent(

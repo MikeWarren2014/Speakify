@@ -76,16 +76,18 @@ fun <T : Any?> NotificationSourceListView(
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    val notificationSourcesName = viewModel.getNotificationSourcesName()
+
                     Text(
                         text = stringResource(R.string.no_notification_sources_yet,
-                            viewModel.getNotificationSourcesName()),
+                            notificationSourcesName),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f) // A bit lighter
                     )
                     Text(
                         text = stringResource(R.string.no_notification_sources_instruction,
-                            viewModel.getNotificationSourcesName()),
+                            notificationSourcesName),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)

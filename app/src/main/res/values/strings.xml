@@ -28,6 +28,67 @@
     <string name="no_notification_sources_yet">No %1$s yet.</string>
     <string name="no_notification_sources_instruction">Add some %1$s to be notified about just them, or leave this blank to be notified about ALL %1$s.</string>
     <string name="remove">Remove</string>
+    <string name="notification_sources">notification sources</string>
+
+    <!-- Settings View -->
+    <string name="settings_section_general">General</string>
+    <string name="settings_dark_theme_title">Dark Theme</string>
+    <string name="settings_dark_theme_description">Enable or disable dark mode for the app.</string>
+    <string name="settings_tts_voice_title">TTS Voice</string>
+    <string name="settings_tts_voice_description">Select the voice for spoken notifications.</string>
+    <string name="settings_min_volume_title">Minimum Volume</string>
+    <string name="settings_min_volume_description">The lowest volume level the app will use when speaking notifications.</string>
+    <string name="settings_maximize_volume_title">Maximize volume on screen off</string>
+    <string name="settings_maximize_volume_description">Boosts notification volume to maximum when the screen is locked.\n\nWARNING: This may affect other audio like music or podcasts. Turn this off if you listen to other media.</string>
+    <string name="settings_section_privacy">Privacy</string>
+    <string name="settings_crashlytics_title">Share Usage Data</string>
+    <string name="settings_crashlytics_description">Help improve Speakify by sharing anonymous crash reports and usage statistics via Firebase.</string>
+    <string name="settings_section_data">Data Management</string>
+    <string name="settings_backup_title">Backup Data</string>
+    <string name="settings_backup_description">Save your settings and app list to a file.</string>
+    <string name="settings_export">Export</string>
+    <string name="settings_restore_title">Restore Data</string>
+    <string name="settings_restore_description">Import settings from a backup file.</string>
+    <string name="settings_import">Import</string>
+    <string name="settings_section_danger">Danger Zone</string>
+    <string name="settings_sign_out">Sign Out</string>
+    <string name="settings_delete_account">Delete Account</string>
+    <string name="warning">Warning</string>
+
+    <!-- About View -->
+    <string name="about_header_what">What is this app?</string>
+    <string name="about_description_para1">Feeling bombarded by notifications, even from the same app? This app could help, as it lets you pick the ones you care most about, and read them to you when they pop up!</string>
+    <string name="about_description_para2">This app will even let you prioritize what notifications from an app (e.g. what messages/calls/...) to report to you!</string>
+    <string name="about_header_app_info">App Info</string>
+    <string name="about_label_app">App: %1$s</string>
+    <string name="about_label_version">Version: %1$s</string>
+    <string name="about_label_author">Author: %1$s</string>
+    <string name="about_loading">Loading app information…</string>
+
+    <!-- Legal View -->
+    <string name="legal_instruction">Review our policies and terms of service.</string>
+    <string name="legal_privacy_policy_title">Privacy Policy</string>
+    <string name="legal_privacy_policy_description">Read about how we handle and protect your data.</string>
+    <string name="legal_privacy_policy_button">View Policy</string>
+    <string name="legal_terms_of_service_title">Terms of Service</string>
+    <string name="legal_terms_of_service_description">Read our terms and conditions for using Speakify.</string>
+    <string name="legal_terms_of_service_button">View Terms</string>
+
+    <!-- Support View -->
+    <string name="support_instruction_title">We\'d love to hear from you!</string>
+    <string name="support_instruction_description">Since this is an early release, your feedback is crucial in shaping the future of Speakify.</string>
+    <string name="support_feedback_card_title">Send Feedback</string>
+    <string name="support_feedback_card_description">Have a feature request or found a bug? Email us directly.</string>
+    <string name="support_feedback_card_button">Email Us</string>
+
+    <!-- Account Deletion View -->
+    <string name="account_deletion_are_you_sure">Are You Absolutely Sure?</string>
+    <string name="account_deletion_warning_para1">This action is irreversible and cannot be undone. All of your data, including your settings and saved app preferences, will be permanently deleted.</string>
+    <string name="account_deletion_warning_reverify">For your security, you will be signed out and must sign back in to confirm account deletion.</string>
+    <string name="delete_my_account">Delete My Account</string>
+    <string name="account_deletion_signing_out">Signing you out…</string>
+    <string name="account_deletion_deleting">Deleting your account…</string>
+    <string name="account_deletion_please_wait">This may take a moment. Please do not close the app.</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>

@@ -14,11 +14,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.clerk.api.Clerk
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.viewsAndViewModels.widgets.card.ActionCard
-import kotlin.text.format
+import androidx.core.net.toUri
 
 @Composable
 fun SupportView() {
@@ -26,8 +27,8 @@ fun SupportView() {
 
     val userEmail = Clerk.user?.emailAddresses?.first()?.emailAddress
 
-    val emailSubject = context.getString(R.string.feedback_email_subject)
-    val emailBodyTemplate = context.getString(R.string.feedback_email_body)
+    val emailSubject = stringResource(R.string.feedback_email_subject)
+    val emailBodyTemplate = stringResource(R.string.feedback_email_body)
 
     Column(
         modifier = Modifier
@@ -36,20 +37,20 @@ fun SupportView() {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "We'd love to hear from you!",
+            text = stringResource(R.string.support_instruction_title),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
         Text(
-            text = "Since this is an early release, your feedback is crucial in shaping the future of Speakify.",
+            text = stringResource(R.string.support_instruction_description),
             style = MaterialTheme.typography.bodyMedium
         )
 
         ActionCard(
-            title = "Send Feedback",
-            description = "Have a feature request or found a bug? Email us directly.",
-            buttonText = "Email Us",
+            title = stringResource(R.string.support_feedback_card_title),
+            description = stringResource(R.string.support_feedback_card_description),
+            buttonText = stringResource(R.string.support_feedback_card_button),
             icon = Icons.Default.Email
         ) {
             val emailBody = String.format(
@@ -60,7 +61,7 @@ fun SupportView() {
             ).replace("\n", "\n\n")
 
             val intent = Intent(Intent.ACTION_SENDTO).apply {
-                data = Uri.parse("mailto:")
+                data = "mailto:".toUri()
                 putExtra(Intent.EXTRA_EMAIL, arrayOf("support@speakify.it"))
                 putExtra(Intent.EXTRA_SUBJECT, emailSubject)
                 putExtra(Intent.EXTRA_TEXT, emailBody)

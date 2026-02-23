@@ -1,10 +1,12 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.viewsAndViewModels.widgets.BaseModelAutoCompletableViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

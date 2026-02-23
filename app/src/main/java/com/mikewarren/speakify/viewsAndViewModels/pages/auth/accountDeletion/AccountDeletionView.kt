@@ -26,10 +26,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 
 @Composable
@@ -68,14 +70,14 @@ fun AreYouSureView(viewModel: AccountDeletionViewModel, onCancel: () -> Unit) {
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Are You Absolutely Sure?",
+                text = stringResource(R.string.account_deletion_are_you_sure),
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "This action is irreversible and cannot be undone. All of your data, including your settings and saved app preferences, will be permanently deleted.",
+                text = stringResource(R.string.account_deletion_warning_para1),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center
             )
@@ -83,7 +85,7 @@ fun AreYouSureView(viewModel: AccountDeletionViewModel, onCancel: () -> Unit) {
             AnimatedVisibility(visible = viewModel.shouldReverify()) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "For your security, you will be signed out and must sign back in to confirm account deletion.",
+                    text = stringResource(R.string.account_deletion_warning_reverify),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
@@ -102,7 +104,7 @@ fun AreYouSureView(viewModel: AccountDeletionViewModel, onCancel: () -> Unit) {
                     },
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
                 Button(
                     onClick = { viewModel.startDeletionProcess() },
@@ -113,11 +115,11 @@ fun AreYouSureView(viewModel: AccountDeletionViewModel, onCancel: () -> Unit) {
                 ) {
                     Icon(
                         Icons.Filled.Warning,
-                        contentDescription = "Warning",
+                        contentDescription = stringResource(R.string.warning),
                         modifier = Modifier.size(ButtonDefaults.IconSize)
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text("Delete My Account")
+                    Text(stringResource(R.string.delete_my_account))
                 }
             }
         }
@@ -138,7 +140,7 @@ fun SigningOutView() {
             CircularProgressIndicator(modifier = Modifier.size(48.dp))
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = "Signing you out...",
+                text = stringResource(R.string.account_deletion_signing_out),
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center
             )
@@ -165,13 +167,13 @@ fun DeletingAccountView(viewModel: AccountDeletionViewModel) {
             CircularProgressIndicator(modifier = Modifier.size(48.dp))
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = "Deleting your account...",
+                text = stringResource(R.string.account_deletion_deleting),
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "This may take a moment. Please do not close the app.",
+                text = stringResource(R.string.account_deletion_please_wait),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center
             )
