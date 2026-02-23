@@ -12,21 +12,24 @@ class AppInfoProvider @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
     fun getAboutInfo(): AboutInfo {
+        val author = "Mike Warren"
+        
         return try {
             val packageManager = context.packageManager
             val packageInfo = packageManager.getPackageInfo(context.packageName, 0)
             val appName = packageInfo.applicationInfo?.loadLabel(packageManager).toString()
             val version = packageInfo.versionName
+
             AboutInfo(
                 appName = appName,
                 version = "$appName v$version",
-                author = "Mike Warren"
+                author
             )
         } catch (e: PackageManager.NameNotFoundException) {
             AboutInfo(
                 appName = "Speakify",
                 version = "Speakify v1.0 (fallback)",
-                author = "Mike Warren"
+                author
             )
         }
     }
