@@ -5,14 +5,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -28,17 +22,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.uiStates.SignInUiState
 import com.mikewarren.speakify.viewsAndViewModels.widgets.PasswordField
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -83,11 +76,11 @@ fun SignInView(viewModel: SignInViewModel = viewModel()) {
             .fillMaxWidth()
             .graphicsLayer { translationX = shake.value }
     ) {
-        Text("Sign In", style = MaterialTheme.typography.headlineMedium)
+        Text(stringResource(R.string.sign_in), style = MaterialTheme.typography.headlineMedium)
         TextField(
             value = email,
             onValueChange = { email = it },
-            placeholder = { Text("Email") },
+            placeholder = { Text(stringResource(R.string.email_label).removeSuffix(" *")) },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next // Go to next field on "Enter"
@@ -96,7 +89,7 @@ fun SignInView(viewModel: SignInViewModel = viewModel()) {
         PasswordField(
             value = password,
             onValueChange = { password = it },
-            placeholderText = "password",
+            placeholderText = stringResource(R.string.password_label).lowercase().removeSuffix(" *"),
             onDone = { onSignInAction() },
             focusManager = LocalFocusManager.current,
         )
@@ -104,8 +97,8 @@ fun SignInView(viewModel: SignInViewModel = viewModel()) {
             onClick = { viewModel.onClickForgotPassword() },
             modifier = Modifier.align(Alignment.End) // Align to the right
         ) {
-            Text("Forgot password?")
+            Text(stringResource(R.string.forgot_password))
         }
-        Button(onClick = { onSignInAction() }) { Text("Sign In") }
+        Button(onClick = { onSignInAction() }) { Text(stringResource(R.string.sign_in)) }
     }
 }

@@ -1,5 +1,6 @@
 package com.mikewarren.speakify.viewsAndViewModels.widgets
 
+import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -15,6 +16,14 @@ sealed class UiText {
             is DynamicString -> value
             is StringResource -> stringResource(id, *args)
             is StringResourceNullable -> stringResource(id, *args.map { it ?: "" }.toTypedArray())
+        }
+    }
+
+    fun asString(context: Context): String {
+        return when (this) {
+            is DynamicString -> value
+            is StringResource -> context.getString(id, *args)
+            is StringResourceNullable -> context.getString(id, *args.map { it ?: "" }.toTypedArray())
         }
     }
 }

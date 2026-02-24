@@ -12,7 +12,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.uiStates.InitialScreenUiState
 import com.mikewarren.speakify.data.uiStates.SignUpUiState
 
@@ -41,10 +43,10 @@ fun SignInOrUpView(initialScreenUiState: InitialScreenUiState) {
         if (signUpUiState is SignUpUiState.SignedOut) {
             Button(onClick = { isSignUp = !isSignUp }) {
                 if (isSignUp) {
-                    Text("Already have an account? Sign in")
-                } else {
-                    Text("Don't have an account? Sign up")
+                    Text(stringResource(R.string.sign_up_switch_to_sign_in))
+                    return@Button
                 }
+                Text(stringResource(R.string.sign_in_switch_to_sign_up))
             }
         }
     }

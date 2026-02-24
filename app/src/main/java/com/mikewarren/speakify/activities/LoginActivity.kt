@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.constants.ActionConstants
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.ui.theme.MyApplicationTheme
@@ -58,7 +59,7 @@ class LoginActivity : ComponentActivity() {
                             is MainUiState.Loading -> CircularProgressIndicator()
                             is MainUiState.SignedOut -> InitialScreenView()
                             is MainUiState.SignedIn -> {
-                                Text("Successfully signed in. Redirecting to app...")
+                                Text(getString(R.string.signed_in))
                             }
                         }
                     }

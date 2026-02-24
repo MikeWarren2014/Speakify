@@ -1,6 +1,50 @@
 <resources>
     <string name="app_name">Speakify</string>
 
+    <!-- Authentication Concerns -->
+    <string name="signed_in">Successfully signed in. Redirecting to app…</string>
+    <string name="signed_out">Successfully signed out. Redirecting back to login page…</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="forgot_password">Forgot password?</string>
+
+    <!-- Sign In/Up View -->
+    <string name="sign_up_switch_to_sign_in">Already have an account? Sign in</string>
+    <string name="sign_in_switch_to_sign_up">Don\'t have an account? Sign up</string>
+
+    <!-- Sign Up page -->
+    <string name="sign_up_verification_message">
+        Check your email inbox for the verification code and enter it here. \n
+        Please note, it could take a couple minutes to arrive and could be in the spam folder.
+    </string>
+
+    <!-- Sign Up Form -->
+    <string name="first_name_label">First Name *</string>
+    <string name="last_name_label">Last Name</string>
+    <string name="email_label">Email *</string>
+    <string name="password_label">Password *</string>
+    <string name="legal_agree_prefix">I agree to the </string>
+    <string name="legal_terms_of_service">Terms of Service</string>
+    <string name="legal_and"> and </string>
+    <string name="legal_privacy_policy">Privacy Policy</string>
+    <string name="legal_dot">.</string>
+
+    <!-- Forgot Password View -->
+    <string name="forgot_password_compromised">Your password has been compromised.</string>
+    <string name="forgot_password_active_session">Active session: %1$s</string>
+    <string name="forgot_password_verify_email_header">Verify Email</string>
+    <string name="forgot_password_verify_email_subtext">Check your email inbox for the verification code.</string>
+    <string name="forgot_password_verify_email_placeholder">Enter your code</string>
+    <string name="forgot_password_verify_button">Verify</string>
+    <string name="forgot_password_new_password_header">New Password</string>
+    <string name="forgot_password_new_password_subtext">Enter your new secure password below.</string>
+    <string name="forgot_password_new_password_placeholder">Enter your new password</string>
+    <string name="forgot_password_set_password_button">Set new password</string>
+    <string name="forgot_password_2fa_unsupported">2FA is required but this UI does not handle that</string>
+    <string name="forgot_password_header">Forgot Password</string>
+    <string name="forgot_password_email_placeholder">Enter your email address</string>
+    <string name="forgot_password_send_code_button">Send Reset Code</string>
+
     <!-- Navigation Titles -->
     <string name="title_about">About</string>
     <string name="title_important_apps">Important Apps</string>
@@ -62,7 +106,7 @@
     <!-- About View -->
     <string name="about_header_what">What is this app?</string>
     <string name="about_description_para1">Feeling bombarded by notifications, even from the same app? This app could help, as it lets you pick the ones you care most about, and read them to you when they pop up!</string>
-    <string name="about_description_para2">This app will even let you prioritize what notifications from an app (e.g. what messages/calls/...) to report to you!</string>
+    <string name="about_description_para2">This app will even let you prioritize what notifications from an app (e.g. what messages/calls/…) to report to you!</string>
     <string name="about_header_app_info">App Info</string>
     <string name="about_label_app">App: %1$s</string>
     <string name="about_label_version">Version: %1$s</string>
@@ -112,11 +156,11 @@
     <string name="autocomplete_label_tts">TTS Voice</string>
 
     <!-- UI Event messages -->
-    <string name="snackbar_exporting">Exporting backup...</string>
+    <string name="snackbar_exporting">Exporting backup…</string>
     <string name="snackbar_export_success">Backup exported successfully!</string>
     <string name="snackbar_export_failed">Export failed: %1$s</string>
 
-    <string name="snackbar_importing">Restoring data...</string>
+    <string name="snackbar_importing">Restoring data…</string>
     <string name="snackbar_import_success">Data restored successfully!</string>
     <string name="snackbar_import_failed">Import failed: %1$s</string>
 
@@ -136,10 +180,6 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
-    <string name="sign_up_verification_message">
-        Check your email inbox for the verification code and enter it here. \n
-        Please note, it could take a couple minutes to arrive and could be in the spam folder.
-    </string>
 
     <string name="feedback_email_subject">Speakify Feedback / Feature Request</string>
 
@@ -164,7 +204,7 @@
     </string>
 
     <!-- Fetcher concerns -->
-    <string name="fetcher_loading_screen">Fetching %1$s...</string>
+    <string name="fetcher_loading_screen">Fetching %1$s…</string>
     <string name="contacts_data_name">contacts</string>
     <string name="apps_data_name">apps</string>
 
