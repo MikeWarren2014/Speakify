@@ -19,7 +19,7 @@ abstract class BaseTTSAutoCompletableViewModel(
         getAllChoices().associateBy { toSourceString(it) }
     }
 
-    override fun getLabel(): UiText {
+    override fun getLabelText(): UiText {
         return UiText.StringResource(R.string.autocomplete_label_tts)
     }
 

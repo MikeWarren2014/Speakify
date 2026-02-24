@@ -7,12 +7,14 @@ import androidx.compose.ui.res.stringResource
 sealed class UiText {
     data class DynamicString(val value: String) : UiText()
     class StringResource(@StringRes val id: Int, vararg val args: Any) : UiText()
+    class StringResourceNullable(@StringRes val id: Int, vararg val args: Any?) : UiText()
 
     @Composable
     fun asString(): String {
         return when (this) {
             is DynamicString -> value
             is StringResource -> stringResource(id, *args)
+            is StringResourceNullable -> stringResource(id, *args.map { it ?: "" }.toTypedArray())
         }
     }
 }

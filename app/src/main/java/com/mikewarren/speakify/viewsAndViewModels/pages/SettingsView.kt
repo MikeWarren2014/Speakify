@@ -75,7 +75,7 @@ fun SettingsView(onNavigateToDeleteAccount: () -> Unit) {
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is SettingsViewModel.UiEvent.ShowSnackbar -> {
-                    snackbarHostState.showSnackbar(event.message)
+                    snackbarHostState.showSnackbar(event.messageText)
                 }
             }
         }

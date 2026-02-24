@@ -30,6 +30,10 @@
     <string name="remove">Remove</string>
     <string name="notification_sources">notification sources</string>
 
+    <!-- Notification source widgets -->
+    <string name="notification_sources_name_text">notification sources</string>
+    <string name="contacts_name_text">contacts</string>
+
     <!-- Settings View -->
     <string name="settings_section_general">General</string>
     <string name="settings_dark_theme_title">Dark Theme</string>
@@ -98,6 +102,14 @@
     <string name="autocomplete_label_contacts">Contact Name/Phone Number</string>
     <string name="autocomplete_label_tts">TTS Voice</string>
 
+    <!-- UI Event messages -->
+    <string name="snackbar_exporting">Exporting backup...</string>
+    <string name="snackbar_export_success">Backup exported successfully!</string>
+    <string name="snackbar_export_failed">Export failed: %1$s"></string>
+
+    <string name="snackbar_importing">Restoring data...</string>
+    <string name="snackbar_import_success">Data restored successfully!</string>
+    <string name="snackbar_import_failed">Import failed: %1$s"></string>
 
 
     <!-- Preference Titles -->
@@ -114,7 +126,6 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="title_activity_main2">MainActivity2</string>
 
     <string name="sign_up_verification_message">
         Check your email inbox for the verification code and enter it here. \n

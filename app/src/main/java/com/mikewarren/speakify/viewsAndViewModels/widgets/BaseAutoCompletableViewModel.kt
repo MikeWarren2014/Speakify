@@ -15,7 +15,7 @@ abstract class BaseAutoCompletableViewModel<T> : ViewModel() {
     var isAutocompleteDropdownOpen by mutableStateOf(false)
         protected set
 
-    abstract fun getLabel(): UiText
+    abstract fun getLabelText(): UiText
 
     abstract fun getAllChoices(): List<T>
 
@@ -31,7 +31,7 @@ abstract class BaseAutoCompletableViewModel<T> : ViewModel() {
         filterChoices(newSearchText)
     }
 
-    fun setAutocompleteDropdownState(isOpen: Boolean) { // Function to update the flag
+    fun setAutocompleteDropdownState(isOpen: Boolean) {
         isAutocompleteDropdownOpen = isOpen
     }
 }

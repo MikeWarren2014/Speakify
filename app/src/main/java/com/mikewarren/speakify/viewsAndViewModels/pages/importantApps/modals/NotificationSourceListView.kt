@@ -76,7 +76,8 @@ fun <T : Any?> NotificationSourceListView(
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    val notificationSourcesName = viewModel.getNotificationSourcesName()
+                    val notificationSourcesName = viewModel.getNotificationSourcesNameText()
+                        .asString()
 
                     Text(
                         text = stringResource(R.string.no_notification_sources_yet,

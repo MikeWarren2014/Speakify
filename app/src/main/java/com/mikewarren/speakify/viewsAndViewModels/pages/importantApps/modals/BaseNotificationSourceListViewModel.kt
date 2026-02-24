@@ -1,7 +1,6 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 
 import android.util.Log
-import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -62,12 +61,12 @@ abstract class BaseNotificationSourceListViewModel<T>(
 
     }
 
-    override fun getLabel(): UiText {
+    override fun getLabelText(): UiText {
         return UiText.StringResource(R.string.autocomplete_label_notifications)
     }
 
-    open fun getNotificationSourcesName() : String {
-        return "notification sources"
+    open fun getNotificationSourcesNameText() : UiText {
+        return UiText.StringResource(R.string.notification_sources)
     }
 
     fun addNotificationSource(selection: String) {
