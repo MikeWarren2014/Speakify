@@ -1,20 +1,16 @@
 package com.mikewarren.speakify.activities
 
-import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.mikewarren.speakify.data.events.BaseEventBus
 import com.mikewarren.speakify.ui.theme.MyApplicationTheme
 import com.mikewarren.speakify.viewsAndViewModels.pages.fetcher.BaseFetcherViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.fetcher.FetcherView
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 abstract class BaseFetcherActivity<Model, Event> (
@@ -23,9 +19,6 @@ abstract class BaseFetcherActivity<Model, Event> (
     permissionRequestCode : Int,
 ): BasePermissionRequesterActivity<Event>(eventBus, permissionRequestCode) {
     protected abstract val viewModel: BaseFetcherViewModel
-
-    private val dataFlow: MutableSharedFlow<List<Model>> =
-        MutableSharedFlow()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

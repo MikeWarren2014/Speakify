@@ -4,6 +4,7 @@ import android.app.Notification
 import android.content.Context
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.services.TTSManager
 
@@ -35,8 +36,6 @@ class GoogleCalendarNotificationStrategy(
         val title = extras.getString(Notification.EXTRA_TITLE) ?: ""
         val text = extras.getString(Notification.EXTRA_TEXT) ?: ""
 
-        // Combine them for a potentially more informative announcement
-        // e.g., "Upcoming event: Team Meeting. At 10:00 AM"
-        return "Upcoming event: $title. $text"
+        return context.getString(R.string.notification_calendar_upcoming, title, text)
     }
 }

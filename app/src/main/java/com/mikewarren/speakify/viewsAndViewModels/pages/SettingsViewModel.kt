@@ -1,16 +1,19 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages
 
 import android.net.Uri
+import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.BackupRepository
 import com.mikewarren.speakify.data.SessionRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
 import com.mikewarren.speakify.viewsAndViewModels.widgets.BaseTTSAutoCompletableViewModel
+import com.mikewarren.speakify.viewsAndViewModels.widgets.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -56,7 +59,7 @@ class SettingsViewModel @Inject constructor(
         )
 
     sealed class UiEvent {
-        data class ShowSnackbar(val message: String) : UiEvent()
+        data class ShowSnackbar(val messageText: UiText) : UiEvent()
     }
 
     private val _uiEvent = MutableSharedFlow<UiEvent>()
@@ -112,27 +115,29 @@ class SettingsViewModel @Inject constructor(
 
     fun exportBackup(uri: Uri) {
         viewModelScope.launch {
-            _uiEvent.emit(UiEvent.ShowSnackbar("Exporting backup..."))
+            _uiEvent.emit(UiEvent.ShowSnackbar(UiText.StringResource(R.string.snackbar_exporting)))
             // 2. Perform the export
             val result = backupRepository.exportData(uri)
             // 3. Emit events based on result
             if (result.isSuccess) {
-                _uiEvent.emit(UiEvent.ShowSnackbar("Backup exported successfully!"))
-            } else {
-                _uiEvent.emit(UiEvent.ShowSnackbar("Export failed: ${result.exceptionOrNull()?.message}"))
+                _uiEvent.emit(UiEvent.ShowSnackbar(UiText.StringResource(R.string.snackbar_export_success)))
+                return@launch
             }
+            _uiEvent.emit(UiEvent.ShowSnackbar(UiText.StringResourceNullable(R.string.snackbar_export_failed,
+                result.exceptionOrNull()?.message)))
         }
     }
 
     fun importBackup(uri: Uri) {
         viewModelScope.launch {
-            _uiEvent.emit(UiEvent.ShowSnackbar("Restoring data..."))
+            _uiEvent.emit(UiEvent.ShowSnackbar(UiText.StringResource(R.string.snackbar_importing)))
             val result = backupRepository.importData(uri)
             if (result.isSuccess) {
-                _uiEvent.emit(UiEvent.ShowSnackbar("Data restored successfully!"))
-            } else {
-                _uiEvent.emit(UiEvent.ShowSnackbar("Import failed: ${result.exceptionOrNull()?.message}"))
+                _uiEvent.emit(UiEvent.ShowSnackbar(UiText.StringResource(R.string.snackbar_import_success)))
+                return@launch
             }
+            _uiEvent.emit(UiEvent.ShowSnackbar(UiText.StringResourceNullable(R.string.snackbar_import_failed,
+                result.exceptionOrNull()?.message)))
         }
     }
 }

@@ -1,0 +1,243 @@
+<resources>
+    <string name="app_name">Speakify</string>
+
+    <!-- Authentication Concerns -->
+    <string name="signed_in">登录成功。正在重定向到应用…</string>
+    <string name="signed_out">登出成功。正在返回登录页面…</string>
+    <string name="sign_in">登录</string>
+    <string name="sign_up">注册</string>
+    <string name="forgot_password">忘记密码？</string>
+
+    <!-- Sign In/Up View -->
+    <string name="sign_up_switch_to_sign_in">已有账号？登录</string>
+    <string name="sign_in_switch_to_sign_up">没有账号？注册</string>
+
+    <!-- Sign Up page -->
+    <string name="sign_up_verification_message">
+        请检查您的电子邮箱收件箱，获取验证码并在此输入。\n
+        请注意，验证码可能需要几分钟才能送达，也可能在垃圾邮件文件夹中。
+    </string>
+
+    <!-- Sign Up Form -->
+    <string name="first_name_label">名字 *</string>
+    <string name="last_name_label">姓氏</string>
+    <string name="email_label">电子邮件 *</string>
+    <string name="password_label">密码 *</string>
+    <string name="legal_agree_prefix">我同意</string>
+    <string name="legal_terms_of_service">服务条款</string>
+    <string name="legal_and">和</string>
+    <string name="legal_privacy_policy">隐私政策</string>
+    <string name="legal_dot">。</string>
+
+    <!-- Forgot Password View -->
+    <string name="forgot_password_compromised">您的密码已泄露。</string>
+    <string name="forgot_password_active_session">活动会话：%1$s</string>
+    <string name="forgot_password_verify_email_header">验证电子邮件</string>
+    <string name="forgot_password_verify_email_subtext">请检查您的电子邮箱收件箱获取验证码。</string>
+    <string name="forgot_password_verify_email_placeholder">输入验证码</string>
+    <string name="forgot_password_verify_button">验证</string>
+    <string name="forgot_password_new_password_header">新密码</string>
+    <string name="forgot_password_new_password_subtext">请在下方输入您的新安全密码。</string>
+    <string name="forgot_password_new_password_placeholder">输入新密码</string>
+    <string name="forgot_password_set_password_button">设置新密码</string>
+    <string name="forgot_password_2fa_unsupported">需要双重身份验证 (2FA)，但此界面暂不支持</string>
+    <string name="forgot_password_header">忘记密码</string>
+    <string name="forgot_password_email_placeholder">输入您的电子邮件地址</string>
+    <string name="forgot_password_send_code_button">发送重置码</string>
+
+    <!-- Speakify Notification -->
+    <string name="notification_channel_name">Speakify 后台服务</string>
+    <string name="notification_active_title">Speakify 正在运行</string>
+    <string name="notification_active_content">正在后台处理通知。</string>
+
+    <!-- Notification Strategies -->
+    <string name="simple_notification_strategy_text">来自 %1$s 的通知</string>
+    <string name="sms_notification_strategy_text">来自 %1$s 的短信</string>
+
+    <string name="google_voice_notification_strategy_text_suffix"> 来自 %1$s</string>
+    <string name="google_voice_incoming_sms_notification_strategy_text">收到 Google Voice 短信%1$s</string>
+    <string name="google_voice_incoming_call_notification_strategy_text">收到 Google Voice 电话%1$s</string>
+    <string name="google_voice_strategy_unknown_notification_text">未知的 Google Voice 通知</string>
+
+    <string name="notification_calendar_upcoming">即将到来的活动：%1$s。%2$s</string>
+
+    <!-- Notification action Titles -->
+    <string name="action_incoming_call">接听</string>
+    <string-array name="action_outgoing_call">
+        <item>结束通话</item>
+        <item>挂断</item>
+        <item>免提</item>
+    </string-array>
+    <string name="action_missed_call">回拨</string>
+
+    <string name="action_reply">回复</string>
+    <string-array name="action_mark_read">
+        <item>设为已读</item>
+        <item>标记已读</item>
+    </string-array>
+
+    <!-- Incoming Phone Call -->
+    <string name="incoming_call">收到来自 %1$s 的电话</string>
+
+    <!-- Navigation Titles -->
+    <string name="title_about">关于</string>
+    <string name="title_important_apps">重要应用</string>
+    <string name="title_settings">设置</string>
+    <string name="title_support">支持与反馈</string>
+    <string name="title_legal">法律信息</string>
+
+    <!-- Important Apps View -->
+    <string name="filter_apps">筛选应用</string>
+    <string name="search_apps">搜索应用</string>
+    <string name="no_apps_added">尚未添加应用！</string>
+    <string name="add_app_instruction">点击下方的“添加应用”按钮，添加您希望在收到通知时获得提醒的应用。</string>
+    <string name="add_app">添加应用</string>
+    <string name="delete_apps">删除应用 (%1$d)</string>
+
+    <!-- App Settings Dialog -->
+    <string name="app_settings_title">%1$s 设置</string>
+    <string name="announcer_voice">播报语音</string>
+    <string name="alert_me_to_notifications_from">通知提醒条件：</string>
+    <string name="notifications_not_supported">暂不支持通知</string>
+    <string name="notifications_not_supported_description">目前我们还不支持 %1$s 的重要通知源。</string>
+    <string name="cancel">取消</string>
+    <string name="save">保存</string>
+    <string name="loading">正在加载…</string>
+    <string name="no_notification_sources_yet">暂无 %1$s。</string>
+    <string name="no_notification_sources_instruction">添加一些 %1$s 以仅接收它们的通知，或留空以接收所有 %1$s 的通知。</string>
+    <string name="remove">移除</string>
+    <string name="notification_sources">通知源</string>
+
+    <!-- Notification source widgets -->
+    <string name="notification_sources_name_text">通知源</string>
+    <string name="contacts_name_text">联系人</string>
+
+    <!-- Settings View -->
+    <string name="settings_section_general">常规</string>
+    <string name="settings_dark_theme_title">深色主题</string>
+    <string name="settings_dark_theme_description">启用或禁用应用的深色模式。</string>
+    <string name="settings_tts_voice_title">TTS 语音</string>
+    <string name="settings_tts_voice_description">选择语音通知的语音。</string>
+    <string name="settings_min_volume_title">最小音量</string>
+    <string name="settings_min_volume_description">应用播报通知时使用的最低音量。</string>
+    <string name="settings_maximize_volume_title">熄屏时最大化音量</string>
+    <string name="settings_maximize_volume_description">在屏幕锁定时将通知音量调至最大。\n\n警告：这可能会影响音乐或播客等其他音频。如果您正在收听其他媒体，请关闭此选项。</string>
+    <string name="settings_section_privacy">隐私</string>
+    <string name="settings_crashlytics_title">共享使用数据</string>
+    <string name="settings_crashlytics_description">通过 Firebase 共享匿名崩溃报告和使用统计信息，帮助改进 Speakify。</string>
+    <string name="settings_section_data">数据管理</string>
+    <string name="settings_backup_title">备份数据</string>
+    <string name="settings_backup_description">将您的设置和应用列表保存到文件中。</string>
+    <string name="settings_export">导出</string>
+    <string name="settings_restore_title">恢复数据</string>
+    <string name="settings_restore_description">从备份文件中导入设置。</string>
+    <string name="settings_import">导入</string>
+    <string name="settings_section_danger">危险区域</string>
+    <string name="settings_sign_out">登出</string>
+    <string name="settings_delete_account">删除账号</string>
+    <string name="warning">警告</string>
+
+    <!-- About View -->
+    <string name="about_header_what">这是什么应用？</string>
+    <string name="about_description_para1">是否觉得通知太多太吵，甚至来自同一个应用？本应用可以为您提供帮助，让您挑选最关心的通知，并在通知弹出时为您播报！</string>
+    <string name="about_description_para2">本应用甚至可以让您优先处理来自某个应用的哪些通知（例如哪些消息、电话等）！</string>
+    <string name="about_header_app_info">应用信息</string>
+    <string name="about_label_app">应用：%1$s</string>
+    <string name="about_label_version">版本：%1$s</string>
+    <string name="about_label_author">作者：%1$s</string>
+    <string name="about_loading">正在加载应用信息…</string>
+
+    <!-- Legal View -->
+    <string name="legal_instruction">查看我们的政策和服务条款。</string>
+    <string name="legal_privacy_policy_title">隐私政策</string>
+    <string name="legal_privacy_policy_description">阅读我们如何处理和保护您的数据。</string>
+    <string name="legal_privacy_policy_button">查看政策</string>
+    <string name="legal_terms_of_service_title">服务条款</string>
+    <string name="legal_terms_of_service_description">阅读使用 Speakify 的条款和条件。</string>
+    <string name="legal_terms_of_service_button">查看条款</string>
+
+    <!-- Support View -->
+    <string name="support_instruction_title">我们期待您的反馈！</string>
+    <string name="support_instruction_description">由于这是早期版本，您的反馈对于塑造 Speakify 的未来至关重要。</string>
+    <string name="support_feedback_card_title">发送反馈</string>
+    <string name="support_feedback_card_description">有功能需求或发现了 Bug？请直接给我们发送电子邮件。</string>
+    <string name="support_feedback_card_button">发送邮件</string>
+
+    <!-- Account Deletion View -->
+    <string name="account_deletion_are_you_sure">您确定吗？</string>
+    <string name="account_deletion_warning_para1">此操作不可逆，无法撤销。您的所有数据（包括设置和保存的应用偏好设置）将被永久删除。</string>
+    <string name="account_deletion_warning_reverify">为了您的安全，您将被退出登录，并且必须重新登录以确认删除账号。</string>
+    <string name="delete_my_account">删除我的账号</string>
+    <string name="account_deletion_signing_out">正在退出登录…</string>
+    <string name="account_deletion_deleting">正在删除您的账号…</string>
+    <string name="account_deletion_please_wait">这可能需要一些时间，请不要关闭应用。</string>
+
+    <!-- Permissions Concerns -->
+    <string name="notification_access_required_title">需要通知访问权限</string>
+    <string name="notification_access_required_message">Speakify 需要“读取”通知的权限，以便为您播报。\n\n您将被重定向到系统设置。请找到“Speakify”并启用它。</string>
+    <string name="phone_permissions_required_message">Speakify 需要访问您的电话状态和通话记录以播报来电。请授予这些权限。</string>
+    <string name="go_to_settings">前往设置</string>
+    <string name="permissions_required_title">需要权限</string>
+    <string name="permissions_required_message">Speakify 需要发送通知的权限以在后台运行。请授予此权限。</string>
+    <string name="ok">确定</string>
+
+    <!-- AutoComplete widgets -->
+    <string name="search_for_entities">搜索 %1$s</string>
+
+    <!-- AutoComplete labels -->
+    <string name="autocomplete_label_notifications">通知源</string>
+    <string name="autocomplete_label_contacts">联系人姓名/电话号码</string>
+    <string name="autocomplete_label_tts">TTS 语音</string>
+
+    <!-- UI Event messages -->
+    <string name="snackbar_exporting">正在导出备份…</string>
+    <string name="snackbar_export_success">备份导出成功！</string>
+    <string name="snackbar_export_failed">导出失败：%1$s</string>
+
+    <string name="snackbar_importing">正在恢复数据…</string>
+    <string name="snackbar_import_success">数据恢复成功！</string>
+    <string name="snackbar_import_failed">导入失败：%1$s</string>
+
+
+    <!-- Preference Titles -->
+    <string name="messages_header">消息</string>
+    <string name="sync_header">同步</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">您的签名</string>
+    <string name="reply_title">默认回复操作</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">定期同步电子邮件</string>
+    <string name="attachment_title">下载收到的附件</string>
+    <string name="attachment_summary_on">自动下载收到邮件的附件</string>
+    <string name="attachment_summary_off">仅在手动请求时下载附件</string>
+
+
+    <string name="feedback_email_subject">Speakify 反馈 / 功能需求</string>
+
+    <string name="feedback_email_body">
+        我写信是关于：\n
+        [ ] 功能需求\n
+        [ ] 一般反馈 / Bug 报告\n
+\n
+        描述：\n
+        （请在此处描述您的需求或问题）\n
+\n
+\n
+        --------------------------------------------------\n
+        用户账号：%3$s\n
+        设备信息（自动填写）：\n
+        型号：%1$s\n
+        Android 版本：%2$s\n
+        --------------------------------------------------\n
+\n
+        附注：如果是正面反馈，我一定会考虑在 Google Play 商店中为 Speakify 评分！
+    </string>
+
+    <!-- Fetcher concerns -->
+    <string name="fetcher_loading_screen">正在获取 %1$s…</string>
+    <string name="contacts_data_name">联系人</string>
+    <string name="apps_data_name">应用</string>
+
+</resources>

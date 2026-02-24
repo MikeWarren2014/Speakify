@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Build
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.services.TTSManager
@@ -68,9 +69,11 @@ ITaggable {
 
     override fun textToSpeakify(): String {
         if (extractedContactModel.name.isEmpty())
-            return "Text from ${extractedContactModel.phoneNumber}"
+            return context.getString(R.string.sms_notification_strategy_text,
+                extractedContactModel.phoneNumber)
 
-        return "Text from ${extractedContactModel.name}"
+        return context.getString(R.string.sms_notification_strategy_text,
+            extractedContactModel.name)
     }
 
     override fun extractContactModel(): ContactModel {

@@ -1,9 +1,11 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.events.ContactListDataSource
 import com.mikewarren.speakify.utils.PhoneNumberUtils
+import com.mikewarren.speakify.viewsAndViewModels.widgets.UiText
 import kotlinx.coroutines.flow.StateFlow
 
 class BaseImportantContactsListViewModel(
@@ -23,8 +25,8 @@ class BaseImportantContactsListViewModel(
         dataSource.requestData()
     }
 
-    override fun getNotificationSourcesName(): String {
-        return "contacts"
+    override fun getNotificationSourcesNameText(): UiText {
+        return UiText.StringResource(R.string.contacts_name_text)
     }
 
     override fun toSourceString(sourceModel: ContactModel): String {
@@ -38,8 +40,8 @@ class BaseImportantContactsListViewModel(
         return "${sourceModel.name} (${sourceModel.phoneNumber})"
     }
 
-    override fun getLabel(): String {
-        return "Contact Name/Phone Number"
+    override fun getLabelText(): UiText {
+        return UiText.StringResource(R.string.autocomplete_label_contacts)
     }
 
     override fun getAllChoices(): List<ContactModel> {

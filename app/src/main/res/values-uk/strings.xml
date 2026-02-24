@@ -1,0 +1,245 @@
+<resources>
+    <string name="app_name">Speakify</string>
+
+    <!-- Authentication Concerns -->
+    <string name="signed_in">Успішно ввійшли. Перенаправлення до програми…</string>
+    <string name="signed_out">Успішно вийшли. Перенаправлення на сторінку входу…</string>
+    <string name="sign_in">Увійти</string>
+    <string name="sign_up">Зареєструватися</string>
+    <string name="forgot_password">Забули пароль?</string>
+
+    <!-- Sign In/Up View -->
+    <string name="sign_up_switch_to_sign_in">Вже маєте обліковий запис? Увійти</string>
+    <string name="sign_in_switch_to_sign_up">Немає облікового запису? Зареєструватися</string>
+
+    <!-- Sign Up page -->
+    <string name="sign_up_verification_message">
+        Перевірте папку "Вхідні" вашої електронної пошти на наявність коду підтвердження та введіть його тут. \n
+        Зверніть увагу, що отримання може зайняти кілька хвилин, також перевірте папку зі спамом.
+    </string>
+
+    <!-- Sign Up Form -->
+    <string name="first_name_label">Ім\'я *</string>
+    <string name="last_name_label">Прізвище</string>
+    <string name="email_label">Електронна пошта *</string>
+    <string name="password_label">Пароль *</string>
+    <string name="legal_agree_prefix">Я погоджуюсь з </string>
+    <string name="legal_terms_of_service">Умовами надання послуг</string>
+    <string name="legal_and"> та </string>
+    <string name="legal_privacy_policy">Політикою конфіденційності</string>
+    <string name="legal_dot">.</string>
+
+    <!-- Forgot Password View -->
+    <string name="forgot_password_compromised">Ваш пароль був скомпрометований.</string>
+    <string name="forgot_password_active_session">Активна сесія: %1$s</string>
+    <string name="forgot_password_verify_email_header">Підтвердити електронну пошту</string>
+    <string name="forgot_password_verify_email_subtext">Перевірте електронну пошту на наявність коду підтвердження.</string>
+    <string name="forgot_password_verify_email_placeholder">Введіть ваш код</string>
+    <string name="forgot_password_verify_button">Підтвердити</string>
+    <string name="forgot_password_new_password_header">Новий пароль</string>
+    <string name="forgot_password_new_password_subtext">Введіть ваш новий безпечний пароль нижче.</string>
+    <string name="forgot_password_new_password_placeholder">Введіть ваш новий пароль</string>
+    <string name="forgot_password_set_password_button">Встановити новий пароль</string>
+    <string name="forgot_password_2fa_unsupported">Потрібна двофакторна автентифікація, але цей інтерфейс її не підтримує</string>
+    <string name="forgot_password_header">Забули пароль</string>
+    <string name="forgot_password_email_placeholder">Введіть вашу адресу електронної пошти</string>
+    <string name="forgot_password_send_code_button">Надіслати код скидання</string>
+
+    <!-- Speakify Notification -->
+    <string name="notification_channel_name">Фонова служба Speakify</string>
+    <string name="notification_active_title">Speakify працює</string>
+    <string name="notification_active_content">Обробка сповіщень у фоновому режимі.</string>
+
+    <!-- Notification Strategies -->
+    <string name="simple_notification_strategy_text">Сповіщення від %1$s</string>
+    <string name="sms_notification_strategy_text">SMS від %1$s</string>
+
+    <string name="google_voice_notification_strategy_text_suffix"> від %1$s</string>
+    <string name="google_voice_incoming_sms_notification_strategy_text">Вхідне SMS Google Voice%1$s</string>
+    <string name="google_voice_incoming_call_notification_strategy_text">Вхідний дзвінок Google Voice%1$s</string>
+    <string name="google_voice_strategy_unknown_notification_text">Невідоме сповіщення Google Voice</string>
+
+    <string name="notification_calendar_upcoming">Найближча подія: %1$s. %2$s</string>
+
+    <!-- Notification action Titles -->
+    <string name="action_incoming_call">відповісти</string>
+    <string-array name="action_outgoing_call">
+        <item>завершити дзвінок</item>
+        <item>покласти слухавку</item>
+        <item>гучномовець</item>
+    </string-array>
+    <string name="action_missed_call">передзвонити</string>
+
+    <string name="action_reply">відповісти</string>
+    <string-array name="action_mark_read">
+        <item>позначити як прочитане</item>
+        <item>позначити прочитаним</item>
+    </string-array>
+
+    <!-- Incoming Phone Call -->
+    <string name="incoming_call">Вхідний дзвінок від %1$s</string>
+
+    <!-- Navigation Titles -->
+    <string name="title_about">Про програму</string>
+    <string name="title_important_apps">Важливі програми</string>
+    <string name="title_settings">Налаштування</string>
+    <string name="title_support">Підтримка та відгуки</string>
+    <string name="title_legal">Юридична інформація</string>
+
+    <!-- Important Apps View -->
+    <string name="filter_apps">Фільтрувати програми</string>
+    <string name="search_apps">Шукати програми</string>
+    <string name="no_apps_added">Жодних програм ще не додано!</string>
+    <string name="add_app_instruction">Натисніть кнопку «Додати програму» нижче, щоб додати програми, про які ви хочете отримувати голосові сповіщення.</string>
+    <string name="add_app">Додати програму</string>
+    <string name="delete_apps">Видалити програми (%1$d)</string>
+
+    <!-- App Settings Dialog -->
+    <string name="app_settings_title">Налаштування %1$s</string>
+    <string name="announcer_voice">Голос диктора</string>
+    <string name="alert_me_to_notifications_from">Сповіщати мене про:</string>
+    <string name="notifications_not_supported">Сповіщення не підтримуються</string>
+    <string name="notifications_not_supported_description">Наразі ми не підтримуємо важливі джерела сповіщень для %1$s.</string>
+    <string name="cancel">Скасувати</string>
+    <string name="save">Зберегти</string>
+    <string name="loading">Завантаження…</string>
+    <string name="no_notification_sources_yet">Ще немає %1$s.</string>
+    <string name="no_notification_sources_instruction">Додайте деякі %1$s, щоб отримувати сповіщення лише про них, або залиште це поле порожнім, щоб отримувати сповіщення про ВСІ %1$s.</string>
+    <string name="remove">Видалити</string>
+    <string name="notification_sources">джерела сповіщень</string>
+
+    <!-- Notification source widgets -->
+    <string name="notification_sources_name_text">джерела сповіщень</string>
+    <string name="contacts_name_text">контакти</string>
+
+    <!-- Settings View -->
+    <string name="settings_section_general">Загальні</string>
+    <string name="settings_dark_theme_title">Темна тема</string>
+    <string name="settings_dark_theme_description">Увімкнути або вимкнути темний режим для програми.</string>
+    <string name="settings_tts_voice_title">Голос TTS</string>
+    <string name="settings_tts_voice_description">Виберіть голос для озвучення сповіщень.</string>
+    <string name="settings_min_volume_title">Мінімальна гучність</string>
+    <string name="settings_min_volume_description">Найнижчий рівень гучності, який програма використовуватиме під час озвучення сповіщень.</string>
+    <string name="settings_maximize_volume_title">Максимальна гучність при вимкненому екрані</string>
+    <string name="settings_maximize_volume_description">Збільшує гучність сповіщень до максимуму, коли екран заблоковано.\n\nПОПЕРЕДЖЕННЯ: Це може вплинути на інший звук, наприклад музику чи подкасти. Вимкніть це, якщо ви слухаєте інші медіа.</string>
+    <string name="settings_section_privacy">Конфіденційність</string>
+    <string name="settings_crashlytics_title">Ділитися даними про використання</string>
+    <string name="settings_crashlytics_description">Допоможіть покращити Speakify, ділячись анонімними звітами про збої та статистикою використання через Firebase.</string>
+    <string name="settings_section_data">Керування даними</string>
+    <string name="settings_backup_title">Резервне копіювання даних</string>
+    <string name="settings_backup_description">Збережіть ваші налаштування та список програм у файл.</string>
+    <string name="settings_export">Експорт</string>
+    <string name="settings_restore_title">Відновлення даних</string>
+    <string name="settings_restore_description">Імпортуйте налаштування з файлу резервної копії.</string>
+    <string name="settings_import">Імпорт</string>
+    <string name="settings_section_danger">Небезпечна зона</string>
+    <string name="settings_sign_out">Вийти</string>
+    <string name="settings_delete_account">Видалити обліковий запис</string>
+    <string name="warning">Попередження</string>
+
+    <!-- About View -->
+    <string name="about_header_what">Що це за програма?</string>
+    <string name="about_description_para1">Відчуваєте себе засипаним сповіщеннями, навіть з однієї програми? Ця програма може допомогти, оскільки дозволяє вибрати ті, які вас найбільше цікавлять, і зачитувати їх вам, коли вони з\'являються!</string>
+    <string name="about_description_para2">Ця програма навіть дозволить вам пріоритезувати, про які сповіщення з програми (наприклад, які повідомлення/дзвінки/…) повідомляти вам!</string>
+    <string name="about_header_app_info">Інформація про програму</string>
+    <string name="about_label_app">Програма: %1$s</string>
+    <string name="about_label_version">Версія: %1$s</string>
+    <string name="about_label_author">Автор: %1$s</string>
+    <string name="about_loading">Завантаження інформації про програму…</string>
+
+    <!-- Legal View -->
+    <string name="legal_instruction">Ознайомтеся з нашою політикою та умовами надання послуг.</string>
+    <string name="legal_privacy_policy_title">Політика конфіденційності</string>
+    <string name="legal_privacy_policy_description">Прочитайте про те, як ми обробляємо та захищаємо ваші дані.</string>
+    <string name="legal_privacy_policy_button">Переглянути політику</string>
+    <string name="legal_terms_of_service_title">Умови надання послуг</string>
+    <string name="legal_terms_of_service_description">Прочитайте наші умови та положення використання Speakify.</string>
+    <string name="legal_terms_of_service_button">Переглянути умови</string>
+
+    <!-- Support View -->
+    <string name="support_instruction_title">Ми будемо раді почути вас!</string>
+    <string name="support_instruction_description">Оскільки це ранній випуск, ваші відгуки мають вирішальне значення для формування майбутнього Speakify.</string>
+    <string name="support_feedback_card_title">Надіслати відгук</string>
+    <string name="support_feedback_card_description">Маєте запит на функцію або знайшли помилку? Напишіть нам безпосередньо на електронну пошту.</string>
+    <string name="support_feedback_card_button">Надіслати нам листа</string>
+
+    <!-- Account Deletion View -->
+    <string name="account_deletion_are_you_sure">Ви абсолютно впевнені?</string>
+    <string name="account_deletion_warning_para1">Ця дія є незворотною і її не можна скасувати. Всі ваші дані, включаючи ваші налаштування та збережені вподобання програм, будуть остаточно видалені.</string>
+    <string name="account_deletion_warning_reverify">Для вашої безпеки ви вийдете з системи і повинні будете ввійти знову, щоб підтвердити видалення облікового запису.</string>
+    <string name="delete_my_account">Видалити мій обліковий запис</string>
+    <string name="account_deletion_signing_out">Вихід із системи…</string>
+    <string name="account_deletion_deleting">Видалення вашого облікового запису…</string>
+    <string name="account_deletion_please_wait">Це може зайняти деякий час. Будь ласка, не закривайте програму.</string>
+
+    <!-- Permissions Concerns -->
+    <string name="notification_access_required_title">Потрібен доступ до сповіщень</string>
+    <string name="notification_access_required_message">Speakify потрібен дозвіл на ЧИТАННЯ сповіщень, щоб вона могла озвучувати їх вголос.\n\nВас буде перенаправлено до системних налаштувань. Будь ласка, знайдіть «Speakify» та увімкніть її.</string>
+    <string name="phone_permissions_required_message">Speakify потрібен доступ до стану вашого телефону та журналів викликів, щоб оголошувати вхідні дзвінки. Будь ласка, надайте ці дозволи.</string>
+    <string name="go_to_settings">Перейти до налаштувань</string>
+    <string name="permissions_required_title">Потрібні дозволи</string>
+    <string name="permissions_required_message">Speakify потребує дозволу на надсилання сповіщень для роботи у фоновому режимі. Будь ласка, надайте цей дозвіл.</string>
+    <string name="ok">ОК</string>
+
+    <!-- AutoComplete widgets -->
+    <string name="search_for_entities">Шукати %1$s</string>
+
+    <!-- AutoComplete labels -->
+    <string name="autocomplete_label_notifications">Джерела сповіщень</string>
+    <string name="autocomplete_label_contacts">Ім\'я контакту/Номер телефону</string>
+    <string name="autocomplete_label_tts">Голос TTS</string>
+
+    <!-- UI Event messages -->
+    <string name="snackbar_exporting">Експорт резервної копії…</string>
+    <string name="snackbar_export_success">Резервна копія успішно експортована!</string>
+    <string name="snackbar_export_failed">Експорт не вдався: %1$s</string>
+
+    <string name="snackbar_importing">Відновлення даних…</string>
+    <string name="snackbar_import_success">Дані успішно відновлені!</string>
+    <string name="snackbar_import_failed">Імпорт не вдався: %1$s</string>
+
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Повідомлення</string>
+    <string name="sync_header">Синхронізація</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Ваш підпис</string>
+    <string name="reply_title">Дія відповіді за замовчуванням</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Періодично синхронізувати пошту</string>
+    <string name="attachment_title">Завантажувати вхідні вкладення</string>
+    <string name="attachment_summary_on">Автоматично завантажувати вкладення для вхідних листів
+    </string>
+    <string name="attachment_summary_off">Завантажувати вкладення лише на запит вручну</string>
+
+
+    <string name="feedback_email_subject">Відгук про Speakify / Запит на функцію</string>
+
+    <string name="feedback_email_body">
+        Я пишу щодо:\n
+        [ ] Запит на функцію\n
+        [ ] Загальний відгук / Звіт про помилку\n
+\n
+        Опис:\n
+        (Будь ласка, опишіть ваш запит або проблему тут)\n
+\n
+\n
+        --------------------------------------------------\n
+        Обліковий запис користувача: %3$s\n
+        Інформація про пристрій (заповнено автоматично):\n
+        Модель: %1$s\n
+        Версія Android: %2$s\n
+        --------------------------------------------------\n
+\n
+        P.S. Якщо це позитивний відгук, я обов\'язково розгляну можливість оцінки Speakify в Google
+        Play Store!
+    </string>
+
+    <!-- Fetcher concerns -->
+    <string name="fetcher_loading_screen">Отримання %1$s…</string>
+    <string name="contacts_data_name">контакти</string>
+    <string name="apps_data_name">програми</string>
+
+</resources>

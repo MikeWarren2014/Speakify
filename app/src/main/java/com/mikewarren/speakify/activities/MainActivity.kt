@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.ActionConstants
@@ -76,7 +77,7 @@ class MainActivity : ComponentActivity()  {
                     MyApplicationTheme(darkTheme = useDarkTheme == true, content = {
                         when (state) {
                             is MainUiState.Loading -> CircularProgressIndicator()
-                            is MainUiState.SignedOut -> Text("Successfully signed out. Redirecting back to login page...")
+                            is MainUiState.SignedOut -> Text(getString(R.string.signed_out))
                             is MainUiState.SignedIn -> {
                                 AppView()
                             }

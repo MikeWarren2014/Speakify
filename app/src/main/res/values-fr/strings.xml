@@ -1,0 +1,244 @@
+<resources>
+    <string name="app_name">Speakify</string>
+
+    <!-- Authentication Concerns -->
+    <string name="signed_in">Connexion réussie. Redirection vers l\'application…</string>
+    <string name="signed_out">Déconnexion réussie. Redirection vers la page de connexion…</string>
+    <string name="sign_in">Se connecter</string>
+    <string name="sign_up">S\'inscrire</string>
+    <string name="forgot_password">Mot de passe oublié ?</string>
+
+    <!-- Sign In/Up View -->
+    <string name="sign_up_switch_to_sign_in">Vous avez déjà un compte ? Connectez-vous</string>
+    <string name="sign_in_switch_to_sign_up">Vous n\'avez pas de compte ? Inscrivez-vous</string>
+
+    <!-- Sign Up page -->
+    <string name="sign_up_verification_message">
+        Vérifiez votre boîte de réception pour le code de vérification et saisissez-le ici. \n
+        Veuillez noter que cela peut prendre quelques minutes et que le message peut se trouver dans les spams.
+    </string>
+
+    <!-- Sign Up Form -->
+    <string name="first_name_label">Prénom *</string>
+    <string name="last_name_label">Nom</string>
+    <string name="email_label">Email *</string>
+    <string name="password_label">Mot de passe *</string>
+    <string name="legal_agree_prefix">J\'accepte les </string>
+    <string name="legal_terms_of_service">Conditions d\'utilisation</string>
+    <string name="legal_and"> et la </string>
+    <string name="legal_privacy_policy">Politique de confidentialité</string>
+    <string name="legal_dot">.</string>
+
+    <!-- Forgot Password View -->
+    <string name="forgot_password_compromised">Votre mot de passe a été compromis.</string>
+    <string name="forgot_password_active_session">Session active : %1$s</string>
+    <string name="forgot_password_verify_email_header">Vérifier l\'email</string>
+    <string name="forgot_password_verify_email_subtext">Vérifiez votre boîte de réception pour le code de vérification.</string>
+    <string name="forgot_password_verify_email_placeholder">Saisissez votre code</string>
+    <string name="forgot_password_verify_button">Vérifier</string>
+    <string name="forgot_password_new_password_header">Nouveau mot de passe</string>
+    <string name="forgot_password_new_password_subtext">Saisissez votre nouveau mot de passe sécurisé ci-dessous.</string>
+    <string name="forgot_password_new_password_placeholder">Saisissez votre nouveau mot de passe</string>
+    <string name="forgot_password_set_password_button">Définir le nouveau mot de passe</string>
+    <string name="forgot_password_2fa_unsupported">La 2FA est requise mais cette interface ne la gère pas</string>
+    <string name="forgot_password_header">Mot de passe oublié</string>
+    <string name="forgot_password_email_placeholder">Saisissez votre adresse email</string>
+    <string name="forgot_password_send_code_button">Envoyer le code de réinitialisation</string>
+
+    <!-- Speakify Notification -->
+    <string name="notification_channel_name">Service d\'arrière-plan Speakify</string>
+    <string name="notification_active_title">Speakify Actif</string>
+    <string name="notification_active_content">Traitement des notifications en arrière-plan.</string>
+
+    <!-- Notification Strategies -->
+    <string name="simple_notification_strategy_text">Notification de %1$s</string>
+    <string name="sms_notification_strategy_text">SMS de %1$s</string>
+
+    <string name="google_voice_notification_strategy_text_suffix"> de %1$s</string>
+    <string name="google_voice_incoming_sms_notification_strategy_text">SMS Google Voice entrant%1$s</string>
+    <string name="google_voice_incoming_call_notification_strategy_text">Appel Google Voice entrant%1$s</string>
+    <string name="google_voice_strategy_unknown_notification_text">Notification Google Voice inconnue</string>
+
+    <string name="notification_calendar_upcoming">Événement à venir : %1$s. %2$s</string>
+
+    <!-- Notification action Titles -->
+    <string name="action_incoming_call">répondre</string>
+    <string-array name="action_outgoing_call">
+        <item>raccrocher</item>
+        <item>terminer l\'appel</item>
+        <item>haut-parleur</item>
+    </string-array>
+    <string name="action_missed_call">rappeler</string>
+
+    <string name="action_reply">répondre</string>
+    <string-array name="action_mark_read">
+        <item>marquer comme lu</item>
+        <item>lu</item>
+    </string-array>
+
+    <!-- Incoming Phone Call -->
+    <string name="incoming_call">Appel entrant de %1$s</string>
+
+    <!-- Navigation Titles -->
+    <string name="title_about">À propos</string>
+    <string name="title_important_apps">Applications importantes</string>
+    <string name="title_settings">Paramètres</string>
+    <string name="title_support">Support &amp; Commentaires</string>
+    <string name="title_legal">Légal</string>
+
+    <!-- Important Apps View -->
+    <string name="filter_apps">Filtrer les applications</string>
+    <string name="search_apps">Rechercher des applications</string>
+    <string name="no_apps_added">Aucune application ajoutée pour le moment !</string>
+    <string name="add_app_instruction">Cliquez sur le bouton Ajouter une application ci-dessous pour être alerté lors de la réception de notifications.</string>
+    <string name="add_app">Ajouter une application</string>
+    <string name="delete_apps">Supprimer les applications (%1$d)</string>
+
+    <!-- App Settings Dialog -->
+    <string name="app_settings_title">Paramètres de %1$s</string>
+    <string name="announcer_voice">Voix de l\'annonceur</string>
+    <string name="alert_me_to_notifications_from">M\'alerter pour les notifications de</string>
+    <string name="notifications_not_supported">Notifications non prises en charge</string>
+    <string name="notifications_not_supported_description">Actuellement, nous ne prenons pas en charge les sources de notification importantes pour %1$s.</string>
+    <string name="cancel">Annuler</string>
+    <string name="save">Enregistrer</string>
+    <string name="loading">Chargement…&#8230;</string>
+    <string name="no_notification_sources_yet">Pas encore de %1$s.</string>
+    <string name="no_notification_sources_instruction">Ajoutez des %1$s pour n\'être notifié que pour eux, ou laissez vide pour être notifié pour TOUS les %1$s.</string>
+    <string name="remove">Supprimer</string>
+    <string name="notification_sources">sources de notification</string>
+
+    <!-- Notification source widgets -->
+    <string name="notification_sources_name_text">sources de notification</string>
+    <string name="contacts_name_text">contacts</string>
+
+    <!-- Settings View -->
+    <string name="settings_section_general">Général</string>
+    <string name="settings_dark_theme_title">Thème sombre</string>
+    <string name="settings_dark_theme_description">Activer ou désactiver le mode sombre.</string>
+    <string name="settings_tts_voice_title">Voix TTS</string>
+    <string name="settings_tts_voice_description">Sélectionnez la voix pour les notifications vocales.</string>
+    <string name="settings_min_volume_title">Volume minimum</string>
+    <string name="settings_min_volume_description">Le niveau de volume le plus bas utilisé par l\'application.</string>
+    <string name="settings_maximize_volume_title">Maximiser le volume écran éteint</string>
+    <string name="settings_maximize_volume_description">Augmente le volume au maximum lorsque l\'écran est verrouillé.\n\nATTENTION : Cela peut affecter d\'autres sons comme la musique. Désactivez cette option si vous écoutez d\'autres médias.</string>
+    <string name="settings_section_privacy">Confidentialité</string>
+    <string name="settings_crashlytics_title">Partager les données d\'utilisation</string>
+    <string name="settings_crashlytics_description">Aidez à améliorer Speakify en partageant des rapports de crash anonymes et des statistiques via Firebase.</string>
+    <string name="settings_section_data">Gestion des données</string>
+    <string name="settings_backup_title">Sauvegarder les données</string>
+    <string name="settings_backup_description">Enregistrer vos paramètres et votre liste d\'applications dans un fichier.</string>
+    <string name="settings_export">Exporter</string>
+    <string name="settings_restore_title">Restaurer les données</string>
+    <string name="settings_restore_description">Importer les paramètres depuis un fichier de sauvegarde.</string>
+    <string name="settings_import">Importer</string>
+    <string name="settings_section_danger">Zone de danger</string>
+    <string name="settings_sign_out">Se déconnecter</string>
+    <string name="settings_delete_account">Supprimer le compte</string>
+    <string name="warning">Avertissement</string>
+
+    <!-- About View -->
+    <string name="about_header_what">Qu\'est-ce que cette application ?</string>
+    <string name="about_description_para1">Vous vous sentez bombardé par les notifications ? Cette application vous aide à choisir celles qui comptent et vous les lit à haute voix.</string>
+    <string name="about_description_para2">Elle vous permet même de prioriser les notifications d\'une application (ex: messages, appels, etc.).</string>
+    <string name="about_header_app_info">Infos application</string>
+    <string name="about_label_app">App : %1$s</string>
+    <string name="about_label_version">Version : %1$s</string>
+    <string name="about_label_author">Auteur : %1$s</string>
+    <string name="about_loading">Chargement des informations…</string>
+
+    <!-- Legal View -->
+    <string name="legal_instruction">Consultez nos politiques et conditions d\'utilisation.</string>
+    <string name="legal_privacy_policy_title">Politique de confidentialité</string>
+    <string name="legal_privacy_policy_description">Découvrez comment nous traitons et protégeons vos données.</string>
+    <string name="legal_privacy_policy_button">Voir la politique</string>
+    <string name="legal_terms_of_service_title">Conditions d\'utilisation</string>
+    <string name="legal_terms_of_service_description">Lisez nos conditions générales d\'utilisation de Speakify.</string>
+    <string name="legal_terms_of_service_button">Voir les conditions</string>
+
+    <!-- Support View -->
+    <string name="support_instruction_title">Nous aimerions avoir votre avis !</string>
+    <string name="support_instruction_description">Vos retours sont essentiels pour façonner l\'avenir de Speakify.</string>
+    <string name="support_feedback_card_title">Envoyer un commentaire</string>
+    <string name="support_feedback_card_description">Une demande de fonctionnalité ou un bug ? Contactez-nous par email.</string>
+    <string name="support_feedback_card_button">Nous contacter</string>
+
+    <!-- Account Deletion View -->
+    <string name="account_deletion_are_you_sure">Êtes-vous absolument sûr ?</string>
+    <string name="account_deletion_warning_para1">Cette action est irréversible. Toutes vos données seront définitivement supprimées.</string>
+    <string name="account_deletion_warning_reverify">Pour votre sécurité, vous devrez vous reconnecter pour confirmer la suppression.</string>
+    <string name="delete_my_account">Supprimer mon compte</string>
+    <string name="account_deletion_signing_out">Déconnexion en cours…</string>
+    <string name="account_deletion_deleting">Suppression de votre compte en cours…</string>
+    <string name="account_deletion_please_wait">Cela peut prendre un moment. Veuillez ne pas fermer l\'application.</string>
+
+    <!-- Permissions Concerns -->
+    <string name="notification_access_required_title">Accès aux notifications requis</string>
+    <string name="notification_access_required_message">Speakify a besoin de lire les notifications pour les énoncer.\n\nVeuillez activer Speakify dans les paramètres système.</string>
+    <string name="phone_permissions_required_message">L\'accès à l\'état du téléphone est requis pour annoncer les appels entrants.</string>
+    <string name="go_to_settings">Aller aux paramètres</string>
+    <string name="permissions_required_title">Autorisations requises</string>
+    <string name="permissions_required_message">L\'autorisation de notifier est requise pour fonctionner en arrière-plan.</string>
+    <string name="ok">OK</string>
+
+    <!-- AutoComplete widgets -->
+    <string name="search_for_entities">Rechercher %1$s</string>
+
+    <!-- AutoComplete labels -->
+    <string name="autocomplete_label_notifications">Sources de notification</string>
+    <string name="autocomplete_label_contacts">Nom du contact / Numéro de téléphone</string>
+    <string name="autocomplete_label_tts">Voix TTS</string>
+
+    <!-- UI Event messages -->
+    <string name="snackbar_exporting">Exportation de la sauvegarde…</string>
+    <string name="snackbar_export_success">Sauvegarde exportée avec succès !</string>
+    <string name="snackbar_export_failed">Échec de l\'exportation : %1$s</string>
+
+    <string name="snackbar_importing">Restauration des données…</string>
+    <string name="snackbar_import_success">Données restaurées avec succès !</string>
+    <string name="snackbar_import_failed">Échec de l\'importation : %1$s</string>
+
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Synchronisation</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Votre signature</string>
+    <string name="reply_title">Action de réponse par défaut</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Synchroniser les emails périodiquement</string>
+    <string name="attachment_title">Télécharger les pièces jointes entrantes</string>
+    <string name="attachment_summary_on">Télécharger automatiquement les pièces jointes
+    </string>
+    <string name="attachment_summary_off">Télécharger manuellement les pièces jointes</string>
+
+
+    <string name="feedback_email_subject">Speakify Feedback / Demande de fonctionnalité</string>
+
+    <string name="feedback_email_body">
+        Je vous contacte pour :\n
+        [ ] Une demande de fonctionnalité\n
+        [ ] Un commentaire général / Rapport de bug\n
+\n
+        Description :\n
+        (Veuillez décrire votre demande ou votre problème ici)\n
+\n
+\n
+        --------------------------------------------------\n
+        Compte utilisateur : %3$s\n
+        Infos appareil (Auto-rempli) :\n
+        Modèle : %1$s\n
+        Version Android : %2$s\n
+        --------------------------------------------------\n
+\n
+        P.S. Si c\'est un retour positif, je noterai Speakify sur le Google Play Store !
+    </string>
+
+    <!-- Fetcher concerns -->
+    <string name="fetcher_loading_screen">Récupération de %1$s…</string>
+    <string name="contacts_data_name">contacts</string>
+    <string name="apps_data_name">applications</string>
+
+</resources>

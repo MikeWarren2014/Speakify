@@ -1,10 +1,12 @@
 package com.mikewarren.speakify.strategies
 
 import android.app.Notification
+import android.content.Context
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import com.mikewarren.speakify.utils.SearchUtils
 import com.mikewarren.speakify.utils.log.ITaggable
@@ -18,6 +20,8 @@ interface IMessageNotificationHandler<EnumType>: ITaggable {
     }
 
     val notification: StatusBarNotification
+
+    val context: Context
 
     fun getNotificationType(): EnumType {
         if (isFromSentMessage())
@@ -50,20 +54,13 @@ interface IMessageNotificationHandler<EnumType>: ITaggable {
     }
 
     fun isReplyAction(action: Notification.Action): Boolean {
-        return SearchUtils.HasAnyMatches(listOf("Reply",
-            "Répondre",
-            "Responder",
-        ), action.title.toString())
+        return context.getString(R.string.action_reply)
+            .contains(action.title.toString(), true)
     }
 
     fun isMarkAsReadAction(action: Notification.Action): Boolean {
-        return SearchUtils.HasAnyMatches(listOf("Mark as read",
-            "Mark Read",
-            "Marquer comme lu",
-            "Marquer lu",
-            "Marcar como leído",
-            "Marcar leído",
-        ), action.title.toString())
+        return SearchUtils.HasAnyMatches(context.resources.getStringArray(R.array.action_mark_read),
+            action.title.toString())
     }
 
     fun isFromSentMessage(): Boolean {

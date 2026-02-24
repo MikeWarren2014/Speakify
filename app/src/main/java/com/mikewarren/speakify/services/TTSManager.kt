@@ -95,7 +95,6 @@ class TTSManager @Inject constructor(
                 }
             } catch (e: TimeoutCancellationException) {
                 Log.e(TAG, "Timed out waiting for TTS initialization.")
-//                FirebaseCrashlytics.getInstance().log("Timed out waiting for TTS initialization.")
                 isInitializationStarted = false
                 return
             }

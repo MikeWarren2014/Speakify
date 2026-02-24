@@ -156,10 +156,9 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
     }
 
     private fun createForegroundServiceNotification(): Notification {
-        // Create a minimal notification for the foreground service.
-        // This notification is visible to the user and indicates your app is active.
         val channelId = "SpeakifyForegroundServiceChannel"
-        val channelName = "Speakify Background Service"
+        val channelName = getString(R.string.notification_channel_name)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
                 channelId,
@@ -171,8 +170,8 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         }
 
         return NotificationCompat.Builder(this, channelId)
-            .setContentTitle("Speakify Active")
-            .setContentText("Processing notifications in the background.")
+            .setContentTitle(getString(R.string.notification_active_title))
+            .setContentText(getString(R.string.notification_active_content))
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .build()

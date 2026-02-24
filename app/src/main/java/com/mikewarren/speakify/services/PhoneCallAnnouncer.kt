@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.annotation.OptIn
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.utils.log.LogUtils
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
@@ -36,9 +37,9 @@ class PhoneCallAnnouncer @Inject constructor(
         val contactName = NotificationExtractionUtils.GetDisplayNameForPhoneNumber(context, phoneNumber)
 
         val announcement = if (contactName.isNotEmpty()) {
-            "Incoming call from $contactName"
+            context.getString(R.string.incoming_call, contactName)
         } else {
-            "Incoming call from ${phoneNumber.toCharArray().joinToString(" ")}" // Spells out the number
+            context.getString(R.string.incoming_call, phoneNumber.toCharArray().joinToString(" "))
         }
 
         announcementJob = announcerScope.launch {

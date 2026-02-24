@@ -10,6 +10,7 @@ import android.provider.Settings
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.constants.PermissionCodes
 import com.mikewarren.speakify.data.events.NotificationPermissionEvent
 import com.mikewarren.speakify.data.events.NotificationPermissionEventBus
@@ -85,19 +86,16 @@ class NotificationPermissionsActivity :
 
     private fun showListenerPermissionDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Notification Access Required")
-            .setMessage(
-                "Speakify needs permission to READ notifications so it can speak them aloud.\n\n" +
-                        "You will be redirected to system settings. Please find 'Speakify' and enable it."
-            )
-            .setPositiveButton("Go to Settings") { _, _ ->
+            .setTitle(getString(R.string.notification_access_required_title))
+            .setMessage(getString(R.string.notification_access_required_message))
+            .setPositiveButton(getString(R.string.go_to_settings)) { _, _ ->
                 val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
                 // We don't use the launcher here because Settings doesn't return a result intent cleanly
                 // We rely on onActivityResult or simply checking in onRestart/onResume logic if we were standard
                 // But since this is a dedicated activity, startActivityForResult is okay.
                 startActivityForResult(intent, REQUEST_CODE_LISTENER_SETTINGS)
             }
-            .setNegativeButton("Cancel") { _, _ ->
+            .setNegativeButton(getString(R.string.cancel)) { _, _ ->
                 eventBus.post(getPermissionDeniedEvent())
                 finish()
             }
@@ -137,12 +135,12 @@ class NotificationPermissionsActivity :
         // This is called by BasePermissionRequester if the initial runtime request fails
         // or if we manually trigger it.
         AlertDialog.Builder(this)
-            .setTitle("Permissions Required")
-            .setMessage("Speakify requires permission to post notifications to run in the background. Please grant this permission.")
-            .setPositiveButton("OK") { _, _ ->
+            .setTitle(getString(R.string.permissions_required_title))
+            .setMessage(getString(R.string.permissions_required_message))
+            .setPositiveButton(getString(R.string.ok)) { _, _ ->
                 requestMultiplePermissionsLauncher.launch(ungrantedPermissions)
             }
-            .setNegativeButton("Cancel") { _, _ ->
+            .setNegativeButton(getString(R.string.cancel)) { _, _ ->
                 eventBus.post(getFailureEvent("User denied permissions"))
                 finish()
             }

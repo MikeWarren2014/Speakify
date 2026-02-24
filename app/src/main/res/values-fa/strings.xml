@@ -1,0 +1,244 @@
+<resources>
+    <string name="app_name">Speakify</string>
+
+    <!-- Authentication Concerns -->
+    <string name="signed_in">با موفقیت وارد شدید. در حال انتقال به برنامه…</string>
+    <string name="signed_out">با موفقیت خارج شدید. در حال انتقال به صفحه ورود…</string>
+    <string name="sign_in">ورود</string>
+    <string name="sign_up">ثبت نام</string>
+    <string name="forgot_password">رمز عبور را فراموش کرده‌اید؟</string>
+
+    <!-- Sign In/Up View -->
+    <string name="sign_up_switch_to_sign_in">قبلاً حساب کاربری داشته‌اید؟ وارد شوید</string>
+    <string name="sign_in_switch_to_sign_up">حساب کاربری ندارید؟ ثبت نام کنید</string>
+
+    <!-- Sign Up page -->
+    <string name="sign_up_verification_message">
+        صندوق ورودی ایمیل خود را برای کد تایید بررسی کنید و آن را اینجا وارد کنید. \n
+        لطفا توجه داشته باشید، ممکن است چند دقیقه طول بکشد تا برسد و ممکن است در پوشه اسپم باشد.
+    </string>
+
+    <!-- Sign Up Form -->
+    <string name="first_name_label">نام *</string>
+    <string name="last_name_label">نام خانوادگی</string>
+    <string name="email_label">ایمیل *</string>
+    <string name="password_label">رمز عبور *</string>
+    <string name="legal_agree_prefix">من با </string>
+    <string name="legal_terms_of_service">شرایط خدمات</string>
+    <string name="legal_and"> و </string>
+    <string name="legal_privacy_policy">سیاست حفظ حریم خصوصی</string>
+    <string name="legal_dot"> موافقم.</string>
+
+    <!-- Forgot Password View -->
+    <string name="forgot_password_compromised">رمز عبور شما لو رفته است.</string>
+    <string name="forgot_password_active_session">نشست فعال: %1$s</string>
+    <string name="forgot_password_verify_email_header">تایید ایمیل</string>
+    <string name="forgot_password_verify_email_subtext">صندوق ورودی ایمیل خود را برای کد تایید بررسی کنید.</string>
+    <string name="forgot_password_verify_email_placeholder">کد خود را وارد کنید</string>
+    <string name="forgot_password_verify_button">تایید</string>
+    <string name="forgot_password_new_password_header">رمز عبور جدید</string>
+    <string name="forgot_password_new_password_subtext">رمز عبور جدید و امن خود را در زیر وارد کنید.</string>
+    <string name="forgot_password_new_password_placeholder">رمز عبور جدید را وارد کنید</string>
+    <string name="forgot_password_set_password_button">تنظیم رمز عبور جدید</string>
+    <string name="forgot_password_2fa_unsupported">احراز هویت دو مرحله‌ای الزامی است اما این رابط کاربری آن را پشتیبانی نمی‌کند</string>
+    <string name="forgot_password_header">فراموشی رمز عبور</string>
+    <string name="forgot_password_email_placeholder">آدرس ایمیل خود را وارد کنید</string>
+    <string name="forgot_password_send_code_button">ارسال کد بازنشانی</string>
+
+    <!-- Speakify Notification -->
+    <string name="notification_channel_name">سرویس پس‌زمینه Speakify</string>
+    <string name="notification_active_title">Speakify فعال است</string>
+    <string name="notification_active_content">در حال پردازش اعلان‌ها در پس‌زمینه.</string>
+
+    <!-- Notification Strategies -->
+    <string name="simple_notification_strategy_text">اعلان از طرف %1$s</string>
+    <string name="sms_notification_strategy_text">پیامک از طرف %1$s</string>
+
+    <string name="google_voice_notification_strategy_text_suffix"> از طرف %1$s</string>
+    <string name="google_voice_incoming_sms_notification_strategy_text">پیامک ورودی گوگل ویس%1$s</string>
+    <string name="google_voice_incoming_call_notification_strategy_text">تماس ورودی گوگل ویس%1$s</string>
+    <string name="google_voice_strategy_unknown_notification_text">اعلان ناشناخته گوگل ویس</string>
+
+    <string name="notification_calendar_upcoming">رویداد آینده: %1$s. %2$s</string>
+
+    <!-- Notification action Titles -->
+    <string name="action_incoming_call">پاسخ</string>
+    <string-array name="action_outgoing_call">
+        <item>قطع تماس</item>
+        <item>پایان تماس</item>
+        <item>بلندگو</item>
+    </string-array>
+    <string name="action_missed_call">تماس مجدد</string>
+
+    <string name="action_reply">پاسخ</string>
+    <string-array name="action_mark_read">
+        <item>به عنوان خوانده شده علامت بزن</item>
+        <item>علامت خوانده شده</item>
+    </string-array>
+
+    <!-- Incoming Phone Call -->
+    <string name="incoming_call">تماس ورودی از %1$s</string>
+
+    <!-- Navigation Titles -->
+    <string name="title_about">درباره</string>
+    <string name="title_important_apps">برنامه‌های مهم</string>
+    <string name="title_settings">تنظیمات</string>
+    <string name="title_support">پشتیبانی و بازخورد</string>
+    <string name="title_legal">حقوقی</string>
+
+    <!-- Important Apps View -->
+    <string name="filter_apps">فیلتر برنامه‌ها</string>
+    <string name="search_apps">جستجوی برنامه‌ها</string>
+    <string name="no_apps_added">هنوز برنامه‌ای اضافه نشده است!</string>
+    <string name="add_app_instruction">برای افزودن برخی برنامه‌ها جهت اطلاع‌رسانی هنگام ارسال اعلان، روی دکمه افزودن برنامه در زیر کلیک کنید.</string>
+    <string name="add_app">افزودن برنامه</string>
+    <string name="delete_apps">حذف برنامه‌ها (%1$d)</string>
+
+    <!-- App Settings Dialog -->
+    <string name="app_settings_title">تنظیمات %1$s</string>
+    <string name="announcer_voice">صدای گوینده</string>
+    <string name="alert_me_to_notifications_from">به من درباره اعلان‌های این‌ها هشدار بده</string>
+    <string name="notifications_not_supported">اعلان‌ها پشتیبانی نمی‌شوند</string>
+    <string name="notifications_not_supported_description">در حال حاضر، ما از منابع اعلان مهم برای %1$s پشتیبانی نمی‌کنیم.</string>
+    <string name="cancel">لغو</string>
+    <string name="save">ذخیره</string>
+    <string name="loading">در حال بارگذاری…</string>
+    <string name="no_notification_sources_yet">هنوز %1$s وجود ندارد.</string>
+    <string name="no_notification_sources_instruction">برخی %1$s را اضافه کنید تا فقط درباره آن‌ها مطلع شوید، یا این را خالی بگذارید تا درباره همه %1$s مطلع شوید.</string>
+    <string name="remove">حذف</string>
+    <string name="notification_sources">منابع اعلان</string>
+
+    <!-- Notification source widgets -->
+    <string name="notification_sources_name_text">منابع اعلان</string>
+    <string name="contacts_name_text">مخاطبین</string>
+
+    <!-- Settings View -->
+    <string name="settings_section_general">عمومی</string>
+    <string name="settings_dark_theme_title">تم تاریک</string>
+    <string name="settings_dark_theme_description">فعال یا غیرفعال کردن حالت تاریک برای برنامه.</string>
+    <string name="settings_tts_voice_title">صدای TTS</string>
+    <string name="settings_tts_voice_description">انتخاب صدا برای اعلان‌های صوتی.</string>
+    <string name="settings_min_volume_title">حداقل صدا</string>
+    <string name="settings_min_volume_description">کمترین سطح صدا که برنامه هنگام خواندن اعلان‌ها استفاده خواهد کرد. </string>
+    <string name="settings_maximize_volume_title">حداکثر کردن صدا هنگام خاموش بودن صفحه</string>
+    <string name="settings_maximize_volume_description">صدای اعلان را هنگام قفل بودن صفحه به حداکثر می‌رساند.\n\nهشدار: این ممکن است بر سایر صداها مانند موسیقی یا پادکست تاثیر بگذارد. اگر به رسانه‌های دیگر گوش می‌دهید، این را خاموش کنید.</string>
+    <string name="settings_section_privacy">حریم خصوصی</string>
+    <string name="settings_crashlytics_title">اشتراک‌گذاری داده‌های استفاده</string>
+    <string name="settings_crashlytics_description">با اشتراک‌گذاری گزارش‌های خرابی ناشناس و آمارهای استفاده از طریق فایربیس، به بهبود Speakify کمک کنید.</string>
+    <string name="settings_section_data">مدیریت داده‌ها</string>
+    <string name="settings_backup_title">پشتیبان‌گیری از داده‌ها</string>
+    <string name="settings_backup_description">تنظیمات و لیست برنامه‌های خود را در یک فایل ذخیره کنید.</string>
+    <string name="settings_export">خروجی گرفتن</string>
+    <string name="settings_restore_title">بازیابی داده‌ها</string>
+    <string name="settings_restore_description">وارد کردن تنظیمات از یک فایل پشتیبان.</string>
+    <string name="settings_import">وارد کردن</string>
+    <string name="settings_section_danger">منطقه خطر</string>
+    <string name="settings_sign_out">خروج از حساب</string>
+    <string name="settings_delete_account">حذف حساب کاربری</string>
+    <string name="warning">هشدار</string>
+
+    <!-- About View -->
+    <string name="about_header_what">این برنامه چیست؟</string>
+    <string name="about_description_para1">آیا از بمباران اعلان‌ها، حتی از یک برنامه مشابه، خسته شده‌اید؟ این برنامه می‌تواند کمک کند، زیرا به شما اجازه می‌دهد مواردی را که بیشتر برایتان مهم هستند انتخاب کنید و هنگام ظاهر شدن، آن‌ها را برایتان بخواند!</string>
+    <string name="about_description_para2">این برنامه حتی به شما اجازه می‌دهد اولویت‌بندی کنید که کدام اعلان‌ها از یک برنامه (مثلاً کدام پیام‌ها/تماس‌ها/…) به شما گزارش شود!</string>
+    <string name="about_header_app_info">اطلاعات برنامه</string>
+    <string name="about_label_app">برنامه: %1$s</string>
+    <string name="about_label_version">نسخه: %1$s</string>
+    <string name="about_label_author">نویسنده: %1$s</string>
+    <string name="about_loading">در حال بارگذاری اطلاعات برنامه…</string>
+
+    <!-- Legal View -->
+    <string name="legal_instruction">خط‌مشی‌ها و شرایط خدمات ما را مرور کنید.</string>
+    <string name="legal_privacy_policy_title">سیاست حفظ حریم خصوصی</string>
+    <string name="legal_privacy_policy_description">درباره نحوه مدیریت و محافظت از داده‌های شما بخوانید.</string>
+    <string name="legal_privacy_policy_button">مشاهده سیاست</string>
+    <string name="legal_terms_of_service_title">شرایط خدمات</string>
+    <string name="legal_terms_of_service_description">شرایط و ضوابط ما را برای استفاده از Speakify بخوانید.</string>
+    <string name="legal_terms_of_service_button">مشاهده شرایط</string>
+
+    <!-- Support View -->
+    <string name="support_instruction_title">ما دوست داریم از شما بشنویم!</string>
+    <string name="support_instruction_description">از آنجا که این یک نسخه اولیه است، بازخورد شما در شکل‌دهی آینده Speakify بسیار حیاتی است.</string>
+    <string name="support_feedback_card_title">ارسال بازخورد</string>
+    <string name="support_feedback_card_description">درخواست ویژگی دارید یا باگی پیدا کرده‌اید؟ مستقیماً به ما ایمیل بزنید.</string>
+    <string name="support_feedback_card_button">ایمیل به ما</string>
+
+    <!-- Account Deletion View -->
+    <string name="account_deletion_are_you_sure">آیا کاملاً مطمئن هستید؟</string>
+    <string name="account_deletion_warning_para1">این عمل غیرقابل بازگشت است و قابل لغو نیست. تمام داده‌های شما، از جمله تنظیمات و اولویت‌های برنامه‌های ذخیره شده، برای همیشه حذف خواهند شد. </string>
+    <string name="account_deletion_warning_reverify">برای امنیت شما، از حساب خارج خواهید شد و باید دوباره وارد شوید تا حذف حساب را تایید کنید.</string>
+    <string name="delete_my_account">حذف حساب من</string>
+    <string name="account_deletion_signing_out">در حال خارج کردن شما از حساب…</string>
+    <string name="account_deletion_deleting">در حال حذف حساب شما…</string>
+    <string name="account_deletion_please_wait">این ممکن است لحظاتی طول بکشد. لطفا برنامه را نبندید.</string>
+
+    <!-- Permissions Concerns -->
+    <string name="notification_access_required_title">دسترسی به اعلان‌ها الزامی است</string>
+    <string name="notification_access_required_message">Speakify برای خواندن اعلان‌ها با صدای بلند، به مجوز خواندن اعلان‌ها نیاز دارد.\n\nشما به تنظیمات سیستم منتقل خواهید شد. لطفا «Speakify» را پیدا کرده و آن را فعال کنید.</string>
+    <string name="phone_permissions_required_message">Speakify برای اعلام تماس‌های ورودی، به دسترسی به وضعیت تلفن و گزارش تماس‌های شما نیاز دارد. لطفا این مجوزها را صادر کنید.</string>
+    <string name="go_to_settings">رفتن به تنظیمات</string>
+    <string name="permissions_required_title">مجوزهای الزامی</string>
+    <string name="permissions_required_message">Speakify برای اجرا در پس‌زمینه به مجوز ارسال اعلان نیاز دارد. لطفا این مجوز را صادر کنید.</string>
+    <string name="ok">تایید</string>
+
+    <!-- AutoComplete widgets -->
+    <string name="search_for_entities">جستجو برای %1$s</string>
+
+    <!-- AutoComplete labels -->
+    <string name="autocomplete_label_notifications">منابع اعلان</string>
+    <string name="autocomplete_label_contacts">نام مخاطب/شماره تلفن</string>
+    <string name="autocomplete_label_tts">صدای TTS</string>
+
+    <!-- UI Event messages -->
+    <string name="snackbar_exporting">در حال خروجی گرفتن از پشتیبان…</string>
+    <string name="snackbar_export_success">پشتیبان با موفقیت صادر شد!</string>
+    <string name="snackbar_export_failed">خروجی ناموفق بود: %1$s</string>
+
+    <string name="snackbar_importing">در حال بازیابی داده‌ها…</string>
+    <string name="snackbar_import_success">داده‌ها با موفقیت بازیابی شدند!</string>
+    <string name="snackbar_import_failed">وارد کردن ناموفق بود: %1$s</string>
+
+
+    <!-- Preference Titles -->
+    <string name="messages_header">پیام‌ها</string>
+    <string name="sync_header">همگام‌سازی</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">امضای شما</string>
+    <string name="reply_title">اقدام پیش‌فرض برای پاسخ</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">همگام‌سازی دوره‌ای ایمیل</string>
+    <string name="attachment_title">دانلود پیوست‌های ورودی</string>
+    <string name="attachment_summary_on">دانلود خودکار پیوست‌ها برای ایمیل‌های ورودی
+    </string>
+    <string name="attachment_summary_off">دانلود پیوست‌ها فقط در صورت درخواست دستی</string>
+
+
+    <string name="feedback_email_subject">بازخورد Speakify / درخواست ویژگی</string>
+
+    <string name="feedback_email_body">
+        من در مورد این موضوع می‌نویسم:\n
+        [ ] درخواست ویژگی\n
+        [ ] بازخورد عمومی / گزارش باگ\n
+\n
+        توضیحات:\n
+        (لطفاً درخواست یا مشکل خود را اینجا شرح دهید)\n
+\n
+\n
+        --------------------------------------------------\n
+        حساب کاربری: %3$s\n
+        اطلاعات دستگاه (خودکار پر شده):\n
+        مدل: %1$s\n
+        نسخه اندروید: %2$s\n
+        --------------------------------------------------\n
+\n
+        پ.ن: اگر این یک بازخورد مثبت است، من قطعاً رتبه‌بندی Speakify را در فروشگاه گوگل پلی در نظر خواهم گرفت!
+    </string>
+
+    <!-- Fetcher concerns -->
+    <string name="fetcher_loading_screen">در حال دریافت %1$s…</string>
+    <string name="contacts_data_name">مخاطبین</string>
+    <string name="apps_data_name">برنامه‌ها</string>
+
+</resources>

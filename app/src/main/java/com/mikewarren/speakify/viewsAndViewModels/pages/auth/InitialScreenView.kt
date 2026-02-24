@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.uiStates.InitialScreenUiState
@@ -55,11 +56,11 @@ fun TitleView(onSignInClicked: () -> Unit, onSignUpClicked: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(32.dp))
         Button(onClick = onSignUpClicked) {
-            Text("Sign Up")
+            Text(stringResource(R.string.sign_up))
         }
         Spacer(modifier = Modifier.height(8.dp))
         Button(onClick = onSignInClicked) {
-            Text("Sign In")
+            Text(stringResource(R.string.sign_in))
         }
     }
 }

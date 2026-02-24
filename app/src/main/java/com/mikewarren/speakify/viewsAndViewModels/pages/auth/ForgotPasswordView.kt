@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.clerk.api.Clerk
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.uiStates.SignInUiState
 import com.mikewarren.speakify.viewsAndViewModels.widgets.PasswordField
 
@@ -38,7 +40,7 @@ fun ForgotPasswordView(reason: String) {
 
     var subtext = ""
     if (reason == SignInUiState.ResetPassword.PwnedCredentials) {
-        subtext = "Your password has been compromised."
+        subtext = stringResource(R.string.forgot_password_compromised)
     }
 
     val focusManager = LocalFocusManager.current
@@ -50,40 +52,40 @@ fun ForgotPasswordView(reason: String) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         when (state) {
             ForgotPasswordViewModel.UiState.Complete -> {
-                Text("Active session: ${Clerk.session?.id}")
+                Text(stringResource(R.string.forgot_password_active_session, Clerk.session?.id ?: ""))
             }
 
             ForgotPasswordViewModel.UiState.NeedsFirstFactor -> {
                 InputContent(
-                    header = "Verify Email",
-                    subtext = "Check your email inbox for the verification code.",
-                    placeholder = "Enter your code",
+                    header = stringResource(R.string.forgot_password_verify_email_header),
+                    subtext = stringResource(R.string.forgot_password_verify_email_subtext),
+                    placeholder = stringResource(R.string.forgot_password_verify_email_placeholder),
                     keyboardType = KeyboardType.NumberPassword,
-                    buttonText = "Verify",
+                    buttonText = stringResource(R.string.forgot_password_verify_button),
                     focusManager = focusManager,
                     onDone = viewModel::verify,
                 )
             }
             ForgotPasswordViewModel.UiState.NeedsNewPassword -> {
                 InputContent(
-                    header = "New Password",
-                    subtext = "Enter your new secure password below.",
-                    placeholder = "Enter your new password",
-                    buttonText = "Set new password",
+                    header = stringResource(R.string.forgot_password_new_password_header),
+                    subtext = stringResource(R.string.forgot_password_new_password_subtext),
+                    placeholder = stringResource(R.string.forgot_password_new_password_placeholder),
+                    buttonText = stringResource(R.string.forgot_password_set_password_button),
                     onDone = viewModel::setNewPassword,
                     focusManager = focusManager,
                     keyboardType = KeyboardType.Password,
                 )
             }
             ForgotPasswordViewModel.UiState.NeedsSecondFactor -> {
-                Text("2FA is required but this UI does not handle that")
+                Text(stringResource(R.string.forgot_password_2fa_unsupported))
             }
             ForgotPasswordViewModel.UiState.SignedOut -> {
                 InputContent(
-                    header = "Forgot Password",
+                    header = stringResource(R.string.forgot_password_header),
                     subtext = subtext,
-                    placeholder = "Enter your email address",
-                    buttonText = "Send Reset Code",
+                    placeholder = stringResource(R.string.forgot_password_email_placeholder),
+                    buttonText = stringResource(R.string.forgot_password_send_code_button),
                     onDone = viewModel::createSignIn,
                     keyboardType = KeyboardType.Email,
                     focusManager = focusManager,
