@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import android.app.AlertDialog
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.constants.PermissionCodes
 import com.mikewarren.speakify.data.events.PhonePermissionEvent
 import com.mikewarren.speakify.data.events.PhonePermissionEventBus
@@ -58,15 +59,15 @@ class PhonePermissionsActivity() : BasePermissionRequesterActivity<PhonePermissi
     override fun handleUngrantedPermissions(ungrantedPermissions: Array<String>) {
 
         AlertDialog.Builder(this)
-            .setTitle("Permissions Required")
-            .setMessage("Speakify needs access to your phone state and call logs to announce incoming calls. Please grant these permissions.")
-            .setPositiveButton("OK") { _, _ ->
+            .setTitle(getString(R.string.permissions_required_title))
+            .setMessage(getString(R.string.phone_permissions_required_message))
+            .setPositiveButton(getString(R.string.ok)) { _, _ ->
                 requestMultiplePermissionsLauncher.launch(ungrantedPermissions)
             }
-            .setNegativeButton("Cancel", { _, _ ->
+            .setNegativeButton(getString(R.string.cancel)) { _, _ ->
                 eventBus.post(getFailureEvent("User denied permissions"))
                 finish()
-            })
+            }
             .show()
     }
 }
