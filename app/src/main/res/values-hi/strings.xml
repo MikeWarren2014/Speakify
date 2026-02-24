@@ -1,0 +1,243 @@
+<resources>
+    <string name="app_name">Speakify</string>
+
+    <!-- Authentication Concerns -->
+    <string name="signed_in">सफलतापूर्वक साइन इन किया गया। ऐप पर रीडायरेक्ट किया जा रहा है…</string>
+    <string name="signed_out">सफलतापूर्वक साइन आउट किया गया। लॉगिन पेज पर वापस रीडायरेक्ट किया जा रहा है…</string>
+    <string name="sign_in">साइन इन करें</string>
+    <string name="sign_up">साइन अप करें</string>
+    <string name="forgot_password">पासवर्ड भूल गए?</string>
+
+    <!-- Sign In/Up View -->
+    <string name="sign_up_switch_to_sign_in">पहले से ही एक खाता है? साइन इन करें</string>
+    <string name="sign_in_switch_to_sign_up">खाता नहीं है? साइन अप करें</string>
+
+    <!-- Sign Up page -->
+    <string name="sign_up_verification_message">
+        सत्यापन कोड के लिए अपना ईमेल इनबॉक्स देखें और उसे यहाँ दर्ज करें। \n
+        कृपया ध्यान दें, इसे आने में कुछ मिनट लग सकते हैं और यह स्पैम फ़ोल्डर में भी हो सकता है।
+    </string>
+
+    <!-- Sign Up Form -->
+    <string name="first_name_label">पहला नाम *</string>
+    <string name="last_name_label">अंतिम नाम</string>
+    <string name="email_label">ईमेल *</string>
+    <string name="password_label">पासवर्ड *</string>
+    <string name="legal_agree_prefix">मैं </string>
+    <string name="legal_terms_of_service">सेवा की शर्तों</string>
+    <string name="legal_and"> और </string>
+    <string name="legal_privacy_policy">गोपनीयता नीति</string>
+    <string name="legal_dot"> से सहमत हूँ।</string>
+
+    <!-- Forgot Password View -->
+    <string name="forgot_password_compromised">आपका पासवर्ड लीक हो गया है।</string>
+    <string name="forgot_password_active_session">सक्रिय सत्र: %1$s</string>
+    <string name="forgot_password_verify_email_header">ईमेल सत्यापित करें</string>
+    <string name="forgot_password_verify_email_subtext">सत्यापन कोड के लिए अपना ईमेल इनबॉक्स देखें।</string>
+    <string name="forgot_password_verify_email_placeholder">अपना कोड दर्ज करें</string>
+    <string name="forgot_password_verify_button">सत्यापित करें</string>
+    <string name="forgot_password_new_password_header">नया पासवर्ड</string>
+    <string name="forgot_password_new_password_subtext">नीचे अपना नया सुरक्षित पासवर्ड दर्ज करें।</string>
+    <string name="forgot_password_new_password_placeholder">नया पासवर्ड दर्ज करें</string>
+    <string name="forgot_password_set_password_button">नया पासवर्ड सेट करें</string>
+    <string name="forgot_password_2fa_unsupported">2FA आवश्यक है लेकिन यह UI इसे हैंडल नहीं करता है</string>
+    <string name="forgot_password_header">पासवर्ड भूल गए</string>
+    <string name="forgot_password_email_placeholder">अपना ईमेल पता दर्ज करें</string>
+    <string name="forgot_password_send_code_button">रीसेट कोड भेजें</string>
+
+    <!-- Speakify Notification -->
+    <string name="notification_channel_name">Speakify बैकग्राउंड सेवा</string>
+    <string name="notification_active_title">Speakify सक्रिय है</string>
+    <string name="notification_active_content">पृष्ठभूमि में सूचनाएं संसाधित की जा रही हैं।</string>
+
+    <!-- Notification Strategies -->
+    <string name="simple_notification_strategy_text">%1$s से सूचना</string>
+    <string name="sms_notification_strategy_text">%1$s से संदेश</string>
+
+    <string name="google_voice_notification_strategy_text_suffix"> (%1$s की ओर से)</string>
+    <string name="google_voice_incoming_sms_notification_strategy_text">आने वाला Google Voice टेक्स्ट संदेश%1$s</string>
+    <string name="google_voice_incoming_call_notification_strategy_text">आने वाली Google Voice कॉल%1$s</string>
+    <string name="google_voice_strategy_unknown_notification_text">अज्ञात Google Voice सूचना</string>
+
+    <string name="notification_calendar_upcoming">आने वाला ईवेंट: %1$s। %2$s</string>
+
+    <!-- Notification action Titles -->
+    <string name="action_incoming_call">उत्तर दें</string>
+    <string-array name="action_outgoing_call">
+        <item>कॉल समाप्त करें</item>
+        <item>हैंग अप</item>
+        <item>स्पीकर</item>
+    </string-array>
+    <string name="action_missed_call">वापस कॉल करें</string>
+
+    <string name="action_reply">उत्तर दें</string>
+    <string-array name="action_mark_read">
+        <item>पढ़ा हुआ मानें</item>
+        <item>पढ़ा हुआ मार्क करें</item>
+    </string-array>
+
+    <!-- Incoming Phone Call -->
+    <string name="incoming_call">%1$s से आने वाली कॉल</string>
+
+    <!-- Navigation Titles -->
+    <string name="title_about">के बारे में</string>
+    <string name="title_important_apps">महत्वपूर्ण ऐप्स</string>
+    <string name="title_settings">सेटिंग्स</string>
+    <string name="title_support">सपोर्ट और फीडबैक</string>
+    <string name="title_legal">कानूनी</string>
+
+    <!-- Important Apps View -->
+    <string name="filter_apps">ऐप्स फ़िल्टर करें</string>
+    <string name="search_apps">ऐप्स खोजें</string>
+    <string name="no_apps_added">अभी तक कोई ऐप नहीं जोड़ा गया है!</string>
+    <string name="add_app_instruction">जब वे आपको सूचनाएं भेजें तो अलर्ट होने के लिए ऐप्स जोड़ने के लिए नीचे दिए गए ऐप जोड़ें बटन पर क्लिक करें।</string>
+    <string name="add_app">ऐप जोड़ें</string>
+    <string name="delete_apps">ऐप्स हटाएं (%1$d)</string>
+
+    <!-- App Settings Dialog -->
+    <string name="app_settings_title">%1$s सेटिंग्स</string>
+    <string name="announcer_voice">अनाउन्सर आवाज़</string>
+    <string name="alert_me_to_notifications_from">मुझे सूचनाओं के लिए अलर्ट करें:</string>
+    <string name="notifications_not_supported">सूचनाएं समर्थित नहीं हैं</string>
+    <string name="notifications_not_supported_description">वर्तमान में, हम %1$s के लिए महत्वपूर्ण सूचना स्रोतों का समर्थन नहीं करते हैं।</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="save">सहेजें</string>
+    <string name="loading">लोड हो रहा है…</string>
+    <string name="no_notification_sources_yet">अभी तक कोई %1$s नहीं है।</string>
+    <string name="no_notification_sources_instruction">केवल उनके बारे में सूचित होने के लिए कुछ %1$s जोड़ें, या सभी %1$s के बारे में सूचित होने के लिए इसे खाली छोड़ दें।</string>
+    <string name="remove">हटाएं</string>
+    <string name="notification_sources">सूचना स्रोत</string>
+
+    <!-- Notification source widgets -->
+    <string name="notification_sources_name_text">सूचना स्रोत</string>
+    <string name="contacts_name_text">संपर्क</string>
+
+    <!-- Settings View -->
+    <string name="settings_section_general">सामान्य</string>
+    <string name="settings_dark_theme_title">डार्क थीम</string>
+    <string name="settings_dark_theme_description">ऐप के लिए डार्क मोड सक्षम या अक्षम करें।</string>
+    <string name="settings_tts_voice_title">TTS आवाज़</string>
+    <string name="settings_tts_voice_description">बोली जाने वाली सूचनाओं के लिए आवाज़ चुनें।</string>
+    <string name="settings_min_volume_title">न्यूनतम वॉल्यूम</string>
+    <string name="settings_min_volume_description">सूचनाएं बोलते समय ऐप द्वारा उपयोग किया जाने वाला सबसे कम वॉल्यूम स्तर।</string>
+    <string name="settings_maximize_volume_title">स्क्रीन बंद होने पर वॉल्यूम अधिकतम करें</string>
+    <string name="settings_maximize_volume_description">स्क्रीन लॉक होने पर सूचना वॉल्यूम को अधिकतम तक बढ़ाता है।\n\nचेतावनी: यह संगीत या पॉडकास्ट जैसे अन्य ऑडियो को प्रभावित कर सकता है। यदि आप अन्य मीडिया सुनते हैं तो इसे बंद कर दें।</string>
+    <string name="settings_section_privacy">गोपनीयता</string>
+    <string name="settings_crashlytics_title">उपयोग डेटा साझा करें</string>
+    <string name="settings_crashlytics_description">Firebase के माध्यम से अनाम क्रैश रिपोर्ट और उपयोग के आँकड़े साझा करके Speakify को बेहतर बनाने में सहायता करें।</string>
+    <string name="settings_section_data">डेटा प्रबंधन</string>
+    <string name="settings_backup_title">डेटा बैकअप</string>
+    <string name="settings_backup_description">अपनी सेटिंग्स और ऐप सूची को एक फ़ाइल में सहेजें।</string>
+    <string name="settings_export">निर्यात (Export)</string>
+    <string name="settings_restore_title">डेटा पुनर्स्थापित करें</string>
+    <string name="settings_restore_description">बैकअप फ़ाइल से सेटिंग्स आयात करें।</string>
+    <string name="settings_import">आयात (Import)</string>
+    <string name="settings_section_danger">खतरनाक क्षेत्र</string>
+    <string name="settings_sign_out">साइन आउट करें</string>
+    <string name="settings_delete_account">खाता हटाएं</string>
+    <string name="warning">चेतावनी</string>
+
+    <!-- About View -->
+    <string name="about_header_what">यह ऐप क्या है?</string>
+    <string name="about_description_para1">सूचनाओं की बमबारी महसूस कर रहे हैं, यहाँ तक कि एक ही ऐप से? यह ऐप मदद कर सकता है, क्योंकि यह आपको उन सूचनाओं को चुनने देता है जिनकी आप सबसे अधिक परवाह करते हैं, और उनके आने पर उन्हें आपको पढ़कर सुनाता है!</string>
+    <string name="about_description_para2">यह ऐप आपको यह प्राथमिकता देने देगा कि किसी ऐप की कौन सी सूचनाएं (जैसे कौन से संदेश/कॉल/…) आपको रिपोर्ट की जाएं!</string>
+    <string name="about_header_app_info">ऐप जानकारी</string>
+    <string name="about_label_app">ऐप: %1$s</string>
+    <string name="about_label_version">संस्करण: %1$s</string>
+    <string name="about_label_author">लेखक: %1$s</string>
+    <string name="about_loading">ऐप जानकारी लोड हो रही है…</string>
+
+    <!-- Legal View -->
+    <string name="legal_instruction">हमारी नीतियों और सेवा की शर्तों की समीक्षा करें।</string>
+    <string name="legal_privacy_policy_title">गोपनीयता नीति</string>
+    <string name="legal_privacy_policy_description">हम आपके डेटा को कैसे संभालते और सुरक्षित रखते हैं, इसके बारे में पढ़ें।</string>
+    <string name="legal_privacy_policy_button">नीति देखें</string>
+    <string name="legal_terms_of_service_title">सेवा की शर्तें</string>
+    <string name="legal_terms_of_service_description">Speakify का उपयोग करने के लिए हमारी नियम और शर्तें पढ़ें।</string>
+    <string name="legal_terms_of_service_button">शर्तें देखें</string>
+
+    <!-- Support View -->
+    <string name="support_instruction_title">हम आपसे सुनना पसंद करेंगे!</string>
+    <string name="support_instruction_description">चूंकि यह एक प्रारंभिक रिलीज़ है, इसलिए Speakify के भविष्य को आकार देने में आपकी प्रतिक्रिया महत्वपूर्ण है।</string>
+    <string name="support_feedback_card_title">फीडबैक भेजें</string>
+    <string name="support_feedback_card_description">क्या आपके पास कोई फीचर अनुरोध है या कोई बग मिला है? हमें सीधे ईमेल करें।</string>
+    <string name="support_feedback_card_button">हमें ईमेल करें</string>
+
+    <!-- Account Deletion View -->
+    <string name="account_deletion_are_you_sure">क्या आप पूरी तरह से सुनिश्चित हैं?</string>
+    <string name="account_deletion_warning_para1">यह क्रिया अपरिवर्तनीय है और इसे पूर्ववत नहीं किया जा सकता है। आपकी सेटिंग्स और सहेजी गई ऐप प्राथमिकताओं सहित आपका सारा डेटा स्थायी रूप से हटा दिया जाएगा।</string>
+    <string name="account_deletion_warning_reverify">आपकी सुरक्षा के लिए, आपको साइन आउट कर दिया जाएगा और खाता हटाने की पुष्टि करने के लिए आपको फिर से साइन इन करना होगा।</string>
+    <string name="delete_my_account">मेरा खाता हटाएं</string>
+    <string name="account_deletion_signing_out">आपको साइन आउट किया जा रहा है…</string>
+    <string name="account_deletion_deleting">आपका खाता हटाया जा रहा है…</string>
+    <string name="account_deletion_please_wait">इसमें कुछ समय लग सकता है। कृपया ऐप बंद न करें।</string>
+
+    <!-- Permissions Concerns -->
+    <string name="notification_access_required_title">सूचना पहुंच आवश्यक है</string>
+    <string name="notification_access_required_message">Speakify को सूचनाएं पढ़ने की अनुमति चाहिए ताकि वह उन्हें जोर से बोल सके।\n\nआपको सिस्टम सेटिंग्स पर रीडायरेक्ट किया जाएगा। कृपया \'Speakify\' खोजें और इसे सक्षम करें।</string>
+    <string name="phone_permissions_required_message">आने वाली कॉलों की घोषणा करने के लिए Speakify को आपके फ़ोन की स्थिति और कॉल लॉग तक पहुंच की आवश्यकता है। कृपया ये अनुमतियां प्रदान करें।</string>
+    <string name="go_to_settings">सेटिंग्स पर जाएं</string>
+    <string name="permissions_required_title">अनुमतियाँ आवश्यक हैं</string>
+    <string name="permissions_required_message">Speakify को बैकग्राउंड में चलने के लिए सूचनाएं पोस्ट करने की अनुमति चाहिए। कृपया यह अनुमति प्रदान करें।</string>
+    <string name="ok">ठीक है</string>
+
+    <!-- AutoComplete widgets -->
+    <string name="search_for_entities">%1$s के लिए खोजें</string>
+
+    <!-- AutoComplete labels -->
+    <string name="autocomplete_label_notifications">सूचना स्रोत</string>
+    <string name="autocomplete_label_contacts">संपर्क नाम/फ़ोन नंबर</string>
+    <string name="autocomplete_label_tts">TTS आवाज़</string>
+
+    <!-- UI Event messages -->
+    <string name="snackbar_exporting">बैकअप निर्यात किया जा रहा है…</string>
+    <string name="snackbar_export_success">बैकअप सफलतापूर्वक निर्यात किया गया!</string>
+    <string name="snackbar_export_failed">निर्यात विफल: %1$s</string>
+
+    <string name="snackbar_importing">डेटा पुनर्स्थापित किया जा रहा है…</string>
+    <string name="snackbar_import_success">डेटा सफलतापूर्वक पुनर्स्थापित किया गया!</string>
+    <string name="snackbar_import_failed">आयात विफल: %1$s</string>
+
+
+    <!-- Preference Titles -->
+    <string name="messages_header">संदेश</string>
+    <string name="sync_header">सिंक (Sync)</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">आपका हस्ताक्षर</string>
+    <string name="reply_title">डिफ़ॉल्ट उत्तर क्रिया</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">ईमेल को समय-समय पर सिंक करें</string>
+    <string name="attachment_title">आने वाले अटैचमेंट डाउनलोड करें</string>
+    <string name="attachment_summary_on">आने वाले ईमेल के लिए अटैचमेंट स्वचालित रूप से डाउनलोड करें</string>
+    <string name="attachment_summary_off">केवल मैन्युअल रूप से अनुरोध किए जाने पर अटैचमेंट डाउनलोड करें</string>
+
+
+    <string name="feedback_email_subject">Speakify फीडबैक / फीचर अनुरोध</string>
+
+    <string name="feedback_email_body">
+        मैं इसके संबंध में लिख रहा हूँ:\n
+        [ ] फीचर अनुरोध\n
+        [ ] सामान्य फीडबैक / बग रिपोर्ट\n
+\n
+        विवरण:\n
+        (कृपया अपना अनुरोध या समस्या यहाँ लिखें)\n
+\n
+\n
+        --------------------------------------------------\n
+        उपयोगकर्ता खाता: %3$s\n
+        डिवाइस जानकारी (स्वत: भरी हुई):\n
+        मॉडल: %1$s\n
+        Android संस्करण: %2$s\n
+        --------------------------------------------------\n
+\n
+        P.S. यदि यह सकारात्मक प्रतिक्रिया है, तो मैं निश्चित रूप से Google Play Store पर Speakify को रेटिंग देने पर विचार करूँगा!
+    </string>
+
+    <!-- Fetcher concerns -->
+    <string name="fetcher_loading_screen">%1$s प्राप्त किया जा रहा है…</string>
+    <string name="contacts_data_name">संपर्क</string>
+    <string name="apps_data_name">ऐप्स</string>
+
+</resources>

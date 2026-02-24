@@ -1,0 +1,243 @@
+<resources>
+    <string name="app_name">Speakify</string>
+
+    <!-- Authentication Concerns -->
+    <string name="signed_in">サインインに成功しました。アプリにリダイレクトしています…</string>
+    <string name="signed_out">サインアウトに成功しました。ログインページに戻ります…</string>
+    <string name="sign_in">サインイン</string>
+    <string name="sign_up">サインアップ</string>
+    <string name="forgot_password">パスワードをお忘れですか？</string>
+
+    <!-- Sign In/Up View -->
+    <string name="sign_up_switch_to_sign_in">既にアカウントをお持ちですか？サインイン</string>
+    <string name="sign_in_switch_to_sign_up">アカウントをお持ちでないですか？サインアップ</string>
+
+    <!-- Sign Up page -->
+    <string name="sign_up_verification_message">
+        メールの受信トレイで確認コードを確認し、ここに入力してください。\n
+        到着までに数分かかる場合や、迷惑メールフォルダに入っている場合があります。
+    </string>
+
+    <!-- Sign Up Form -->
+    <string name="first_name_label">名 *</string>
+    <string name="last_name_label">姓</string>
+    <string name="email_label">メールアドレス *</string>
+    <string name="password_label">パスワード *</string>
+    <string name="legal_agree_prefix"></string>
+    <string name="legal_terms_of_service">利用規約</string>
+    <string name="legal_and">および</string>
+    <string name="legal_privacy_policy">プライバシーポリシー</string>
+    <string name="legal_dot">に同意します。</string>
+
+    <!-- Forgot Password View -->
+    <string name="forgot_password_compromised">パスワードが漏洩した可能性があります。</string>
+    <string name="forgot_password_active_session">アクティブなセッション: %1$s</string>
+    <string name="forgot_password_verify_email_header">メールアドレスの確認</string>
+    <string name="forgot_password_verify_email_subtext">メールの受信トレイで確認コードを確認してください。</string>
+    <string name="forgot_password_verify_email_placeholder">コードを入力</string>
+    <string name="forgot_password_verify_button">確認</string>
+    <string name="forgot_password_new_password_header">新しいパスワード</string>
+    <string name="forgot_password_new_password_subtext">新しい安全なパスワードを以下に入力してください。</string>
+    <string name="forgot_password_new_password_placeholder">新しいパスワードを入力</string>
+    <string name="forgot_password_set_password_button">新しいパスワードを設定</string>
+    <string name="forgot_password_2fa_unsupported">2段階認証が必要ですが、このUIでは対応していません</string>
+    <string name="forgot_password_header">パスワードを忘れた場合</string>
+    <string name="forgot_password_email_placeholder">メールアドレスを入力</string>
+    <string name="forgot_password_send_code_button">リセットコードを送信</string>
+
+    <!-- Speakify Notification -->
+    <string name="notification_channel_name">Speakify バックグラウンドサービス</string>
+    <string name="notification_active_title">Speakify 稼働中</string>
+    <string name="notification_active_content">バックグラウンドで通知を処理しています。</string>
+
+    <!-- Notification Strategies -->
+    <string name="simple_notification_strategy_text">%1$s からの通知</string>
+    <string name="sms_notification_strategy_text">%1$s からのメッセージ</string>
+
+    <string name="google_voice_notification_strategy_text_suffix"> (%1$s より)</string>
+    <string name="google_voice_incoming_sms_notification_strategy_text">Google Voice の受信メッセージ%1$s</string>
+    <string name="google_voice_incoming_call_notification_strategy_text">Google Voice の着信%1$s</string>
+    <string name="google_voice_strategy_unknown_notification_text">不明な Google Voice 通知</string>
+
+    <string name="notification_calendar_upcoming">予定されているイベント: %1$s。 %2$s</string>
+
+    <!-- Notification action Titles -->
+    <string name="action_incoming_call">応答</string>
+    <string-array name="action_outgoing_call">
+        <item>通話を終了</item>
+        <item>終了</item>
+        <item>スピーカー</item>
+    </string-array>
+    <string name="action_missed_call">折り返し電話</string>
+
+    <string name="action_reply">返信</string>
+    <string-array name="action_mark_read">
+        <item>既読にする</item>
+        <item>既読</item>
+    </string-array>
+
+    <!-- Incoming Phone Call -->
+    <string name="incoming_call">%1$s からの着信</string>
+
+    <!-- Navigation Titles -->
+    <string name="title_about">アプリについて</string>
+    <string name="title_important_apps">重要なアプリ</string>
+    <string name="title_settings">設定</string>
+    <string name="title_support">サポートとフィードバック</string>
+    <string name="title_legal">法的情報</string>
+
+    <!-- Important Apps View -->
+    <string name="filter_apps">アプリをフィルタ</string>
+    <string name="search_apps">アプリを検索</string>
+    <string name="no_apps_added">アプリがまだ追加されていません！</string>
+    <string name="add_app_instruction">下の「アプリを追加」ボタンをクリックして、通知を受け取りたいアプリを追加してください。</string>
+    <string name="add_app">アプリを追加</string>
+    <string name="delete_apps">アプリを削除 (%1$d)</string>
+
+    <!-- App Settings Dialog -->
+    <string name="app_settings_title">%1$s の設定</string>
+    <string name="announcer_voice">読み上げ音声</string>
+    <string name="alert_me_to_notifications_from">通知を許可する条件:</string>
+    <string name="notifications_not_supported">通知はサポートされていません</string>
+    <string name="notifications_not_supported_description">現在、%1$s の重要な通知ソースはサポートされていません。</string>
+    <string name="cancel">キャンセル</string>
+    <string name="save">保存</string>
+    <string name="loading">読み込み中…</string>
+    <string name="no_notification_sources_yet">%1$s はまだありません。</string>
+    <string name="no_notification_sources_instruction">%1$s を追加して特定の通知のみを受け取るか、空のままにしてすべての %1$s の通知を受け取ります。</string>
+    <string name="remove">削除</string>
+    <string name="notification_sources">通知ソース</string>
+
+    <!-- Notification source widgets -->
+    <string name="notification_sources_name_text">通知ソース</string>
+    <string name="contacts_name_text">連絡先</string>
+
+    <!-- Settings View -->
+    <string name="settings_section_general">一般</string>
+    <string name="settings_dark_theme_title">ダークテーマ</string>
+    <string name="settings_dark_theme_description">アプリのダークモードを有効または無効にします。</string>
+    <string name="settings_tts_voice_title">TTS 音声</string>
+    <string name="settings_tts_voice_description">通知の読み上げ音声を選択します。</string>
+    <string name="settings_min_volume_title">最小音量</string>
+    <string name="settings_min_volume_description">通知を読み上げる際にアプリが使用する最小音量レベル。</string>
+    <string name="settings_maximize_volume_title">画面オフ時に音量を最大化</string>
+    <string name="settings_maximize_volume_description">画面ロック時に通知音量を最大にします。\n\n警告: 音楽やポッドキャストなどの他のオーディオに影響する場合があります。他のメディアを聴く場合はオフにしてください。</string>
+    <string name="settings_section_privacy">プライバシー</string>
+    <string name="settings_crashlytics_title">利用データの共有</string>
+    <string name="settings_crashlytics_description">Firebase を通じて匿名のクラッシュレポートや利用統計を共有し、Speakify の改善にご協力ください。</string>
+    <string name="settings_section_data">データ管理</string>
+    <string name="settings_backup_title">データのバックアップ</string>
+    <string name="settings_backup_description">設定とアプリリストをファイルに保存します。</string>
+    <string name="settings_export">エクスポート</string>
+    <string name="settings_restore_title">データの復元</string>
+    <string name="settings_restore_description">バックアップファイルから設定をインポートします。</string>
+    <string name="settings_import">インポート</string>
+    <string name="settings_section_danger">危険ゾーン</string>
+    <string name="settings_sign_out">サインアウト</string>
+    <string name="settings_delete_account">アカウント削除</string>
+    <string name="warning">警告</string>
+
+    <!-- About View -->
+    <string name="about_header_what">このアプリについて</string>
+    <string name="about_description_para1">同じアプリからでも大量の通知が届いて困っていませんか？このアプリを使えば、重要な通知だけを選び、届いた時に読み上げることができます！</string>
+    <string name="about_description_para2">アプリからのどの通知（メッセージ、着信など）を報告するか、優先順位を付けることも可能です！</string>
+    <string name="about_header_app_info">アプリ情報</string>
+    <string name="about_label_app">アプリ: %1$s</string>
+    <string name="about_label_version">バージョン: %1$s</string>
+    <string name="about_label_author">作者: %1$s</string>
+    <string name="about_loading">アプリ情報を読み込み中…</string>
+
+    <!-- Legal View -->
+    <string name="legal_instruction">ポリシーと利用規約をご確認ください。</string>
+    <string name="legal_privacy_policy_title">プライバシーポリシー</string>
+    <string name="legal_privacy_policy_description">データの取り扱いと保護についてお読みください。</string>
+    <string name="legal_privacy_policy_button">ポリシーを表示</string>
+    <string name="legal_terms_of_service_title">利用規約</string>
+    <string name="legal_terms_of_service_description">Speakify の利用規約をお読みください。</string>
+    <string name="legal_terms_of_service_button">規約を表示</string>
+
+    <!-- Support View -->
+    <string name="support_instruction_title">ご意見をお聞かせください！</string>
+    <string name="support_instruction_description">このアプリは初期リリースであるため、皆様のフィードバックが Speakify の将来を形作る上で非常に重要です。</string>
+    <string name="support_feedback_card_title">フィードバックを送信</string>
+    <string name="support_feedback_card_description">機能のリクエストやバグの報告はありますか？直接メールをお送りください。</string>
+    <string name="support_feedback_card_button">メールを送信</string>
+
+    <!-- Account Deletion View -->
+    <string name="account_deletion_are_you_sure">本当によろしいですか？</string>
+    <string name="account_deletion_warning_para1">この操作は取り消すことができません。設定や保存されたアプリの構成を含むすべてのデータが完全に削除されます。</string>
+    <string name="account_deletion_warning_reverify">セキュリティのため、一度サインアウトされます。アカウント削除を確定するには再度サインインする必要があります。</string>
+    <string name="delete_my_account">アカウントを削除する</string>
+    <string name="account_deletion_signing_out">サインアウト中…</string>
+    <string name="account_deletion_deleting">アカウントを削除中…</string>
+    <string name="account_deletion_please_wait">これには時間がかかる場合があります。アプリを閉じないでください。</string>
+
+    <!-- Permissions Concerns -->
+    <string name="notification_access_required_title">通知へのアクセスが必要です</string>
+    <string name="notification_access_required_message">Speakify が通知を読み上げるには、通知を「読み取る」権限が必要です。\n\nシステム設定にリダイレクトされます。「Speakify」を見つけて有効にしてください。</string>
+    <string name="phone_permissions_required_message">着信を通知するには、電話の状態と通話履歴へのアクセス権限が必要です。これらの権限を許可してください。</string>
+    <string name="go_to_settings">設定へ移動</string>
+    <string name="permissions_required_title">権限が必要です</string>
+    <string name="permissions_required_message">バックグラウンドで動作し通知を表示するには、通知の送信権限が必要です。この権限を許可してください。</string>
+    <string name="ok">OK</string>
+
+    <!-- AutoComplete widgets -->
+    <string name="search_for_entities">%1$s を検索</string>
+
+    <!-- AutoComplete labels -->
+    <string name="autocomplete_label_notifications">通知ソース</string>
+    <string name="autocomplete_label_contacts">連絡先名 / 電話番号</string>
+    <string name="autocomplete_label_tts">TTS 音声</string>
+
+    <!-- UI Event messages -->
+    <string name="snackbar_exporting">バックアップをエクスポート中…</string>
+    <string name="snackbar_export_success">バックアップが正常にエクスポートされました！</string>
+    <string name="snackbar_export_failed">エクスポートに失敗しました: %1$s</string>
+
+    <string name="snackbar_importing">データを復元中…</string>
+    <string name="snackbar_import_success">データが正常に復元されました！</string>
+    <string name="snackbar_import_failed">インポートに失敗しました: %1$s</string>
+
+
+    <!-- Preference Titles -->
+    <string name="messages_header">メッセージ</string>
+    <string name="sync_header">同期</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">署名</string>
+    <string name="reply_title">デフォルトの返信アクション</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">メールを定期的に同期</string>
+    <string name="attachment_title">受信した添付ファイルをダウンロード</string>
+    <string name="attachment_summary_on">受信したメールの添付ファイルを自動的にダウンロードする</string>
+    <string name="attachment_summary_off">手動でリクエストされた場合のみ添付ファイルをダウンロードする</string>
+
+
+    <string name="feedback_email_subject">Speakify フィードバック / 機能リクエスト</string>
+
+    <string name="feedback_email_body">
+        以下の件についてご連絡いたします:\n
+        [ ] 機能リクエスト\n
+        [ ] 全般的なフィードバック / バグ報告\n
+\n
+        内容:\n
+        (こちらにリクエストや問題の内容をご記入ください)\n
+\n
+\n
+        --------------------------------------------------\n
+        ユーザーアカウント: %3$s\n
+        デバイス情報 (自動入力):\n
+        モデル: %1$s\n
+        Android バージョン: %2$s\n
+        --------------------------------------------------\n
+\n
+        追伸: 良いフィードバックをいただける場合は、Google Play ストアでの Speakify の評価をぜひご検討ください！
+    </string>
+
+    <!-- Fetcher concerns -->
+    <string name="fetcher_loading_screen">%1$s を取得中…</string>
+    <string name="contacts_data_name">連絡先</string>
+    <string name="apps_data_name">アプリ</string>
+
+</resources>

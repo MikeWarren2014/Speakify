@@ -1,0 +1,243 @@
+<resources>
+    <string name="app_name">Speakify</string>
+
+    <!-- Authentication Concerns -->
+    <string name="signed_in">성공적으로 로그인되었습니다. 앱으로 리다이렉트 중입니다…</string>
+    <string name="signed_out">성공적으로 로그아웃되었습니다. 로그인 페이지로 다시 리다이렉트 중입니다…</string>
+    <string name="sign_in">로그인</string>
+    <string name="sign_up">회원가입</string>
+    <string name="forgot_password">비밀번호를 잊으셨나요?</string>
+
+    <!-- Sign In/Up View -->
+    <string name="sign_up_switch_to_sign_in">이미 계정이 있으신가요? 로그인</string>
+    <string name="sign_in_switch_to_sign_up">계정이 없으신가요? 회원가입</string>
+
+    <!-- Sign Up page -->
+    <string name="sign_up_verification_message">
+        이메일 수신함을 확인하여 인증 코드를 입력해 주세요. \n
+        도착하는 데 몇 분 정도 걸릴 수 있으며 스팸 메일함에 있을 수도 있습니다.
+    </string>
+
+    <!-- Sign Up Form -->
+    <string name="first_name_label">이름 *</string>
+    <string name="last_name_label">성</string>
+    <string name="email_label">이메일 *</string>
+    <string name="password_label">비밀번호 *</string>
+    <string name="legal_agree_prefix">본인은 </string>
+    <string name="legal_terms_of_service">서비스 약관</string>
+    <string name="legal_and"> 및 </string>
+    <string name="legal_privacy_policy">개인정보 처리방침</string>
+    <string name="legal_dot">에 동의합니다.</string>
+
+    <!-- Forgot Password View -->
+    <string name="forgot_password_compromised">비밀번호가 노출되었을 수 있습니다.</string>
+    <string name="forgot_password_active_session">활성 세션: %1$s</string>
+    <string name="forgot_password_verify_email_header">이메일 인증</string>
+    <string name="forgot_password_verify_email_subtext">이메일 수신함에서 인증 코드를 확인하세요.</string>
+    <string name="forgot_password_verify_email_placeholder">코드를 입력하세요</string>
+    <string name="forgot_password_verify_button">인증</string>
+    <string name="forgot_password_new_password_header">새 비밀번호</string>
+    <string name="forgot_password_new_password_subtext">아래에 새로운 보안 비밀번호를 입력하세요.</string>
+    <string name="forgot_password_new_password_placeholder">새 비밀번호 입력</string>
+    <string name="forgot_password_set_password_button">새 비밀번호 설정</string>
+    <string name="forgot_password_2fa_unsupported">2단계 인증이 필요하지만 이 UI에서는 지원되지 않습니다.</string>
+    <string name="forgot_password_header">비밀번호 찾기</string>
+    <string name="forgot_password_email_placeholder">이메일 주소를 입력하세요</string>
+    <string name="forgot_password_send_code_button">재설정 코드 전송</string>
+
+    <!-- Speakify Notification -->
+    <string name="notification_channel_name">Speakify 백그라운드 서비스</string>
+    <string name="notification_active_title">Speakify 활성화됨</string>
+    <string name="notification_active_content">백그라운드에서 알림을 처리하고 있습니다.</string>
+
+    <!-- Notification Strategies -->
+    <string name="simple_notification_strategy_text">%1$s의 알림</string>
+    <string name="sms_notification_strategy_text">%1$s의 문자 메시지</string>
+
+    <string name="google_voice_notification_strategy_text_suffix"> (%1$s로부터)</string>
+    <string name="google_voice_incoming_sms_notification_strategy_text">Google Voice 수신 문자 메시지%1$s</string>
+    <string name="google_voice_incoming_call_notification_strategy_text">Google Voice 수신 전화%1$s</string>
+    <string name="google_voice_strategy_unknown_notification_text">알 수 없는 Google Voice 알림</string>
+
+    <string name="notification_calendar_upcoming">예정된 이벤트: %1$s. %2$s</string>
+
+    <!-- Notification action Titles -->
+    <string name="action_incoming_call">응답</string>
+    <string-array name="action_outgoing_call">
+        <item>통화 종료</item>
+        <item>종료</item>
+        <item>스피커</item>
+    </string-array>
+    <string name="action_missed_call">다시 전화하기</string>
+
+    <string name="action_reply">답장</string>
+    <string-array name="action_mark_read">
+        <item>읽음으로 표시</item>
+        <item>읽음 표시</item>
+    </string-array>
+
+    <!-- Incoming Phone Call -->
+    <string name="incoming_call">%1$s님의 수신 전화</string>
+
+    <!-- Navigation Titles -->
+    <string name="title_about">정보</string>
+    <string name="title_important_apps">중요 앱</string>
+    <string name="title_settings">설정</string>
+    <string name="title_support">지원 및 피드백</string>
+    <string name="title_legal">법적 정보</string>
+
+    <!-- Important Apps View -->
+    <string name="filter_apps">앱 필터링</string>
+    <string name="search_apps">앱 검색</string>
+    <string name="no_apps_added">아직 추가된 앱이 없습니다!</string>
+    <string name="add_app_instruction">알림을 받았을 때 알림을 받을 앱을 추가하려면 아래의 앱 추가 버튼을 클릭하세요.</string>
+    <string name="add_app">앱 추가</string>
+    <string name="delete_apps">앱 삭제 (%1$d)</string>
+
+    <!-- App Settings Dialog -->
+    <string name="app_settings_title">%1$s 설정</string>
+    <string name="announcer_voice">안내 음성</string>
+    <string name="alert_me_to_notifications_from">알림 수신 대상:</string>
+    <string name="notifications_not_supported">알림이 지원되지 않음</string>
+    <string name="notifications_not_supported_description">현재 %1$s에 대한 중요 알림 소스는 지원되지 않습니다.</string>
+    <string name="cancel">취소</string>
+    <string name="save">저장</string>
+    <string name="loading">로딩 중…</string>
+    <string name="no_notification_sources_yet">아직 %1$s이(가) 없습니다.</string>
+    <string name="no_notification_sources_instruction">특정 알림만 받으려면 %1$s을(를) 추가하고, 모든 %1$s 알림을 받으려면 비워 두세요.</string>
+    <string name="remove">제거</string>
+    <string name="notification_sources">알림 소스</string>
+
+    <!-- Notification source widgets -->
+    <string name="notification_sources_name_text">알림 소스</string>
+    <string name="contacts_name_text">연락처</string>
+
+    <!-- Settings View -->
+    <string name="settings_section_general">일반</string>
+    <string name="settings_dark_theme_title">다크 테마</string>
+    <string name="settings_dark_theme_description">앱의 다크 모드를 켜거나 끕니다.</string>
+    <string name="settings_tts_voice_title">TTS 음성</string>
+    <string name="settings_tts_voice_description">알림 음성을 선택하세요.</string>
+    <string name="settings_min_volume_title">최소 볼륨</string>
+    <string name="settings_min_volume_description">알림을 읽어줄 때 앱이 사용하는 가장 낮은 볼륨 레벨입니다.</string>
+    <string name="settings_maximize_volume_title">화면이 꺼졌을 때 볼륨 최대화</string>
+    <string name="settings_maximize_volume_description">화면이 잠겼을 때 알림 볼륨을 최대화합니다.\n\n경고: 음악이나 팟캐스트와 같은 다른 오디오에 영향을 줄 수 있습니다. 다른 미디어를 듣는 경우 이 기능을 끄세요.</string>
+    <string name="settings_section_privacy">개인정보</string>
+    <string name="settings_crashlytics_title">사용 데이터 공유</string>
+    <string name="settings_crashlytics_description">Firebase를 통해 익명의 충돌 보고서 및 사용 통계를 공유하여 Speakify 개선을 도와주세요.</string>
+    <string name="settings_section_data">데이터 관리</string>
+    <string name="settings_backup_title">데이터 백업</string>
+    <string name="settings_backup_description">설정 및 앱 목록을 파일로 저장합니다.</string>
+    <string name="settings_export">내보내기</string>
+    <string name="settings_restore_title">데이터 복구</string>
+    <string name="settings_restore_description">백업 파일에서 설정을 가져옵니다.</string>
+    <string name="settings_import">가져오기</string>
+    <string name="settings_section_danger">위험 구역</string>
+    <string name="settings_sign_out">로그아웃</string>
+    <string name="settings_delete_account">계정 삭제</string>
+    <string name="warning">경고</string>
+
+    <!-- About View -->
+    <string name="about_header_what">이 앱은 무엇인가요?</string>
+    <string name="about_description_para1">같은 앱에서도 알림이 쏟아져서 힘드신가요? 이 앱은 가장 관심 있는 알림을 선택하여 알림이 나타날 때 읽어줌으로써 도움을 줄 수 있습니다!</string>
+    <string name="about_description_para2">이 앱은 앱의 어떤 알림(예: 메시지/전화/…)을 보고할지 우선순위를 정할 수도 있게 해줍니다!</string>
+    <string name="about_header_app_info">앱 정보</string>
+    <string name="about_label_app">앱: %1$s</string>
+    <string name="about_label_version">버전: %1$s</string>
+    <string name="about_label_author">작성자: %1$s</string>
+    <string name="about_loading">앱 정보 로딩 중…</string>
+
+    <!-- Legal View -->
+    <string name="legal_instruction">정책 및 서비스 약관을 검토하십시오.</string>
+    <string name="legal_privacy_policy_title">개인정보 처리방침</string>
+    <string name="legal_privacy_policy_description">당사가 귀하의 데이터를 처리하고 보호하는 방법에 대해 읽어보십시오.</string>
+    <string name="legal_privacy_policy_button">정책 보기</string>
+    <string name="legal_terms_of_service_title">서비스 약관</string>
+    <string name="legal_terms_of_service_description">Speakify 사용을 위한 이용 약관을 읽어보십시오.</string>
+    <string name="legal_terms_of_service_button">약관 보기</string>
+
+    <!-- Support View -->
+    <string name="support_instruction_title">귀하의 의견을 듣고 싶습니다!</string>
+    <string name="support_instruction_description">초기 출시 버전이므로 귀하의 피드백은 Speakify의 미래를 결정하는 데 매우 중요합니다.</string>
+    <string name="support_feedback_card_title">피드백 보내기</string>
+    <string name="support_feedback_card_description">기능 요청이나 버그가 있나요? 저희에게 직접 이메일을 보내주세요.</string>
+    <string name="support_feedback_card_button">이메일 보내기</string>
+
+    <!-- Account Deletion View -->
+    <string name="account_deletion_are_you_sure">정말로 계정을 삭제하시겠습니까?</string>
+    <string name="account_deletion_warning_para1">이 작업은 취소할 수 없습니다. 설정 및 저장된 앱 기본 설정을 포함한 모든 데이터가 영구적으로 삭제됩니다.</string>
+    <string name="account_deletion_warning_reverify">보안을 위해 로그아웃되며 계정 삭제를 확인하려면 다시 로그인해야 합니다.</string>
+    <string name="delete_my_account">내 계정 삭제</string>
+    <string name="account_deletion_signing_out">로그아웃 중…</string>
+    <string name="account_deletion_deleting">계정 삭제 중…</string>
+    <string name="account_deletion_please_wait">잠시 시간이 걸릴 수 있습니다. 앱을 닫지 마세요.</string>
+
+    <!-- Permissions Concerns -->
+    <string name="notification_access_required_title">알림 액세스 필요</string>
+    <string name="notification_access_required_message">Speakify가 알림을 읽어주려면 알림을 ‘읽을’ 수 있는 권한이 필요합니다.\n\n시스템 설정으로 리다이렉트됩니다. \'Speakify\'를 찾아 활성화해 주세요.</string>
+    <string name="phone_permissions_required_message">수신 전화를 안내하려면 휴대폰 상태 및 통화 기록에 대한 액세스 권한이 필요합니다. 이러한 권한을 허용해 주세요.</string>
+    <string name="go_to_settings">설정으로 이동</string>
+    <string name="permissions_required_title">권한 필요</string>
+    <string name="permissions_required_message">백그라운드에서 실행되려면 알림을 게시할 수 있는 권한이 필요합니다. 이 권한을 허용해 주세요.</string>
+    <string name="ok">확인</string>
+
+    <!-- AutoComplete widgets -->
+    <string name="search_for_entities">%1$s 검색</string>
+
+    <!-- AutoComplete labels -->
+    <string name="autocomplete_label_notifications">알림 소스</string>
+    <string name="autocomplete_label_contacts">연락처 이름/전화번호</string>
+    <string name="autocomplete_label_tts">TTS 음성</string>
+
+    <!-- UI Event messages -->
+    <string name="snackbar_exporting">백업 내보내는 중…</string>
+    <string name="snackbar_export_success">백업을 성공적으로 내보냈습니다!</string>
+    <string name="snackbar_export_failed">내보내기 실패: %1$s</string>
+
+    <string name="snackbar_importing">데이터 복원 중…</string>
+    <string name="snackbar_import_success">데이터를 성공적으로 복원했습니다!</string>
+    <string name="snackbar_import_failed">가져오기 실패: %1$s</string>
+
+
+    <!-- Preference Titles -->
+    <string name="messages_header">메시지</string>
+    <string name="sync_header">동기화</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">서명</string>
+    <string name="reply_title">기본 답장 동작</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">주기적으로 이메일 동기화</string>
+    <string name="attachment_title">수신 첨부 파일 다운로드</string>
+    <string name="attachment_summary_on">수신 이메일의 첨부 파일을 자동으로 다운로드</string>
+    <string name="attachment_summary_off">수동으로 요청할 때만 첨부 파일 다운로드</string>
+
+
+    <string name="feedback_email_subject">Speakify 피드백 / 기능 요청</string>
+
+    <string name="feedback_email_body">
+        다음에 관한 내용을 작성 중입니다:\n
+        [ ] 기능 요청\n
+        [ ] 일반 피드백 / 버그 보고\n
+\n
+        설명:\n
+        (여기에 요청 사항이나 문제점을 설명해 주세요)\n
+\n
+\n
+        --------------------------------------------------\n
+        사용자 계정: %3$s\n
+        기기 정보 (자동으로 입력됨):\n
+        모델: %1$s\n
+        Android 버전: %2$s\n
+        --------------------------------------------------\n
+\n
+        P.S. 긍정적인 피드백이라면 Google Play 스토어에서 Speakify를 평가해 주시는 것을 고려해 보겠습니다!
+    </string>
+
+    <!-- Fetcher concerns -->
+    <string name="fetcher_loading_screen">%1$s 가져오는 중…</string>
+    <string name="contacts_data_name">연락처</string>
+    <string name="apps_data_name">앱</string>
+
+</resources>
