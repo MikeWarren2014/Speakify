@@ -3,6 +3,7 @@ package com.mikewarren.speakify.strategies
 import android.app.Notification
 import android.content.Context
 import android.service.notification.StatusBarNotification
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.services.TTSManager
@@ -32,11 +33,11 @@ IMessageNotificationHandler<GoogleVoiceNotificationStrategy.NotificationType> {
 
 
         val actionTitlesLowercased = this.getActionTitlesLowercased()
-        if (actionTitlesLowercased.contains("answer"))
+        if (SearchUtils.HasAnyMatches(actionTitlesLowercased, context.getString(R.string.action_incoming_call)))
             return NotificationType.IncomingCall
-        if (SearchUtils.HasAnyOverlap(listOf("end call", "hang up", "speaker"), actionTitlesLowercased))
+        if (SearchUtils.HasAnyOverlap(context.resources.getStringArray(R.array.action_outgoing_call), actionTitlesLowercased))
             return NotificationType.OutgoingCall
-        if (actionTitlesLowercased.contains("call back"))
+        if (SearchUtils.HasAnyMatches(actionTitlesLowercased, context.getString(R.string.action_missed_call)))
             return NotificationType.MissedCall
 
         return NotificationType.Other
@@ -87,16 +88,18 @@ IMessageNotificationHandler<GoogleVoiceNotificationStrategy.NotificationType> {
         val contactModel = extractContactModel()
         var suffix = ""
         if (contactModel.name.isNotEmpty())
-            suffix = " from ${contactModel.name}"
+            suffix = context.getString(R.string.google_voice_notification_strategy_text_suffix)
 
         val notificationType = getNotificationType()
         if (notificationType == NotificationType.IncomingSMS)
-            return "Incoming Google Voice Text Message${suffix}"
+            return context.getString(R.string.google_voice_incoming_sms_notification_strategy_text,
+                suffix)
         if (notificationType == NotificationType.IncomingCall)
-            return "Incoming Google Voice Call${suffix}"
+            return context.getString(R.string.google_voice_incoming_call_notification_strategy_text,
+                suffix)
 
         // TODO: should we report the notification back to the dev team in this instance ?
-        return "Unknown Google Voice Notification"
+        return context.getString(R.string.google_voice_strategy_unknown_notification_text)
     }
 
     override fun shouldSpeakify(): Boolean {
