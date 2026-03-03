@@ -23,9 +23,9 @@
     <string name="last_name_label">अंतिम नाम</string>
     <string name="email_label">ईमेल *</string>
     <string name="password_label">पासवर्ड *</string>
-    <string name="legal_agree_prefix">मैं </string>
+    <string name="legal_agree_prefix">"मैं "</string>
     <string name="legal_terms_of_service">सेवा की शर्तों</string>
-    <string name="legal_and"> और </string>
+    <string name="legal_and">" और "</string>
     <string name="legal_privacy_policy">गोپनीयता नीति</string>
     <string name="legal_dot"> से सहमत हूँ।</string>
 

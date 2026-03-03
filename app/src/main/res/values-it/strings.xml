@@ -23,9 +23,9 @@
     <string name="last_name_label">Cognome</string>
     <string name="email_label">Email *</string>
     <string name="password_label">Password *</string>
-    <string name="legal_agree_prefix">Accetto i </string>
+    <string name="legal_agree_prefix">"Accetto i "</string>
     <string name="legal_terms_of_service">Termini di Servizio</string>
-    <string name="legal_and"> e l\'</string>
+    <string name="legal_and">" e l\'"</string>
     <string name="legal_privacy_policy">Informativa sulla Privacy</string>
     <string name="legal_dot">.</string>
 

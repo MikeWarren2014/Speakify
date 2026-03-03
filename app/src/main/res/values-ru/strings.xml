@@ -23,9 +23,9 @@
     <string name="last_name_label">Фамилия</string>
     <string name="email_label">Электронная почта *</string>
     <string name="password_label">Пароль *</string>
-    <string name="legal_agree_prefix">Я соглашаюсь с </string>
+    <string name="legal_agree_prefix">"Я соглашаюсь с "</string>
     <string name="legal_terms_of_service">Условиями использования</string>
-    <string name="legal_and"> и </string>
+    <string name="legal_and">" и "</string>
     <string name="legal_privacy_policy">Политикой конфиденциальности</string>
     <string name="legal_dot">.</string>
 
