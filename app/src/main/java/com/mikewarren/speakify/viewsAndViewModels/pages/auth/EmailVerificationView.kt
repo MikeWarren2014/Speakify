@@ -100,7 +100,6 @@ fun ScreenMainSection(
         modifier = Modifier.padding(horizontal = 32.dp)
     )
 
-//    if ((uiState is EmailVerificationUiState.TooManyAttempts) || (uiState is EmailVerificationUiState.ExpiredCode))
     if (SearchUtils.IsAnyOf(uiState, listOf(EmailVerificationUiState.TooManyAttempts::class,
             EmailVerificationUiState.ExpiredCode::class,
             EmailVerificationUiState.Success::class,
