@@ -34,7 +34,6 @@
     <string name="forgot_password_active_session">Активная сессия: %1$s</string>
     <string name="forgot_password_verify_email_header">Подтверждение почты</string>
     <string name="forgot_password_verify_email_subtext">Проверьте электронную почту на наличие кода подтверждения.</string>
-    <string name="forgot_password_verify_email_placeholder">Введите код</string>
     <string name="forgot_password_verify_button">Подтвердить</string>
     <string name="forgot_password_new_password_header">Новый пароль</string>
     <string name="forgot_password_new_password_subtext">Введите новый безопасный пароль ниже.</string>
@@ -44,6 +43,17 @@
     <string name="forgot_password_header">Забыли пароль</string>
     <string name="forgot_password_email_placeholder">Введите ваш адрес электронной почты</string>
     <string name="forgot_password_send_code_button">Отправить код сброса</string>
+
+    <!-- Email Verification View -->
+    <string name="email_verification_default_button_text">Подтвердить</string>
+    <string name="email_verification_header">Проверьте почту</string>
+    <string name="email_verification_code_placeholder">Введите код</string>
+    <string name="email_verification_too_many_attempts">Слишком много неудачных попыток. Запросите новый код подтверждения.</string>
+    <string name="email_verification_expired_code">Код подтверждения истек. Запросите новый.</string>
+    <string name="email_verification_request_new_code">Запросить новый код</string>
+    <string name="email_verification_request_in">Запросить новый код через %1$s сек.</string>
+    <string name="email_verification_incorrect_code">Неверный код. У вас осталось %1$d попыток.</string>
+    <string name="email_verification_success">Электронная почта подтверждена. Переход к следующему шагу!</string>
 
     <!-- Speakify Notification -->
     <string name="notification_channel_name">Фоновая служба Speakify</string>

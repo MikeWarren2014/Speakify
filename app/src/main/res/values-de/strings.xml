@@ -34,7 +34,6 @@
     <string name="forgot_password_active_session">Aktive Sitzung: %1$s</string>
     <string name="forgot_password_verify_email_header">E-Mail bestätigen</string>
     <string name="forgot_password_verify_email_subtext">Überprüfen Sie Ihren E-Mail-Posteingang auf den Bestätigungscode.</string>
-    <string name="forgot_password_verify_email_placeholder">Code eingeben</string>
     <string name="forgot_password_verify_button">Bestätigen</string>
     <string name="forgot_password_new_password_header">Neues Passwort</string>
     <string name="forgot_password_new_password_subtext">Geben Sie unten Ihr neues sicheres Passwort ein.</string>
@@ -44,6 +43,17 @@
     <string name="forgot_password_header">Passwort vergessen</string>
     <string name="forgot_password_email_placeholder">E-Mail-Adresse eingeben</string>
     <string name="forgot_password_send_code_button">Wiederherstellungscode senden</string>
+
+    <!-- Email Verification View -->
+    <string name="email_verification_default_button_text">Bestätigen</string>
+    <string name="email_verification_header">E-Mail prüfen</string>
+    <string name="email_verification_code_placeholder">Code eingeben</string>
+    <string name="email_verification_too_many_attempts">Zu viele fehlgeschlagene Versuche. Fordern Sie einen neuen Bestätigungscode an.</string>
+    <string name="email_verification_expired_code">Der Bestätigungscode ist abgelaufen. Fordern Sie einen neuen an.</string>
+    <string name="email_verification_request_new_code">Neuen Code anfordern</string>
+    <string name="email_verification_request_in">Neuen Code in %1$s Sekunden anfordern</string>
+    <string name="email_verification_incorrect_code">Falscher Code. Sie haben noch %1$d Versuche übrig.</string>
+    <string name="email_verification_success">E-Mail-Verifizierung erfolgreich. Weiter zum nächsten Schritt!</string>
 
     <!-- Speakify Notification -->
     <string name="notification_channel_name">Speakify Hintergrunddienst</string>
@@ -140,7 +150,7 @@
     <!-- About View -->
     <string name="about_header_what">Was ist diese App?</string>
     <string name="about_description_para1">Fühlen Sie sich von Benachrichtigungen bombardiert, sogar von derselben App? Diese App könnte helfen, da sie es Ihnen ermöglicht, die wichtigsten auszuwählen und sie Ihnen vorliest, wenn sie erscheinen!</string>
-    <string name="about_description_para2">Diese App lässt Sie sogar priorisieren, welche Benachrichtigungen einer App (z. B. Nachrichten/Anrufe/…) Ihnen gemeldet werden sollen!</string>
+    <string name="about_description_para2">Diese App lässt Sie sogar priorisieren, welche Benachrichtigungen einer App (z. B. Nachrichten/Anrufe/…) Ihnen gemeldelt werden sollen!</string>
     <string name="about_header_app_info">App-Info</string>
     <string name="about_label_app">App: %1$s</string>
     <string name="about_label_version">Version: %1$s</string>

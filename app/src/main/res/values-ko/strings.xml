@@ -34,7 +34,6 @@
     <string name="forgot_password_active_session">활성 세션: %1$s</string>
     <string name="forgot_password_verify_email_header">이메일 인증</string>
     <string name="forgot_password_verify_email_subtext">이메일 수신함에서 인증 코드를 확인하세요.</string>
-    <string name="forgot_password_verify_email_placeholder">코드를 입력하세요</string>
     <string name="forgot_password_verify_button">인증</string>
     <string name="forgot_password_new_password_header">새 비밀번호</string>
     <string name="forgot_password_new_password_subtext">아래에 새로운 보안 비밀번호를 입력하세요.</string>
@@ -44,6 +43,16 @@
     <string name="forgot_password_header">비밀번호 찾기</string>
     <string name="forgot_password_email_placeholder">이메일 주소를 입력하세요</string>
     <string name="forgot_password_send_code_button">재설정 코드 전송</string>
+
+    <!-- Email Verification View -->
+    <string name="email_verification_default_button_text">인증</string>
+    <string name="email_verification_header">이메일을 확인하세요</string>
+    <string name="email_verification_code_placeholder">코드를 입력하세요</string>
+    <string name="email_verification_too_many_attempts">실패 횟수가 너무 많습니다. 새로운 인증 코드를 요청하세요.</string>
+    <string name="email_verification_expired_code">인증 코드가 만료되었습니다. 새로운 코드를 요청하세요.</string>    <string name="email_verification_request_new_code">새 코드 요청</string>
+    <string name="email_verification_request_in">%1$s초 후에 새 코드 요청 가능</string>
+    <string name="email_verification_incorrect_code">잘못된 코드입니다. %1$d번의 시도가 남았습니다.</string>
+    <string name="email_verification_success">이메일 인증 성공. 다음 단계로 진행합니다!</string>
 
     <!-- Speakify Notification -->
     <string name="notification_channel_name">Speakify 백그라운드 서비스</string>

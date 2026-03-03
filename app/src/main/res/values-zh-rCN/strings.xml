@@ -34,7 +34,6 @@
     <string name="forgot_password_active_session">活动会话：%1$s</string>
     <string name="forgot_password_verify_email_header">验证电子邮件</string>
     <string name="forgot_password_verify_email_subtext">请检查您的电子邮箱收件箱获取验证码。</string>
-    <string name="forgot_password_verify_email_placeholder">输入验证码</string>
     <string name="forgot_password_verify_button">验证</string>
     <string name="forgot_password_new_password_header">新密码</string>
     <string name="forgot_password_new_password_subtext">请在下方输入您的新安全密码。</string>
@@ -44,6 +43,18 @@
     <string name="forgot_password_header">忘记密码</string>
     <string name="forgot_password_email_placeholder">输入您的电子邮件地址</string>
     <string name="forgot_password_send_code_button">发送重置码</string>
+
+    <!-- Email Verification View -->
+    <string name="email_verification_default_button_text">验证</string>
+    <string name="email_verification_header">查收邮件</string>
+    <string name="email_verification_code_placeholder">输入验证码</string>
+    <string name="email_verification_too_many_attempts">尝试次数过多。请请求新的验证码。</string>
+    <string name="email_verification_expired_code">验证码已过期。请请求一个新的。</string>
+    <string name="email_verification_request_new_code">请求新验证码</string>
+    <string name="email_verification_request_in">在 %1$s 秒内请求新验证码</string>
+    <string name="email_verification_incorrect_code">验证码错误。您还有 %1$d 次尝试机会。</string>
+    <string name="email_verification_success">电子邮件验证成功。正在进行下一步！</string>
+
 
     <!-- Speakify Notification -->
     <string name="notification_channel_name">Speakify 后台服务</string>

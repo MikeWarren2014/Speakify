@@ -34,7 +34,6 @@
     <string name="forgot_password_active_session">アクティブなセッション: %1$s</string>
     <string name="forgot_password_verify_email_header">メールアドレスの確認</string>
     <string name="forgot_password_verify_email_subtext">メールの受信トレイで確認コードを確認してください。</string>
-    <string name="forgot_password_verify_email_placeholder">コードを入力</string>
     <string name="forgot_password_verify_button">確認</string>
     <string name="forgot_password_new_password_header">新しいパスワード</string>
     <string name="forgot_password_new_password_subtext">新しい安全なパスワードを以下に入力してください。</string>
@@ -44,6 +43,17 @@
     <string name="forgot_password_header">パスワードを忘れた場合</string>
     <string name="forgot_password_email_placeholder">メールアドレスを入力</string>
     <string name="forgot_password_send_code_button">リセットコードを送信</string>
+
+    <!-- Email Verification View -->
+    <string name="email_verification_default_button_text">確認</string>
+    <string name="email_verification_header">メールを確認してください</string>
+    <string name="email_verification_code_placeholder">コードを入力</string>
+    <string name="email_verification_too_many_attempts">失敗回数が多すぎます。新しい認証コードをリクエストしてください。</string>
+    <string name="email_verification_expired_code">認証コードの期限が切れました。新しいコードをリクエストしてください。</string>
+    <string name="email_verification_request_new_code">新しいコードをリクエスト</string>
+    <string name="email_verification_request_in">%1$s秒後に新しいコードをリクエストできます</string>
+    <string name="email_verification_incorrect_code">コードが正しくありません。残り%1$d回試行できます。</string>
+    <string name="email_verification_success">メール認証に成功しました。次のステップに進みます！</string>
 
     <!-- Speakify Notification -->
     <string name="notification_channel_name">Speakify バックグラウンドサービス</string>

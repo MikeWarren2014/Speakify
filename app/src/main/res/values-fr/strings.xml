@@ -34,7 +34,6 @@
     <string name="forgot_password_active_session">Session active : %1$s</string>
     <string name="forgot_password_verify_email_header">Vérifier l\'email</string>
     <string name="forgot_password_verify_email_subtext">Vérifiez votre boîte de réception pour le code de vérification.</string>
-    <string name="forgot_password_verify_email_placeholder">Saisissez votre code</string>
     <string name="forgot_password_verify_button">Vérifier</string>
     <string name="forgot_password_new_password_header">Nouveau mot de passe</string>
     <string name="forgot_password_new_password_subtext">Saisissez votre nouveau mot de passe sécurisé ci-dessous.</string>
@@ -44,6 +43,17 @@
     <string name="forgot_password_header">Mot de passe oublié</string>
     <string name="forgot_password_email_placeholder">Saisissez votre adresse email</string>
     <string name="forgot_password_send_code_button">Envoyer le code de réinitialisation</string>
+
+    <!-- Email Verification View -->
+    <string name="email_verification_default_button_text">Vérifier</string>
+    <string name="email_verification_header">Vérifiez votre e-mail</string>
+    <string name="email_verification_code_placeholder">Saisissez votre code</string>
+    <string name="email_verification_too_many_attempts">Trop de tentatives échouées. Demandez un nouveau code de vérification.</string>
+    <string name="email_verification_expired_code">Le code de vérification a expiré. Demandez-en un nouveau.</string>
+    <string name="email_verification_request_new_code">Demander un nouveau code</string>
+    <string name="email_verification_request_in">Demander un nouveau code dans %1$s secondes</string>
+    <string name="email_verification_incorrect_code">Code incorrect. Il vous reste %1$d tentatives.</string>
+    <string name="email_verification_success">Vérification de l\'e-mail réussie. Passage à l\'étape suivante !</string>
 
     <!-- Speakify Notification -->
     <string name="notification_channel_name">Service d\'arrière-plan Speakify</string>

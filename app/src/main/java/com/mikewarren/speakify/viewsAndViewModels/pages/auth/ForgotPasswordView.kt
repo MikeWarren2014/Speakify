@@ -1,6 +1,5 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.auth
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,24 +46,39 @@ fun ForgotPasswordView(reason: String) {
     
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Log.d("ForgotPasswordView", "state == ${state}")
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         when (state) {
-            ForgotPasswordViewModel.UiState.Complete -> {
-                Text(stringResource(R.string.forgot_password_active_session, Clerk.session?.id ?: ""))
+            ForgotPasswordViewModel.UiState.Loading -> CircularProgressIndicator()
+            ForgotPasswordViewModel.UiState.SignedOut -> {
+                InputContent(
+                    header = stringResource(R.string.forgot_password_header),
+                    subtext = subtext,
+                    placeholder = stringResource(R.string.forgot_password_email_placeholder),
+                    buttonText = stringResource(R.string.forgot_password_send_code_button),
+                    onDone = viewModel::createSignIn,
+                    keyboardType = KeyboardType.Email,
+                    focusManager = focusManager,
+                )
+            }
+            ForgotPasswordViewModel.UiState.NeedsFirstFactor -> {
+                val verificationViewModel: EmailVerificationViewModel = viewModel()
+
+                EmailVerificationView(viewModel = verificationViewModel,
+                    headerText = stringResource(R.string.forgot_password_verify_email_header),
+                    mainText = stringResource(R.string.forgot_password_verify_email_subtext),
+                    onSubmitCode = { code ->
+                        viewModel.verify(code, { success ->
+                            if (success) {
+                                verificationViewModel.startResendTimer()
+                            }
+                        })
+                    },
+                    onRequestCode = viewModel::sendVerificationCode)
             }
 
-            ForgotPasswordViewModel.UiState.NeedsFirstFactor -> {
-                InputContent(
-                    header = stringResource(R.string.forgot_password_verify_email_header),
-                    subtext = stringResource(R.string.forgot_password_verify_email_subtext),
-                    placeholder = stringResource(R.string.forgot_password_verify_email_placeholder),
-                    keyboardType = KeyboardType.NumberPassword,
-                    buttonText = stringResource(R.string.forgot_password_verify_button),
-                    focusManager = focusManager,
-                    onDone = viewModel::verify,
-                )
+            ForgotPasswordViewModel.UiState.NeedsSecondFactor -> {
+                Text(stringResource(R.string.forgot_password_2fa_unsupported))
             }
             ForgotPasswordViewModel.UiState.NeedsNewPassword -> {
                 InputContent(
@@ -77,22 +91,10 @@ fun ForgotPasswordView(reason: String) {
                     keyboardType = KeyboardType.Password,
                 )
             }
-            ForgotPasswordViewModel.UiState.NeedsSecondFactor -> {
-                Text(stringResource(R.string.forgot_password_2fa_unsupported))
-            }
-            ForgotPasswordViewModel.UiState.SignedOut -> {
-                InputContent(
-                    header = stringResource(R.string.forgot_password_header),
-                    subtext = subtext,
-                    placeholder = stringResource(R.string.forgot_password_email_placeholder),
-                    buttonText = stringResource(R.string.forgot_password_send_code_button),
-                    onDone = viewModel::createSignIn,
-                    keyboardType = KeyboardType.Email,
-                    focusManager = focusManager,
-                )
-            }
 
-            ForgotPasswordViewModel.UiState.Loading -> CircularProgressIndicator()
+            ForgotPasswordViewModel.UiState.Complete -> {
+                Text(stringResource(R.string.forgot_password_active_session, Clerk.session?.id ?: ""))
+            }
         }
     }
 
