@@ -1,5 +1,7 @@
 package com.mikewarren.speakify.utils
 
+import kotlin.reflect.KClass
+
 object SearchUtils {
     /**
      * Checks if there is any common element between two lists.
@@ -34,5 +36,19 @@ object SearchUtils {
 
             return@any firstPhoneNumberIntlFormat == phoneNumberIntlFormat
         }
+    }
+
+    /**
+     * Checks if the [state] object is an instance of any of the provided [types].
+     */
+    fun IsAnyOf(state: Any?, vararg types: KClass<*>): Boolean {
+        return types.any { it.java.isInstance(state) }
+    }
+
+    /**
+     * Checks if the [state] object is an instance of any type in the [list].
+     */
+    fun IsAnyOf(state: Any?, list: List<KClass<*>>): Boolean {
+        return list.any { it.java.isInstance(state) }
     }
 }

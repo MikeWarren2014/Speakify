@@ -14,8 +14,8 @@ import com.clerk.api.network.serialization.onSuccess
 import com.clerk.api.signup.SignUp
 import com.clerk.api.signup.attemptVerification
 import com.clerk.api.signup.prepareVerification
-import com.mikewarren.speakify.data.uiStates.SignUpUiState
 import com.mikewarren.speakify.data.UserModel
+import com.mikewarren.speakify.data.uiStates.SignUpUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -76,11 +76,10 @@ class SignUpViewModel : ViewModel() {
                     if (it.status == SignUp.Status.COMPLETE) {
                         _uiState.value = SignUpUiState.Success
                         onDone(true, SignUpUiState.Success)
-                    } else {
-                        _uiState.value = SignUpUiState.NeedsVerification
-                        it.prepareVerification(SignUp.PrepareVerificationParams.Strategy.EmailCode())
-                        onDone(true, SignUpUiState.NeedsVerification)
+                        return@onSuccess
                     }
+                    _uiState.value = SignUpUiState.NeedsVerification
+                    sendVerificationCode(onDone)
                 }
                 .onFailure {
                     val newErrorsDict = errorsDict.toMutableMap()
@@ -102,6 +101,16 @@ class SignUpViewModel : ViewModel() {
                     Log.e("SignUpViewModel", it.longErrorMessageOrNull, it.throwable)
                     onDone(false, SignUpUiState.SignedOut)
                 }
+        }
+    }
+
+    // TODO: we should create base class that has at least this method
+    fun sendVerificationCode(onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
+        val inProgressSignUp = Clerk.signUp ?: return
+
+        viewModelScope.launch {
+            inProgressSignUp.prepareVerification(SignUp.PrepareVerificationParams.Strategy.EmailCode())
+            onDone(true, SignUpUiState.NeedsVerification)
         }
     }
 

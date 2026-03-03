@@ -34,7 +34,6 @@
     <string name="forgot_password_active_session">نشست فعال: %1$s</string>
     <string name="forgot_password_verify_email_header">تایید ایمیل</string>
     <string name="forgot_password_verify_email_subtext">صندوق ورودی ایمیل خود را برای کد تایید بررسی کنید.</string>
-    <string name="forgot_password_verify_email_placeholder">کد خود را وارد کنید</string>
     <string name="forgot_password_verify_button">تایید</string>
     <string name="forgot_password_new_password_header">رمز عبور جدید</string>
     <string name="forgot_password_new_password_subtext">رمز عبور جدید و امن خود را در زیر وارد کنید.</string>
@@ -44,6 +43,17 @@
     <string name="forgot_password_header">فراموشی رمز عبور</string>
     <string name="forgot_password_email_placeholder">آدرس ایمیل خود را وارد کنید</string>
     <string name="forgot_password_send_code_button">ارسال کد بازنشانی</string>
+
+    <!-- Email Verification View -->
+    <string name="email_verification_default_button_text">تایید</string>
+    <string name="email_verification_header">ایمیل خود را بررسی کنید</string>
+    <string name="email_verification_code_placeholder">کد خود را وارد کنید</string>
+    <string name="email_verification_too_many_attempts">تعداد دفعات اشتباه بیش از حد مجاز. کد تایید جدید درخواست کنید.</string>
+    <string name="email_verification_expired_code">کد تایید منقضی شده است. کد جدیدی درخواست کنید.</string>
+    <string name="email_verification_request_new_code">درخواست کد جدید</string>
+    <string name="email_verification_request_in">درخواست کد جدید تا %1$s ثانیه دیگر</string>
+    <string name="email_verification_incorrect_code">کد نادرست است. شما %1$d تلاش دیگر دارید.</string>
+    <string name="email_verification_success">تایید ایمیل با موفقیت انجام شد. رفتن به مرحله بعد!</string>
 
     <!-- Speakify Notification -->
     <string name="notification_channel_name">سرویس پس‌زمینه Speakify</string>

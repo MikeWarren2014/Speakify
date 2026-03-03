@@ -9,6 +9,7 @@ import com.clerk.api.network.serialization.onFailure
 import com.clerk.api.network.serialization.onSuccess
 import com.clerk.api.signin.SignIn
 import com.clerk.api.signin.attemptFirstFactor
+import com.clerk.api.signin.prepareFirstFactor
 import com.clerk.api.signin.resetPassword
 import com.mikewarren.speakify.utils.log.ITaggable
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,12 +50,24 @@ class ForgotPasswordViewModel: ViewModel(), ITaggable {
         }
     }
 
-    fun verify(code: String) {
+    fun sendVerificationCode() {
+        val inProgressSignIn = Clerk.signIn ?: return
+
+        viewModelScope.launch {
+            inProgressSignIn.prepareFirstFactor(SignIn.PrepareFirstFactorParams.ResetPasswordEmailCode())
+            updateStateFromStatus(inProgressSignIn.status)
+        }
+    }
+
+    fun verify(code: String, onDone: (success: Boolean) -> Unit) {
         val inProgressSignIn = Clerk.signIn ?: return
         viewModelScope.launch {
             inProgressSignIn
                 .attemptFirstFactor(SignIn.AttemptFirstFactorParams.ResetPasswordEmailCode(code))
-                .onSuccess { updateStateFromStatus(it.status) }
+                .onSuccess {
+                    updateStateFromStatus(it.status)
+                    onDone(true)
+                }
                 .onFailure {
                     // See https://clerk.com/docs/custom-flows/error-handling
                     // for more info on error handling
@@ -63,6 +76,7 @@ class ForgotPasswordViewModel: ViewModel(), ITaggable {
                         it.longErrorMessageOrNull,
                         it.throwable,
                     )
+                    onDone(false)
                 }
         }
     }

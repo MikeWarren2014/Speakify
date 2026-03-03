@@ -26,7 +26,7 @@
     <string name="legal_agree_prefix">मैं </string>
     <string name="legal_terms_of_service">सेवा की शर्तों</string>
     <string name="legal_and"> और </string>
-    <string name="legal_privacy_policy">गोपनीयता नीति</string>
+    <string name="legal_privacy_policy">गोپनीयता नीति</string>
     <string name="legal_dot"> से सहमत हूँ।</string>
 
     <!-- Forgot Password View -->
@@ -34,7 +34,6 @@
     <string name="forgot_password_active_session">सक्रिय सत्र: %1$s</string>
     <string name="forgot_password_verify_email_header">ईमेल सत्यापित करें</string>
     <string name="forgot_password_verify_email_subtext">सत्यापन कोड के लिए अपना ईमेल इनबॉक्स देखें।</string>
-    <string name="forgot_password_verify_email_placeholder">अपना कोड दर्ज करें</string>
     <string name="forgot_password_verify_button">सत्यापित करें</string>
     <string name="forgot_password_new_password_header">नया पासवर्ड</string>
     <string name="forgot_password_new_password_subtext">नीचे अपना नया सुरक्षित पासवर्ड दर्ज करें।</string>
@@ -44,6 +43,17 @@
     <string name="forgot_password_header">पासवर्ड भूल गए</string>
     <string name="forgot_password_email_placeholder">अपना ईमेल पता दर्ज करें</string>
     <string name="forgot_password_send_code_button">रीसेट कोड भेजें</string>
+
+    <!-- Email Verification View -->
+    <string name="email_verification_default_button_text">सत्यापित करें</string>
+    <string name="email_verification_header">अपना ईमेल चेक करें</string>
+    <string name="email_verification_code_placeholder">अपना कोड दर्ज करें</string>
+    <string name="email_verification_too_many_attempts">बहुत सारे विफल प्रयास। नया सत्यापन कोड मांगें।</string>
+    <string name="email_verification_expired_code">सत्यापन कोड की अवधि समाप्त हो गई है। नया कोड मांगें।</string>
+    <string name="email_verification_request_new_code">नया कोड मांगें</string>
+    <string name="email_verification_request_in">%1$s सेकंड में नया कोड मांगें</string>
+    <string name="email_verification_incorrect_code">गलत कोड। आपके पास %1$d प्रयास बचे हैं।</string>
+    <string name="email_verification_success">ईमेल सत्यापन सफल। अगले चरण पर बढ़ रहे हैं!</string>
 
     <!-- Speakify Notification -->
     <string name="notification_channel_name">Speakify बैकग्राउंड सेवा</string>

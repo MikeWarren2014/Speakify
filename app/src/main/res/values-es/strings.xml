@@ -34,7 +34,6 @@
     <string name="forgot_password_active_session">Sesión activa: %1$s</string>
     <string name="forgot_password_verify_email_header">Verificar correo</string>
     <string name="forgot_password_verify_email_subtext">Revisa tu bandeja de entrada para el código de verificación.</string>
-    <string name="forgot_password_verify_email_placeholder">Ingresa tu código</string>
     <string name="forgot_password_verify_button">Verificar</string>
     <string name="forgot_password_new_password_header">Nueva contraseña</string>
     <string name="forgot_password_new_password_subtext">Ingresa tu nueva contraseña segura a continuación.</string>
@@ -44,6 +43,17 @@
     <string name="forgot_password_header">Olvidé mi contraseña</string>
     <string name="forgot_password_email_placeholder">Ingresa tu correo electrónico</string>
     <string name="forgot_password_send_code_button">Enviar código de restablecimiento</string>
+
+    <!-- Email Verification View -->
+    <string name="email_verification_default_button_text">Verificar</string>
+    <string name="email_verification_header">Verifica tu correo electrónico</string>
+    <string name="email_verification_code_placeholder">Ingresa tu código</string>
+    <string name="email_verification_too_many_attempts">Demasiados intentos fallidos. Solicita un nuevo código de verificación.</string>
+    <string name="email_verification_expired_code">El código de verificación ha caducado. Solicita uno nuevo.</string>
+    <string name="email_verification_request_new_code">Solicitar nuevo código</string>
+    <string name="email_verification_request_in">Solicitar nuevo código en %1$s segundos</string>
+    <string name="email_verification_incorrect_code">Código incorrecto. Te quedan %1$d intentos.</string>
+    <string name="email_verification_success">Verificación de correo electrónico exitosa. ¡Pasando al siguiente paso!</string>
 
     <!-- Speakify Notification -->
     <string name="notification_channel_name">Servicio en segundo plano de Speakify</string>

@@ -60,9 +60,25 @@ fun SignUpScreenView(viewModel: SignUpViewModel = viewModel(), state: SignUpUiSt
 }
 
 @Composable
-fun VerificationView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
-    EmailVerificationView(stringResource(R.string.sign_up_verification_message).replace("\n", "\n\n"),
-        onDone = { code -> viewModel.checkVerification(code, onDone) })
+fun VerificationView(
+    viewModel: SignUpViewModel = viewModel(),
+    onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit
+) {
+    val verificationViewModel: EmailVerificationViewModel = viewModel()
+
+    EmailVerificationView(
+        mainText = stringResource(R.string.sign_up_verification_message).replace("\n", "\n\n"),
+        onSubmitCode = { code ->
+            viewModel.checkVerification(code) { success, signUpUiState ->
+                if (!success) {
+                    verificationViewModel.onVerificationFailure()
+                }
+                onDone(success, signUpUiState)
+            }
+        },
+        onRequestCode = { viewModel.sendVerificationCode(onDone) },
+        viewModel = verificationViewModel
+    )
 }
 
 @Composable
