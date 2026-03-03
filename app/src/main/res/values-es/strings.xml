@@ -23,9 +23,9 @@
     <string name="last_name_label">Apellido</string>
     <string name="email_label">Correo electrónico *</string>
     <string name="password_label">Contraseña *</string>
-    <string name="legal_agree_prefix">Acepto los </string>
+    <string name="legal_agree_prefix">"Acepto los "</string>
     <string name="legal_terms_of_service">Términos de servicio</string>
-    <string name="legal_and"> y la </string>
+    <string name="legal_and">" y la "</string>
     <string name="legal_privacy_policy">Política de privacidad</string>
     <string name="legal_dot">.</string>
 
@@ -64,7 +64,7 @@
     <string name="simple_notification_strategy_text">Notificación de %1$s</string>
     <string name="sms_notification_strategy_text">Mensaje de %1$s</string>
 
-    <string name="google_voice_notification_strategy_text_suffix"> de %1$s</string>
+    <string name="google_voice_notification_strategy_text_suffix">" de %1$s"</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">Mensaje de texto entrante de Google Voice%1$s</string>
     <string name="google_voice_incoming_call_notification_strategy_text">Llamada entrante de Google Voice%1$s</string>
     <string name="google_voice_strategy_unknown_notification_text">Notificación de Google Voice desconocida</string>
