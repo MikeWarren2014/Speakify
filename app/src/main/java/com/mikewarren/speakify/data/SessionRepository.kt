@@ -1,10 +1,14 @@
-package com.mikewarren.speakify.data // Or a 'repositories' sub-package
+package com.mikewarren.speakify.data
 
 import android.util.Log
 import com.clerk.api.Clerk
 import com.clerk.api.network.serialization.longErrorMessageOrNull
 import com.clerk.api.network.serialization.onFailure
 import com.clerk.api.network.serialization.onSuccess
+import com.clerk.api.session.GetTokenOptions
+import com.clerk.api.session.fetchToken
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.OAuthProvider
 import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import kotlinx.coroutines.CoroutineScope
@@ -16,6 +20,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,6 +36,7 @@ class SessionRepository @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     private val scope = CoroutineScope(Dispatchers.Main)
+    private val firebaseAuth = FirebaseAuth.getInstance()
 
     init {
         combine(Clerk.isInitialized, Clerk.userFlow) { isInitialized, user ->
@@ -38,17 +44,45 @@ class SessionRepository @Inject constructor(
         }
             .distinctUntilChanged()
             .onEach { (isInitialized, user) ->
-                _uiState.value = when {
-                    !isInitialized -> MainUiState.Loading
-                    user != null -> {
-                        // Trigger a download when the user signs in
-                        scope.launch(Dispatchers.IO) {
-                            firestoreSyncRepository.downloadAndRestoreData()
-                        }
-                        MainUiState.SignedIn
-                    }
-                    else -> MainUiState.SignedOut
+                if (!isInitialized) {
+                    _uiState.value = MainUiState.Loading
+                    return@onEach
                 }
+
+                if (user != null) {
+                    // 1. Sign into Firebase using Clerk's OIDC JWT
+                    scope.launch(Dispatchers.IO) {
+                        try {
+                            // Fetch the token using the 'firebase' template we created in Clerk
+                            Clerk.session?.fetchToken(GetTokenOptions("firebase"))
+                                ?.onSuccess { tokenResource ->
+                                    val clerkToken = tokenResource.jwt
+                                    // Create a credential for the OIDC provider we set up in Firebase
+                                    val credential = OAuthProvider.newCredentialBuilder("oidc.clerk")
+                                        .setIdToken(clerkToken)
+                                        .build()
+
+                                    try {
+                                        firebaseAuth.signInWithCredential(credential).await()
+                                        Log.d("SessionRepo", "Successfully bridged Clerk to Firebase via OIDC")
+                                        // 2. Trigger sync
+                                        firestoreSyncRepository.downloadAndRestoreData()
+                                    } catch (e: Exception) {
+                                        Log.e("SessionRepo", "Failed to sign into Firebase with credential", e)
+                                    }
+                                }
+                                ?.onFailure {
+                                    Log.e("SessionRepo", "Failed to fetch Clerk token for Firebase: ${it.longErrorMessageOrNull}")
+                                }
+                        } catch (e: Exception) {
+                            Log.e("SessionRepo", "Failed to bridge Clerk to Firebase", e)
+                        }
+                    }
+                    _uiState.value = MainUiState.SignedIn
+                    return@onEach
+                }
+                firebaseAuth.signOut()
+                _uiState.value = MainUiState.SignedOut
             }
             .launchIn(scope)
     }
@@ -56,7 +90,6 @@ class SessionRepository @Inject constructor(
     fun setAccountDeletionUiState(state: AccountDeletionUiState) {
         _accountDeletionUiState.value = state
     }
-
 
     fun markAccountForDeletion() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -77,9 +110,10 @@ class SessionRepository @Inject constructor(
     }
 
     fun signOut() {
-        CoroutineScope(Dispatchers.IO).launch { // Use a dedicated scope
+        CoroutineScope(Dispatchers.IO).launch {
             Clerk.signOut()
                 .onSuccess {
+                    firebaseAuth.signOut()
                     _uiState.value = MainUiState.SignedOut
                 }
                 .onFailure {

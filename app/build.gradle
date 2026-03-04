@@ -38,7 +38,7 @@ android {
         applicationId packageName
         minSdk 28
         targetSdk androidSdkVersion
-        versionCode 20
+        versionCode 21
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -153,4 +153,5 @@ dependencies {
     implementation libs.firebase.analytics
     implementation libs.firebase.crashlytics.ndk
     implementation libs.firebase.firestore
+    implementation libs.firebase.auth
 }
