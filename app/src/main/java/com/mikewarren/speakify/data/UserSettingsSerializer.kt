@@ -3,6 +3,7 @@ package com.mikewarren.speakify.data
 import androidx.datastore.core.Serializer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import java.io.InputStream
 import java.io.OutputStream
@@ -14,7 +15,6 @@ class UserSettingsSerializer @Inject constructor() : Serializer<UserSettingsMode
     override val defaultValue: UserSettingsModel
         = UserSettingsModel(
         useDarkTheme = true,
-        appSettings = emptyMap(),
         selectedTTSVoice = Constants.DefaultTTSVoice,
         maximizeVolumeOnScreenOff = false,
         minVolume = 0,

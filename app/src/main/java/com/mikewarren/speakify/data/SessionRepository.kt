@@ -12,13 +12,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SessionRepository @Inject constructor() {
+class SessionRepository @Inject constructor(
+    private val firestoreSyncRepository: FirestoreSyncRepository
+) {
     private val _accountDeletionUiState = MutableStateFlow<AccountDeletionUiState>(
         AccountDeletionUiState.NotRequested)
     val accountDeletionUiState = _accountDeletionUiState.asStateFlow()
@@ -26,14 +30,27 @@ class SessionRepository @Inject constructor() {
     private val _uiState = MutableStateFlow<MainUiState>(MainUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
+    private val scope = CoroutineScope(Dispatchers.Main)
+
     init {
         combine(Clerk.isInitialized, Clerk.userFlow) { isInitialized, user ->
-            _uiState.value = when {
-                !isInitialized -> MainUiState.Loading
-                user != null -> MainUiState.SignedIn
-                else -> MainUiState.SignedOut
+            isInitialized to user
+        }
+            .distinctUntilChanged()
+            .onEach { (isInitialized, user) ->
+                _uiState.value = when {
+                    !isInitialized -> MainUiState.Loading
+                    user != null -> {
+                        // Trigger a download when the user signs in
+                        scope.launch(Dispatchers.IO) {
+                            firestoreSyncRepository.downloadAndRestoreData()
+                        }
+                        MainUiState.SignedIn
+                    }
+                    else -> MainUiState.SignedOut
+                }
             }
-        }.launchIn(CoroutineScope(Dispatchers.Main)) // Use a dedicated scope
+            .launchIn(scope)
     }
 
     fun setAccountDeletionUiState(state: AccountDeletionUiState) {

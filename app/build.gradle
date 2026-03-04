@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
     id "kotlin-kapt"
-    id 'com.google.dagger.hilt.android' // Add this line
+    id 'com.google.dagger.hilt.android'
     id 'org.jetbrains.kotlin.plugin.serialization'
     id 'kotlin-parcelize'
     id 'androidx.room'
@@ -31,7 +31,7 @@ android {
     namespace packageName
     compileSdk androidSdkVersion
 
-    // Disable baseline profile generation to prevent installation errors (programmatic equivalent of gradle.properties)
+    // Disable baseline profile generation to prevent installation errors
     experimentalProperties["android.experimental.enableBaselineProfile"] = false
 
     defaultConfig {
@@ -56,7 +56,6 @@ android {
                 storeFile file(keystoreProperties['storeFile'])
                 storePassword keystoreProperties['storePassword']
             } else {
-                // Fallback or log warning if file is missing
                 println "Keystore properties file not found."
             }
         }
@@ -88,7 +87,6 @@ android {
         buildConfig true
     }
     
-    // Ensure no baseline profile is packaged
     packaging {
         resources {
             excludes += "**/baseline.prof"
@@ -124,7 +122,6 @@ dependencies {
     implementation libs.androidx.navigation.compose
     implementation libs.androidx.espresso.core
 
-    // https://mvnrepository.com/artifact/androidx.datastore/datastore-preferences
     implementation libs.androidx.datastore
 
     implementation libs.kotlinx.serialization.json
@@ -142,7 +139,6 @@ dependencies {
     final String roomVersion = "2.7.1"
     implementation libs.androidx.room.runtime
     kapt("androidx.room:room-compiler:$roomVersion")
-    // optional - Paging 3 Integration
     implementation("androidx.room:room-paging:$roomVersion")
     implementation libs.kotlin.test
 
@@ -153,7 +149,8 @@ dependencies {
     implementation("com.clerk:clerk-android:0.1.24")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
 
-    implementation platform('com.google.firebase:firebase-bom:34.5.0')
-    implementation 'com.google.firebase:firebase-analytics'
-    implementation("com.google.firebase:firebase-crashlytics-ndk")
+    implementation platform(libs.firebase.bom)
+    implementation libs.firebase.analytics
+    implementation libs.firebase.crashlytics.ndk
+    implementation libs.firebase.firestore
 }
