@@ -9,6 +9,7 @@ import com.clerk.api.session.GetTokenOptions
 import com.clerk.api.session.fetchToken
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
+import com.mikewarren.speakify.data.db.firestore.FirestoreSyncRepository
 import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import kotlinx.coroutines.CoroutineScope
