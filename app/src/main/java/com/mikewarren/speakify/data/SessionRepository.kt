@@ -9,6 +9,7 @@ import com.clerk.api.session.GetTokenOptions
 import com.clerk.api.session.fetchToken
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
+import com.mikewarren.speakify.data.db.firestore.AccountDeletionFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FirestoreSyncRepository
 import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
@@ -28,6 +29,7 @@ import javax.inject.Singleton
 @Singleton
 class SessionRepository @Inject constructor(
     private val firestoreSyncRepository: FirestoreSyncRepository,
+    private val accountDeletionFirestoreRepository: AccountDeletionFirestoreRepository,
     private val settingsRepository: SettingsRepository,
 ) {
     private val _accountDeletionUiState = MutableStateFlow<AccountDeletionUiState>(
@@ -114,7 +116,7 @@ class SessionRepository @Inject constructor(
     }
 
     fun signOut() {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             Clerk.signOut()
                 .onSuccess {
                     onSuccessfulSignOut()
@@ -129,5 +131,9 @@ class SessionRepository @Inject constructor(
         firebaseAuth.signOut()
         settingsRepository.clearAllData()
         _uiState.value = MainUiState.SignedOut
+    }
+
+    suspend fun deleteUserData(): Result<Unit> {
+        return accountDeletionFirestoreRepository.deleteUserData()
     }
 }
