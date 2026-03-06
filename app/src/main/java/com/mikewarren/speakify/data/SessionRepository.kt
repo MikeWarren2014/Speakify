@@ -27,7 +27,8 @@ import javax.inject.Singleton
 
 @Singleton
 class SessionRepository @Inject constructor(
-    private val firestoreSyncRepository: FirestoreSyncRepository
+    private val firestoreSyncRepository: FirestoreSyncRepository,
+    private val settingsRepository: SettingsRepository,
 ) {
     private val _accountDeletionUiState = MutableStateFlow<AccountDeletionUiState>(
         AccountDeletionUiState.NotRequested)
@@ -50,40 +51,42 @@ class SessionRepository @Inject constructor(
                     return@onEach
                 }
 
-                if (user != null) {
-                    // 1. Sign into Firebase using Clerk's OIDC JWT
-                    scope.launch(Dispatchers.IO) {
-                        try {
-                            // Fetch the token using the 'firebase' template we created in Clerk
-                            Clerk.session?.fetchToken(GetTokenOptions("firebase"))
-                                ?.onSuccess { tokenResource ->
-                                    val clerkToken = tokenResource.jwt
-                                    // Create a credential for the OIDC provider we set up in Firebase
-                                    val credential = OAuthProvider.newCredentialBuilder("oidc.clerk")
-                                        .setIdToken(clerkToken)
-                                        .build()
-
-                                    try {
-                                        firebaseAuth.signInWithCredential(credential).await()
-                                        Log.d("SessionRepo", "Successfully bridged Clerk to Firebase via OIDC")
-                                        // 2. Trigger sync
-                                        firestoreSyncRepository.downloadAndRestoreData()
-                                    } catch (e: Exception) {
-                                        Log.e("SessionRepo", "Failed to sign into Firebase with credential", e)
-                                    }
-                                }
-                                ?.onFailure {
-                                    Log.e("SessionRepo", "Failed to fetch Clerk token for Firebase: ${it.longErrorMessageOrNull}")
-                                }
-                        } catch (e: Exception) {
-                            Log.e("SessionRepo", "Failed to bridge Clerk to Firebase", e)
-                        }
-                    }
-                    _uiState.value = MainUiState.SignedIn
+                if (user == null) {
+                    onSuccessfulSignOut()
                     return@onEach
                 }
-                firebaseAuth.signOut()
-                _uiState.value = MainUiState.SignedOut
+
+                // 1. Sign into Firebase using Clerk's OIDC JWT
+                scope.launch(Dispatchers.IO) {
+                    try {
+                        // Fetch the token using the 'firebase' template we created in Clerk
+                        Clerk.session?.fetchToken(GetTokenOptions("firebase"))
+                            ?.onSuccess { tokenResource ->
+                                val clerkToken = tokenResource.jwt
+                                // Create a credential for the OIDC provider we set up in Firebase
+                                val credential = OAuthProvider.newCredentialBuilder("oidc.clerk")
+                                    .setIdToken(clerkToken)
+                                    .build()
+
+                                try {
+                                    firebaseAuth.signInWithCredential(credential).await()
+                                    Log.d("SessionRepo", "Successfully bridged Clerk to Firebase via OIDC")
+                                    // 2. Trigger sync
+                                    firestoreSyncRepository.downloadAndRestoreData()
+                                } catch (e: Exception) {
+                                    Log.e("SessionRepo", "Failed to sign into Firebase with credential", e)
+                                }
+                            }
+                            ?.onFailure {
+                                Log.e("SessionRepo", "Failed to fetch Clerk token for Firebase: ${it.longErrorMessageOrNull}")
+                            }
+                    } catch (e: Exception) {
+                        Log.e("SessionRepo", "Failed to bridge Clerk to Firebase", e)
+                    }
+                }
+                _uiState.value = MainUiState.SignedIn
+                return@onEach
+
             }
             .launchIn(scope)
     }
@@ -114,12 +117,17 @@ class SessionRepository @Inject constructor(
         CoroutineScope(Dispatchers.IO).launch {
             Clerk.signOut()
                 .onSuccess {
-                    firebaseAuth.signOut()
-                    _uiState.value = MainUiState.SignedOut
+                    onSuccessfulSignOut()
                 }
                 .onFailure {
                     Log.e("SessionRepository", it.longErrorMessageOrNull, it.throwable)
                 }
         }
+    }
+
+    private suspend fun onSuccessfulSignOut() {
+        firebaseAuth.signOut()
+        settingsRepository.clearAllData()
+        _uiState.value = MainUiState.SignedOut
     }
 }

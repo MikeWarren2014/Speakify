@@ -6,7 +6,6 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.SettingsRepository
-import com.mikewarren.speakify.data.db.UserAppModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -27,11 +26,9 @@ class UploadRepository @Inject constructor(
         return "Failed to upload data"
     }
 
-    override suspend fun allFirebaseTransactions(): List<suspend () -> Result<Unit>> {
-        return listOf(
-            this::writeClerkUserData,
-            *super.allFirebaseTransactions().toTypedArray(),
-        )
+    override suspend fun allFirestoreTransactions(): List<suspend () -> Result<Unit>> {
+        return listOf(this::writeClerkUserData) +
+            super.allFirestoreTransactions()
     }
 
     suspend fun writeClerkUserData(): Result<Unit> {

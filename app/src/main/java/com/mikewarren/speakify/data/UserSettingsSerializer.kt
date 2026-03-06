@@ -13,12 +13,7 @@ import javax.inject.Singleton
 @Singleton
 class UserSettingsSerializer @Inject constructor() : Serializer<UserSettingsModel>{
     override val defaultValue: UserSettingsModel
-        = UserSettingsModel(
-        useDarkTheme = true,
-        selectedTTSVoice = Constants.DefaultTTSVoice,
-        maximizeVolumeOnScreenOff = false,
-        minVolume = 0,
-    )
+        = UserSettingsModel()
 
     override suspend fun readFrom(input: InputStream): UserSettingsModel {
         return Json.decodeFromString(UserSettingsModel.serializer(), input.readBytes().decodeToString())

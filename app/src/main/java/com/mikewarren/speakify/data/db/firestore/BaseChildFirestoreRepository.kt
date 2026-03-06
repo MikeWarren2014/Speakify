@@ -2,6 +2,7 @@ package com.mikewarren.speakify.data.db.firestore
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mikewarren.speakify.utils.log.ITaggable
 
@@ -10,8 +11,9 @@ abstract class BaseChildFirestoreRepository: ITaggable {
     private val firestore = FirebaseFirestore.getInstance()
     protected val firebaseAuth = FirebaseAuth.getInstance()
 
-    protected val userDoc = firestore.collection("users")
-        .document(userId)
+    protected val userDoc: DocumentReference
+        get() = firestore.collection("users")
+            .document(userId)
 
     protected val userId: String
         get() = firebaseAuth.currentUser?.uid ?: throw IllegalStateException("User not logged in")
@@ -19,11 +21,11 @@ abstract class BaseChildFirestoreRepository: ITaggable {
     abstract fun getSuccessLogMessage() : String
     abstract fun getFailureLogMessage() : String
 
-    suspend fun doAllFirebaseTransactions(): Result<Unit> {
-        return doFirebaseTransactions(allFirebaseTransactions())
+    suspend fun doAllFirestoreTransactions(): Result<Unit> {
+        return doFirestoreTransactions(allFirestoreTransactions())
     }
 
-    suspend fun doFirebaseTransactions(listOfFirebaseTransactions: List<suspend () -> Result<Unit>>) : Result<Unit> {
+    suspend fun doFirestoreTransactions(listOfFirebaseTransactions: List<suspend () -> Result<Unit>>) : Result<Unit> {
         var currentResult: Result<Unit> = Result.success(Unit)
 
         val failedTransaction = listOfFirebaseTransactions
@@ -40,11 +42,11 @@ abstract class BaseChildFirestoreRepository: ITaggable {
         return Result.success(Unit)
     }
 
-    open suspend fun allFirebaseTransactions(): List<suspend () -> Result<Unit>> {
+    open suspend fun allFirestoreTransactions(): List<suspend () -> Result<Unit>> {
         return listOf(
             this::settingsTransaction,
-            { doFirebaseTransactions(importantAppsTransactionList()) },
-            { doFirebaseTransactions(appSettingsTransactionsList()) },
+            { doFirestoreTransactions(importantAppsTransactionList()) },
+            { doFirestoreTransactions(appSettingsTransactionsList()) },
         )
     }
 

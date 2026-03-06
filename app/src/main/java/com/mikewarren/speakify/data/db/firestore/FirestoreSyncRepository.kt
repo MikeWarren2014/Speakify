@@ -53,13 +53,13 @@ class FirestoreSyncRepository @Inject constructor(
      * Uploads all local settings and app configurations to Firestore.
      */
     suspend fun uploadAllData(): Result<Unit> {
-        return uploadRepository.doAllFirebaseTransactions()
+        return uploadRepository.doAllFirestoreTransactions()
     }
 
     /**
      * Downloads data from Firestore and restores it to local Room DB and DataStore.
      */
     suspend fun downloadAndRestoreData(): Result<Unit> {
-        return downloadRepository.doAllFirebaseTransactions()
+        return downloadRepository.doAllFirestoreTransactions()
     }
 }

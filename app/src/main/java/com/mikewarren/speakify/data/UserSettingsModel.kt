@@ -15,4 +15,10 @@ data class UserSettingsModel(
 
     val isCrashlyticsEnabled: Boolean = false,
     val originalVolume: Int = -1,
-)
+) {
+    constructor() : this(
+        useDarkTheme = true,
+        selectedTTSVoice = Constants.DefaultTTSVoice,
+        maximizeVolumeOnScreenOff = false,
+    )
+}

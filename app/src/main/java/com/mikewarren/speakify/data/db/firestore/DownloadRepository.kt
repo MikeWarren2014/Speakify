@@ -82,9 +82,9 @@ class DownloadRepository @Inject constructor(
                     settingsRepository.saveAppSettings(
                         AppSettingsModel(
                             id = null,
-                            packageName = packageName,
-                            announcerVoice = announcerVoice,
-                            notificationSources = notificationSources
+                            packageName,
+                            announcerVoice,
+                            notificationSources,
                         )
                     )
                 }) }

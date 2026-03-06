@@ -4,23 +4,18 @@ package com.mikewarren.speakify.data
 import android.content.Context
 import android.util.Log
 import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.AppSettingsDbModel
-import com.mikewarren.speakify.data.db.AppSettingsWithNotificationSources
 import com.mikewarren.speakify.data.db.DbProvider
 import com.mikewarren.speakify.data.db.NotificationSourceModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -158,6 +153,13 @@ class SettingsRepositoryImpl @Inject constructor(
 
     override fun getContext() : Context {
         return context
+    }
+
+    override suspend fun clearAllData() {
+        withContext(Dispatchers.IO) {
+            _db.clearAllTables()
+        }
+        userSettingsDataStore.updateData { UserSettingsModel() }
     }
 
 }
