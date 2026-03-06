@@ -32,4 +32,5 @@ interface SettingsRepository {
 
     fun getContext() : Context
 
+    suspend fun clearAllData()
 }

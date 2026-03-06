@@ -13,4 +13,9 @@ data class UserAppModel(
     @ColumnInfo(name = "app_name") val appName: String,
     @ColumnInfo(name = "enabled") var enabled: Boolean = true,
     @ColumnInfo(name = "rate_limit") var rateLimit: Long = 2 * Constants.OneSecond, // milliseconds between notifications
-)
+) {
+    constructor(): this("",
+        "",
+        true,
+        2 * Constants.OneSecond)
+}

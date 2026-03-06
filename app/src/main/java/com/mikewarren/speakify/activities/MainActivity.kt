@@ -8,6 +8,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -74,7 +75,7 @@ class MainActivity : ComponentActivity()  {
                         }
                     }
 
-                    MyApplicationTheme(darkTheme = useDarkTheme == true, content = {
+                    MyApplicationTheme(darkTheme = useDarkTheme == true || isSystemInDarkTheme(), content = {
                         when (state) {
                             is MainUiState.Loading -> CircularProgressIndicator()
                             is MainUiState.SignedOut -> Text(getString(R.string.signed_out))

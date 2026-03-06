@@ -46,7 +46,7 @@ class LoginActivity : ComponentActivity() {
                 }
             }
 
-            MyApplicationTheme(darkTheme = useDarkTheme == true, content = {
+            MyApplicationTheme(darkTheme = useDarkTheme == true || isSystemInDarkTheme(), content = {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background // Use theme's background color

@@ -50,7 +50,17 @@ class AccountDeletionViewModel @Inject constructor(
 
     fun deleteUser() {
         viewModelScope.launch(Dispatchers.IO) {
+            
+            // 1. Delete Firestore data first while we still have the user session
+            val result = sessionRepository.deleteUserData()
+            
+            if (result.isFailure) {
+                LogUtils.LogWarning(TAG, "Failed to delete Firestore data: ${result.exceptionOrNull()?.message}")
+                // We might want to show an error to the user here, 
+                // but proceeding with account deletion is often safer to ensure the account is gone.
+            }
 
+            // 2. Delete Clerk user
             Clerk.user!!
                 .delete()
                 .onSuccess {

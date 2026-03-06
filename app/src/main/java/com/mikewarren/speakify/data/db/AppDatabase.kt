@@ -9,9 +9,11 @@ import com.mikewarren.speakify.data.db.AppSettingsDbModel
 
 @Database(
     entities = [UserAppModel::class, AppSettingsDbModel::class, NotificationSourceModel::class],
-    version = 1,
+    version = 2,
+    autoMigrations = [
+        AutoMigration (from = 1, to = 2)
+    ],
     exportSchema = true,
-
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userAppsDao(): UserAppsDao

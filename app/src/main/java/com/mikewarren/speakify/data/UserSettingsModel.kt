@@ -10,10 +10,15 @@ import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 data class UserSettingsModel(
     val useDarkTheme: Boolean,
     val selectedTTSVoice: String,
-    val appSettings: Map<String, AppSettingsModel>,
     val maximizeVolumeOnScreenOff: Boolean = false,
     val minVolume: Int = 0,
 
     val isCrashlyticsEnabled: Boolean = false,
     val originalVolume: Int = -1,
-)
+) {
+    constructor() : this(
+        useDarkTheme = true,
+        selectedTTSVoice = Constants.DefaultTTSVoice,
+        maximizeVolumeOnScreenOff = false,
+    )
+}

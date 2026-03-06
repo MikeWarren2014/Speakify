@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "fad8457779b9365404d5ba97b5133000",
+    "version": 2,
+    "identityHash": "afcd470b47b9dd9bb3ca3f697b76c01c",
     "entities": [
       {
         "tableName": "important_apps",
@@ -42,7 +42,7 @@
       },
       {
         "tableName": "app_settings",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`as_id` INTEGER PRIMARY KEY AUTOINCREMENT, `package_name` TEXT NOT NULL, `announcer_voice` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`as_id` INTEGER PRIMARY KEY AUTOINCREMENT, `package_name` TEXT NOT NULL, `announcer_voice` TEXT, FOREIGN KEY(`package_name`) REFERENCES `important_apps`(`package_name`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -76,6 +76,19 @@
             ],
             "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_app_settings_package_name` ON `${TABLE_NAME}` (`package_name`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "important_apps",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "package_name"
+            ],
+            "referencedColumns": [
+              "package_name"
+            ]
           }
         ]
       },
@@ -135,7 +148,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fad8457779b9365404d5ba97b5133000')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'afcd470b47b9dd9bb3ca3f697b76c01c')"
     ]
   }
 }

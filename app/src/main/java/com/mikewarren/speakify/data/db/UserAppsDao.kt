@@ -12,7 +12,6 @@ interface UserAppsDao {
     @Query("SELECT * FROM important_apps")
     suspend fun getAll(): List<UserAppModel>
 
-    // UserAppsDao.kt
     @Query("SELECT * FROM important_apps")
     fun getAllFlow(): Flow<List<UserAppModel>>
 

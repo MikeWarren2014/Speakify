@@ -23,4 +23,8 @@ data class NotificationSourceModel(
     @PrimaryKey @ColumnInfo(name = "ns_id") val id: Long?,
     @ColumnInfo(name = "as_id") val appSettingsId: Long?,
     @ColumnInfo(name = "ns_value") val value: String,
-)
+) {
+    constructor() : this(null,
+        null,
+        "")
+}
