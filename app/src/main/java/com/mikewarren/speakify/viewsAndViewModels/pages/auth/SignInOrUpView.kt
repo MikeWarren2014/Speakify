@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,10 +42,10 @@ fun SignInOrUpView(initialScreenUiState: InitialScreenUiState) {
         }
 
         if (signUpUiState is SignUpUiState.SignedOut) {
-            Button(onClick = { isSignUp = !isSignUp }) {
+            OutlinedButton(onClick = { isSignUp = !isSignUp }) {
                 if (isSignUp) {
                     Text(stringResource(R.string.sign_up_switch_to_sign_in))
-                    return@Button
+                    return@OutlinedButton
                 }
                 Text(stringResource(R.string.sign_in_switch_to_sign_up))
             }
