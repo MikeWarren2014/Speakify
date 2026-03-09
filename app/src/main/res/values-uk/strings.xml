@@ -58,11 +58,16 @@
     <!-- Speakify Notification -->
     <string name="notification_channel_name">Фонова служба Speakify</string>
     <string name="notification_active_title">Speakify працює</string>
-    <string name="notification_active_content">Обробка сповіщень у фоновому режимі.</string>
+    <string name="notification_active_content">Обробка сповіщень у фоновом режимі.</string>
 
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">Сповіщення від %1$s</string>
     <string name="sms_notification_strategy_text">SMS від %1$s</string>
+    <string name="messenger_notification_text">Вхідне повідомлення Facebook від %1$s</string>
+    <string name="messenger_notification_call">Вхідний дзвінок Facebook від %1$s</string>
+    <string name="messenger_notification_strategy_unknown">Невідоме сповіщення Facebook Messenger</string>
+
+    <string name="contact_unknown">Хтось</string>
 
     <string name="google_voice_notification_strategy_text_suffix"> від %1$s</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">Вхідне SMS Google Voice%1$s</string>
@@ -117,6 +122,9 @@
     <string name="no_notification_sources_instruction">Додайте деякі %1$s, щоб отримувати сповіщення лише про них, або залиште це поле порожнім, щоб отримувати сповіщення про ВСІ %1$s.</string>
     <string name="remove">Видалити</string>
     <string name="notification_sources">джерела сповіщень</string>
+
+    <!-- Messenger Settings -->
+    <string name="messenger_ignore_message_requests">Ігнорувати запити повідомлень</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">джерела сповіщень</string>
@@ -197,6 +205,8 @@
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">Джерела сповіщень</string>
     <string name="autocomplete_label_contact_name_phone_number">Ім\'я контакту/Номер телефону</string>
+    <string name="autocomplete_label_contact_name">Ім\'я контакту</string>
+    <string name="autocomplete_no_choices_available_yet">Ще немає %1s доступних.</string>
     <string name="autocomplete_label_tts">Голос TTS</string>
 
     <!-- UI Event messages -->

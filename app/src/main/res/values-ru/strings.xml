@@ -63,6 +63,11 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">Уведомление от %1$s</string>
     <string name="sms_notification_strategy_text">SMS от %1$s</string>
+    <string name="messenger_notification_text">Входящее сообщение Facebook от %1$s</string>
+    <string name="messenger_notification_call">Входящий звонок Facebook от %1$s</string>
+    <string name="messenger_notification_strategy_unknown">Неизвестное уведомление Facebook Messenger</string>
+
+    <string name="contact_unknown">Кто-то</string>
 
     <string name="google_voice_notification_strategy_text_suffix"> от %1$s</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">Входящее SMS Google Voice%1$s</string>
@@ -117,6 +122,9 @@
     <string name="no_notification_sources_instruction">Добавьте источники %1$s, чтобы получать уведомления только от них, или оставьте поле пустым, чтобы получать уведомления от ВСЕХ источников %1$s.</string>
     <string name="remove">Удалить</string>
     <string name="notification_sources">источники уведомлений</string>
+
+    <!-- Messenger Settings -->
+    <string name="messenger_ignore_message_requests">Игнорировать запросы сообщений</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">источники уведомлений</string>
@@ -197,6 +205,8 @@
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">Источники уведомлений</string>
     <string name="autocomplete_label_contact_name_phone_number">Имя контакта/Номер телефона</string>
+    <string name="autocomplete_label_contact_name">Имя контакта</string>
+    <string name="autocomplete_no_choices_available_yet">Источников %1s пока нет.</string>
     <string name="autocomplete_label_tts">Голос TTS</string>
 
     <!-- UI Event messages -->

@@ -63,6 +63,11 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">اعلان از طرف %1$s</string>
     <string name="sms_notification_strategy_text">پیامک از طرف %1$s</string>
+    <string name="messenger_notification_text">پیام فیسبوک ورودی از %1$s</string>
+    <string name="messenger_notification_call">تماس فیسبوک ورودی از %1$s</string>
+    <string name="messenger_notification_strategy_unknown">اعلان فیسبوک مسنجر ناشناخته</string>
+
+    <string name="contact_unknown">یک نفر</string>
 
     <string name="google_voice_notification_strategy_text_suffix"> از طرف %1$s</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">پیامک ورودی گوگل ویس%1$s</string>
@@ -117,6 +122,9 @@
     <string name="no_notification_sources_instruction">برخی %1$s را اضافه کنید تا فقط درباره آن‌ها مطلع شوید، یا این را خالی بگذارید تا درباره همه %1$s مطلع شوید.</string>
     <string name="remove">حذف</string>
     <string name="notification_sources">منابع اعلان</string>
+
+    <!-- Messenger Settings -->
+    <string name="messenger_ignore_message_requests">نادیده گرفتن درخواست‌های پیام</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">منابع اعلان</string>
@@ -197,6 +205,8 @@
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">منابع اعلان</string>
     <string name="autocomplete_label_contact_name_phone_number">نام مخاطب/شماره تلفن</string>
+    <string name="autocomplete_label_contact_name">نام مخاطب</string>
+    <string name="autocomplete_no_choices_available_yet">هنوز %1s موجود نیست.</string>
     <string name="autocomplete_label_tts">صدای TTS</string>
 
     <!-- UI Event messages -->

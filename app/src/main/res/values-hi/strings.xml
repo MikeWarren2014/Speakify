@@ -26,7 +26,7 @@
     <string name="legal_agree_prefix">"मैं "</string>
     <string name="legal_terms_of_service">सेवा की शर्तों</string>
     <string name="legal_and">" और "</string>
-    <string name="legal_privacy_policy">गोپनीयता नीति</string>
+    <string name="legal_privacy_policy">गोपनीयता नीति</string>
     <string name="legal_dot"> से सहमत हूँ।</string>
 
     <!-- Forgot Password View -->
@@ -63,6 +63,11 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">%1$s से सूचना</string>
     <string name="sms_notification_strategy_text">%1$s से संदेश</string>
+    <string name="messenger_notification_text">%1$s से आने वाला फेसबुक संदेश</string>
+    <string name="messenger_notification_call">%1$s से आने वाली फेसबुक कॉल</string>
+    <string name="messenger_notification_strategy_unknown">अज्ञात फेसबुक मैसेंजर सूचना</string>
+
+    <string name="contact_unknown">कोई</string>
 
     <string name="google_voice_notification_strategy_text_suffix"> (%1$s की ओर से)</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">आने वाला Google Voice टेक्स्ट संदेश%1$s</string>
@@ -117,6 +122,9 @@
     <string name="no_notification_sources_instruction">केवल उनके बारे में सूचित होने के लिए कुछ %1$s जोड़ें, या सभी %1$s के बारे में सूचित होने के लिए इसे खाली छोड़ दें।</string>
     <string name="remove">हटाएं</string>
     <string name="notification_sources">सूचना स्रोत</string>
+
+    <!-- Messenger Settings -->
+    <string name="messenger_ignore_message_requests">संदेश अनुरोधों को अनदेखा करें</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">सूचना स्रोत</string>
@@ -197,6 +205,8 @@
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">सूचना स्रोत</string>
     <string name="autocomplete_label_contact_name_phone_number">संपर्क नाम/फ़ोन नंबर</string>
+    <string name="autocomplete_label_contact_name">संपर्क का नाम</string>
+    <string name="autocomplete_no_choices_available_yet">अभी तक कोई %1s उपलब्ध नहीं है।</string>
     <string name="autocomplete_label_tts">TTS आवाज़</string>
 
     <!-- UI Event messages -->

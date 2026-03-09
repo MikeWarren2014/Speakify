@@ -63,6 +63,11 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">Notificação de %1$s</string>
     <string name="sms_notification_strategy_text">SMS de %1$s</string>
+    <string name="messenger_notification_text">Mensagem do Facebook recebida de %1$s</string>
+    <string name="messenger_notification_call">Chamada do Facebook recebida de %1$s</string>
+    <string name="messenger_notification_strategy_unknown">Notificação do Facebook Messenger desconhecida</string>
+
+    <string name="contact_unknown">Alguém</string>
 
     <string name="google_voice_notification_strategy_text_suffix">" de %1$s"</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">Mensagem de texto do Google Voice recebida%1$s</string>
@@ -117,6 +122,9 @@
     <string name="no_notification_sources_instruction">Adicione alguns %1$s para ser notificado apenas sobre eles, ou deixe em branco para ser notificado sobre TODOS os %1$s.</string>
     <string name="remove">Remover</string>
     <string name="notification_sources">fontes de notificação</string>
+
+    <!-- Messenger Settings -->
+    <string name="messenger_ignore_message_requests">Ignorar solicitações de mensagens</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">fontes de notificação</string>
@@ -197,6 +205,8 @@
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">Fontes de Notificação</string>
     <string name="autocomplete_label_contact_name_phone_number">Nome do Contato/Número de Telefone</string>
+    <string name="autocomplete_label_contact_name">Nome do contato</string>
+    <string name="autocomplete_no_choices_available_yet">Ainda não há %1s disponíveis.</string>
     <string name="autocomplete_label_tts">Voz do TTS</string>
 
     <!-- UI Event messages -->
@@ -243,7 +253,7 @@
         Versão do Android: %2$s\n
         --------------------------------------------------\n
 \n
-        P.S. Se este for um feedback positivo, com certeza considerarei avaliar o Speakify na Google
+        P.S. Se esse for um feedback positivo, com certeza considerarei avaliar o Speakify na Google
         Play Store!
     </string>
 

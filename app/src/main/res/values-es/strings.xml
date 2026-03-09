@@ -63,6 +63,11 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">Notificación de %1$s</string>
     <string name="sms_notification_strategy_text">Mensaje de %1$s</string>
+    <string name="messenger_notification_text">Mensaje de Facebook entrante de %1$s</string>
+    <string name="messenger_notification_call">Llamada de Facebook entrante de %1$s</string>
+    <string name="messenger_notification_strategy_unknown">Notificación de Facebook Messenger desconocida</string>
+
+    <string name="contact_unknown">Alguien</string>
 
     <string name="google_voice_notification_strategy_text_suffix">" de %1$s"</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">Mensaje de texto entrante de Google Voice%1$s</string>
@@ -117,6 +122,9 @@
     <string name="no_notification_sources_instruction">Añade algunos %1$s para recibir notificaciones solo de ellos, o deja esto en blanco para recibir notificaciones de TODOS los %1$s.</string>
     <string name="remove">Eliminar</string>
     <string name="notification_sources">fuentes de notificación</string>
+
+    <!-- Messenger Settings -->
+    <string name="messenger_ignore_message_requests">Ignorar solicitudes de mensajes</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">fuentes de notificación</string>
@@ -197,6 +205,8 @@
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">Fuentes de notificación</string>
     <string name="autocomplete_label_contact_name_phone_number">Nombre de contacto/Número de teléfono</string>
+    <string name="autocomplete_label_contact_name">Nombre del contacto</string>
+    <string name="autocomplete_no_choices_available_yet">Aún no hay %1s disponibles.</string>
     <string name="autocomplete_label_tts">Voz TTS</string>
 
     <!-- UI Event messages -->

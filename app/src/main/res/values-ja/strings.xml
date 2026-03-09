@@ -63,6 +63,11 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">%1$s からの通知</string>
     <string name="sms_notification_strategy_text">%1$s からのメッセージ</string>
+    <string name="messenger_notification_text">%1$s からの Facebook メッセージ</string>
+    <string name="messenger_notification_call">%1$s からの Facebook 着信</string>
+    <string name="messenger_notification_strategy_unknown">不明な Facebook メッセンジャーの通知</string>
+
+    <string name="contact_unknown">誰か</string>
 
     <string name="google_voice_notification_strategy_text_suffix"> (%1$s より)</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">Google Voice の受信メッセージ%1$s</string>
@@ -117,6 +122,9 @@
     <string name="no_notification_sources_instruction">%1$s を追加して特定の通知のみを受け取るか、空のままにしてすべての %1$s の通知を受け取ります。</string>
     <string name="remove">削除</string>
     <string name="notification_sources">通知ソース</string>
+
+    <!-- Messenger Settings -->
+    <string name="messenger_ignore_message_requests">メッセージリクエストを無視する</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">通知ソース</string>
@@ -197,6 +205,8 @@
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">通知ソース</string>
     <string name="autocomplete_label_contact_name_phone_number">連絡先名 / 電話番号</string>
+    <string name="autocomplete_label_contact_name">連絡先名</string>
+    <string name="autocomplete_no_choices_available_yet">%1s はまだありません。</string>
     <string name="autocomplete_label_tts">TTS 音声</string>
 
     <!-- UI Event messages -->
