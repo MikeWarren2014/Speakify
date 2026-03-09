@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -152,7 +153,7 @@ fun RequestCodeButtonSection(viewModel: EmailVerificationViewModel, onRequestCod
         text = stringResource(R.string.email_verification_request_in, viewModel.secondsTilRequestCode)
     }
 
-    Button(
+    OutlinedButton(
         onClick = { 
             onRequestCode() 
             viewModel.startResendTimer()
