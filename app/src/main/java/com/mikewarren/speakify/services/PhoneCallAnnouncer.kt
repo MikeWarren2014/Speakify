@@ -6,8 +6,8 @@ import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.Constants
-import com.mikewarren.speakify.utils.log.LogUtils
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
+import com.mikewarren.speakify.utils.log.LogUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,7 +47,11 @@ class PhoneCallAnnouncer @Inject constructor(
                 withTimeout(25 * Constants.OneSecond) {
                     while (isActive) {
                         Log.d("PhoneCallAnnouncer", "SPEAKING: $announcement")
-                        ttsManager.speak(announcement) // This should be a suspend function
+                        val success = ttsManager.speak(announcement)
+                        if (!success) {
+                            Log.e("PhoneCallAnnouncer", "TTS failed, stopping announcement loop.")
+                            break
+                        }
                         delay(500) // Wait half a second after speech finishes
                     }
                 }

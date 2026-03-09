@@ -82,7 +82,11 @@ class TTSManager @Inject constructor(
         FirebaseCrashlytics.getInstance().log("TTS engine failed to initialize with status: $status")
     }
 
-    suspend fun speak(text: String, voiceName: String? = null) {
+    /**
+     * Speaks the given text using the TTS engine.
+     * @return true if the text was spoken successfully, false otherwise.
+     */
+    suspend fun speak(text: String, voiceName: String? = null): Boolean {
         initialize()
 
         if (!isInitialized) {
@@ -96,7 +100,7 @@ class TTSManager @Inject constructor(
             } catch (e: TimeoutCancellationException) {
                 Log.e(TAG, "Timed out waiting for TTS initialization.")
                 isInitializationStarted = false
-                return
+                return false
             }
         }
 
@@ -105,8 +109,8 @@ class TTSManager @Inject constructor(
         if (currentVolume < minVolume) {
             audioManager.setVolume(minVolume)
         }
-        try {
-            return suspendCancellableCoroutine { continuation ->
+        return try {
+            suspendCancellableCoroutine { continuation ->
                 val utteranceId = UUID.randomUUID().toString()
 
                 val listener = object : UtteranceProgressListener() {
@@ -114,7 +118,7 @@ class TTSManager @Inject constructor(
 
                     override fun onDone(id: String?) {
                         if (id == utteranceId && continuation.isActive) {
-                            continuation.resume(Unit)
+                            continuation.resume(true)
                         }
                     }
 
@@ -122,21 +126,21 @@ class TTSManager @Inject constructor(
                     override fun onError(id: String?) {
                         if (id == utteranceId && continuation.isActive) {
                             Log.e(TAG, "TTS error for utterance: $id")
-                            continuation.resume(Unit)
+                            continuation.resume(false)
                         }
                     }
 
                     override fun onError(id: String?, errorCode: Int) {
                         if (id == utteranceId && continuation.isActive) {
                             Log.e(TAG, "TTS error with code $errorCode for utterance: $id")
-                            continuation.resume(Unit)
+                            continuation.resume(false)
                         }
                     }
 
                     override fun onStop(id: String?, interrupted: Boolean) {
                         if (id == utteranceId && continuation.isActive) {
                             Log.d(TAG, "TTS utterance stopped: $id")
-                            continuation.resume(Unit)
+                            continuation.resume(false)
                         }
                     }
                 }
@@ -150,12 +154,13 @@ class TTSManager @Inject constructor(
                     Log.e(TAG, "TTS engine returned ERROR for text: $text")
                     FirebaseCrashlytics.getInstance().log("TTS engine returned ERROR for text: $text")
                     if (continuation.isActive) {
-                        continuation.resume(Unit)
+                        continuation.resume(false)
                     }
                 }
             }
         } catch (e: Exception) {
             LogUtils.LogNonFatalError(TAG, "An error occurred while speaking", e)
+            false
         } finally {
             audioManager.restoreVolume()
         }
