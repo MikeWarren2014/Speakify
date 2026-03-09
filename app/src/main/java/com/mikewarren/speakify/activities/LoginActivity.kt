@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -31,13 +32,13 @@ class LoginActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         setContent {
-
             val viewModel: MainViewModel by viewModels()
             val settingsViewModel: SettingsViewModel by viewModels()
             val state by viewModel.uiState.collectAsStateWithLifecycle()
-            val useDarkTheme by settingsViewModel.useDarkTheme.collectAsStateWithLifecycle(isSystemInDarkTheme())
+            val useDarkTheme by settingsViewModel.useDarkTheme.collectAsStateWithLifecycle(initialValue = null)
 
             // When the state becomes SignedIn, navigate to MainActivity
             if (state is MainUiState.SignedIn) {
@@ -46,10 +47,10 @@ class LoginActivity : ComponentActivity() {
                 }
             }
 
-            MyApplicationTheme(darkTheme = useDarkTheme == true || isSystemInDarkTheme(), content = {
+            MyApplicationTheme(darkTheme = useDarkTheme ?: isSystemInDarkTheme()) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background // Use theme's background color
+                    color = MaterialTheme.colorScheme.background
                 ) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
@@ -64,7 +65,7 @@ class LoginActivity : ComponentActivity() {
                         }
                     }
                 }
-            })
+            }
         }
     }
 
@@ -77,7 +78,5 @@ class LoginActivity : ComponentActivity() {
                 putExtra(ActionConstants.PostLoginActionKey, ActionConstants.ActionDeleteAccount)
             }
         })
-
-
     }
 }

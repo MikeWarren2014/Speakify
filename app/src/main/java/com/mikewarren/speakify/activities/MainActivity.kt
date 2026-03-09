@@ -9,11 +9,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -29,7 +35,6 @@ import com.mikewarren.speakify.utils.NotificationPermissionHelper
 import com.mikewarren.speakify.viewsAndViewModels.AppView
 import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -47,44 +52,51 @@ class MainActivity : ComponentActivity()  {
 
         val viewModel: SettingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
 
+        setContent {
+            val useDarkTheme by viewModel.useDarkTheme.collectAsStateWithLifecycle(initialValue = null)
+            val state by viewModel.childMainVM.uiState.collectAsStateWithLifecycle()
+            val accountDeletionUiState by viewModel.childMainVM.accountDeletionUiState.collectAsStateWithLifecycle()
 
-        lifecycleScope.launch {
-            viewModel.useDarkTheme.collectLatest { useDarkTheme ->
-                setContent {
-                    val state by viewModel.childMainVM.uiState.collectAsStateWithLifecycle()
-
-                    val accountDeletionUiState by viewModel.childMainVM.accountDeletionUiState.collectAsStateWithLifecycle()
-
-                    if (state is MainUiState.SignedOut) {
-                        LaunchedEffect(state) {
-                            val intent = Intent(this@MainActivity, LoginActivity::class.java).apply {
-                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                if (accountDeletionUiState is AccountDeletionUiState.Deleted) {
-                                    viewModel.childMainVM.cancelAccountDeletion()
-                                    return@apply
-                                }
-                                if (accountDeletionUiState !is AccountDeletionUiState.NotRequested) {
-                                    putExtra(
-                                        ActionConstants.PostLoginActionKey,
-                                        ActionConstants.ActionDeleteAccount
-                                    )
-                                }
-                            }
-
-                            startActivity(intent)
+            if (state is MainUiState.SignedOut) {
+                LaunchedEffect(state) {
+                    val intent = Intent(this@MainActivity, LoginActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        if (accountDeletionUiState is AccountDeletionUiState.Deleted) {
+                            viewModel.childMainVM.cancelAccountDeletion()
+                            return@apply
+                        }
+                        if (accountDeletionUiState !is AccountDeletionUiState.NotRequested) {
+                            putExtra(
+                                ActionConstants.PostLoginActionKey,
+                                ActionConstants.ActionDeleteAccount
+                            )
                         }
                     }
 
-                    MyApplicationTheme(darkTheme = useDarkTheme == true || isSystemInDarkTheme(), content = {
-                        when (state) {
-                            is MainUiState.Loading -> CircularProgressIndicator()
-                            is MainUiState.SignedOut -> Text(getString(R.string.signed_out))
-                            is MainUiState.SignedIn -> {
-                                AppView()
+                    startActivity(intent)
+                }
+            }
+
+            MyApplicationTheme(darkTheme = useDarkTheme ?: isSystemInDarkTheme()) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    when (state) {
+                        is MainUiState.Loading -> {
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                CircularProgressIndicator()
                             }
                         }
-
-                    })
+                        is MainUiState.SignedOut -> {
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                Text(getString(R.string.signed_out))
+                            }
+                        }
+                        is MainUiState.SignedIn -> {
+                            AppView()
+                        }
+                    }
                 }
             }
         }
@@ -94,11 +106,9 @@ class MainActivity : ComponentActivity()  {
             if (selectedTTSVoice.isNullOrEmpty()) {
                 settingsRepository.saveSelectedVoice(Constants.DefaultTTSVoice)
             }
-
         }
 
         checkPermissions()
-
     }
 
     private fun checkPermissions() {
@@ -114,7 +124,4 @@ class MainActivity : ComponentActivity()  {
             startActivity(intent)
         }
     }
-
-
-
 }

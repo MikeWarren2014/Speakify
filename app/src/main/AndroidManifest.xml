@@ -50,23 +50,25 @@
             android:exported="false"
             android:theme="@style/Theme.MyApplication" >
         </activity>
+
+        <!-- Use transparent themes for utility activities to prevent flashes -->
         <activity
             android:name=".activities.NotificationPermissionsActivity"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" >
+            android:theme="@style/Theme.MyApplication.Transparent" >
         </activity>
         <activity android:name=".activities.ContactsFetcherActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
+            android:theme="@style/Theme.MyApplication.Transparent"
             android:exported="false"
             android:label="ContactsFetcherActivity">
         </activity>
         <activity android:name=".activities.PackageQueryFetcherActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
+            android:theme="@style/Theme.MyApplication.Transparent"
             android:exported="false"
             android:label="PackageQueryFetcherActivity">
         </activity>
         <activity android:name=".activities.PhonePermissionsActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
+            android:theme="@style/Theme.MyApplication.Transparent"
             android:exported="false"
             android:label="PhonePermissionsActivity">
         </activity>
