@@ -124,6 +124,7 @@ class SettingsRepositoryImpl @Inject constructor(
             id = appSettingsModel.id,
             packageName = appSettingsModel.packageName,
             announcerVoice = appSettingsModel.announcerVoice,
+            additionalSettings = appSettingsModel.additionalSettings,
         )
 
         if (appSettingsModel.id != null) {

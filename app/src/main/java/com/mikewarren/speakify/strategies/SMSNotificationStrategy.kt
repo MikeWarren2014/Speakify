@@ -132,11 +132,11 @@ ITaggable {
         throw IllegalStateException("Somehow we got the notification, and messages, but no person was found.")
     }
 
-    override fun getOutgoingSMSType(): SMSNotificationType {
+    override fun getOutgoingMessageType(): SMSNotificationType {
         return SMSNotificationType.OutgoingSMS
     }
 
-    override fun getIncomingSMSType(): SMSNotificationType {
+    override fun getIncomingMessageType(): SMSNotificationType {
         return SMSNotificationType.IncomingSMS
     }
 

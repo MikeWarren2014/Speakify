@@ -196,7 +196,7 @@
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">Джерела сповіщень</string>
-    <string name="autocomplete_label_contacts">Ім\'я контакту/Номер телефону</string>
+    <string name="autocomplete_label_contact_name_phone_number">Ім\'я контакту/Номер телефону</string>
     <string name="autocomplete_label_tts">Голос TTS</string>
 
     <!-- UI Event messages -->

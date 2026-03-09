@@ -196,7 +196,7 @@
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">सूचना स्रोत</string>
-    <string name="autocomplete_label_contacts">संपर्क नाम/फ़ोन नंबर</string>
+    <string name="autocomplete_label_contact_name_phone_number">संपर्क नाम/फ़ोन नंबर</string>
     <string name="autocomplete_label_tts">TTS आवाज़</string>
 
     <!-- UI Event messages -->

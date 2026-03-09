@@ -196,7 +196,7 @@
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">منابع اعلان</string>
-    <string name="autocomplete_label_contacts">نام مخاطب/شماره تلفن</string>
+    <string name="autocomplete_label_contact_name_phone_number">نام مخاطب/شماره تلفن</string>
     <string name="autocomplete_label_tts">صدای TTS</string>
 
     <!-- UI Event messages -->

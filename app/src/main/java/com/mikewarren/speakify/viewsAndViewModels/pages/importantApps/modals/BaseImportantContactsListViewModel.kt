@@ -41,7 +41,7 @@ class BaseImportantContactsListViewModel(
     }
 
     override fun getLabelText(): UiText {
-        return UiText.StringResource(R.string.autocomplete_label_contacts)
+        return UiText.StringResource(R.string.autocomplete_label_contact_name_phone_number)
     }
 
     override fun getAllChoices(): List<ContactModel> {

@@ -23,8 +23,10 @@ data class AppSettingsDbModel(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "as_id") val id: Long?,
     @ColumnInfo(name = "package_name") val packageName: String,
     @ColumnInfo(name = "announcer_voice") val announcerVoice: String?, // Nullable if no voice is selected
+    @ColumnInfo(name = "additional_settings", defaultValue = "{}") val additionalSettings: Map<String, String> = emptyMap(),
 ) {
     constructor(): this(null,
         "",
-        null)
+        null,
+        emptyMap())
 }

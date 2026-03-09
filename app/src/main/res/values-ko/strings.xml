@@ -195,7 +195,7 @@
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">알림 소스</string>
-    <string name="autocomplete_label_contacts">연락처 이름/전화번호</string>
+    <string name="autocomplete_label_contact_name_phone_number">연락처 이름/전화번호</string>
     <string name="autocomplete_label_tts">TTS 음성</string>
 
     <!-- UI Event messages -->

@@ -196,7 +196,7 @@
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">Fontes de Notificação</string>
-    <string name="autocomplete_label_contacts">Nome do Contato/Número de Telefone</string>
+    <string name="autocomplete_label_contact_name_phone_number">Nome do Contato/Número de Telefone</string>
     <string name="autocomplete_label_tts">Voz do TTS</string>
 
     <!-- UI Event messages -->

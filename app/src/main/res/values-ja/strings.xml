@@ -196,7 +196,7 @@
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">通知ソース</string>
-    <string name="autocomplete_label_contacts">連絡先名 / 電話番号</string>
+    <string name="autocomplete_label_contact_name_phone_number">連絡先名 / 電話番号</string>
     <string name="autocomplete_label_tts">TTS 音声</string>
 
     <!-- UI Event messages -->

@@ -1,7 +1,5 @@
 package com.mikewarren.speakify.data.constants
 
-
-
 object PackageNames {
     const val GoogleVoice = "com.google.android.apps.googlevoice"
     const val GoogleCalendar = "com.google.android.calendar"
@@ -16,5 +14,10 @@ object PackageNames {
         "com.google.android.apps.messaging",
         "com.android.messaging",
         "com.samsung.android.messaging",
+    )
+
+    val FacebookMessengerAppList = listOf(
+        "com.facebook.orca",
+        "com.facebook.mlite",
     )
 }

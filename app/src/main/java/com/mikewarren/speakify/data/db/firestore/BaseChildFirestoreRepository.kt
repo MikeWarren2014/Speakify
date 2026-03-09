@@ -47,6 +47,7 @@ abstract class BaseChildFirestoreRepository: ITaggable {
             this::settingsTransaction,
             { doFirestoreTransactions(importantAppsTransactionList()) },
             { doFirestoreTransactions(appSettingsTransactionsList()) },
+            { doFirestoreTransactions(recentMessengerContactsTransactionList()) },
         )
     }
 
@@ -54,6 +55,7 @@ abstract class BaseChildFirestoreRepository: ITaggable {
     abstract suspend fun importantAppsTransactionList() : List<suspend () -> Result<Unit>>
     abstract suspend fun appSettingsTransactionsList() : List<suspend () -> Result<Unit>>
 
+    abstract suspend fun recentMessengerContactsTransactionList(): List<suspend () -> Result<Unit>>
 
 
 }

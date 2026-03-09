@@ -17,7 +17,7 @@ class AccountDeletionFirestoreRepository @Inject constructor() : BaseChildFirest
             // but for simplicity we delete the document.
             // Note: Firestore doesn't automatically delete sub-collections when a document is deleted.
             
-            val collections = listOf("config", "important_apps", "app_settings")
+            val collections = listOf("config", "important_apps", "app_settings", "recent_messenger_contacts")
             collections.forEach { collectionName ->
                 val snapshots = userDoc.collection(collectionName).get().await()
                 snapshots.documents.forEach { it.reference.delete().await() }
@@ -33,4 +33,5 @@ class AccountDeletionFirestoreRepository @Inject constructor() : BaseChildFirest
     override suspend fun settingsTransaction(): Result<Unit> = Result.success(Unit)
     override suspend fun importantAppsTransactionList(): List<suspend () -> Result<Unit>> = emptyList()
     override suspend fun appSettingsTransactionsList(): List<suspend () -> Result<Unit>> = emptyList()
+    override suspend fun recentMessengerContactsTransactionList(): List<suspend () -> Result<Unit>> = emptyList()
 }

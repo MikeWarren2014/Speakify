@@ -47,11 +47,11 @@ IMessageNotificationHandler<GoogleVoiceNotificationStrategy.NotificationType> {
         return getMessages().isNotEmpty() && super.isFromSentMessage()
     }
 
-    override fun getOutgoingSMSType(): NotificationType {
+    override fun getOutgoingMessageType(): NotificationType {
         return NotificationType.OutgoingSMS
     }
 
-    override fun getIncomingSMSType(): NotificationType {
+    override fun getIncomingMessageType(): NotificationType {
         return NotificationType.IncomingSMS
     }
 
