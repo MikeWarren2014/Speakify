@@ -16,10 +16,13 @@ import com.mikewarren.speakify.utils.TTSUtils
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import java.util.UUID
 import javax.inject.Inject
@@ -113,39 +116,13 @@ class TTSManager @Inject constructor(
             suspendCancellableCoroutine { continuation ->
                 val utteranceId = UUID.randomUUID().toString()
 
-                val listener = object : UtteranceProgressListener() {
-                    override fun onStart(id: String?) {}
-
-                    override fun onDone(id: String?) {
-                        if (id == utteranceId && continuation.isActive) {
-                            continuation.resume(true)
-                        }
-                    }
-
-                    @Deprecated("deprecated in API level 21")
-                    override fun onError(id: String?) {
-                        if (id == utteranceId && continuation.isActive) {
-                            Log.e(TAG, "TTS error for utterance: $id")
-                            continuation.resume(false)
-                        }
-                    }
-
-                    override fun onError(id: String?, errorCode: Int) {
-                        if (id == utteranceId && continuation.isActive) {
-                            Log.e(TAG, "TTS error with code $errorCode for utterance: $id")
-                            continuation.resume(false)
-                        }
-                    }
-
-                    override fun onStop(id: String?, interrupted: Boolean) {
-                        if (id == utteranceId && continuation.isActive) {
-                            Log.d(TAG, "TTS utterance stopped: $id")
-                            continuation.resume(false)
-                        }
-                    }
+                // If the coroutine is cancelled while speaking, we stop the TTS engine.
+                // tts.stop() is a synchronous call and safe to use here.
+                continuation.invokeOnCancellation {
+                    tts?.stop()
                 }
 
-                tts?.setOnUtteranceProgressListener(listener)
+                tts?.setOnUtteranceProgressListener(UtteranceListener(utteranceId, continuation, TAG))
                 TTSUtils.SetTTSVoice(tts, voiceName)
 
                 val result = tts?.speak(text, TextToSpeech.QUEUE_ADD, null, utteranceId)
@@ -159,10 +136,17 @@ class TTSManager @Inject constructor(
                 }
             }
         } catch (e: Exception) {
+            // Rethrow cancellation exceptions so they aren't logged as errors in Crashlytics
+            if (e is CancellationException) throw e
+
             LogUtils.LogNonFatalError(TAG, "An error occurred while speaking", e)
             false
         } finally {
-            audioManager.restoreVolume()
+            // Since restoreVolume is a suspend function, we must use withContext(NonCancellable)
+            // to ensure it can execute even when the parent coroutine is cancelled.
+            withContext(NonCancellable) {
+                audioManager.restoreVolume()
+            }
         }
     }
 
