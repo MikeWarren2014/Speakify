@@ -7,7 +7,7 @@ import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.UserAppModel
-import com.mikewarren.speakify.data.events.PackageListDataSource
+import com.mikewarren.speakify.data.events.PackageListDataRequester
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.AppNameHelper
 import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
@@ -18,9 +18,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,7 +36,7 @@ class ImportantAppsViewModel @Inject constructor(
     private val _selectedCount = MutableStateFlow(0)
     val selectedCount: StateFlow<Int> = _selectedCount.asStateFlow()
 
-    val packageListDataSource = PackageListDataSource(settingsRepository.getContext())
+    val packageListDataSource = PackageListDataRequester.GetInstance(settingsRepository.getContext())
     private val _allAppsFlow : StateFlow<List<ApplicationInfo>> = packageListDataSource.observeData()
 
     var childAddAppMenuViewModel: AddAppMenuViewModel? = null

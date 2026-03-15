@@ -3,7 +3,7 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.data.SettingsRepository
-import com.mikewarren.speakify.data.events.ContactListDataSource
+import com.mikewarren.speakify.data.events.ContactListDataRequester
 import com.mikewarren.speakify.utils.PhoneNumberUtils
 import com.mikewarren.speakify.viewsAndViewModels.widgets.UiText
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +17,7 @@ class BaseImportantContactsListViewModel(
     onSave,
 ) {
 
-    protected val dataSource = ContactListDataSource.GetInstance(settingsRepository.getContext())
+    protected val dataSource = ContactListDataRequester.GetInstance(settingsRepository.getContext())
 
     override val allData: StateFlow<List<ContactModel>> = dataSource.observeData()
 
