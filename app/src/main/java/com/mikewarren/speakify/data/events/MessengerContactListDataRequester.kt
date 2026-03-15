@@ -8,15 +8,15 @@ import com.mikewarren.speakify.utils.log.ITaggable
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class MessengerContactListDataSource protected constructor(
+class MessengerContactListDataRequester protected constructor(
     context: Context
-) : BaseDataSource<MessengerContactModel, MessengerContactEvent>(context.applicationContext), ITaggable {
+) : BaseDataRequester<MessengerContactModel, MessengerContactEvent>(context.applicationContext), ITaggable {
 
     companion object {
-        private var _instance: MessengerContactListDataSource? = null
-        fun GetInstance(context: Context): MessengerContactListDataSource {
+        private var _instance: MessengerContactListDataRequester? = null
+        fun GetInstance(context: Context): MessengerContactListDataRequester {
             if (_instance == null) {
-                _instance = MessengerContactListDataSource(context.applicationContext)
+                _instance = MessengerContactListDataRequester(context.applicationContext)
             }
             return _instance!!
         }

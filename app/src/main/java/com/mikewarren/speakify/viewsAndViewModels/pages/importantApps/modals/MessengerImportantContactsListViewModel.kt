@@ -3,7 +3,7 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.MessengerContactModel
 import com.mikewarren.speakify.data.SettingsRepository
-import com.mikewarren.speakify.data.events.MessengerContactListDataSource
+import com.mikewarren.speakify.data.events.MessengerContactListDataRequester
 import com.mikewarren.speakify.viewsAndViewModels.widgets.UiText
 import kotlinx.coroutines.flow.StateFlow
 
@@ -17,7 +17,7 @@ class MessengerImportantContactsListViewModel(
     onSave,
 ) {
 
-    private val dataSource = MessengerContactListDataSource.GetInstance(settingsRepository.getContext())
+    private val dataSource = MessengerContactListDataRequester.GetInstance(settingsRepository.getContext())
 
     override val allData: StateFlow<List<MessengerContactModel>> = dataSource.observeData()
 
