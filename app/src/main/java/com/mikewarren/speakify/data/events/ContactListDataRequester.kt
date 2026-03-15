@@ -10,15 +10,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-class ContactListDataSource protected constructor(
+class ContactListDataRequester protected constructor(
     context: Context
-): BaseDataSource<ContactModel, ContactEvent>(context.applicationContext), ITaggable {
+): BaseDataRequester<ContactModel, ContactEvent>(context.applicationContext), ITaggable {
 
     companion object {
-        private var _instance: ContactListDataSource? = null
-        fun GetInstance(context: Context) : ContactListDataSource {
+        private var _instance: ContactListDataRequester? = null
+        fun GetInstance(context: Context) : ContactListDataRequester {
             if (_instance == null) {
-                _instance = ContactListDataSource(context.applicationContext)
+                _instance = ContactListDataRequester(context.applicationContext)
             }
 
             return _instance!!
