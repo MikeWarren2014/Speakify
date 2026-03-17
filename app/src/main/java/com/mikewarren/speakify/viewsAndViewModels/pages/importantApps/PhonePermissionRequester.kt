@@ -3,7 +3,6 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.compose.ui.semantics.error
 import com.mikewarren.speakify.activities.PhonePermissionsActivity
 import com.mikewarren.speakify.data.events.PhonePermissionEvent
 import com.mikewarren.speakify.data.events.PhonePermissionEventBus
@@ -18,7 +17,7 @@ import javax.inject.Singleton
 // Making this a Singleton makes it easy to inject and use anywhere
 @Singleton
 
-class PhonePermissionDataSource @Inject constructor(
+class PhonePermissionRequester @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
