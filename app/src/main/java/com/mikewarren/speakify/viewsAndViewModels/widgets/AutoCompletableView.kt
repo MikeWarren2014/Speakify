@@ -4,11 +4,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -65,6 +68,7 @@ fun <T>AutoCompletableView(
                 })
             },
             modifier = Modifier
+                .fillMaxWidth()
                 .focusRequester(focusRequester)
                 .onFocusChanged { focusState: FocusState ->
                     viewModel.setAutocompleteDropdownState(focusState.isFocused)
@@ -75,25 +79,32 @@ fun <T>AutoCompletableView(
         )
 
         if (filteredChoices.isNotEmpty() && viewModel.isAutocompleteDropdownOpen) {
-            LazyColumn(modifier = Modifier.height(200.dp)) {
-                items(filteredChoices.take(Constants.AutoCompleteListSizeLimit)) { choice ->
-                    val annotatedString = onGetAnnotatedString(choice)
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                tonalElevation = 2.dp,
+                shape = MaterialTheme.shapes.extraSmall
+            ) {
+                LazyColumn(modifier = Modifier.heightIn(max = 200.dp)) {
+                    items(filteredChoices.take(Constants.AutoCompleteListSizeLimit)) { choice ->
+                        val annotatedString = onGetAnnotatedString(choice)
 
-                    Text(
-                        text = annotatedString,
-                        modifier = Modifier
-                            .clickable {
-                                annotatedString
-                                    .getStringAnnotations("Clickable", 0, 0)
-                                    .firstOrNull()?.let { annotation ->
-                                        onHandleSelection(viewModel, annotation.item)
-                                        viewModel.setAutocompleteDropdownState(false)
-                                    }
-                            }
-                            .padding(16.dp),
-                        style = LocalTextStyle.current,
-                        lineHeight = itemLineHeight,
-                    )
+                        Text(
+                            text = annotatedString,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    annotatedString
+                                        .getStringAnnotations("Clickable", 0, 0)
+                                        .firstOrNull()?.let { annotation ->
+                                            onHandleSelection(viewModel, annotation.item)
+                                            viewModel.setAutocompleteDropdownState(false)
+                                        }
+                                }
+                                .padding(16.dp),
+                            style = LocalTextStyle.current,
+                            lineHeight = itemLineHeight,
+                        )
+                    }
                 }
             }
         }
