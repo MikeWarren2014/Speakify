@@ -27,7 +27,7 @@ class ImportantAppsViewModel @Inject constructor(
     override var repository: AppsRepository,
     private var settingsRepository: SettingsRepository,
     private val ttsManager: TTSManager,
-    private val phonePermissionDataSource: PhonePermissionDataSource,
+    private val phonePermissionRequester: PhonePermissionRequester,
 ) : BaseSearchableViewModel(repository) {
 
     private val _importantApps = MutableStateFlow<List<AppListItemViewModel>>(emptyList())
@@ -88,7 +88,7 @@ class ImportantAppsViewModel @Inject constructor(
         Log.d("ImportantAppsVM", "Found phone app in list and haven't requested permissions yet. Requesting now.")
 
         // Trigger the request. It does NOTHING if we already have the phone-related permissions
-        phonePermissionDataSource.requestPermissions()
+        phonePermissionRequester.requestPermissions()
 
     }
 
