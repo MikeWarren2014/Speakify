@@ -195,8 +195,8 @@
     <string name="search_for_entities">Поиск %1$s</string>
 
     <!-- AutoComplete labels -->
-    <string name="autocomplete_label_notifications">Источники уведомлений</string>
-    <string name="autocomplete_label_contacts">Имя контакта/Номер телефона</string>
+    <string name="autocomplete_label_notifications">Источники уведомлений для добавления</string>
+    <string name="autocomplete_label_contacts">Имя контакта/Номер телефона для добавления</string>
     <string name="autocomplete_label_tts">Голос TTS</string>
 
     <!-- UI Event messages -->

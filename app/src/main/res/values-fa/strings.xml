@@ -195,8 +195,8 @@
     <string name="search_for_entities">جستجو برای %1$s</string>
 
     <!-- AutoComplete labels -->
-    <string name="autocomplete_label_notifications">منابع اعلان</string>
-    <string name="autocomplete_label_contacts">نام مخاطب/شماره تلفن</string>
+    <string name="autocomplete_label_notifications">منابع اعلان برای افزودن</string>
+    <string name="autocomplete_label_contacts">نام مخاطب/شماره تلفن برای افزودن</string>
     <string name="autocomplete_label_tts">صدای TTS</string>
 
     <!-- UI Event messages -->
