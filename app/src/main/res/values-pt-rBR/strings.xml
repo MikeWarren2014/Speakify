@@ -195,8 +195,8 @@
     <string name="search_for_entities">Buscar por %1$s</string>
 
     <!-- AutoComplete labels -->
-    <string name="autocomplete_label_notifications">Fontes de Notificação</string>
-    <string name="autocomplete_label_contacts">Nome do Contato/Número de Telefone</string>
+    <string name="autocomplete_label_notifications">Fontes de Notificação a adicionar</string>
+    <string name="autocomplete_label_contacts">Nome do Contato/Número de Telefone a adicionar</string>
     <string name="autocomplete_label_tts">Voz do TTS</string>
 
     <!-- UI Event messages -->
