@@ -58,7 +58,7 @@
     <!-- Speakify Notification -->
     <string name="notification_channel_name">Фонова служба Speakify</string>
     <string name="notification_active_title">Speakify працює</string>
-    <string name="notification_active_content">Обробка сповіщень у фоновом режимі.</string>
+    <string name="notification_active_content">Обробка сповіщень у фоновому режимі.</string>
 
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">Сповіщення від %1$s</string>
@@ -203,9 +203,9 @@
     <string name="search_for_entities">Шукати %1$s</string>
 
     <!-- AutoComplete labels -->
-    <string name="autocomplete_label_notifications">Джерела сповіщень</string>
-    <string name="autocomplete_label_contact_name_phone_number">Ім\'я контакту/Номер телефону</string>
-    <string name="autocomplete_label_contact_name">Ім\'я контакту</string>
+    <string name="autocomplete_label_notifications">Джерела сповіщень для додавання</string>
+    <string name="autocomplete_label_contact_name_phone_number">Ім\'я контакту/Номер телефону для додавання</string>
+    <string name="autocomplete_label_contact_name">Ім\'я контакту для додавання</string>
     <string name="autocomplete_no_choices_available_yet">Ще немає %1s доступних.</string>
     <string name="autocomplete_label_tts">Голос TTS</string>
 

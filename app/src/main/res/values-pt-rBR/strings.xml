@@ -203,9 +203,9 @@
     <string name="search_for_entities">Buscar por %1$s</string>
 
     <!-- AutoComplete labels -->
-    <string name="autocomplete_label_notifications">Fontes de Notificação</string>
-    <string name="autocomplete_label_contact_name_phone_number">Nome do Contato/Número de Telefone</string>
-    <string name="autocomplete_label_contact_name">Nome do contato</string>
+    <string name="autocomplete_label_notifications">Fontes de Notificação a adicionar</string>
+    <string name="autocomplete_label_contact_name_phone_number">Nome do Contato/Número de Telefone a adicionar</string>
+    <string name="autocomplete_label_contact_name">Nome do contato a adicionar</string>
     <string name="autocomplete_no_choices_available_yet">Ainda não há %1s disponíveis.</string>
     <string name="autocomplete_label_tts">Voz do TTS</string>
 
@@ -253,7 +253,7 @@
         Versão do Android: %2$s\n
         --------------------------------------------------\n
 \n
-        P.S. Se esse for um feedback positivo, com certeza considerarei avaliar o Speakify na Google
+        P.S. Se este for um feedback positivo, com certeza considerarei avaliar o Speakify na Google
         Play Store!
     </string>
 

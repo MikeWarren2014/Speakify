@@ -203,9 +203,9 @@
     <string name="search_for_entities">Buscar %1$s</string>
 
     <!-- AutoComplete labels -->
-    <string name="autocomplete_label_notifications">Fuentes de notificación</string>
-    <string name="autocomplete_label_contact_name_phone_number">Nombre de contacto/Número de teléfono</string>
-    <string name="autocomplete_label_contact_name">Nombre del contacto</string>
+    <string name="autocomplete_label_notifications">Fuentes de notificación para añadir</string>
+    <string name="autocomplete_label_contact_name_phone_number">Nombre de contacto/Número de teléfono para añadir</string>
+    <string name="autocomplete_label_contact_name">Nombre del contacto para añadir</string>
     <string name="autocomplete_no_choices_available_yet">Aún no hay %1s disponibles.</string>
     <string name="autocomplete_label_tts">Voz TTS</string>
 

@@ -26,7 +26,7 @@
     <string name="legal_agree_prefix">"मैं "</string>
     <string name="legal_terms_of_service">सेवा की शर्तों</string>
     <string name="legal_and">" और "</string>
-    <string name="legal_privacy_policy">गोपनीयता नीति</string>
+    <string name="legal_privacy_policy">गोپनीयता नीति</string>
     <string name="legal_dot"> से सहमत हूँ।</string>
 
     <!-- Forgot Password View -->
@@ -203,9 +203,9 @@
     <string name="search_for_entities">%1$s के लिए खोजें</string>
 
     <!-- AutoComplete labels -->
-    <string name="autocomplete_label_notifications">सूचना स्रोत</string>
-    <string name="autocomplete_label_contact_name_phone_number">संपर्क नाम/फ़ोन नंबर</string>
-    <string name="autocomplete_label_contact_name">संपर्क का नाम</string>
+    <string name="autocomplete_label_notifications">जोड़ने के लिए सूचना स्रोत</string>
+    <string name="autocomplete_label_contact_name_phone_number">जोड़ने के लिए संपर्क का नाम/फ़ोन नंबर</string>
+    <string name="autocomplete_label_contact_name">जोड़ने के लिए संपर्क का नाम</string>
     <string name="autocomplete_no_choices_available_yet">अभी तक कोई %1s उपलब्ध नहीं है।</string>
     <string name="autocomplete_label_tts">TTS आवाज़</string>
 

@@ -203,9 +203,9 @@
     <string name="search_for_entities">%1$s を検索</string>
 
     <!-- AutoComplete labels -->
-    <string name="autocomplete_label_notifications">通知ソース</string>
-    <string name="autocomplete_label_contact_name_phone_number">連絡先名 / 電話番号</string>
-    <string name="autocomplete_label_contact_name">連絡先名</string>
+    <string name="autocomplete_label_notifications">追加する通知ソース</string>
+    <string name="autocomplete_label_contact_name_phone_number">追加する連絡先名／電話番号</string>
+    <string name="autocomplete_label_contact_name">追加する連絡先名</string>
     <string name="autocomplete_no_choices_available_yet">%1s はまだありません。</string>
     <string name="autocomplete_label_tts">TTS 音声</string>
 

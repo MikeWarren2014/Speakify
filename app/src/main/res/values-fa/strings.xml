@@ -203,9 +203,9 @@
     <string name="search_for_entities">جستجو برای %1$s</string>
 
     <!-- AutoComplete labels -->
-    <string name="autocomplete_label_notifications">منابع اعلان</string>
-    <string name="autocomplete_label_contact_name_phone_number">نام مخاطب/شماره تلفن</string>
-    <string name="autocomplete_label_contact_name">نام مخاطب</string>
+    <string name="autocomplete_label_notifications">منابع اعلان برای افزودن</string>
+    <string name="autocomplete_label_contact_name_phone_number">نام/شماره تلفن برای اضافه کردن</string>
+    <string name="autocomplete_label_contact_name">نام مخاطب برای اضافه کردن</string>
     <string name="autocomplete_no_choices_available_yet">هنوز %1s موجود نیست.</string>
     <string name="autocomplete_label_tts">صدای TTS</string>
 
