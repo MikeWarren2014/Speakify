@@ -4,8 +4,12 @@
     <style name="Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Match the background color of your Compose Surface -->
         <item name="android:windowBackground">?android:attr/colorBackground</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+
+        <!-- Android 15+ enforces edge-to-edge. These are handled by enableEdgeToEdge() in Activity -->
+        <!-- We avoid setting them here to prevent Play Console deprecation warnings -->
+
+        <!-- Modern way to handle cutouts. 'always' is preferred for Android 15+ -->
+        <item name="android:windowLayoutInDisplayCutoutMode">always</item>
     </style>
 
     <!-- Transparent theme for utility activities to avoid flashes -->
