@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -33,50 +36,76 @@ fun AppSettingsView(
         return
 
     val onClose = { viewModel.isOpen = false }
+    val scrollState = rememberScrollState()
 
-    Dialog(onDismissRequest = onClose,
+    Dialog(
+        onDismissRequest = onClose,
         properties = DialogProperties(usePlatformDefaultWidth = false),
+    ) {
+        Surface(
+            modifier = Modifier
+                .padding(
+                    top = 24.dp,
+                    bottom = 24.dp,
+                )
+                .fillMaxWidth(),
+            shape = MaterialTheme.shapes.extraLarge,
+            tonalElevation = 6.dp
         ) {
-        Surface(shape = MaterialTheme.shapes.medium) {
-            Column(modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth()) {
-                // Title
+            Column(
+                modifier = Modifier
+                    .padding(24.dp)
+                    .fillMaxWidth()
+            ) {
+                // Header (Fixed)
                 Text(
                     text = stringResource(R.string.app_settings_title, viewModel.appModel.appName),
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.headlineSmall
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Announcer Voice Section (needs Autocomplete)
-                if (viewModel.childAnnouncerVoiceSectionViewModel != null)
-                    AnnouncerVoiceSectionView(viewModel.childAnnouncerVoiceSectionViewModel!!)
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                if (viewModel.childNotificationListViewModel != null)
-                    GetChildListView(viewModel)
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                if (viewModel.childAdditionalSettingsViewModel != null)
-                    GetAdditionalSettingsView(viewModel)
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()){
-                    OutlinedButton(onClick = {
-                        viewModel.cancel()
-                        onClose()
-                    }) {
-                        Text(stringResource(R.string.cancel))
+                // Scrollable Content
+                Column(
+                    modifier = Modifier
+                        .weight(1f, fill = false)
+                        .verticalScroll(scrollState)
+                ) {
+                    // Announcer Voice Section
+                    if (viewModel.childAnnouncerVoiceSectionViewModel != null) {
+                        AnnouncerVoiceSectionView(viewModel.childAnnouncerVoiceSectionViewModel!!)
+                        Spacer(modifier = Modifier.height(24.dp))
                     }
-                    Spacer(modifier = Modifier.padding(8.dp))
-                    Button(onClick = {
-                        viewModel.save()
-                        onClose()
-                    }) {
-                        Text(stringResource(R.string.save))
+
+                    // Notification List Section
+                    if (viewModel.childNotificationListViewModel != null) {
+                        GetChildListView(viewModel)
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    if (viewModel.childAdditionalSettingsViewModel != null)
+                        GetAdditionalSettingsView(viewModel)
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        OutlinedButton(onClick = {
+                            viewModel.cancel()
+                            onClose()
+                        }) {
+                            Text(stringResource(R.string.cancel))
+                        }
+                        Spacer(modifier = Modifier.padding(8.dp))
+                        Button(onClick = {
+                            viewModel.save()
+                            onClose()
+                        }) {
+                            Text(stringResource(R.string.save))
+                        }
                     }
                 }
             }

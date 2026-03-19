@@ -21,15 +21,22 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           gradle-home-cache-cleanup: true
+      - name: Extract versionCode and versionName
+        id: get_versions
+        run: |
+          ./gradlew -q printVersionCodeAndName > version_output.txt
+          cat version_output.txt
+          echo "VERSION_CODE=$(grep VERSION_CODE version_output.txt | cut -d '=' -f2)" >> $GITHUB_ENV
+          echo "VERSION_NAME=$(grep VERSION_NAME version_output.txt | cut -d '=' -f2)" >> $GITHUB_ENV
       - name: Bump Version Code
         uses: chkfung/android-version-actions@v1.2.1
         with:
-          gradlePath: app/build.gradle.kts
-          versionCode: $((${{ github.run_number }} + 27))
-          versionName: 1.0.0
+          gradlePath: app/build.gradle
+          versionCode: $((${{ github.run_number }} + 27)) # TODO: confirm whether versionCode in the build.gradle file automatically updates or stays the same. Change if it updates .
+          versionName: ${{ env.VERSION_NAME }}
       - name: Build prodRelease
         run: ./gradlew bundleRelease
-      - name: Sign AAb
+      - name: Sign AAB
         id: sign
         uses: r0adkll/sign-android-release@v1
         with:
@@ -60,3 +67,5 @@ jobs:
           packageName: com.miwarren.speakify
           releaseFiles: '${{ github.workspace }}/app-release.aab'
           track: production
+          whatsNewDirectory: app/whatsnew
+          mappingFile: app/build/outputs/mapping/release/mapping.txt
