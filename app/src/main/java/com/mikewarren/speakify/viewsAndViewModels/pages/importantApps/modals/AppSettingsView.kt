@@ -46,7 +46,6 @@ fun AppSettingsView(
                     top = 24.dp,
                     bottom = 24.dp,
                 )
-//                .padding
                 .fillMaxWidth(),
             shape = MaterialTheme.shapes.extraLarge,
             tonalElevation = 6.dp
