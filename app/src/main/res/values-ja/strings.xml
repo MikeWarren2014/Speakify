@@ -195,8 +195,8 @@
     <string name="search_for_entities">%1$s を検索</string>
 
     <!-- AutoComplete labels -->
-    <string name="autocomplete_label_notifications">通知ソース</string>
-    <string name="autocomplete_label_contacts">連絡先名 / 電話番号</string>
+    <string name="autocomplete_label_notifications">追加する通知ソース</string>
+    <string name="autocomplete_label_contacts">追加する連絡先名 / 電話番号</string>
     <string name="autocomplete_label_tts">TTS 音声</string>
 
     <!-- UI Event messages -->

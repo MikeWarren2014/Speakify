@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.mikewarren.speakify.data.events.BaseEventBus
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.core.content.ContextCompat
 
 abstract class BasePermissionRequesterActivity<Event>(
@@ -22,6 +23,7 @@ abstract class BasePermissionRequesterActivity<Event>(
     }
 
     open fun doDisplay() {
+        enableEdgeToEdge()
         supportActionBar?.hide()
     }
 

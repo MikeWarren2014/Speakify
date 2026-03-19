@@ -196,8 +196,8 @@
     <string name="search_for_entities">搜索 %1$s</string>
 
     <!-- AutoComplete labels -->
-    <string name="autocomplete_label_notifications">通知源</string>
-    <string name="autocomplete_label_contacts">联系人姓名/电话号码</string>
+    <string name="autocomplete_label_notifications">要添加的通知源</string>
+    <string name="autocomplete_label_contacts">要添加的联系人姓名/电话号码</string>
     <string name="autocomplete_label_tts">TTS 语音</string>
 
     <!-- UI Event messages -->

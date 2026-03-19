@@ -14,19 +14,6 @@ class PhonePermissionsActivity() : BasePermissionRequesterActivity<PhonePermissi
     eventBus = PhonePermissionEventBus.GetInstance(),
     permissionRequestCode = PermissionCodes.PhonePermissions,
 ) {
-    private val requestMultiplePermissionsLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            // You can check here if all permissions were granted and update the UI if needed.
-            if (permissions[Manifest.permission.READ_CALL_LOG] == true &&
-                (permissions[Manifest.permission.READ_PHONE_STATE] == true)) {
-                Log.d(this.javaClass.name, "Phone state and call log permissions granted.")
-                onPermissionGranted()
-                return@registerForActivityResult
-            }
-            Log.w(this.javaClass.name, "One or more phone permissions were denied.")
-            eventBus.post(getPermissionDeniedEvent())
-            finish()
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +23,6 @@ class PhonePermissionsActivity() : BasePermissionRequesterActivity<PhonePermissi
     override fun getPermissions(): Array<String> {
         return arrayOf(
             Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.READ_CALL_LOG,
         )
     }
 
@@ -51,23 +37,9 @@ class PhonePermissionsActivity() : BasePermissionRequesterActivity<PhonePermissi
 
 
     override fun onPermissionGranted() {
-        Log.d(this.javaClass.name, "Phone state and call log permissions granted.")
+        Log.d(this.javaClass.name, "Phone state permissions granted.")
         eventBus.post(PhonePermissionEvent.PermissionGranted)
         finish()
     }
 
-    override fun handleUngrantedPermissions(ungrantedPermissions: Array<String>) {
-
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.permissions_required_title))
-            .setMessage(getString(R.string.phone_permissions_required_message))
-            .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                requestMultiplePermissionsLauncher.launch(ungrantedPermissions)
-            }
-            .setNegativeButton(getString(R.string.cancel)) { _, _ ->
-                eventBus.post(getFailureEvent("User denied permissions"))
-                finish()
-            }
-            .show()
-    }
 }
