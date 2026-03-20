@@ -5,6 +5,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.mikewarren.speakify.data.AppsRepository
+import com.mikewarren.speakify.data.MessengerContactsRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
@@ -15,6 +16,7 @@ import javax.inject.Singleton
 class UploadRepository @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val appsRepository: AppsRepository,
+    private val messengerContactsRepository: MessengerContactsRepository,
 ): BaseChildFirestoreRepository() {
 
 
@@ -82,7 +84,8 @@ class UploadRepository @Inject constructor(
             val appData = hashMapOf(
                 "packageName" to model.packageName,
                 "announcerVoice" to model.announcerVoice,
-                "notificationSources" to model.notificationSources
+                "notificationSources" to model.notificationSources,
+                "additionalSettings" to model.additionalSettings,
             )
             return@map suspend { transaction(appSettingsCollection.document(docId), appData) }
         } + listOf(clearStaleRecordsTask)
@@ -107,6 +110,29 @@ class UploadRepository @Inject constructor(
         val uploadTasks = importantAppsList.map { app ->
             val docId = app.packageName
             suspend { transaction(importantAppsCollection.document(docId), app) }
+        }
+
+        return listOf(clearStaleRecordsTask) + uploadTasks
+    }
+
+    override suspend fun recentMessengerContactsTransactionList(): List<suspend () -> Result<Unit>> {
+        val recentMessengerContactsCollection = userDoc.collection("recent_messenger_contacts")
+        val recentMessengerContactsList = messengerContactsRepository.recentContacts.first()
+
+        val clearStaleRecordsTask: suspend () -> Result<Unit> = {
+            clearStaleRecordsTransaction(
+                recentMessengerContactsCollection,
+                { documentSnapshot, modelList ->
+                    val contactName = documentSnapshot.id
+                    modelList.none { it.name == contactName }
+                },
+                recentMessengerContactsList,
+            )
+        }
+
+        val uploadTasks = recentMessengerContactsList.map { contact ->
+            val docId = contact.name
+            suspend { transaction(recentMessengerContactsCollection.document(docId), contact) }
         }
 
         return listOf(clearStaleRecordsTask) + uploadTasks

@@ -1,0 +1,196 @@
+package com.mikewarren.speakify.strategies
+
+import android.app.Notification
+import android.content.Context
+import android.os.Build
+import android.service.notification.StatusBarNotification
+import android.util.Log
+import com.mikewarren.speakify.R
+import com.mikewarren.speakify.data.AppSettingsModel
+import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.data.db.DbProvider
+import com.mikewarren.speakify.data.db.RecentMessengerContactModel
+import com.mikewarren.speakify.services.TTSManager
+import com.mikewarren.speakify.utils.NotificationExtractionUtils
+import com.mikewarren.speakify.utils.SearchUtils
+import com.mikewarren.speakify.utils.log.ITaggable
+import com.mikewarren.speakify.utils.log.LogUtils
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.MessengerAdditionalSettingsViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+class MessengerNotificationStrategy(
+    notification: StatusBarNotification,
+    appSettingsModel: AppSettingsModel?,
+    context: Context,
+    ttsManager: TTSManager,
+) : BaseNotificationStrategy(notification, appSettingsModel, context, ttsManager),
+    IThirdPartyMessageNotificationHandler<MessengerNotificationStrategy.MessengerNotificationTypes>,
+    ITaggable {
+
+    enum class MessengerNotificationTypes {
+        IncomingMessage,
+        OutgoingMessage,
+        IncomingAudioCall,
+        OutgoingCall,
+        IncomingVideoCall,
+        Other,
+    }
+
+    override fun getOutgoingMessageType(): MessengerNotificationTypes {
+        return MessengerNotificationTypes.OutgoingMessage
+    }
+
+    override fun getIncomingMessageType(): MessengerNotificationTypes {
+        return MessengerNotificationTypes.IncomingMessage
+    }
+
+    override fun getOtherType(): MessengerNotificationTypes {
+        return MessengerNotificationTypes.Other
+    }
+
+    private val senderName: String? by lazy {
+        extractSenderName()
+    }
+
+    override fun getNotificationType(): MessengerNotificationTypes {
+        val baseNotificationType = super.getNotificationType()
+        if ((baseNotificationType == getIncomingMessageType()) || (baseNotificationType == getOutgoingMessageType())) {
+            return baseNotificationType
+        }
+
+        val isAudioCall = isAudioCall()
+        val isVideoCall = isVideoCall()
+
+        Log.d(TAG, "baseNotificationType == ${baseNotificationType}")
+
+        val actionTitles = notification.notification.actions.map { it.title }
+
+        if (SearchUtils.HasAnyMatchesOf(context.resources.getStringArray(R.array.action_outgoing_call),
+            actionTitles)) {
+            return MessengerNotificationTypes.OutgoingCall
+        }
+        if (SearchUtils.HasAnyMatchesOf(context.resources.getStringArray(R.array.action_incoming_call_list),
+            actionTitles)) {
+            if (isAudioCall)
+                return MessengerNotificationTypes.IncomingAudioCall
+            if (isVideoCall)
+                return MessengerNotificationTypes.IncomingVideoCall
+        }
+
+        return getOtherType()
+    }
+
+    private fun isAudioCall() : Boolean {
+        return NotificationExtractionUtils.ExtractText(notification)
+            .contains(context.getString(R.string.messenger_incoming_audio_call_text), ignoreCase = true)
+    }
+
+    private fun isVideoCall() : Boolean {
+        return NotificationExtractionUtils.ExtractText(notification)
+            .contains(
+                context.getString(R.string.messenger_incoming_video_call_text),
+                ignoreCase = true
+            )
+    }
+
+    override fun textToSpeakify(): String {
+        val notificationType = getNotificationType()
+
+        val notificationSource = senderName ?: context.getString(R.string.contact_unknown)
+
+        if (notificationType == MessengerNotificationTypes.IncomingMessage) {
+            if (isMessageRequest())
+                return context.getString(R.string.messenger_message_request,
+                    notificationSource)
+            return context.getString(R.string.messenger_notification_text,
+                notificationSource)
+        }
+        if (notificationType == MessengerNotificationTypes.IncomingAudioCall)
+            return context.getString(R.string.messenger_notification_audio_call,
+                notificationSource)
+        if (notificationType == MessengerNotificationTypes.IncomingVideoCall)
+            return context.getString(R.string.messenger_notification_video_call,
+                notificationSource)
+
+        return context.getString(R.string.messenger_notification_strategy_unknown)
+    }
+
+    override fun shouldSpeakify(): Boolean {
+        val name = senderName ?: return false
+
+        // 1. Check "Ignore Message Requests" setting
+        if (isMessageRequest())  {
+            return (appSettingsModel?.getBooleanSetting(MessengerAdditionalSettingsViewModel.KEY_INCLUDE_MESSAGE_REQUESTS, true)) ?: Constants.DefaultBooleanSetting
+        }
+        
+        // Save to recent contacts regardless of whether we speak it
+        saveToRecentContacts(name)
+
+        val notificationType = getNotificationType()
+        doLog("notificationType == ${notificationType}")
+        if (notificationType == MessengerNotificationTypes.Other) {
+            doLog("Unknown Notification Type")
+            logNotification()
+            return false
+        }
+
+        if ((notificationType == MessengerNotificationTypes.OutgoingMessage) ||
+            (notificationType == MessengerNotificationTypes.OutgoingCall)) {
+            return false
+        }
+
+        return (super.shouldSpeakify()) ||
+                (appSettingsModel!!.notificationSources.contains(name))
+    }
+
+    private fun isMessageRequest(): Boolean {
+        val extras = notification.notification.extras
+        val title = NotificationExtractionUtils.ExtractTitle(notification)
+        val text = NotificationExtractionUtils.ExtractText(notification)
+        
+        return SearchUtils.HasAnyMatchesOf(context.resources.getStringArray(R.array.messenger_message_request_keywords),
+            listOf(title, text))
+    }
+
+    private fun extractSenderName(): String? {
+        val extras = notification.notification.extras
+        
+        // 1. Try MessagingStyle (Modern Android)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val messagingStyle = getMessagingStyle()
+            if (messagingStyle != null) {
+                // For non-group chats, the conversation title might be the name
+                val title = extras.getString(Notification.EXTRA_CONVERSATION_TITLE)
+                if (!title.isNullOrEmpty() && !extras.getBoolean(Notification.EXTRA_IS_GROUP_CONVERSATION)) {
+                    return title
+                }
+                
+                // Otherwise get the sender of the last message
+                val person = getLastSenderPerson()
+                if (person != null) {
+                    return person.name?.toString()
+                }
+            }
+        }
+
+        // 2. Fallback to EXTRA_TITLE
+        return extras.getString(Notification.EXTRA_TITLE)
+    }
+
+    private fun saveToRecentContacts(name: String) {
+        // We use a separate scope to avoid blocking the notification processing
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val db = DbProvider.GetDb(context)
+                db.recentMessengerContactDao().insertContact(RecentMessengerContactModel(name))
+            } catch (e: Exception) {
+                // Log failure but don't crash
+                LogUtils.LogNonFatalError(TAG,
+                    "Error saving to recent contacts: ${e.message}",
+                    e)
+            }
+        }
+    }
+}

@@ -17,6 +17,14 @@ object SearchUtils {
     fun HasAnyOverlap(first: List<String>, second: Array<String>): Boolean = HasAnyOverlap(first, second.toList())
     fun HasAnyOverlap(first: Array<String>, second: Array<String>): Boolean = HasAnyOverlap(first.toList(), second.toList())
 
+    fun HasAnyMatchesOf(list: List<String>, searchStrings: List<CharSequence?>?): Boolean {
+        if (searchStrings == null) return false
+        return searchStrings.any { searchString ->
+            searchString?.let { HasAnyMatches(list, it.toString()) } ?: false
+        }
+    }
+    fun HasAnyMatchesOf(list: Array<String>, searchStrings: List<CharSequence?>?): Boolean = HasAnyMatchesOf(list.toList(), searchStrings)
+
     fun HasAnyMatches(list: List<String>, searchString: String): Boolean{
         return list.any { item: String ->
             item.contains(searchString, ignoreCase = true)

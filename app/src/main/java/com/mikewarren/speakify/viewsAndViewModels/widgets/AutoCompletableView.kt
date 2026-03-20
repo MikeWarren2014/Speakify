@@ -73,8 +73,15 @@ fun <T>AutoCompletableView(
                 .onFocusChanged { focusState: FocusState ->
                     viewModel.setAutocompleteDropdownState(focusState.isFocused)
                 },
-            label = { Text(stringResource(R.string.search_for_entities,
-                viewModel.getLabelText().asString())) },
+            label = {
+                var labelStringResource = R.string.search_for_entities
+                if (viewModel.isDisabled)
+                    labelStringResource = R.string.autocomplete_no_choices_available_yet
+
+                Text(stringResource(labelStringResource,
+                viewModel.getLabelText().asString()))
+            },
+            enabled = !viewModel.isDisabled,
             supportingText = supportingText
         )
 

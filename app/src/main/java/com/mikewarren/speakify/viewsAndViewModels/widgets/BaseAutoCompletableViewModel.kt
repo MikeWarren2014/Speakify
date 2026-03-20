@@ -15,6 +15,9 @@ abstract class BaseAutoCompletableViewModel<T> : ViewModel() {
     var isAutocompleteDropdownOpen by mutableStateOf(false)
         protected set
 
+    var isDisabled by mutableStateOf(false)
+        protected set
+
     abstract fun getLabelText(): UiText
 
     abstract fun getAllChoices(): List<T>

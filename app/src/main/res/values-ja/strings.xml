@@ -63,6 +63,18 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">%1$s からの通知</string>
     <string name="sms_notification_strategy_text">%1$s からのメッセージ</string>
+    <string name="messenger_notification_text">%1$s からの Facebook メッセージ</string>
+    <string name="messenger_message_request">%1$s からの Facebook メッセージリクエスト</string>
+    <string name="messenger_notification_audio_call">%1$s からの Facebook 着信</string>
+    <string name="messenger_notification_video_call">%1$s からの Facebook 映像通話着信</string>
+    <string name="messenger_notification_strategy_unknown">不明な Facebook メッセンジャーの通知</string>
+    <string-array name="messenger_message_request_keywords">
+        <item>メッセージリクエスト</item>
+        <item>つながりを希望しています</item>
+        <item>メッセージをリクエストしました</item>
+    </string-array>
+
+    <string name="contact_unknown">誰か</string>
 
     <string name="google_voice_notification_strategy_text_suffix"> (%1$s より)</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">Google Voice の受信メッセージ%1$s</string>
@@ -72,7 +84,10 @@
     <string name="notification_calendar_upcoming">予定されているイベント: %1$s。 %2$s</string>
 
     <!-- Notification action Titles -->
-    <string name="action_incoming_call">応答</string>
+    <string-array name="action_incoming_call_list">
+        <item>応答</item>
+        <item>拒否</item>
+    </string-array>
     <string-array name="action_outgoing_call">
         <item>通話を終了</item>
         <item>終了</item>
@@ -85,6 +100,14 @@
         <item>既読にする</item>
         <item>既読</item>
     </string-array>
+
+    <string-array name="messenger_incoming_call_actions">
+        <item>応答</item>
+        <item>拒否</item>
+    </string-array>
+
+    <string name="messenger_incoming_audio_call_text">音声通話</string>
+    <string name="messenger_incoming_video_call_text">映像通話</string>
 
     <!-- Incoming Phone Call -->
     <string name="incoming_call">%1$s からの着信</string>
@@ -117,6 +140,9 @@
     <string name="no_notification_sources_instruction">%1$s を追加して特定の通知のみを受け取るか、空のままにしてすべての %1$s の通知を受け取ります。</string>
     <string name="remove">削除</string>
     <string name="notification_sources">通知ソース</string>
+
+    <!-- Messenger Settings -->
+    <string name="messenger_include_message_requests">メッセージリクエストを含める</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">通知ソース</string>
@@ -196,7 +222,9 @@
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">追加する通知ソース</string>
-    <string name="autocomplete_label_contacts">追加する連絡先名 / 電話番号</string>
+    <string name="autocomplete_label_contact_name_phone_number">追加する連絡先名／電話番号</string>
+    <string name="autocomplete_label_contact_name">追加する連絡先名</string>
+    <string name="autocomplete_no_choices_available_yet">%1s はまだありません。</string>
     <string name="autocomplete_label_tts">TTS 音声</string>
 
     <!-- UI Event messages -->

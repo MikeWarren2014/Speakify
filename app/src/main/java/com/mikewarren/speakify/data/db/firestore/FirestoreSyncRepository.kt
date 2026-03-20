@@ -1,6 +1,7 @@
 package com.mikewarren.speakify.data.db.firestore
 
 import com.mikewarren.speakify.data.AppsRepository
+import com.mikewarren.speakify.data.MessengerContactsRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +19,8 @@ import javax.inject.Singleton
 class FirestoreSyncRepository @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val appsRepository: AppsRepository,
+    private val messengerContactsRepository: MessengerContactsRepository,
+
     private val uploadRepository: UploadRepository,
     private val downloadRepository: DownloadRepository
 ) {
@@ -38,7 +41,8 @@ class FirestoreSyncRepository @Inject constructor(
                 settingsRepository.minVolume,
                 settingsRepository.isCrashlyticsEnabled,
                 settingsRepository.appSettings,
-                appsRepository.importantApps
+                appsRepository.importantApps,
+                messengerContactsRepository.recentContacts,
             ) { args -> args }
                 .drop(1)
                 .debounce(2000)

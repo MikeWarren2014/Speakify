@@ -35,13 +35,9 @@ abstract class BaseNotificationSourceListViewModel<T>(
         protected set
 
     override fun onOpen() {
-        Log.d(this.javaClass.name,
-            "Invoked BaseNotificationSourceList.onOpen()")
         isLoading = true
         viewModelScope.launch {
             allData.collectLatest {
-                Log.d(this.javaClass.name,
-                    "Data loaded successfully: ${it}")
                 onDataLoaded()
             }
         }
@@ -51,11 +47,10 @@ abstract class BaseNotificationSourceListViewModel<T>(
         searchText = ""
         _allAddableSourceModels.update { allData.value?.minus(getAddedSourceModels().toSet()) ?: emptyList() }
         isLoading = false
+        isDisabled = allData.value.isEmpty()
     }
     
     fun getAddedSourceModels(): List<T> {
-        Log.d(this.javaClass.name,
-            "Invoked BaseNotificationSourceList.getAddedSourceModels() ... allData.value == ${allData.value}")
         return allData.value?.filter { model: T -> toSourceString(model) in _notificationSources.value }
             ?: emptyList()
 

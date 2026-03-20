@@ -25,7 +25,7 @@ interface IMessageNotificationHandler<EnumType>: ITaggable {
 
     fun getNotificationType(): EnumType {
         if (isFromSentMessage())
-            return getOutgoingSMSType()
+            return getOutgoingMessageType()
 
         val actions = notification.notification.actions
         if (actions == null)
@@ -35,11 +35,11 @@ interface IMessageNotificationHandler<EnumType>: ITaggable {
             if (isReplyAction(action)) {
                 // Check if it has RemoteInput for inline reply (stronger signal for actual reply)
                 if (action.remoteInputs?.isNotEmpty() == true) {
-                    return getIncomingSMSType()
+                    return getIncomingMessageType()
                 }
             }
             if (isMarkAsReadAction(action)) {
-                return getIncomingSMSType()
+                return getIncomingMessageType()
             }
         }
         
@@ -47,7 +47,7 @@ interface IMessageNotificationHandler<EnumType>: ITaggable {
         // This handles cases where actions might be hidden or different in "sensitive" mode
         val extras = notification.notification.extras
         if (extras.containsKey(EXTRA_IM_PARTICIPANT_NORMALIZED_DESTINATION)) {
-            return getIncomingSMSType()
+            return getIncomingMessageType()
         }
 
         return getOtherType()
@@ -67,8 +67,8 @@ interface IMessageNotificationHandler<EnumType>: ITaggable {
         return getLastSenderPerson() == null
     }
 
-    fun getOutgoingSMSType(): EnumType
-    fun getIncomingSMSType(): EnumType
+    fun getOutgoingMessageType(): EnumType
+    fun getIncomingMessageType(): EnumType
     fun getOtherType() : EnumType
 
     fun getLastSenderPerson(): Person? {

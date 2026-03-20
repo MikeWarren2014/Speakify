@@ -64,6 +64,18 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">来自 %1$s 的通知</string>
     <string name="sms_notification_strategy_text">来自 %1$s 的短信</string>
+    <string name="messenger_notification_text">收到来自 %1$s 的 Facebook 消息</string>
+    <string name="messenger_message_request">收到来自 %1$s 的 Facebook 消息请求</string>
+    <string name="messenger_notification_audio_call">收到来自 %1$s 的 Facebook 电话</string>
+    <string name="messenger_notification_video_call">收到来自 %1$s 的 Facebook 视频电话</string>
+    <string name="messenger_notification_strategy_unknown">未知的 Facebook Messenger 通知</string>
+    <string-array name="messenger_message_request_keywords">
+        <item>消息请求</item>
+        <item>想和你建立联系</item>
+        <item>请求发送消息</item>
+    </string-array>
+
+    <string name="contact_unknown">某人</string>
 
     <string name="google_voice_notification_strategy_text_suffix"> 来自 %1$s</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">收到 Google Voice 短信%1$s</string>
@@ -73,7 +85,10 @@
     <string name="notification_calendar_upcoming">即将到来的活动：%1$s。%2$s</string>
 
     <!-- Notification action Titles -->
-    <string name="action_incoming_call">接听</string>
+    <string-array name="action_incoming_call_list">
+        <item>接听</item>
+        <item>拒绝</item>
+    </string-array>
     <string-array name="action_outgoing_call">
         <item>结束通话</item>
         <item>挂断</item>
@@ -86,6 +101,14 @@
         <item>设为已读</item>
         <item>标记已读</item>
     </string-array>
+
+    <string-array name="messenger_incoming_call_actions">
+        <item>接听</item>
+        <item>拒绝</item>
+    </string-array>
+
+    <string name="messenger_incoming_audio_call_text">语音通话</string>
+    <string name="messenger_incoming_video_call_text">视频通话</string>
 
     <!-- Incoming Phone Call -->
     <string name="incoming_call">收到来自 %1$s 的电话</string>
@@ -118,6 +141,9 @@
     <string name="no_notification_sources_instruction">添加一些 %1$s 以仅接收它们的通知，或留空以接收所有 %1$s 的通知。</string>
     <string name="remove">移除</string>
     <string name="notification_sources">通知源</string>
+
+    <!-- Messenger Settings -->
+    <string name="messenger_include_message_requests">包括消息请求</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">通知源</string>
@@ -197,7 +223,9 @@
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">要添加的通知源</string>
-    <string name="autocomplete_label_contacts">要添加的联系人姓名/电话号码</string>
+    <string name="autocomplete_label_contact_name_phone_number">待添加的联系人姓名/电话号码</string>
+    <string name="autocomplete_label_contact_name">待添加联系人姓名</string>
+    <string name="autocomplete_no_choices_available_yet">暂无 %1s。</string>
     <string name="autocomplete_label_tts">TTS 语音</string>
 
     <!-- UI Event messages -->

@@ -39,6 +39,8 @@ fun <T : Any?> NotificationSourceListView(
 ) {
     val notificationSources by viewModel.notificationSources.collectAsState()
     val allData by viewModel.allData.collectAsState()
+    val notificationSourcesName = viewModel.getNotificationSourcesNameText()
+        .asString()
 
     Text(text = stringResource(R.string.alert_me_to_notifications_from),
         style = MaterialTheme.typography.titleMedium)
@@ -55,8 +57,13 @@ fun <T : Any?> NotificationSourceListView(
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    var messageText = stringResource(R.string.loading)
+                    if (!viewModel.isLoading)
+                        messageText = stringResource(R.string.autocomplete_no_choices_available_yet,
+                            notificationSourcesName)
+
                     Text(
-                        text = stringResource(R.string.loading),
+                        text = messageText,
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f) // A bit lighter
@@ -76,8 +83,6 @@ fun <T : Any?> NotificationSourceListView(
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    val notificationSourcesName = viewModel.getNotificationSourcesNameText()
-                        .asString()
 
                     Text(
                         text = stringResource(R.string.no_notification_sources_yet,

@@ -63,6 +63,18 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">Сповіщення від %1$s</string>
     <string name="sms_notification_strategy_text">SMS від %1$s</string>
+    <string name="messenger_notification_text">Вхідне повідомлення Facebook від %1$s</string>
+    <string name="messenger_message_request">Вхідний запит повідомлення Facebook від %1$s</string>
+    <string name="messenger_notification_audio_call">Вхідний дзвінок Facebook від %1$s</string>
+    <string name="messenger_notification_video_call">Вхідний відеодзвінок Facebook від %1$s</string>
+    <string name="messenger_notification_strategy_unknown">Невідоме сповіщення Facebook Messenger</string>
+    <string-array name="messenger_message_request_keywords">
+        <item>Запит на переписку</item>
+        <item>хоче зв\'язатися</item>
+        <item>запитує переписку</item>
+    </string-array>
+
+    <string name="contact_unknown">Хтось</string>
 
     <string name="google_voice_notification_strategy_text_suffix"> від %1$s</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">Вхідне SMS Google Voice%1$s</string>
@@ -72,7 +84,10 @@
     <string name="notification_calendar_upcoming">Найближча подія: %1$s. %2$s</string>
 
     <!-- Notification action Titles -->
-    <string name="action_incoming_call">відповісти</string>
+    <string-array name="action_incoming_call_list">
+        <item>відповісти</item>
+        <item>відхилити</item>
+    </string-array>
     <string-array name="action_outgoing_call">
         <item>завершити дзвінок</item>
         <item>покласти слухавку</item>
@@ -85,6 +100,14 @@
         <item>позначити як прочитане</item>
         <item>позначити прочитаним</item>
     </string-array>
+
+    <string-array name="messenger_incoming_call_actions">
+        <item>Відповісти</item>
+        <item>Відхилити</item>
+    </string-array>
+
+    <string name="messenger_incoming_audio_call_text">Аудіодзвінок</string>
+    <string name="messenger_incoming_video_call_text">Відеодзвінок</string>
 
     <!-- Incoming Phone Call -->
     <string name="incoming_call">Вхідний дзвінок від %1$s</string>
@@ -117,6 +140,9 @@
     <string name="no_notification_sources_instruction">Додайте деякі %1$s, щоб отримувати сповіщення лише про них, або залиште це поле порожнім, щоб отримувати сповіщення про ВСІ %1$s.</string>
     <string name="remove">Видалити</string>
     <string name="notification_sources">джерела сповіщень</string>
+
+    <!-- Messenger Settings -->
+    <string name="messenger_include_message_requests">Включати запити повідомлень</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">джерела сповіщень</string>
@@ -196,7 +222,9 @@
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">Джерела сповіщень для додавання</string>
-    <string name="autocomplete_label_contacts">Ім\'я контакту/Номер телефону для додавання</string>
+    <string name="autocomplete_label_contact_name_phone_number">Ім\'я контакту/Номер телефону для додавання</string>
+    <string name="autocomplete_label_contact_name">Ім\'я контакту для додавання</string>
+    <string name="autocomplete_no_choices_available_yet">Ще немає %1s доступних.</string>
     <string name="autocomplete_label_tts">Голос TTS</string>
 
     <!-- UI Event messages -->

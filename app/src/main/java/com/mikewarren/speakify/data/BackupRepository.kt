@@ -8,6 +8,8 @@ import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.AppSettingsDbModel
 import com.mikewarren.speakify.data.db.NotificationSourceModel
 import com.mikewarren.speakify.data.db.NotificationSourcesDao
+import com.mikewarren.speakify.data.db.RecentMessengerContactDao
+import com.mikewarren.speakify.data.db.RecentMessengerContactModel
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.db.UserAppsDao
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -25,6 +27,7 @@ data class BackupData(
     val userApps: List<UserAppModel>,
     val appSettings: List<AppSettingsDbModel>,
     val notificationSources: List<NotificationSourceModel>,
+    val recentMessengerContacts: List<RecentMessengerContactModel>,
     // user settings
     val userSettingsModel: UserSettingsModel,
 )
@@ -35,6 +38,7 @@ class BackupRepository @Inject constructor(
     private val userAppsDao: UserAppsDao,
     private val appSettingsDao: AppSettingsDao,
     private val notificationSourcesDao: NotificationSourcesDao,
+    private val recentMessengerContactsDao: RecentMessengerContactDao,
 
     private val userSettingsDataStore: DataStore<UserSettingsModel>,
 ) {
@@ -48,12 +52,14 @@ class BackupRepository @Inject constructor(
             val settings = appSettingsDao.getAllRaw()
             val notificationSources = notificationSourcesDao.getAll()
             val userSettingsModel = userSettingsDataStore.data.first()
+            val recentMessengerContacts = recentMessengerContactsDao.getRecentContacts().first()
 
 
             val backupData = BackupData(
                 apps,
                 settings,
                 notificationSources,
+                recentMessengerContacts,
                 userSettingsModel,
             )
 
@@ -94,6 +100,7 @@ class BackupRepository @Inject constructor(
             backupData.userApps.forEach { userAppsDao.insert(it) }
             backupData.appSettings.forEach { appSettingsDao.insert(it) }
             notificationSourcesDao.insertAll(backupData.notificationSources)
+            recentMessengerContactsDao.insertAll(backupData.recentMessengerContacts)
 
             userSettingsDataStore.updateData { backupData.userSettingsModel }
 

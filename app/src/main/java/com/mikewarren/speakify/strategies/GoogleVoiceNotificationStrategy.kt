@@ -14,7 +14,7 @@ class GoogleVoiceNotificationStrategy(notification: StatusBarNotification,
                                       appSettingsModel: AppSettingsModel?,
                                       context: Context,
                                       ttsManager: TTSManager): BasePhoneNotificationStrategy(notification, appSettingsModel, context, ttsManager),
-IMessageNotificationHandler<GoogleVoiceNotificationStrategy.NotificationType> {
+    IThirdPartyMessageNotificationHandler<GoogleVoiceNotificationStrategy.NotificationType> {
 
     enum class NotificationType(val stringValue: String) {
         IncomingSMS("incoming sms"),
@@ -33,7 +33,7 @@ IMessageNotificationHandler<GoogleVoiceNotificationStrategy.NotificationType> {
 
 
         val actionTitlesLowercased = this.getActionTitlesLowercased()
-        if (SearchUtils.HasAnyMatches(actionTitlesLowercased, context.getString(R.string.action_incoming_call)))
+        if (SearchUtils.HasAnyMatchesOf(context.resources.getStringArray(R.array.action_incoming_call_list), actionTitlesLowercased))
             return NotificationType.IncomingCall
         if (SearchUtils.HasAnyOverlap(context.resources.getStringArray(R.array.action_outgoing_call), actionTitlesLowercased))
             return NotificationType.OutgoingCall
@@ -43,15 +43,11 @@ IMessageNotificationHandler<GoogleVoiceNotificationStrategy.NotificationType> {
         return NotificationType.Other
     }
 
-    override fun isFromSentMessage(): Boolean {
-        return getMessages().isNotEmpty() && super.isFromSentMessage()
-    }
-
-    override fun getOutgoingSMSType(): NotificationType {
+    override fun getOutgoingMessageType(): NotificationType {
         return NotificationType.OutgoingSMS
     }
 
-    override fun getIncomingSMSType(): NotificationType {
+    override fun getIncomingMessageType(): NotificationType {
         return NotificationType.IncomingSMS
     }
 

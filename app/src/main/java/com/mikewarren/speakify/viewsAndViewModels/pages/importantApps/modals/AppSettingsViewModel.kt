@@ -12,6 +12,8 @@ import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.services.TTSManager
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.IAdditionalSettingsViewModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.MessengerAdditionalSettingsViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -34,11 +36,6 @@ class AppSettingsViewModel(
     val modelFlow : StateFlow<AppSettingsModel?> = settingsRepository.appSettings
         .distinctUntilChanged()
         .map { appSettings: Map<String, AppSettingsModel> ->
-            Log.d(
-                this.javaClass.name,
-                "Mapping appSettings: $appSettings, for packageName: ${appModel.packageName}, result: ${appSettings[appModel.packageName]}"
-            )
-
             return@map appSettings[appModel.packageName]
         }
         .stateIn(
@@ -52,6 +49,7 @@ class AppSettingsViewModel(
 
     var childAnnouncerVoiceSectionViewModel: AnnouncerVoiceSectionViewModel? = null
     var childNotificationListViewModel: BaseNotificationSourceListViewModel<*>? = null
+    var childAdditionalSettingsViewModel: IAdditionalSettingsViewModel? = null
 
     fun getPackageName(): String {
         return appModel.packageName
@@ -60,7 +58,6 @@ class AppSettingsViewModel(
     init {
         viewModelScope.launch {
             modelFlow.collectLatest { model: AppSettingsModel? ->
-                Log.d("AppSettingsViewModel", "modelFlow.collectLatest: $model")
                 if (model == null) {
                     return@collectLatest
                 }
@@ -78,9 +75,7 @@ class AppSettingsViewModel(
                     }
                 )
                 childNotificationListViewModel = createNotificationSourceListViewModel(model)
-
-
-
+                childAdditionalSettingsViewModel = createAdditionalSettingsViewModel(model)
             }
         }
     }
@@ -90,12 +85,12 @@ class AppSettingsViewModel(
 
         childAnnouncerVoiceSectionViewModel?.onOpen()
         childNotificationListViewModel?.onOpen()
+        childAdditionalSettingsViewModel?.onOpen()
     }
 
     fun createNotificationSourceListViewModel(model: AppSettingsModel): BaseNotificationSourceListViewModel<*>? {
         Log.d("AppSettingsViewModel", "packageName = '${appModel.packageName}' , notificationSources = ${model.notificationSources}")
 
-        // TODO: should we have a separate view model for each app?
         if ((getPackageName() in PackageNames.PhoneAppList) ||
             (getPackageName() in PackageNames.MessagingAppList) ||
             (getPackageName() == PackageNames.GoogleVoice)
@@ -110,18 +105,46 @@ class AppSettingsViewModel(
                 },
             )
 
+        if (PackageNames.FacebookMessengerAppList.contains(getPackageName())) {
+            return MessengerImportantContactsListViewModel(
+                settingsRepository,
+                model.notificationSources,
+                { importantContacts: List<String> ->
+                    _settings.update { model: AppSettingsModel ->
+                        model.copy(notificationSources = importantContacts)
+                    }
+                },
+            )
+        }
+
         return null
-}
+    }
+
+    private fun createAdditionalSettingsViewModel(model: AppSettingsModel): IAdditionalSettingsViewModel? {
+        if (PackageNames.FacebookMessengerAppList.contains(getPackageName())) {
+            return MessengerAdditionalSettingsViewModel(
+                settingsRepository,
+                model.additionalSettings,
+                onSaveSettings = { additionalSettings: Map<String, String> ->
+                    _settings.update { model: AppSettingsModel ->
+                        model.copy(additionalSettings = additionalSettings)
+                    }
+                }
+            )
+        }
+        return null
+    }
 
     fun cancel() {
         childAnnouncerVoiceSectionViewModel?.cancel()
         childNotificationListViewModel?.cancel()
-
+        childAdditionalSettingsViewModel?.cancel()
     }
 
     fun save() {
         childAnnouncerVoiceSectionViewModel?.onSave()
         childNotificationListViewModel?.onSave()
+        childAdditionalSettingsViewModel?.onSave()
         viewModelScope.launch {
             settingsRepository.saveAppSettings(settings.value)
             Log.d("AppSettingsViewModel", "Saved settings: ${settings.value}")

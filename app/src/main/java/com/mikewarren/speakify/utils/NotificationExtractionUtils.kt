@@ -307,4 +307,12 @@ object NotificationExtractionUtils: ITaggable {
         }
         return emptyList()
     }
+
+    public fun ExtractTitle(sbn: StatusBarNotification): String {
+        return sbn.notification.extras.getString(Notification.EXTRA_TITLE) ?: ""
+    }
+
+    public fun ExtractText(sbn: StatusBarNotification): String {
+        return sbn.notification.extras.getString(Notification.EXTRA_TEXT) ?: ""
+    }
 }

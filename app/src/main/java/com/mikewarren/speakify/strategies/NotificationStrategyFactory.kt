@@ -21,6 +21,9 @@ object NotificationStrategyFactory {
         if (notification.packageName == PackageNames.GoogleCalendar)
             return GoogleCalendarNotificationStrategy(notification, appSettingsModel, context, ttsManager)
 
+        if (PackageNames.FacebookMessengerAppList.contains(notification.packageName))
+            return MessengerNotificationStrategy(notification, appSettingsModel, context, ttsManager)
+
         return SimpleNotificationStrategy(notification, appSettingsModel, context, ttsManager)
     }
 }
