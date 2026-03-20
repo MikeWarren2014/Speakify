@@ -63,8 +63,15 @@
     <string name="simple_notification_strategy_text">%1$s의 알림</string>
     <string name="sms_notification_strategy_text">%1$s의 문자 메시지</string>
     <string name="messenger_notification_text">%1$s님의 수신 Facebook 메시지</string>
-    <string name="messenger_notification_call">%1$s님의 수신 Facebook 전화</string>
+    <string name="messenger_message_request">%1$s님의 수신 Facebook 메시지 요청</string>
+    <string name="messenger_notification_audio_call">%1$s님의 수신 Facebook 전화</string>
+    <string name="messenger_notification_video_call">%1$s님의 수신 Facebook 영상 전화</string>
     <string name="messenger_notification_strategy_unknown">알 수 없는 Facebook 메신저 알림</string>
+    <string-array name="messenger_message_request_keywords">
+        <item>메시지 요청</item>
+        <item>연결하고 싶어함</item>
+        <item>메시지 요청함</item>
+    </string-array>
 
     <string name="contact_unknown">누군가</string>
 
@@ -76,7 +83,10 @@
     <string name="notification_calendar_upcoming">예정된 이벤트: %1$s. %2$s</string>
 
     <!-- Notification action Titles -->
-    <string name="action_incoming_call">응답</string>
+    <string-array name="action_incoming_call_list">
+        <item>응답</item>
+        <item>거절</item>
+    </string-array>
     <string-array name="action_outgoing_call">
         <item>통화 종료</item>
         <item>종료</item>
@@ -89,6 +99,14 @@
         <item>읽음으로 표시</item>
         <item>읽음 표시</item>
     </string-array>
+
+    <string-array name="messenger_incoming_call_actions">
+        <item>응답</item>
+        <item>거절</item>
+    </string-array>
+
+    <string name="messenger_incoming_audio_call_text">오디오 통화</string>
+    <string name="messenger_incoming_video_call_text">영상 통화</string>
 
     <!-- Incoming Phone Call -->
     <string name="incoming_call">%1$s님의 수신 전화</string>
@@ -123,7 +141,7 @@
     <string name="notification_sources">알림 소스</string>
 
     <!-- Messenger Settings -->
-    <string name="messenger_ignore_message_requests">메시지 요청 무시</string>
+    <string name="messenger_include_message_requests">메시지 요청 포함</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">알림 소스</string>

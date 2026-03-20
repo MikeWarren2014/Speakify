@@ -23,14 +23,14 @@ fun MessengerAdditionalSettingsView(viewModel: MessengerAdditionalSettingsViewMo
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = stringResource(R.string.messenger_ignore_message_requests),
+                text = stringResource(R.string.messenger_include_message_requests),
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Switch(
-                checked = viewModel.ignoreMessageRequests,
-                onCheckedChange = { viewModel.ignoreMessageRequests = it }
+                checked = viewModel.includeMessageRequests,
+                onCheckedChange = { viewModel.includeMessageRequests = it }
             )
         }
     }

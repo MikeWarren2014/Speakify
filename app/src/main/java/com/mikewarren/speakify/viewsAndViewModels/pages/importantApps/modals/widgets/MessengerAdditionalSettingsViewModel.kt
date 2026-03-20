@@ -3,6 +3,7 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.wi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
 
 class MessengerAdditionalSettingsViewModel(
@@ -11,26 +12,26 @@ class MessengerAdditionalSettingsViewModel(
     private val onSaveSettings: (Map<String, String>) -> Unit
 ) : IAdditionalSettingsViewModel {
 
-    var ignoreMessageRequests by mutableStateOf(
-        initialAdditionalSettings[KEY_IGNORE_MESSAGE_REQUESTS]?.toBoolean() ?: true
+    var includeMessageRequests by mutableStateOf(
+        initialAdditionalSettings[KEY_INCLUDE_MESSAGE_REQUESTS]?.toBoolean() ?: Constants.DefaultBooleanSetting
     )
 
-    private var originalIgnoreMessageRequests = ignoreMessageRequests
+    private var originalIncludeMessageRequests = includeMessageRequests
 
     override fun onOpen() {
         // No additional logic needed on open
     }
 
     override fun cancel() {
-        ignoreMessageRequests = originalIgnoreMessageRequests
+        includeMessageRequests = originalIncludeMessageRequests
     }
 
     override fun onSave() {
-        originalIgnoreMessageRequests = ignoreMessageRequests
-        onSaveSettings(mapOf(KEY_IGNORE_MESSAGE_REQUESTS to ignoreMessageRequests.toString()))
+        originalIncludeMessageRequests = includeMessageRequests
+        onSaveSettings(mapOf(KEY_INCLUDE_MESSAGE_REQUESTS to includeMessageRequests.toString()))
     }
 
     companion object {
-        const val KEY_IGNORE_MESSAGE_REQUESTS = "ignore_message_requests"
+        const val KEY_INCLUDE_MESSAGE_REQUESTS = "include_message_requests"
     }
 }

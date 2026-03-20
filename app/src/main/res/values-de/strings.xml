@@ -64,8 +64,15 @@
     <string name="simple_notification_strategy_text">Benachrichtigung von %1$s</string>
     <string name="sms_notification_strategy_text">SMS von %1$s</string>
     <string name="messenger_notification_text">Eingehende Facebook-Nachricht von %1$s</string>
-    <string name="messenger_notification_call">Eingehender Facebook-Anruf von %1$s</string>
+    <string name="messenger_message_request">Eingehende Facebook-Nachrichtenanfrage von %1$s</string>
+    <string name="messenger_notification_audio_call">Eingehender Facebook-Anruf von %1$s</string>
+    <string name="messenger_notification_video_call">Eingehender Facebook-Videoanruf von %1$s</string>
     <string name="messenger_notification_strategy_unknown">Unbekannte Facebook Messenger-Benachrichtigung</string>
+    <string-array name="messenger_message_request_keywords">
+        <item>Nachrichtenanfrage</item>
+        <item>möchte Kontakt aufnehmen</item>
+        <item>hat eine Nachricht angefragt</item>
+    </string-array>
 
     <string name="contact_unknown">Jemand</string>
 
@@ -77,7 +84,10 @@
     <string name="notification_calendar_upcoming">Anstehendes Ereignis: %1$s. %2$s</string>
 
     <!-- Notification action Titles -->
-    <string name="action_incoming_call">antworten</string>
+    <string-array name="action_incoming_call_list">
+        <item>antworten</item>
+        <item>ablehnen</item>
+    </string-array>
     <string-array name="action_outgoing_call">
         <item>Anruf beenden</item>
         <item>auflegen</item>
@@ -90,6 +100,14 @@
         <item>als gelesen markieren</item>
         <item>gelesen markieren</item>
     </string-array>
+
+    <string-array name="messenger_incoming_call_actions">
+        <item>Antworten</item>
+        <item>Ablehnen</item>
+    </string-array>
+
+    <string name="messenger_incoming_audio_call_text">Audioanruf</string>
+    <string name="messenger_incoming_video_call_text">Videoanruf</string>
 
     <!-- Incoming Phone Call -->
     <string name="incoming_call">Eingehender Anruf von %1$s</string>
@@ -124,7 +142,7 @@
     <string name="notification_sources">Benachrichtigungsquellen</string>
 
     <!-- Messenger Settings -->
-    <string name="messenger_ignore_message_requests">Nachrichtenanfragen ignorieren</string>
+    <string name="messenger_include_message_requests">Nachrichtenanfragen einschließen</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">Benachrichtigungsquellen</string>
