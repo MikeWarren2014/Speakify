@@ -106,6 +106,13 @@
         <item>رد کردن</item>
     </string-array>
 
+    <!-- Notification Titles -->
+    <string-array name="message_sent_titles">
+        <item>در حال ارسال است</item>
+        <item>ارسال شد</item>
+    </string-array>
+
+    <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">تماس صوتی</string>
     <string name="messenger_incoming_video_call_text">تماس تصویری</string>
 

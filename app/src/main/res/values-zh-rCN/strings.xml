@@ -107,6 +107,13 @@
         <item>拒绝</item>
     </string-array>
 
+    <!-- Notification Titles -->
+    <string-array name="message_sent_titles">
+        <item>正在发送</item>
+        <item>已发送</item>
+    </string-array>
+
+    <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">语音通话</string>
     <string name="messenger_incoming_video_call_text">视频通话</string>
 

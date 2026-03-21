@@ -106,6 +106,13 @@
         <item>अस्वीकार करें</item>
     </string-array>
 
+    <!-- Notification Titles -->
+    <string-array name="message_sent_titles">
+        <item>भेज रहा है</item>
+        <item>भेज दिया गया</item>
+    </string-array>
+
+    <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">ऑडियो कॉल</string>
     <string name="messenger_incoming_video_call_text">वीडियो कॉल</string>
 

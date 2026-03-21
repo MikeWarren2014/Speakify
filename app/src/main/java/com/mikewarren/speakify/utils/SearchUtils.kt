@@ -34,6 +34,15 @@ object SearchUtils {
 
     // Overloads to support Arrays seamlessly
     fun HasAnyMatches(list: Array<String>, searchString: String): Boolean = HasAnyMatches(list.toList(), searchString)
+    
+    fun ContainsKeywords(listOfKeywords: List<String>, searchString: String): Boolean {
+        return listOfKeywords.any { keyword: String ->
+            searchString.contains(keyword, ignoreCase = true)
+        }
+    }
+
+    // Overloads to support Arrays seamlessly
+    fun ContainsKeywords(keywords: Array<String>, searchString: String): Boolean = ContainsKeywords(keywords.toList(), searchString)
 
     fun IsInPhoneNumberList(listOfPhoneNumbers: List<String>, phoneNumber: String): Boolean {
         val phoneNumberIntlFormat = PhoneNumberUtils.ExtractPhoneNumberWithLib(phoneNumber)

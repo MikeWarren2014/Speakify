@@ -106,6 +106,13 @@
         <item>拒否</item>
     </string-array>
 
+    <!-- Notification Titles -->
+    <string-array name="message_sent_titles">
+        <item>送信中</item>
+        <item>送信済み</item>
+    </string-array>
+
+    <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">音声通話</string>
     <string name="messenger_incoming_video_call_text">映像通話</string>
 
