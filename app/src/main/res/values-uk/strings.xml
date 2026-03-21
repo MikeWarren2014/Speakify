@@ -106,6 +106,13 @@
         <item>Відхилити</item>
     </string-array>
 
+    <!-- Notification Titles -->
+    <string-array name="message_sent_titles">
+        <item>надсилає</item>
+        <item>надіслано</item>
+    </string-array>
+
+    <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Аудіодзвінок</string>
     <string name="messenger_incoming_video_call_text">Відеодзвінок</string>
 

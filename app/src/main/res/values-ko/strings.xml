@@ -105,6 +105,13 @@
         <item>거절</item>
     </string-array>
 
+    <!-- Notification Titles -->
+    <string-array name="message_sent_titles">
+        <item>전송 중</item>
+        <item>전송됨</item>
+    </string-array>
+
+    <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">오디오 통화</string>
     <string name="messenger_incoming_video_call_text">영상 통화</string>
 

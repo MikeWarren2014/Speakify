@@ -106,6 +106,13 @@
         <item>Décliner</item>
     </string-array>
 
+    <!-- Notification Titles -->
+    <string-array name="message_sent_titles">
+        <item>est en train d\'envoyer</item>
+        <item>a été envoyé</item>
+    </string-array>
+
+    <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Appel audio</string>
     <string name="messenger_incoming_video_call_text">Appel vidéo</string>
 

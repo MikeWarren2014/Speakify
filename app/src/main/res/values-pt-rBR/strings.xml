@@ -106,6 +106,13 @@
         <item>Recusar</item>
     </string-array>
 
+    <!-- Notification Titles -->
+    <string-array name="message_sent_titles">
+        <item>está enviando</item>
+        <item>enviada</item>
+    </string-array>
+
+    <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Chamada de áudio</string>
     <string name="messenger_incoming_video_call_text">Chamada de vídeo</string>
 

@@ -107,6 +107,12 @@
         <item>Decline</item>
     </string-array>
 
+    <!-- Notification Titles -->
+    <string-array name="message_sent_titles">
+        <item>is sending</item>
+        <item>was sent</item>
+    </string-array>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Audio call</string>
     <string name="messenger_incoming_video_call_text">Video call</string>
