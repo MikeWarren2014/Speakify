@@ -62,10 +62,6 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
 
     private val recentlySpokenCache = LruCache<String, Long>(20)
 
-    companion object {
-        const val DEBOUNCE_TIME_MS = 5 * Constants.OneSecond
-    }
-
     private val phoneStateReceiver = PhoneStateReceiver()
     private val screenStateReceiver = ScreenStateReceiver()
 
@@ -222,13 +218,6 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         if (PackageNames.PhoneAppList.contains(sbn.packageName))
             return
 
-        val lastSpokenTime = recentlySpokenCache.get(sbn.key)
-        val currentTime = System.currentTimeMillis()
-        if (lastSpokenTime != null && (currentTime - lastSpokenTime) < DEBOUNCE_TIME_MS) {
-            Log.d(TAG, "Notification ${sbn.key} was spoken recently. Debouncing.")
-            return
-        }
-
         // construct a model for reading the notification
         // if there are no app settings, we should assume that every notification from the app in question...is important...and worth speaking!
         var appSettingsModel = AppSettingsModel.FromDbModel(appSettingsDao.getByPackageName(sbn.packageName))
@@ -238,6 +227,14 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
 
         // build the notification strategy for this app
         val notificationStrategy = NotificationStrategyFactory.CreateFrom(sbn, appSettingsModel, settingsRepository.getContext(), ttsManager)
+
+        val lastSpokenTime = recentlySpokenCache.get(sbn.key)
+        val currentTime = System.currentTimeMillis()
+        if (lastSpokenTime != null && (currentTime - lastSpokenTime) < notificationStrategy.debounceTimeMillis) {
+            Log.d(TAG, "Notification ${sbn.key} was spoken recently. Debouncing (${notificationStrategy.debounceTimeMillis}ms window).")
+            return
+        }
+
         notificationStrategy.logNotification()
         if (notificationStrategy.shouldSpeakify()) {
             recentlySpokenCache.put(sbn.key, currentTime)
