@@ -13,12 +13,14 @@ import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.log.ITaggable
 
 
-abstract class BaseNotificationStrategy(
+abstract class  BaseNotificationStrategy(
     val notification: StatusBarNotification,
     val appSettingsModel: AppSettingsModel?,
     val context: Context,
     val ttsManager: TTSManager,
 ): ITaggable {
+
+    open val debounceTimeMillis: Long = 5 * Constants.OneSecond
 
     fun logNotification() {
 

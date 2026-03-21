@@ -38,6 +38,18 @@ class MessengerNotificationStrategy(
         Other,
     }
 
+    override val debounceTimeMillis: Long
+        get() {
+            val type = getNotificationType()
+            return if (type == MessengerNotificationTypes.IncomingAudioCall ||
+                type == MessengerNotificationTypes.IncomingVideoCall
+            ) {
+                0L // Don't debounce incoming calls
+            } else {
+                super.debounceTimeMillis
+            }
+        }
+
     override fun getOutgoingMessageType(): MessengerNotificationTypes {
         return MessengerNotificationTypes.OutgoingMessage
     }
@@ -67,7 +79,7 @@ class MessengerNotificationStrategy(
 
         val actionTitles = notification.notification.actions.map { it.title }
 
-        if (SearchUtils.HasAnyMatchesOf(context.resources.getStringArray(R.array.action_outgoing_call),
+        if (SearchUtils.HasAnyOverlap(context.resources.getStringArray(R.array.action_outgoing_call),
             actionTitles)) {
             return MessengerNotificationTypes.OutgoingCall
         }
@@ -140,6 +152,9 @@ class MessengerNotificationStrategy(
             (notificationType == MessengerNotificationTypes.OutgoingCall)) {
             return false
         }
+
+        // if we somehow got an incoming audio call with a phone number, we should let the PhoneStateReceiver handle it
+
 
         return (super.shouldSpeakify()) ||
                 (appSettingsModel!!.notificationSources.contains(name))
