@@ -74,9 +74,6 @@ class MessengerNotificationStrategy(
 
         val actions = notification.notification.actions ?: return getOtherType()
 
-        val isAudioCall = isAudioCall()
-        val isVideoCall = isVideoCall()
-
         Log.d(TAG, "baseNotificationType == ${baseNotificationType}")
 
         val actionTitles = actions.mapNotNull { it.title }
@@ -87,9 +84,9 @@ class MessengerNotificationStrategy(
         }
         if (SearchUtils.HasAnyMatchesOf(context.resources.getStringArray(R.array.action_incoming_call_list),
             actionTitles)) {
-            if (isAudioCall)
+            if (isAudioCall())
                 return MessengerNotificationTypes.IncomingAudioCall
-            if (isVideoCall)
+            if (isVideoCall())
                 return MessengerNotificationTypes.IncomingVideoCall
         }
 
