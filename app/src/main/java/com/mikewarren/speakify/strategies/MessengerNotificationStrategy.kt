@@ -72,12 +72,14 @@ class MessengerNotificationStrategy(
             return baseNotificationType
         }
 
+        val actions = notification.notification.actions ?: return getOtherType()
+
         val isAudioCall = isAudioCall()
         val isVideoCall = isVideoCall()
 
         Log.d(TAG, "baseNotificationType == ${baseNotificationType}")
 
-        val actionTitles = notification.notification.actions.map { it.title }
+        val actionTitles = actions.mapNotNull { it.title }
 
         if (SearchUtils.HasAnyOverlap(context.resources.getStringArray(R.array.action_outgoing_call),
             actionTitles)) {
