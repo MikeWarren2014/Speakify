@@ -63,7 +63,9 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">%1$s से सूचना</string>
     <string name="sms_notification_strategy_text">%1$s से संदेश</string>
+    <string name="sms_text_out_loud">%1$s ने आपको एक टेक्स्ट संदेश भेजा है: %2$s</string>
     <string name="messenger_notification_text">%1$s से इनकमिंग फेसबुक संदेश</string>
+    <string name="messenger_text_out_loud">%1$s ने आपको एक फेसबुक संदेश भेजा है: %2$s</string>
     <string name="messenger_message_request">%1$s से इनकमिंग फेसबुक संदेश अनुरोध</string>
     <string name="messenger_notification_audio_call">%1$s से इनकमिंग फेसबुक कॉल</string>
     <string name="messenger_notification_video_call">%1$s से इनकमिंग फेसबुक वीडियो कॉल</string>
@@ -78,6 +80,7 @@
 
     <string name="google_voice_notification_strategy_text_suffix"> (%1$s की ओर से)</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">आने वाला Google Voice टेक्स्ट संदेश%1$s</string>
+    <string name="google_voice_incoming_text_out_loud">%1$s ने आपके Google Voice नंबर पर एक संदेश भेजा है: %2$s</string>
     <string name="google_voice_incoming_call_notification_strategy_text">आने वाली Google Voice कॉल%1$s</string>
     <string name="google_voice_strategy_unknown_notification_text">अज्ञात Google Voice सूचना</string>
 
@@ -115,6 +118,19 @@
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">ऑडियो कॉल</string>
     <string name="messenger_incoming_video_call_text">वीडियो कॉल</string>
+    <string name="facebook_reaction_prefix">प्रतिक्रिया दी</string>
+    <string name="facebook_reaction_suffix">आपके संदेश पर</string>
+    <string name="emoji_to_your_message">%1$s को \"</string>
+
+    <!-- Fallback/Text Reactions (e.g. from iOS via SMS) -->
+    <string-array name="text_reaction_keywords">
+        <item>पसंद किया \"</item>
+        <item>प्यार किया \"</item>
+        <item>नापसंद किया \"</item>
+        <item>हंसा \"</item>
+        <item>ज़ोर दिया \"</item>
+        <item>सवाल किया \"</item>
+    </string-array>
 
     <!-- Incoming Phone Call -->
     <string name="incoming_call">%1$s से आने वाली कॉल</string>
@@ -147,6 +163,11 @@
     <string name="no_notification_sources_instruction">केवल उनके बारे में सूचित होने के लिए कुछ %1$s जोड़ें, या सभी %1$s के बारे में सूचित होने के लिए इसे खाली छोड़ दें।</string>
     <string name="remove">हटाएं</string>
     <string name="notification_sources">सूचना स्रोत</string>
+
+    <!-- Messaging App Settings -->
+    <string name="read_messages">संदेश पढ़ें</string>
+    <string name="ignore_single_word_messages">एक शब्द वाले संदेशों को अनदेखा करें</string>
+    <string name="ignore_reactions">प्रतिक्रियाओं को अनदेखा करें</string>
 
     <!-- Messenger Settings -->
     <string name="messenger_include_message_requests">संदेश अनुरोध शामिल करें</string>
@@ -239,6 +260,11 @@
     <string name="snackbar_export_success">बैकअप सफलतापूर्वक निर्यात किया गया!</string>
     <string name="snackbar_export_failed">निर्यात विफल: %1$s</string>
 
+    <!-- Fetcher concerns -->
+    <string name="fetcher_loading_screen">%1$s प्राप्त किया जा रहा है…</string>
+    <string name="contacts_data_name">संपर्क</string>
+    <string name="apps_data_name">ऐप्स</string>
+
     <string name="snackbar_importing">डेटा पुनर्स्थापित किया जा रहा है…</string>
     <string name="snackbar_import_success">डेटा सफलतापूर्वक पुनर्स्थापित किया गया!</string>
     <string name="snackbar_import_failed">आयात विफल: %1$s</string>
@@ -279,10 +305,5 @@
 \n
         P.S. यदि यह सकारात्मक प्रतिक्रिया है, तो मैं निश्चित रूप से Google Play Store पर Speakify को रेटिंग देने पर विचार करूँगा!
     </string>
-
-    <!-- Fetcher concerns -->
-    <string name="fetcher_loading_screen">%1$s प्राप्त किया जा रहा है…</string>
-    <string name="contacts_data_name">संपर्क</string>
-    <string name="apps_data_name">ऐप्स</string>
 
 </resources>

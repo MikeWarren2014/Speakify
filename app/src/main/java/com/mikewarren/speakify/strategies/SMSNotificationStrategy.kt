@@ -10,6 +10,7 @@ import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
+import com.mikewarren.speakify.utils.SearchUtils
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
 
@@ -18,7 +19,7 @@ class SMSNotificationStrategy(notification: StatusBarNotification,
                               context: Context,
                               ttsManager: TTSManager,
 ) : BasePhoneNotificationStrategy(notification, appSettingsModel, context, ttsManager),
-IMessageNotificationHandler<SMSNotificationStrategy.SMSNotificationType>,
+IOSReactionHandler<SMSNotificationStrategy.SMSNotificationType>,
 ITaggable {
 
 
@@ -64,10 +65,23 @@ ITaggable {
             return false
         }
 
-        return (getNotificationType() == SMSNotificationType.IncomingSMS) && (extractedContactModel.name != IMessageNotificationHandler.SelfName)
+        return (getNotificationType() == SMSNotificationType.IncomingSMS) &&
+                (extractedContactModel.name != IMessageNotificationHandler.SelfName) &&
+                (shouldSpeakifyBasedOnSettings())
     }
 
     override fun textToSpeakify(): String {
+        if (isReadMessagesEnabled) {
+            var contactName =  extractedContactModel.name
+            if (contactName.isEmpty())
+                contactName = context.getString(R.string.contact_unknown)
+
+            return context.getString(R.string.sms_text_out_loud,
+                contactName,
+                NotificationExtractionUtils.ExtractText(notification),
+            )
+        }
+
         if (extractedContactModel.name.isEmpty())
             return context.getString(R.string.sms_notification_strategy_text,
                 extractedContactModel.phoneNumber)
@@ -142,6 +156,19 @@ ITaggable {
 
     override fun getOtherType(): SMSNotificationType {
         return SMSNotificationType.Other
+    }
+
+    override fun isReaction(): Boolean {
+        if (super.isReaction())
+            return true
+
+        val notificationText = NotificationExtractionUtils.ExtractText(notification)
+        val firstEmojiPosition = SearchUtils.GetEmojiPosition(notificationText)
+        val firstEmoji = notificationText[firstEmojiPosition]
+
+        return notificationText.substring(firstEmojiPosition)
+            .contains(context.getString(R.string.emoji_to_your_message,
+                firstEmoji))
     }
 
 

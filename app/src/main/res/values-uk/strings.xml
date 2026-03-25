@@ -26,7 +26,7 @@
     <string name="legal_agree_prefix">"Я погоджуюсь з "</string>
     <string name="legal_terms_of_service">Умовами надання послуг</string>
     <string name="legal_and">" та "</string>
-    <string name="legal_privacy_policy">Політикою конфіденційності</string>
+    <string name="legal_privacy_policy">Политикою конфіденційності</string>
     <string name="legal_dot">.</string>
 
     <!-- Forgot Password View -->
@@ -63,7 +63,9 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">Сповіщення від %1$s</string>
     <string name="sms_notification_strategy_text">SMS від %1$s</string>
+    <string name="sms_text_out_loud">%1$s надіслав(-ла) вам текстове повідомлення: %2$s</string>
     <string name="messenger_notification_text">Вхідне повідомлення Facebook від %1$s</string>
+    <string name="messenger_text_out_loud">%1$s надіслав(-ла) вам повідомлення у Facebook: %2$s</string>
     <string name="messenger_message_request">Вхідний запит повідомлення Facebook від %1$s</string>
     <string name="messenger_notification_audio_call">Вхідний дзвінок Facebook від %1$s</string>
     <string name="messenger_notification_video_call">Вхідний відеодзвінок Facebook від %1$s</string>
@@ -78,6 +80,7 @@
 
     <string name="google_voice_notification_strategy_text_suffix"> від %1$s</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">Вхідне SMS Google Voice%1$s</string>
+    <string name="google_voice_incoming_text_out_loud">%1$s надіслав(-ла) повідомлення на ваш номер Google Voice: %2$s</string>
     <string name="google_voice_incoming_call_notification_strategy_text">Вхідний дзвінок Google Voice%1$s</string>
     <string name="google_voice_strategy_unknown_notification_text">Невідоме сповіщення Google Voice</string>
 
@@ -115,6 +118,19 @@
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Аудіодзвінок</string>
     <string name="messenger_incoming_video_call_text">Відеодзвінок</string>
+    <string name="facebook_reaction_prefix">Відреагував</string>
+    <string name="facebook_reaction_suffix">на ваше повідомлення</string>
+    <string name="emoji_to_your_message">%1$s на \"</string>
+
+    <!-- Fallback/Text Reactions (e.g. from iOS via SMS) -->
+    <string-array name="text_reaction_keywords">
+        <item>Сподобалося \"</item>
+        <item>У захваті \"</item>
+        <item>Не сподобалося \"</item>
+        <item>Розсміяло \"</item>
+        <item>Виділено \"</item>
+        <item>Запитано \"</item>
+    </string-array>
 
     <!-- Incoming Phone Call -->
     <string name="incoming_call">Вхідний дзвінок від %1$s</string>
@@ -147,6 +163,11 @@
     <string name="no_notification_sources_instruction">Додайте деякі %1$s, щоб отримувати сповіщення лише про них, або залиште це поле порожнім, щоб отримувати сповіщення про ВСІ %1$s.</string>
     <string name="remove">Видалити</string>
     <string name="notification_sources">джерела сповіщень</string>
+
+    <!-- Messaging App Settings -->
+    <string name="read_messages">Читати повідомлення</string>
+    <string name="ignore_single_word_messages">Ігнорувати повідомлення з одного слова</string>
+    <string name="ignore_reactions">Ігнорувати реакції</string>
 
     <!-- Messenger Settings -->
     <string name="messenger_include_message_requests">Включати запити повідомлень</string>
@@ -239,6 +260,11 @@
     <string name="snackbar_export_success">Резервна копія успішно експортована!</string>
     <string name="snackbar_export_failed">Експорт не вдався: %1$s</string>
 
+    <!-- Fetcher concerns -->
+    <string name="fetcher_loading_screen">Отримання %1$s…</string>
+    <string name="contacts_data_name">контакти</string>
+    <string name="apps_data_name">програми</string>
+
     <string name="snackbar_importing">Відновлення даних…</string>
     <string name="snackbar_import_success">Дані успішно відновлені!</string>
     <string name="snackbar_import_failed">Імпорт не вдався: %1$s</string>
@@ -281,10 +307,5 @@
         P.S. Якщо це позитивний відгук, я обов\'язково розгляну можливість оцінки Speakify в Google
         Play Store!
     </string>
-
-    <!-- Fetcher concerns -->
-    <string name="fetcher_loading_screen">Отримання %1$s…</string>
-    <string name="contacts_data_name">контакти</string>
-    <string name="apps_data_name">програми</string>
 
 </resources>

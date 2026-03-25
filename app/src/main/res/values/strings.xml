@@ -64,7 +64,9 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">Notification from %1$s</string>
     <string name="sms_notification_strategy_text">Text from %1$s</string>
+    <string name="sms_text_out_loud">%1$s sent you a text message: %2$s</string>
     <string name="messenger_notification_text">Incoming Facebook message from %1$s</string>
+    <string name="messenger_text_out_loud">%1$s sent you a Facebook message: %2$s</string>
     <string name="messenger_message_request">Incoming Facebook message request from %1$s</string>
     <string name="messenger_notification_audio_call">Incoming Facebook call from %1$s</string>
     <string name="messenger_notification_video_call">Incoming Facebook video call from %1$s</string>
@@ -79,6 +81,7 @@
 
     <string name="google_voice_notification_strategy_text_suffix">" from %1$s"</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">Incoming Google Voice Text Message%1$s</string>
+    <string name="google_voice_incoming_text_out_loud">%1$s sent a message to your Google Voice number: %2$s</string>
     <string name="google_voice_incoming_call_notification_strategy_text">Incoming Google Voice Call%1$s</string>
     <string name="google_voice_strategy_unknown_notification_text">Unknown Google Voice Notification</string>
 
@@ -116,6 +119,19 @@
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Audio call</string>
     <string name="messenger_incoming_video_call_text">Video call</string>
+    <string name="facebook_reaction_prefix">Reacted</string>
+    <string name="facebook_reaction_suffix">to your message</string>
+    <string name="emoji_to_your_message">%1$s to \"</string>
+
+    <!-- Fallback/Text Reactions (e.g. from iOS via SMS) -->
+    <string-array name="text_reaction_keywords">
+        <item>Liked \"</item>
+        <item>Loved \"</item>
+        <item>Disliked \"</item>
+        <item>Laughed at \"</item>
+        <item>Emphasized \"</item>
+        <item>Questioned \"</item>
+    </string-array>
 
     <!-- Incoming Phone Call -->
     <string name="incoming_call">Incoming call from %1$s</string>
@@ -148,6 +164,11 @@
     <string name="no_notification_sources_instruction">Add some %1$s to be notified about just them, or leave this blank to be notified about ALL %1$s.</string>
     <string name="remove">Remove</string>
     <string name="notification_sources">notification sources</string>
+
+    <!-- Messaging App Settings -->
+    <string name="read_messages">Read Messages</string>
+    <string name="ignore_single_word_messages">Ignore single word messages</string>
+    <string name="ignore_reactions">Ignore reactions</string>
 
     <!-- Messenger Settings -->
     <string name="messenger_include_message_requests">Include message requests</string>
