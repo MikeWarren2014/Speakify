@@ -7,8 +7,8 @@ import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.appSettingsKeys.MessagingAppKeys
 
-abstract class BaseMessagingAppAdditionalSettingsViewModel(
-    settingsRepository: SettingsRepository,
+open class BaseMessagingAppAdditionalSettingsViewModel(
+    override var settingsRepository: SettingsRepository,
     initialAdditionalSettings: Map<String, String>,
     onSaveSettings: (Map<String, String>) -> Unit
 ) : BaseAppAdditionalSettingsViewModel(settingsRepository, initialAdditionalSettings, onSaveSettings) {
@@ -24,9 +24,18 @@ abstract class BaseMessagingAppAdditionalSettingsViewModel(
         initialAdditionalSettings[MessagingAppKeys.KEY_IGNORE_REACTIONS]?.toBoolean() ?: Constants.DefaultBooleanSetting
     )
 
+    private var originalReadMessages = readMessages
+    private var originalIgnoreSingleWordMessages = ignoreSingleWordMessages
+    private var originalIgnoreReactions = ignoreReactions
 
     override fun onOpen() {
         // No additional logic needed on open, yet...
+    }
+
+    override fun cancel() {
+        readMessages = originalReadMessages
+        ignoreSingleWordMessages = originalIgnoreSingleWordMessages
+        ignoreReactions = originalIgnoreReactions
     }
 
     override fun makeAdditionalSettingsDict(): Map<String, String> {

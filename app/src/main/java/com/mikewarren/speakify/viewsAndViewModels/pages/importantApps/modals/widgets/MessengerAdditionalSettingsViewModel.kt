@@ -8,7 +8,7 @@ import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.appSettingsKeys.MessagingAppKeys
 
 class MessengerAdditionalSettingsViewModel(
-    override var settingsRepository: SettingsRepository,
+    settingsRepository: SettingsRepository,
     initialAdditionalSettings: Map<String, String>,
     onSaveSettings: (Map<String, String>) -> Unit,
 ) : BaseMessagingAppAdditionalSettingsViewModel(settingsRepository, initialAdditionalSettings, onSaveSettings) {
@@ -20,6 +20,7 @@ class MessengerAdditionalSettingsViewModel(
     private var originalIncludeMessageRequests = includeMessageRequests
 
     override fun cancel() {
+        super.cancel()
         includeMessageRequests = originalIncludeMessageRequests
     }
 

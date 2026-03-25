@@ -25,6 +25,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.constants.PackageNames
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.BaseMessagingAppAdditionalSettingsViewModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.MessagingAppAdditionalSettingsView
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.MessengerAdditionalSettingsView
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.MessengerAdditionalSettingsViewModel
 
@@ -115,20 +117,29 @@ fun AppSettingsView(
 
 @Composable
 fun GetAdditionalSettingsView(viewModel: AppSettingsViewModel) {
-    if (PackageNames.FacebookMessengerAppList.contains(viewModel.getPackageName())) {
-        MessengerAdditionalSettingsView(viewModel.childAdditionalSettingsViewModel as MessengerAdditionalSettingsViewModel)
+    val packageName = viewModel.getPackageName()
+
+    if ((packageName in PackageNames.MessagingAppList) ||
+        (packageName == PackageNames.GoogleVoice)) {
+        return MessagingAppAdditionalSettingsView(viewModel.childAdditionalSettingsViewModel as BaseMessagingAppAdditionalSettingsViewModel)
+    }
+
+    if (packageName in PackageNames.FacebookMessengerAppList) {
+        return MessengerAdditionalSettingsView(viewModel.childAdditionalSettingsViewModel as MessengerAdditionalSettingsViewModel)
     }
 }
 
 @Composable
 fun GetChildListView(viewModel: AppSettingsViewModel) {
-    if ((viewModel.getPackageName() in PackageNames.PhoneAppList) ||
-        (viewModel.getPackageName() in PackageNames.MessagingAppList) ||
-        (viewModel.getPackageName() == PackageNames.GoogleVoice)) {
+    val packageName = viewModel.getPackageName()
+
+    if ((packageName in PackageNames.PhoneAppList) ||
+        (packageName in PackageNames.MessagingAppList) ||
+        (packageName == PackageNames.GoogleVoice)) {
         return ImportantContactsListView(viewModel.childNotificationListViewModel as BaseImportantContactsListViewModel)
     }
 
-    if (PackageNames.FacebookMessengerAppList.contains(viewModel.getPackageName())) {
+    if (packageName in PackageNames.FacebookMessengerAppList) {
         return MessengerImportantContactsListView(viewModel.childNotificationListViewModel as MessengerImportantContactsListViewModel)
     }
 
