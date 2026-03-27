@@ -115,9 +115,9 @@ class GoogleVoiceNotificationStrategy(notification: StatusBarNotification,
 
         val baseShouldSpeakify = super.shouldSpeakify()
         if ((baseShouldSpeakify) && (notificationType == NotificationType.Other)) {
+            doLog("Unknown Google Voice Notification Type")
             logNotification()
-            doLog("notificationType == ${notificationType}")
-            throw IllegalStateException("Notification type is unknown, but we are trying to speakify it?!")
+            return false
         }
 
         return baseShouldSpeakify && shouldSpeakifyBasedOnSettings()
