@@ -40,3 +40,6 @@
 # --- Firebase ---
 # Firebase usually handles its own rules via the gradle plugin, but if you see issues:
 #-keep class com.google.firebase.** { *; }
+
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.android.gms.**
