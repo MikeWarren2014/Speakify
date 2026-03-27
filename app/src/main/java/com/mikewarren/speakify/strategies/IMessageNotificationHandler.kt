@@ -12,7 +12,7 @@ import com.mikewarren.speakify.utils.SearchUtils
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
 
-interface IMessageNotificationHandler<EnumType>: ITaggable {
+interface IMessageNotificationHandler<EnumType>: IMessageSettingsParser, ITaggable {
 
     companion object {
         val SelfName = "Self"
@@ -71,6 +71,20 @@ interface IMessageNotificationHandler<EnumType>: ITaggable {
     fun getIncomingMessageType(): EnumType
     fun getOtherType() : EnumType
 
+    fun getLatestMessageText(): String {
+        // 1. Try to get the latest message from MessagingStyle
+        val messages = getMessages()
+        if (messages.isNotEmpty()) {
+            return messages.last()
+                .text
+                ?.trim()
+                ?.toString() ?: ""
+        }
+
+        // 2. Fallback to the standard android.text extra
+        return NotificationExtractionUtils.ExtractText(notification)
+    }
+
     fun getLastSenderPerson(): Person? {
         val messages = getMessages()
         if (messages.isNotEmpty()) {
@@ -111,4 +125,19 @@ interface IMessageNotificationHandler<EnumType>: ITaggable {
     fun getMessagingStyle() : NotificationCompat.MessagingStyle? {
         return NotificationCompat.MessagingStyle.extractMessagingStyleFromNotification(notification.notification)
     }
+
+    fun shouldSpeakifyBasedOnSettings(): Boolean {
+        if (isIgnoreSingleWordMessagesEnabled)
+            return !isSingleWordMessage()
+
+        if (isIgnoreReactionsEnabled)
+            return !isReaction()
+
+        return true
+    }
+
+    fun isSingleWordMessage(): Boolean {
+        return !getLatestMessageText().contains("""\s""".toRegex())
+    }
+    fun isReaction(): Boolean
 }

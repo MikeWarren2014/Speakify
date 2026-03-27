@@ -63,7 +63,9 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">%1$s からの通知</string>
     <string name="sms_notification_strategy_text">%1$s からのメッセージ</string>
+    <string name="sms_text_out_loud">%1$s からメッセージが届きました: %2$s</string>
     <string name="messenger_notification_text">%1$s からの Facebook メッセージ</string>
+    <string name="messenger_text_out_loud">%1$s から Facebook メッセージが届きました: %2$s</string>
     <string name="messenger_message_request">%1$s からの Facebook メッセージリクエスト</string>
     <string name="messenger_notification_audio_call">%1$s からの Facebook 着信</string>
     <string name="messenger_notification_video_call">%1$s からの Facebook 映像通話着信</string>
@@ -78,6 +80,7 @@
 
     <string name="google_voice_notification_strategy_text_suffix"> (%1$s より)</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">Google Voice の受信メッセージ%1$s</string>
+    <string name="google_voice_incoming_text_out_loud">%1$s があなたの Google Voice 番号にメッセージを送信しました: %2$s</string>
     <string name="google_voice_incoming_call_notification_strategy_text">Google Voice の着信%1$s</string>
     <string name="google_voice_strategy_unknown_notification_text">不明な Google Voice 通知</string>
 
@@ -115,6 +118,19 @@
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">音声通話</string>
     <string name="messenger_incoming_video_call_text">映像通話</string>
+    <string name="facebook_reaction_prefix">リアクションしました</string>
+    <string name="facebook_reaction_suffix">あなたのメッセージに</string>
+    <string name="emoji_to_your_message">%1$s を「</string>
+
+    <!-- Fallback/Text Reactions (e.g. from iOS via SMS) -->
+    <string-array name="text_reaction_keywords">
+        <item>「いいね！」しました「</item>
+        <item>「超いいね！」しました「</item>
+        <item>「よくないね」しました「</item>
+        <item>「ウケるね」しました「</item>
+        <item>強調しました「</item>
+        <item>疑問を呈しました「</item>
+    </string-array>
 
     <!-- Incoming Phone Call -->
     <string name="incoming_call">%1$s からの着信</string>
@@ -147,6 +163,11 @@
     <string name="no_notification_sources_instruction">%1$s を追加して特定の通知のみを受け取るか、空のままにしてすべての %1$s の通知を受け取ります。</string>
     <string name="remove">削除</string>
     <string name="notification_sources">通知ソース</string>
+
+    <!-- Messaging App Settings -->
+    <string name="read_messages">メッセージを読み上げる</string>
+    <string name="ignore_single_word_messages">単語1つのメッセージを無視する</string>
+    <string name="ignore_reactions">リアクションを無視する</string>
 
     <!-- Messenger Settings -->
     <string name="messenger_include_message_requests">メッセージリクエストを含める</string>
@@ -239,6 +260,11 @@
     <string name="snackbar_export_success">バックアップが正常にエクスポートされました！</string>
     <string name="snackbar_export_failed">エクスポートに失敗しました: %1$s</string>
 
+    <!-- Fetcher concerns -->
+    <string name="fetcher_loading_screen">%1$s を取得中…</string>
+    <string name="contacts_data_name">連絡先</string>
+    <string name="apps_data_name">アプリ</string>
+
     <string name="snackbar_importing">データを復元中…</string>
     <string name="snackbar_import_success">データが正常に復元されました！</string>
     <string name="snackbar_import_failed">インポートに失敗しました: %1$s</string>
@@ -279,10 +305,5 @@
 \n
         追伸: 良いフィードバックをいただける場合は、Google Play ストアでの Speakify の評価をぜひご検討ください！
     </string>
-
-    <!-- Fetcher concerns -->
-    <string name="fetcher_loading_screen">%1$s を取得中…</string>
-    <string name="contacts_data_name">連絡先</string>
-    <string name="apps_data_name">アプリ</string>
 
 </resources>

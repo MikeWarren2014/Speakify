@@ -12,7 +12,8 @@ import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.services.TTSManager
-import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.IAdditionalSettingsViewModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.BaseAppAdditionalSettingsViewModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.BaseMessagingAppAdditionalSettingsViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.MessengerAdditionalSettingsViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -49,7 +50,7 @@ class AppSettingsViewModel(
 
     var childAnnouncerVoiceSectionViewModel: AnnouncerVoiceSectionViewModel? = null
     var childNotificationListViewModel: BaseNotificationSourceListViewModel<*>? = null
-    var childAdditionalSettingsViewModel: IAdditionalSettingsViewModel? = null
+    var childAdditionalSettingsViewModel: BaseAppAdditionalSettingsViewModel? = null
 
     fun getPackageName(): String {
         return appModel.packageName
@@ -120,7 +121,18 @@ class AppSettingsViewModel(
         return null
     }
 
-    private fun createAdditionalSettingsViewModel(model: AppSettingsModel): IAdditionalSettingsViewModel? {
+    private fun createAdditionalSettingsViewModel(model: AppSettingsModel): BaseAppAdditionalSettingsViewModel? {
+        if (getPackageName() in PackageNames.MessagingAppList) {
+            return BaseMessagingAppAdditionalSettingsViewModel(
+                settingsRepository,
+                model.additionalSettings,
+                onSaveSettings = { additionalSettings: Map<String, String> ->
+                    _settings.update { model: AppSettingsModel ->
+                        model.copy(additionalSettings = additionalSettings)
+                    }
+                }
+            )
+        }
         if (PackageNames.FacebookMessengerAppList.contains(getPackageName())) {
             return MessengerAdditionalSettingsViewModel(
                 settingsRepository,

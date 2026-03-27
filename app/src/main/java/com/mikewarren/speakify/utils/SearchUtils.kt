@@ -69,4 +69,11 @@ object SearchUtils {
     fun IsAnyOf(state: Any?, list: List<KClass<*>>): Boolean {
         return list.any { it.java.isInstance(state) }
     }
+
+    fun GetEmojiPosition(stringToSearch: String): Int {
+        return """[\uD83C-\uDBFF\uDC00-\uDFFF]|\p{So}""".toRegex()
+            .find(stringToSearch)
+            ?.range
+            ?.first ?: -1
+    }
 }

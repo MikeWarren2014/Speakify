@@ -14,6 +14,7 @@ class GoogleVoiceNotificationStrategy(notification: StatusBarNotification,
                                       appSettingsModel: AppSettingsModel?,
                                       context: Context,
                                       ttsManager: TTSManager): BasePhoneNotificationStrategy(notification, appSettingsModel, context, ttsManager),
+    IOSReactionHandler<GoogleVoiceNotificationStrategy.NotificationType>,
     IThirdPartyMessageNotificationHandler<GoogleVoiceNotificationStrategy.NotificationType> {
 
     enum class NotificationType(val stringValue: String) {
@@ -26,7 +27,7 @@ class GoogleVoiceNotificationStrategy(notification: StatusBarNotification,
     }
 
     override fun getNotificationType() : NotificationType {
-        val baseNotificationType = super.getNotificationType()
+        val baseNotificationType = super<IThirdPartyMessageNotificationHandler>.getNotificationType()
         if ((baseNotificationType != getOtherType()) ||
             (notification.notification.actions.isNullOrEmpty()))
             return baseNotificationType
@@ -87,9 +88,17 @@ class GoogleVoiceNotificationStrategy(notification: StatusBarNotification,
             suffix = context.getString(R.string.google_voice_notification_strategy_text_suffix)
 
         val notificationType = getNotificationType()
-        if (notificationType == NotificationType.IncomingSMS)
-            return context.getString(R.string.google_voice_incoming_sms_notification_strategy_text,
-                suffix)
+        if (notificationType == NotificationType.IncomingSMS) {
+            if (isReadMessagesEnabled)
+                return context.getString(R.string.google_voice_incoming_text_out_loud,
+                    contactModel.name,
+                    NotificationExtractionUtils.ExtractText(notification),
+                )
+            return context.getString(
+                R.string.google_voice_incoming_sms_notification_strategy_text,
+                suffix
+            )
+        }
         if (notificationType == NotificationType.IncomingCall)
             return context.getString(R.string.google_voice_incoming_call_notification_strategy_text,
                 suffix)
@@ -111,6 +120,6 @@ class GoogleVoiceNotificationStrategy(notification: StatusBarNotification,
             throw IllegalStateException("Notification type is unknown, but we are trying to speakify it?!")
         }
 
-        return baseShouldSpeakify
+        return baseShouldSpeakify && shouldSpeakifyBasedOnSettings()
     }
 }

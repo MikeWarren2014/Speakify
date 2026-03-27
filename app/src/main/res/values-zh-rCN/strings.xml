@@ -64,7 +64,9 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">来自 %1$s 的通知</string>
     <string name="sms_notification_strategy_text">来自 %1$s 的短信</string>
+    <string name="sms_text_out_loud">%1$s 向您发送了一条短信：%2$s</string>
     <string name="messenger_notification_text">收到来自 %1$s 的 Facebook 消息</string>
+    <string name="messenger_text_out_loud">%1$s 向您发送了一条 Facebook 消息：%2$s</string>
     <string name="messenger_message_request">收到来自 %1$s 的 Facebook 消息请求</string>
     <string name="messenger_notification_audio_call">收到来自 %1$s 的 Facebook 电话</string>
     <string name="messenger_notification_video_call">收到来自 %1$s 的 Facebook 视频电话</string>
@@ -79,6 +81,7 @@
 
     <string name="google_voice_notification_strategy_text_suffix"> 来自 %1$s</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">收到 Google Voice 短信%1$s</string>
+    <string name="google_voice_incoming_text_out_loud">%1$s 向您的 Google Voice 号码发送了一条消息：%2$s</string>
     <string name="google_voice_incoming_call_notification_strategy_text">收到 Google Voice 电话%1$s</string>
     <string name="google_voice_strategy_unknown_notification_text">未知的 Google Voice 通知</string>
 
@@ -116,6 +119,19 @@
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">语音通话</string>
     <string name="messenger_incoming_video_call_text">视频通话</string>
+    <string name="facebook_reaction_prefix">已对</string>
+    <string name="facebook_reaction_suffix">你的消息做出回应</string>
+    <string name="emoji_to_your_message">%1$s 到 \"</string>
+
+    <!-- Fallback/Text Reactions (e.g. from iOS via SMS) -->
+    <string-array name="text_reaction_keywords">
+        <item>赞了 \"</item>
+        <item>爱了 \"</item>
+        <item>踩了 \"</item>
+        <item>笑话了 \"</item>
+        <item>强调了 \"</item>
+        <item>询问了 \"</item>
+    </string-array>
 
     <!-- Incoming Phone Call -->
     <string name="incoming_call">收到来自 %1$s 的电话</string>
@@ -148,6 +164,11 @@
     <string name="no_notification_sources_instruction">添加一些 %1$s 以仅接收它们的通知，或留空以接收所有 %1$s 的通知。</string>
     <string name="remove">移除</string>
     <string name="notification_sources">通知源</string>
+
+    <!-- Messaging App Settings -->
+    <string name="read_messages">读取消息</string>
+    <string name="ignore_single_word_messages">忽略单字消息</string>
+    <string name="ignore_reactions">忽略回应</string>
 
     <!-- Messenger Settings -->
     <string name="messenger_include_message_requests">包括消息请求</string>

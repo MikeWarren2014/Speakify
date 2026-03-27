@@ -63,7 +63,9 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">Уведомление от %1$s</string>
     <string name="sms_notification_strategy_text">SMS от %1$s</string>
+    <string name="sms_text_out_loud">%1$s отправил(-а) вам SMS: %2$s</string>
     <string name="messenger_notification_text">Входящее сообщение Facebook от %1$s</string>
+    <string name="messenger_text_out_loud">%1$s отправил(-а) вам сообщение в Facebook: %2$s</string>
     <string name="messenger_message_request">Входящий запрос сообщения Facebook от %1$s</string>
     <string name="messenger_notification_audio_call">Входящий звонок Facebook от %1$s</string>
     <string name="messenger_notification_video_call">Входящий видеозвонок Facebook от %1$s</string>
@@ -78,6 +80,7 @@
 
     <string name="google_voice_notification_strategy_text_suffix"> от %1$s</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">Входящее SMS Google Voice%1$s</string>
+    <string name="google_voice_incoming_text_out_loud">%1$s отправил(-а) сообщение на ваш номер Google Voice: %2$s</string>
     <string name="google_voice_incoming_call_notification_strategy_text">Входящий звонок Google Voice%1$s</string>
     <string name="google_voice_strategy_unknown_notification_text">Неизвестное уведомление Google Voice</string>
 
@@ -115,6 +118,19 @@
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Аудиозвонок</string>
     <string name="messenger_incoming_video_call_text">Видеозвонок</string>
+    <string name="facebook_reaction_prefix">Отправил реакцию</string>
+    <string name="facebook_reaction_suffix">на ваше сообщение</string>
+    <string name="emoji_to_your_message">%1$s на «</string>
+
+    <!-- Fallback/Text Reactions (e.g. from iOS via SMS) -->
+    <string-array name="text_reaction_keywords">
+        <item>Понравилось «</item>
+        <item>Очень понравилось «</item>
+        <item>Поставил дизлайк «</item>
+        <item>Посмеялся над словом «</item>
+        <item>Выделено «</item>
+        <item>Спросил: «</item>
+    </string-array>
 
     <!-- Incoming Phone Call -->
     <string name="incoming_call">Входящий звонок от %1$s</string>
@@ -147,6 +163,11 @@
     <string name="no_notification_sources_instruction">Добавьте источники %1$s, чтобы получать уведомления только от них, или оставьте поле пустым, чтобы получать уведомления от ВСЕХ источников %1$s.</string>
     <string name="remove">Удалить</string>
     <string name="notification_sources">источники уведомлений</string>
+
+    <!-- Messaging App Settings -->
+    <string name="read_messages">Читать сообщения</string>
+    <string name="ignore_single_word_messages">Игнорировать сообщения из одного слова</string>
+    <string name="ignore_reactions">Игнорировать реакции</string>
 
     <!-- Messenger Settings -->
     <string name="messenger_include_message_requests">Включать запросы сообщений</string>
@@ -239,6 +260,11 @@
     <string name="snackbar_export_success">Резервная копия успешно экспортирована!</string>
     <string name="snackbar_export_failed">Экспорт не удался: %1$s</string>
 
+    <!-- Fetcher concerns -->
+    <string name="fetcher_loading_screen">Загрузка %1$s…</string>
+    <string name="contacts_data_name">контакты</string>
+    <string name="apps_data_name">приложения</string>
+
     <string name="snackbar_importing">Восстановление данных…</string>
     <string name="snackbar_import_success">Данные успешно восстановлены!</string>
     <string name="snackbar_import_failed">Импорт не удался: %1$s</string>
@@ -280,10 +306,5 @@
         P.S. Если это положительный отзыв, я обязательно рассмотрю возможность оценки Speakify в Google
         Play Store!
     </string>
-
-    <!-- Fetcher concerns -->
-    <string name="fetcher_loading_screen">Загрузка %1$s…</string>
-    <string name="contacts_data_name">контакты</string>
-    <string name="apps_data_name">приложения</string>
 
 </resources>

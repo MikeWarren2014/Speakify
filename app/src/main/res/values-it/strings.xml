@@ -63,7 +63,9 @@
     <!-- Notification Strategies -->
     <string name="simple_notification_strategy_text">Notifica da %1$s</string>
     <string name="sms_notification_strategy_text">SMS da %1$s</string>
+    <string name="sms_text_out_loud">%1$s ti ha inviato un messaggio di testo: %2$s</string>
     <string name="messenger_notification_text">Messaggio Facebook in arrivo da %1$s</string>
+    <string name="messenger_text_out_loud">%1$s ti ha inviato un messaggio su Facebook: %2$s</string>
     <string name="messenger_message_request">Richiesta di messaggio Facebook in arrivo da %1$s</string>
     <string name="messenger_notification_audio_call">Chiamata Facebook in arrivo da %1$s</string>
     <string name="messenger_notification_video_call">Videochiamata Facebook in arrivo da %1$s</string>
@@ -78,6 +80,7 @@
 
     <string name="google_voice_notification_strategy_text_suffix"> da %1$s</string>
     <string name="google_voice_incoming_sms_notification_strategy_text">Messaggio di testo Google Voice in arrivo%1$s</string>
+    <string name="google_voice_incoming_text_out_loud">%1$s ha inviato un messaggio al tuo numero Google Voice: %2$s</string>
     <string name="google_voice_incoming_call_notification_strategy_text">Chiamata Google Voice in arrivo%1$s</string>
     <string name="google_voice_strategy_unknown_notification_text">Notifica Google Voice sconosciuta</string>
 
@@ -115,6 +118,19 @@
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Chiamata audio</string>
     <string name="messenger_incoming_video_call_text">Videochiamata</string>
+    <string name="facebook_reaction_prefix">Ha reagito</string>
+    <string name="facebook_reaction_suffix">al tuo messaggio</string>
+    <string name="emoji_to_your_message">%1$s a \"</string>
+
+    <!-- Fallback/Text Reactions (e.g. from iOS via SMS) -->
+    <string-array name="text_reaction_keywords">
+        <item>Ti piace \"</item>
+        <item>Ti piace molto \"</item>
+        <item>Non ti piace \"</item>
+        <item>Hai riso di \"</item>
+        <item>Hai enfatizzato \"</item>
+        <item>Hai chiesto \"</item>
+    </string-array>
 
     <!-- Incoming Phone Call -->
     <string name="incoming_call">Chiamata in arrivo da %1$s</string>
@@ -147,6 +163,11 @@
     <string name="no_notification_sources_instruction">Aggiungi alcuni %1$s per essere avvisato solo su quelli, oppure lascia vuoto per essere avvisato su TUTTI i %1$s.</string>
     <string name="remove">Rimuovi</string>
     <string name="notification_sources">fonti di notifica</string>
+
+    <!-- Messaging App Settings -->
+    <string name="read_messages">Leggi messaggi</string>
+    <string name="ignore_single_word_messages">Ignora messaggi di una sola parola</string>
+    <string name="ignore_reactions">Ignora reazioni</string>
 
     <!-- Messenger Settings -->
     <string name="messenger_include_message_requests">Includi richieste di messaggi</string>
@@ -239,6 +260,11 @@
     <string name="snackbar_export_success">Backup esportato con successo!</string>
     <string name="snackbar_export_failed">Esportazione non riuscita: %1$s</string>
 
+    <!-- Fetcher concerns -->
+    <string name="fetcher_loading_screen">Recupero di %1$s…</string>
+    <string name="contacts_data_name">contatti</string>
+    <string name="apps_data_name">applicazioni</string>
+
     <string name="snackbar_importing">Ripristino dati…</string>
     <string name="snackbar_import_success">Dati ripristinati con successo!</string>
     <string name="snackbar_import_failed">Importazione non riuscita: %1$s</string>
@@ -281,10 +307,5 @@
         P.S. Se questo è un feedback positivo, prenderò sicuramente in considerazione l\'idea di valutare Speakify sul Google
         Play Store!
     </string>
-
-    <!-- Fetcher concerns -->
-    <string name="fetcher_loading_screen">Recupero di %1$s…</string>
-    <string name="contacts_data_name">contatti</string>
-    <string name="apps_data_name">applicazioni</string>
 
 </resources>

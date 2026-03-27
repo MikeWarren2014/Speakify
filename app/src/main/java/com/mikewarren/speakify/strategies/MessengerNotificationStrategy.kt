@@ -5,9 +5,11 @@ import android.content.Context
 import android.os.Build
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import androidx.compose.ui.semantics.text
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.data.constants.appSettingsKeys.MessagingAppKeys
 import com.mikewarren.speakify.data.db.DbProvider
 import com.mikewarren.speakify.data.db.RecentMessengerContactModel
 import com.mikewarren.speakify.services.TTSManager
@@ -62,6 +64,20 @@ class MessengerNotificationStrategy(
         return MessengerNotificationTypes.Other
     }
 
+    val text = NotificationExtractionUtils.ExtractText(notification)
+    val title = NotificationExtractionUtils.ExtractTitle(notification)
+
+    override fun isReaction(): Boolean {
+        val prefix = context.getString(R.string.facebook_reaction_prefix)
+        val suffix = context.getString(R.string.facebook_reaction_suffix)
+
+        // Check if it starts with the prefix and ends with the suffix
+        // and has something (the emoji) in the middle
+        return text.startsWith(prefix, ignoreCase = true) &&
+                text.endsWith(suffix, ignoreCase = true) &&
+                text.length > (prefix.length + suffix.length)
+    }
+
     private val senderName: String? by lazy {
         extractSenderName()
     }
@@ -94,12 +110,12 @@ class MessengerNotificationStrategy(
     }
 
     private fun isAudioCall() : Boolean {
-        return NotificationExtractionUtils.ExtractText(notification)
+        return text
             .contains(context.getString(R.string.messenger_incoming_audio_call_text), ignoreCase = true)
     }
 
     private fun isVideoCall() : Boolean {
-        return NotificationExtractionUtils.ExtractText(notification)
+        return text
             .contains(
                 context.getString(R.string.messenger_incoming_video_call_text),
                 ignoreCase = true
@@ -112,6 +128,11 @@ class MessengerNotificationStrategy(
         val notificationSource = senderName ?: context.getString(R.string.contact_unknown)
 
         if (notificationType == MessengerNotificationTypes.IncomingMessage) {
+            if (isReadMessagesEnabled)
+                return context.getString(R.string.messenger_text_out_loud,
+                    notificationSource,
+                    text,
+                )
             if (isMessageRequest())
                 return context.getString(R.string.messenger_message_request,
                     notificationSource)
@@ -131,9 +152,9 @@ class MessengerNotificationStrategy(
     override fun shouldSpeakify(): Boolean {
         val name = senderName ?: return false
 
-        // 1. Check "Ignore Message Requests" setting
         if (isMessageRequest())  {
-            return (appSettingsModel?.getBooleanSetting(MessengerAdditionalSettingsViewModel.KEY_INCLUDE_MESSAGE_REQUESTS, true)) ?: Constants.DefaultBooleanSetting
+            return ((appSettingsModel?.getBooleanSetting(MessagingAppKeys.KEY_INCLUDE_MESSAGE_REQUESTS, true)) ?: Constants.DefaultBooleanSetting) &&
+                    (super.shouldSpeakifyBasedOnSettings())
         }
         
         // Save to recent contacts regardless of whether we speak it
@@ -152,18 +173,11 @@ class MessengerNotificationStrategy(
             return false
         }
 
-        // if we somehow got an incoming audio call with a phone number, we should let the PhoneStateReceiver handle it
-
-
-        return (super.shouldSpeakify()) ||
-                (appSettingsModel!!.notificationSources.contains(name))
+        return ((super.shouldSpeakify()) || (appSettingsModel!!.notificationSources.contains(name))) &&
+                (super.shouldSpeakifyBasedOnSettings())
     }
 
     private fun isMessageRequest(): Boolean {
-        val extras = notification.notification.extras
-        val title = NotificationExtractionUtils.ExtractTitle(notification)
-        val text = NotificationExtractionUtils.ExtractText(notification)
-        
         return SearchUtils.HasAnyMatchesOf(context.resources.getStringArray(R.array.messenger_message_request_keywords),
             listOf(title, text))
     }
@@ -176,8 +190,7 @@ class MessengerNotificationStrategy(
             val messagingStyle = getMessagingStyle()
             if (messagingStyle != null) {
                 // For non-group chats, the conversation title might be the name
-                val title = extras.getString(Notification.EXTRA_CONVERSATION_TITLE)
-                if (!title.isNullOrEmpty() && !extras.getBoolean(Notification.EXTRA_IS_GROUP_CONVERSATION)) {
+                if (title.isNotEmpty() && !extras.getBoolean(Notification.EXTRA_IS_GROUP_CONVERSATION)) {
                     return title
                 }
                 
@@ -190,7 +203,7 @@ class MessengerNotificationStrategy(
         }
 
         // 2. Fallback to EXTRA_TITLE
-        return extras.getString(Notification.EXTRA_TITLE)
+        return title
     }
 
     private fun saveToRecentContacts(name: String) {
