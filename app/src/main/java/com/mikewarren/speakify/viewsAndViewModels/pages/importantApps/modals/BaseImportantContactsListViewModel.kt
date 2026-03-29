@@ -17,12 +17,12 @@ class BaseImportantContactsListViewModel(
     onSave,
 ) {
 
-    protected val dataSource = ContactListDataRequester.GetInstance(settingsRepository.getContext())
+    protected val dataRequester = ContactListDataRequester.GetInstance(settingsRepository.getContext())
 
-    override val allData: StateFlow<List<ContactModel>> = dataSource.observeData()
+    override val allData: StateFlow<List<ContactModel>> = dataRequester.observeData()
 
     fun fetchContacts() {
-        dataSource.requestData()
+        dataRequester.requestData()
     }
 
     override fun getNotificationSourcesNameText(): UiText {

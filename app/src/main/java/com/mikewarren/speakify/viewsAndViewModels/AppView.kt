@@ -47,6 +47,7 @@ import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsView
 import com.mikewarren.speakify.viewsAndViewModels.pages.SupportView
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.accountDeletion.AccountDeletionView
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.ImportantAppsView
+import com.mikewarren.speakify.viewsAndViewModels.pages.scheduling.SchedulingView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -153,6 +154,7 @@ fun ChildView(viewModel: AppViewModel, route: String, paddingValues: PaddingValu
             viewModel.childNavDrawerViewModel.navigate(Routes.AccountDeletion)
         })
         Routes.Legal -> LegalView()
+        Routes.Scheduling -> SchedulingView()
         else -> DefaultView(route, paddingValues)
     }
 }

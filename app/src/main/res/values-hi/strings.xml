@@ -141,6 +141,7 @@
     <string name="title_settings">सेटिंग्स</string>
     <string name="title_support">सपोर्ट और फीडबैक</string>
     <string name="title_legal">कानूनी</string>
+    <string name="title_scheduling">निर्धारण (Scheduling)</string>
 
     <!-- Important Apps View -->
     <string name="filter_apps">ऐप्स फ़िल्टर करें</string>
@@ -200,6 +201,32 @@
     <string name="settings_sign_out">साइन आउट करें</string>
     <string name="settings_delete_account">खाता हटाएं</string>
     <string name="warning">चेतावनी</string>
+
+    <!-- Scheduling View -->
+    <string name="scheduling_loading_status">स्थिति लोड हो रही है...</string>
+    <string name="scheduling_status_header">स्थिति</string>
+    <string name="scheduling_status_text">ऐप वर्तमान में %1$s है!</string>
+    <string name="scheduling_status_on">चालू (ON)</string>
+    <string name="scheduling_status_off">बंद (OFF)</string>
+    <string name="scheduling_status_off_note">ऐप रुका हुआ है और सूचनाएं नहीं बोलेगा।</string>
+
+    <string name="scheduling_pause_duration">रोकने की अवधि (Pause Duration)</string>
+    <string name="scheduling_pause_duration_text">Speakify को कितनी देर के लिए रोका जाना चाहिए?</string>
+    <string name="scheduling_pause_duration_hours">घंटे</string>
+    <string name="scheduling_pause_duration_minutes">मिनट</string>
+    <string name="scheduling_pause_duration_error_both_fields">कृपया समय दर्ज करें।</string>
+    <string name="scheduling_pause_duration_error_non_digit_characters">इस फ़ील्ड में केवल संख्याएँ हो सकती हैं।</string>
+    <string name="scheduling_pause_duration_error_hours_too_long">यह फ़ील्ड केवल 3 अंकों या उससे कम की हो सकती है।</string>
+    <string name="confirm">पुष्टि करें</string>
+
+    <string name="scheduling_schedule_loading">शेड्यूल लोड हो रहा है...</string>
+    <string name="scheduling_weekly_schedule_header">साप्ताहिक शेड्यूल</string>
+    <string name="timepicker_select_time">समय चुनें</string>
+
+    <!-- Day Schedule Model -->
+    <string name="day_schedule_all_day">पूरे दिन</string>
+    <string name="day_schedule_select_times">समय चुनें</string>
+    <string name="day_schedule_off">बंद</string>
 
     <!-- About View -->
     <string name="about_header_what">यह ऐप क्या है?</string>

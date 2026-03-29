@@ -3,19 +3,27 @@ package com.mikewarren.speakify.data
 
 import android.content.Context
 import android.util.Log
+import com.mikewarren.speakify.utils.TimeUtils
 import androidx.datastore.core.DataStore
 import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.AppSettingsDbModel
 import com.mikewarren.speakify.data.db.DbProvider
 import com.mikewarren.speakify.data.db.NotificationSourceModel
+import com.mikewarren.speakify.data.models.scheduling.DayScheduleType
+import com.mikewarren.speakify.data.models.scheduling.SchedulingModel
+import com.mikewarren.speakify.data.models.scheduling.StatusModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import javax.inject.Inject
 
 

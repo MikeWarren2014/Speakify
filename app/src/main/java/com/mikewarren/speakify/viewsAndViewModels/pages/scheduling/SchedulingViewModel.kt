@@ -1,30 +1,59 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.scheduling
 
-import androidx.compose.animation.core.copy
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
-import com.mikewarren.speakify.data.models.DayScheduleState
-import com.mikewarren.speakify.data.models.DayScheduleType
+import androidx.lifecycle.viewModelScope
+import com.mikewarren.speakify.data.SchedulingRepository
+import com.mikewarren.speakify.data.models.scheduling.DayScheduleModel
+import com.mikewarren.speakify.data.models.scheduling.SchedulingModel
+import com.mikewarren.speakify.data.models.scheduling.StatusModel
+import com.mikewarren.speakify.data.models.scheduling.StatusSectionViewModel
+import com.mikewarren.speakify.data.models.scheduling.WeeklyScheduleViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import java.time.DayOfWeek
+import javax.inject.Inject
 
-class SchedulingViewModel : ViewModel() {
-    var isAppOn by mutableStateOf(true)
-    var pauseHours by mutableStateOf("")
-    var pauseMinutes by mutableStateOf("")// Initialize schedule for all 7 days
-    var weeklySchedule by mutableStateOf(
-        listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-            .map { DayScheduleState(it) }
-    )
+@HiltViewModel
+class SchedulingViewModel @Inject constructor(private val schedulingRepository: SchedulingRepository) : ViewModel() {
+    val modelFlow = schedulingRepository.scheduling
+        .distinctUntilChanged()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000L),
+            initialValue = SchedulingModel()
+        )
 
-    fun toggleAppStatus() {
-        isAppOn = !isAppOn
-    }
+    var childStatusSectionViewModel by mutableStateOf<StatusSectionViewModel?>(null)
+    var childWeeklyScheduleViewModel by mutableStateOf<WeeklyScheduleViewModel?>(null)
 
-    fun updateDayType(dayName: String, newType: DayScheduleType) {
-        weeklySchedule = weeklySchedule.map {
-            if (it.dayName == dayName) it.copy(type = newType) else it
+    init {
+        viewModelScope.launch {
+            // We do this, to make sure the status is up-to-date
+            schedulingRepository.refreshSchedulingStatus()
+
+            val initialModel = modelFlow.value
+
+            childStatusSectionViewModel = StatusSectionViewModel(
+                initialStatus = initialModel.statusModel,
+                onSave = { newStatus: StatusModel ->
+                    viewModelScope.launch {
+                        schedulingRepository.updateScheduling(modelFlow.value.copy(statusModel = newStatus))
+                    }
+                })
+            
+            childWeeklyScheduleViewModel = WeeklyScheduleViewModel(
+                initialSchedule = initialModel.weeklySchedule,
+                onSave = { newSchedule: Map<DayOfWeek, DayScheduleModel> ->
+                    viewModelScope.launch {
+                        schedulingRepository.updateScheduling(modelFlow.value.copy(weeklySchedule = newSchedule))
+                    }
+                })
         }
     }
 }

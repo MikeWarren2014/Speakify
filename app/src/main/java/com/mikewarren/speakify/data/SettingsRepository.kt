@@ -2,7 +2,7 @@
 package com.mikewarren.speakify.data
 
 import android.content.Context
-import androidx.datastore.preferences.core.booleanPreferencesKey
+import com.mikewarren.speakify.data.models.scheduling.SchedulingModel
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {

@@ -3,6 +3,7 @@ package com.mikewarren.speakify.viewsAndViewModels.navigation
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.CalendarViewWeek
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PrivacyTip
@@ -19,6 +20,7 @@ object Routes {
     const val Support = "support"
     const val Legal = "legal"
     const val AccountDeletion = "account_deletion"
+    const val Scheduling = "scheduling"
 }
 
 val navItems = listOf(
@@ -31,6 +33,11 @@ val navItems = listOf(
         R.string.title_settings,
         Icons.Filled.Settings,
         Routes.Settings,
+    ),
+    NavigationItem(
+        R.string.title_scheduling,
+        Icons.Default.CalendarViewWeek,
+        Routes.Scheduling,
     ),
     NavigationItem(
         R.string.title_support,

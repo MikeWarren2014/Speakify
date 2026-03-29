@@ -8,8 +8,6 @@ import android.os.Build
 import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.annotation.RequiresPermission
-import com.clerk.api.Clerk
-import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
@@ -17,7 +15,9 @@ import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.NotificationSourcesDao
 import com.mikewarren.speakify.data.db.UserAppsDao
+import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.services.PhoneCallAnnouncer
+import com.mikewarren.speakify.services.SpeakifyEngineGatekeeper
 import com.mikewarren.speakify.utils.PackageHelper
 import com.mikewarren.speakify.utils.SearchUtils
 import com.mikewarren.speakify.utils.log.ITaggable
@@ -29,6 +29,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
+    @Inject
+    lateinit var gatekeeper: SpeakifyEngineGatekeeper
+
     @Inject
     lateinit var settingsRepository: SettingsRepository
 
@@ -58,11 +61,6 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
             return
         }
 
-        if (Clerk.user == null) {
-            Log.w("PhoneStateReceiver", "User is not logged in. Skipping call processing.")
-            return
-        }
-
         val incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
 
         val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
@@ -88,6 +86,10 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
 
         val pendingResult = goAsync()
         applicationScope.launch {
+            if (!gatekeeper.canSpeakNow()) {
+                return@launch
+            }
+
             try {
                 val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
                 val liveState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) tm.callStateForSubscription else tm.callState
