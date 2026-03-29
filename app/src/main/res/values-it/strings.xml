@@ -141,6 +141,7 @@
     <string name="title_settings">Impostazioni</string>
     <string name="title_support">Supporto e Feedback</string>
     <string name="title_legal">Note Legali</string>
+    <string name="title_scheduling">Pianificazione</string>
 
     <!-- Important Apps View -->
     <string name="filter_apps">Filtra App</string>
@@ -200,6 +201,32 @@
     <string name="settings_sign_out">Esci</string>
     <string name="settings_delete_account">Elimina Account</string>
     <string name="warning">Avviso</string>
+
+    <!-- Scheduling View -->
+    <string name="scheduling_loading_status">Caricamento stato...</string>
+    <string name="scheduling_status_header">Stato</string>
+    <string name="scheduling_status_text">L\'app è attualmente %1$s!</string>
+    <string name="scheduling_status_on">ACCESA</string>
+    <string name="scheduling_status_off">SPENTA</string>
+    <string name="scheduling_status_off_note">L\'app è in pausa e non leggerà le notifiche.</string>
+
+    <string name="scheduling_pause_duration">Durata pausa</string>
+    <string name="scheduling_pause_duration_text">Per quanto tempo deve essere sospesa Speakify?</string>
+    <string name="scheduling_pause_duration_hours">Ore</string>
+    <string name="scheduling_pause_duration_minutes">Minuti</string>
+    <string name="scheduling_pause_duration_error_both_fields">Inserire una durata.</string>
+    <string name="scheduling_pause_duration_error_non_digit_characters">Questo campo può contenere solo numeri.</string>
+    <string name="scheduling_pause_duration_error_hours_too_long">Questo campo può avere al massimo 3 cifre.</string>
+    <string name="confirm">Conferma</string>
+
+    <string name="scheduling_schedule_loading">Caricamento pianificazione...</string>
+    <string name="scheduling_weekly_schedule_header">Pianificazione settimanale</string>
+    <string name="timepicker_select_time">Seleziona ora</string>
+
+    <!-- Day Schedule Model -->
+    <string name="day_schedule_all_day">Tutto il giorno</string>
+    <string name="day_schedule_select_times">Seleziona orari</string>
+    <string name="day_schedule_off">Off</string>
 
     <!-- About View -->
     <string name="about_header_what">Che cos\'è questa app?</string>

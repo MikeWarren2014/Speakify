@@ -13,7 +13,6 @@ import android.telephony.TelephonyManager
 import android.util.Log
 import android.util.LruCache
 import androidx.core.app.NotificationCompat
-import com.clerk.api.Clerk
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
@@ -37,6 +36,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
+    @Inject
+    lateinit var gatekeeper: SpeakifyEngineGatekeeper
+
     @Inject
     lateinit var settingsRepository: SettingsRepository
 
@@ -196,13 +198,12 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
             return
         }
 
-        if (Clerk.user == null) {
-            return
-        }
-
         // Launch a new coroutine for each notification.
         // This is non-blocking and uses the robust application scope.
         applicationScope.launch {
+            if (!gatekeeper.canSpeakNow()) {
+                return@launch
+            }
             processNotification(sbn)
         }
     }

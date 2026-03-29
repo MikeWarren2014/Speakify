@@ -141,6 +141,7 @@
     <string name="title_settings">Paramètres</string>
     <string name="title_support">Support &amp; Commentaires</string>
     <string name="title_legal">Légal</string>
+    <string name="title_scheduling">Planification</string>
 
     <!-- Important Apps View -->
     <string name="filter_apps">Filtrer les applications</string>
@@ -200,6 +201,32 @@
     <string name="settings_sign_out">Se déconnecter</string>
     <string name="settings_delete_account">Supprimer le compte</string>
     <string name="warning">Avertissement</string>
+
+    <!-- Scheduling View -->
+    <string name="scheduling_loading_status">Chargement du statut...</string>
+    <string name="scheduling_status_header">Statut</string>
+    <string name="scheduling_status_text">L\'application est actuellement %1$s!</string>
+    <string name="scheduling_status_on">ACTIVÉE</string>
+    <string name="scheduling_status_off">DÉSACTIVÉE</string>
+    <string name="scheduling_status_off_note">L\'application est en pause et ne lira pas les notifications.</string>
+
+    <string name="scheduling_pause_duration">Durée de la pause</string>
+    <string name="scheduling_pause_duration_text">Pendant combien de temps Speakify doit-il être mis en pause ?</string>
+    <string name="scheduling_pause_duration_hours">Heures</string>
+    <string name="scheduling_pause_duration_minutes">Minutes</string>
+    <string name="scheduling_pause_duration_error_both_fields">Veuillez saisir une durée.</string>
+    <string name="scheduling_pause_duration_error_non_digit_characters">Ce champ ne peut contenir que des chiffres.</string>
+    <string name="scheduling_pause_duration_error_hours_too_long">Ce champ ne peut comporter que 3 chiffres au maximum.</string>
+    <string name="confirm">Confirmer</string>
+
+    <string name="scheduling_schedule_loading">Chargement du planning...</string>
+    <string name="scheduling_weekly_schedule_header">Planning hebdomadaire</string>
+    <string name="timepicker_select_time">Sélectionner l\'heure</string>
+
+    <!-- Day Schedule Model -->
+    <string name="day_schedule_all_day">Toute la journée</string>
+    <string name="day_schedule_select_times">Sélectionner les heures</string>
+    <string name="day_schedule_off">Désactivé</string>
 
     <!-- About View -->
     <string name="about_header_what">Qu\'est-ce que cette application ?</string>

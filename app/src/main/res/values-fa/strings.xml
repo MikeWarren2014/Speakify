@@ -141,6 +141,7 @@
     <string name="title_settings">تنظیمات</string>
     <string name="title_support">پشتیبانی و بازخورد</string>
     <string name="title_legal">حقوقی</string>
+    <string name="title_scheduling">زمان‌بندی</string>
 
     <!-- Important Apps View -->
     <string name="filter_apps">فیلتر برنامه‌ها</string>
@@ -200,6 +201,32 @@
     <string name="settings_sign_out">خروج از حساب</string>
     <string name="settings_delete_account">حذف حساب کاربری</string>
     <string name="warning">هشدار</string>
+
+    <!-- Scheduling View -->
+    <string name="scheduling_loading_status">در حال بارگذاری وضعیت...</string>
+    <string name="scheduling_status_header">وضعیت</string>
+    <string name="scheduling_status_text">برنامه در حال حاضر %1$s است!</string>
+    <string name="scheduling_status_on">روشن</string>
+    <string name="scheduling_status_off">خاموش</string>
+    <string name="scheduling_status_off_note">برنامه متوقف شده است و اعلان‌ها را نخواهد خواند.</string>
+
+    <string name="scheduling_pause_duration">مدت زمان توقف</string>
+    <string name="scheduling_pause_duration_text">Speakify برای چه مدت متوقف شود؟</string>
+    <string name="scheduling_pause_duration_hours">ساعت</string>
+    <string name="scheduling_pause_duration_minutes">دقیقه</string>
+    <string name="scheduling_pause_duration_error_both_fields">لطفاً یک زمان وارد کنید.</string>
+    <string name="scheduling_pause_duration_error_non_digit_characters">این فیلد فقط می‌تواند شامل اعداد باشد.</string>
+    <string name="scheduling_pause_duration_error_hours_too_long">این فیلد فقط می‌تواند ۳ رقم یا کمتر باشد.</string>
+    <string name="confirm">تایید</string>
+
+    <string name="scheduling_schedule_loading">در حال بارگذاری زمان‌بندی...</string>
+    <string name="scheduling_weekly_schedule_header">زمان‌بندی هفتگی</string>
+    <string name="timepicker_select_time">انتخاب زمان</string>
+
+    <!-- Day Schedule Model -->
+    <string name="day_schedule_all_day">تمام روز</string>
+    <string name="day_schedule_select_times">انتخاب زمان‌ها</string>
+    <string name="day_schedule_off">خاموش</string>
 
     <!-- About View -->
     <string name="about_header_what">این برنامه چیست؟</string>

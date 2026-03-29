@@ -141,6 +141,7 @@
     <string name="title_settings">Налаштування</string>
     <string name="title_support">Підтримка та відгуки</string>
     <string name="title_legal">Юридична інформація</string>
+    <string name="title_scheduling">Розклад</string>
 
     <!-- Important Apps View -->
     <string name="filter_apps">Фільтрувати програми</string>
@@ -200,6 +201,32 @@
     <string name="settings_sign_out">Вийти</string>
     <string name="settings_delete_account">Видалити обліковий запис</string>
     <string name="warning">Попередження</string>
+
+    <!-- Scheduling View -->
+    <string name="scheduling_loading_status">Завантаження статусу...</string>
+    <string name="scheduling_status_header">Статус</string>
+    <string name="scheduling_status_text">Програма зараз %1$s!</string>
+    <string name="scheduling_status_on">УВІМКНЕНО</string>
+    <string name="scheduling_status_off">ВИМКНЕНО</string>
+    <string name="scheduling_status_off_note">Програма призупинена і не буде озвучувати сповіщення.</string>
+
+    <string name="scheduling_pause_duration">Тривалість паузи</string>
+    <string name="scheduling_pause_duration_text">На який час слід призупинити роботу Speakify?</string>
+    <string name="scheduling_pause_duration_hours">Години</string>
+    <string name="scheduling_pause_duration_minutes">Хвилини</string>
+    <string name="scheduling_pause_duration_error_both_fields">Будь ласка, введіть час.</string>
+    <string name="scheduling_pause_duration_error_non_digit_characters">Це поле може містити лише цифри.</string>
+    <string name="scheduling_pause_duration_error_hours_too_long">Це поле може містити не більше 3 цифр.</string>
+    <string name="confirm">Підтвердити</string>
+
+    <string name="scheduling_schedule_loading">Завантаження розкладу...</string>
+    <string name="scheduling_weekly_schedule_header">Тижневий розклад</string>
+    <string name="timepicker_select_time">Виберіть час</string>
+
+    <!-- Day Schedule Model -->
+    <string name="day_schedule_all_day">Весь день</string>
+    <string name="day_schedule_select_times">Вибрати час</string>
+    <string name="day_schedule_off">Вимк.</string>
 
     <!-- About View -->
     <string name="about_header_what">Що це за програма?</string>
