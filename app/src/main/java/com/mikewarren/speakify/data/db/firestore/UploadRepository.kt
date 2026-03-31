@@ -77,8 +77,10 @@ class UploadRepository @Inject constructor(
 
         // We might want to clear old apps or just merge.
         // For now, we merge/update existing ones.
-        return appSettingsMap.map { (packageName, model) ->
-            val docId = packageName
+        return appSettingsMap
+            .filter { it.key.isNotBlank() }
+            .map { (packageName, model) ->
+            val docId = packageName.replace("/", "|")
             // Firestore doesn't like custom classes with Long? id if not configured,
             // so we map it to a hashmap for safety.
             val appData = hashMapOf(
@@ -95,20 +97,21 @@ class UploadRepository @Inject constructor(
     override suspend fun importantAppsTransactionList(): List<suspend () -> Result<Unit>> {
         val importantAppsCollection = userDoc.collection("important_apps")
         val importantAppsList = appsRepository.importantApps.first()
+            .filter { it.packageName.isNotBlank() }
 
         val clearStaleRecordsTask: suspend () -> Result<Unit> = {
             clearStaleRecordsTransaction(
                 importantAppsCollection,
                 { documentSnapshot, modelList ->
                     val docPackageName = documentSnapshot.id
-                    modelList.none { it.packageName == docPackageName }
+                    modelList.none { it.packageName.replace("/", "|") == docPackageName }
                 },
                 importantAppsList,
             )
         }
 
         val uploadTasks = importantAppsList.map { app ->
-            val docId = app.packageName
+            val docId = app.packageName.replace("/", "|")
             suspend { transaction(importantAppsCollection.document(docId), app) }
         }
 
@@ -118,20 +121,21 @@ class UploadRepository @Inject constructor(
     override suspend fun recentMessengerContactsTransactionList(): List<suspend () -> Result<Unit>> {
         val recentMessengerContactsCollection = userDoc.collection("recent_messenger_contacts")
         val recentMessengerContactsList = messengerContactsRepository.recentContacts.first()
+            .filter { it.name.isNotBlank() }
 
         val clearStaleRecordsTask: suspend () -> Result<Unit> = {
             clearStaleRecordsTransaction(
                 recentMessengerContactsCollection,
                 { documentSnapshot, modelList ->
-                    val contactName = documentSnapshot.id
-                    modelList.none { it.name == contactName }
+                    val docId = documentSnapshot.id
+                    modelList.none { it.name.replace("/", "|") == docId }
                 },
                 recentMessengerContactsList,
             )
         }
 
         val uploadTasks = recentMessengerContactsList.map { contact ->
-            val docId = contact.name
+            val docId = contact.name.replace("/", "|")
             suspend { transaction(recentMessengerContactsCollection.document(docId), contact) }
         }
 

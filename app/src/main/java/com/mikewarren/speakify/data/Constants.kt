@@ -13,4 +13,6 @@ object Constants {
     const val DefaultTTSVoice = "en-US-language"
     const val AutoCompleteListSizeLimit = 5
     const val DefaultBooleanSetting = false
+
+    const val TrialNumberOfDays = 7
 }

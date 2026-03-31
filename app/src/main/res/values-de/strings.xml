@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Speakify</string>
+    <string name="slogan">Priorisieren Sie Ihre Benachrichtigungen.\nHören Sie, was am wichtigsten ist.</string>
 
     <!-- Authentication Concerns -->
     <string name="signed_in">Erfolgreich angemeldet. Weiterleitung zur App…</string>
@@ -7,6 +8,10 @@
     <string name="sign_in">Anmelden</string>
     <string name="sign_up">Registrieren</string>
     <string name="forgot_password">Passwort vergessen?</string>
+
+    <string name="not_sure_yet">Noch nicht sicher?</string>
+    <string name="try_free">Kostenlos testen (%1$d Tage)</string>
+    <string name="trial_expired">Ihr Testzeitraum ist abgelaufen. Bitte registrieren Sie sich, um fortzufahren.</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">Haben Sie bereits ein Konto? Anmelden</string>
@@ -334,5 +339,18 @@
         P.S. Wenn dies ein positives Feedback ist, werde ich Speakify auf jeden Fall im Google
         Play Store bewerten!
     </string>
+
+    <!-- Trial Active View -->
+    <string name="trial_active_header">Willkommen zu Ihrem Speakify-Testzeitraum!</string>
+    <string name="trial_active_subtext">Genießen Sie 7 Tage lang vollen Zugriff auf alle Funktionen. Eine Anmeldung ist vorerst nicht erforderlich.</string>
+    <string name="trial_feature_scheduling_title">Intelligente Zeitplanung</string>
+    <string name="trial_feature_scheduling_desc">Legen Sie genau fest, wann Speakify aktiv sein soll.</string>
+    <string name="trial_feature_messages_title">Nachrichten hören</string>
+    <string name="trial_feature_messages_desc">Bleiben Sie in Verbindung, während Sie fahren, kochen oder putzen. Speakify liest eingehende SMS und Chat-Nachrichten vor.</string>
+    <string name="trial_feature_appointments_title">Nie wieder einen Termin verpassen</string>
+    <string name="trial_feature_appointments_desc">Hören Sie Ihre Kalenderbenachrichtigungen und Erinnerungen, damit Sie Ihren Tag im Griff behalten.</string>
+    <string name="trial_button_enter_app">Einfach zur App</string>
+    <string name="trial_button_end_trial">Testzeitraum beenden</string>
+    <string name="trial_end_confirmation">Sind Sie sicher, dass Sie Ihren Testzeitraum beenden möchten? Dadurch werden alle Ihre lokalen Einstellungen gelöscht.</string>
 
 </resources>

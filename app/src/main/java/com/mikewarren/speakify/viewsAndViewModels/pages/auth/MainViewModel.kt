@@ -37,6 +37,10 @@ class MainViewModel @Inject constructor(
     fun signOut() {
         sessionRepository.signOut()
     }
+
+    fun onAppOpened() {
+        sessionRepository.onAppOpened()
+    }
 }
 
 

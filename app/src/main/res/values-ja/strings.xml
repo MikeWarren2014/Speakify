@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Speakify</string>
+    <string name="slogan">通知に優先順位を。\n最も重要なことを音声で。</string>
 
     <!-- Authentication Concerns -->
     <string name="signed_in">サインインに成功しました。アプリにリダイレクトしています…</string>
@@ -7,6 +8,10 @@
     <string name="sign_in">サインイン</string>
     <string name="sign_up">サインアップ</string>
     <string name="forgot_password">パスワードをお忘れですか？</string>
+
+    <string name="not_sure_yet">まだ迷っていますか？</string>
+    <string name="try_free">無料で試す (%1$d日間)</string>
+    <string name="trial_expired">トライアル期間が終了しました。継続するにはサインアップしてください。</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">既にアカウントをお持ちですか？サインイン</string>
@@ -332,5 +337,18 @@
 \n
         追伸: 良いフィードバックをいただける場合は、Google Play ストアでの Speakify の評価をぜひご検討ください！
     </string>
+
+    <!-- Trial Active View -->
+    <string name="trial_active_header">Speakify トライアルへようこそ！</string>
+    <string name="trial_active_subtext">7日間、すべての機能をフルにお楽しみいただけます。まだサインアップは不要です。</string>
+    <string name="trial_feature_scheduling_title">スマートスケジュール</string>
+    <string name="trial_feature_scheduling_desc">Speakify をアクティブにする時間を正確に設定できます。</string>
+    <string name="trial_feature_messages_title">メッセージを聞く</string>
+    <string name="trial_feature_messages_desc">運転中、料理中、掃除中でもつながりを維持できます。Speakify が届いたテキストやチャットメッセージを読み上げます。</string>
+    <string name="trial_feature_appointments_title">予定を見逃さない</string>
+    <string name="trial_feature_appointments_desc">カレンダーのアラートやリマインダーを聞いて、一日の予定をしっかり把握しましょう。</string>
+    <string name="trial_button_enter_app">アプリへ移動</string>
+    <string name="trial_button_end_trial">トライアルを終了</string>
+    <string name="trial_end_confirmation">トライアルを終了してもよろしいですか？これにより、すべてのローカル設定が消去されます。</string>
 
 </resources>

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Speakify</string>
+    <string name="slogan">Priorisez vos notifications.\nÉcoutez ce qui compte le plus.</string>
 
     <!-- Authentication Concerns -->
     <string name="signed_in">Connexion réussie. Redirection vers l\'application…</string>
@@ -7,6 +8,10 @@
     <string name="sign_in">Se connecter</string>
     <string name="sign_up">S\'inscrire</string>
     <string name="forgot_password">Mot de passe oublié ?</string>
+
+    <string name="not_sure_yet">Pas encore sûr ?</string>
+    <string name="try_free">Essayer gratuitement (%1$d jours)</string>
+    <string name="trial_expired">Votre essai a expiré. Veuillez vous inscrire pour continuer.</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">Vous avez déjà un compte ? Connectez-vous</string>
@@ -333,5 +338,17 @@
 \n
         P.S. Si c\'est un retour positif, je noterai Speakify sur le Google Play Store !
     </string>
+    <!-- Trial Active View -->
+    <string name="trial_active_header">Bienvenue dans votre essai Speakify !</string>
+    <string name="trial_active_subtext">Profitez d\'un accès complet à toutes les fonctionnalités pendant 7 jours. Aucune inscription n\'est requise pour le moment.</string>
+    <string name="trial_feature_scheduling_title">Planification intelligente</string>
+    <string name="trial_feature_scheduling_desc">Définissez exactement quand vous voulez que Speakify soit actif.</string>
+    <string name="trial_feature_messages_title">Écoutez vos messages</string>
+    <string name="trial_feature_messages_desc">Restez connecté en conduisant, en cuisinant ou en nettoyant. Speakify lit les SMS et les messages de chat à haute voix.</string>
+    <string name="trial_feature_appointments_title">Ne manquez aucun rendez-vous</string>
+    <string name="trial_feature_appointments_desc">Écoutez vos alertes de calendrier et vos rappels pour rester maître de votre journée.</string>
+    <string name="trial_button_enter_app">Emmenez-moi simplement à l\'application</string>
+    <string name="trial_button_end_trial">Mettre fin à l\'essai</string>
+    <string name="trial_end_confirmation">Êtes-vous sûr de vouloir mettre fin à votre essai ? Cela effacera tous vos paramètres locaux.</string>
 
 </resources>

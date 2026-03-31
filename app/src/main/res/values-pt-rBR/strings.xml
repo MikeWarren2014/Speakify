@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Speakify</string>
+    <string name="slogan">Priorize suas notificações.\nOuça o que mais importa.</string>
 
     <!-- Authentication Concerns -->
     <string name="signed_in">Login realizado com sucesso. Redirecionando para o app…</string>
@@ -7,6 +8,10 @@
     <string name="sign_in">Entrar</string>
     <string name="sign_up">Cadastrar</string>
     <string name="forgot_password">Esqueceu a senha?</string>
+
+    <string name="not_sure_yet">Ainda não tem certeza?</string>
+    <string name="try_free">Experimente Grátis (%1$d Dias)</string>
+    <string name="trial_expired">Seu período de teste expirou. Cadastre-se para continuar.</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">Já tem uma conta? Entrar</string>
@@ -334,5 +339,18 @@
         P.S. Se este for um feedback positivo, com certeza considerarei avaliar o Speakify na Google
         Play Store!
     </string>
+
+    <!-- Trial Active View -->
+    <string name="trial_active_header">Bem-vindo ao Speakify Trial!</string>
+    <string name="trial_active_subtext">Aproveite acesso total a todos os recursos por 7 dias. Não é necessário se cadastrar ainda.</string>
+    <string name="trial_feature_scheduling_title">Agendamento Inteligente</string>
+    <string name="trial_feature_scheduling_desc">Defina exatamente quando você deseja que o Speakify esteja ativo.</string>
+    <string name="trial_feature_messages_title">Ouça suas Mensagens</string>
+    <string name="trial_feature_messages_desc">Mantenha-se conectado enquanto dirige, cozinha ou limpa. O Speakify lê mensagens de texto e chats em voz alta.</string>
+    <string name="trial_feature_appointments_title">Nunca perca um compromisso</string>
+    <string name="trial_feature_appointments_desc">Ouça seus alertas de calendário e lembretes para ficar por dentro do seu dia.</string>
+    <string name="trial_button_enter_app">Apenas me leve para o App</string>
+    <string name="trial_button_end_trial">Encerrar Período de Teste</string>
+    <string name="trial_end_confirmation">Tem certeza de que deseja encerrar seu período de teste? Isso limpará todas as suas configurações locais.</string>
 
 </resources>

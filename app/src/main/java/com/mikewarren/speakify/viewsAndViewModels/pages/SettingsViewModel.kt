@@ -1,7 +1,6 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages
 
 import android.net.Uri
-import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,8 +9,11 @@ import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.BackupRepository
 import com.mikewarren.speakify.data.SessionRepository
 import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.data.TrialRepository
+import com.mikewarren.speakify.data.TrialStatus
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.auth.TrialActiveViewModel
 import com.mikewarren.speakify.viewsAndViewModels.widgets.BaseTTSAutoCompletableViewModel
 import com.mikewarren.speakify.viewsAndViewModels.widgets.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,6 +22,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,9 +33,12 @@ class SettingsViewModel @Inject constructor(
     ttsManager: TTSManager,
     private val backupRepository: BackupRepository,
     private val sessionRepository: SessionRepository,
+    private val trialRepository: TrialRepository,
 ) : BaseTTSAutoCompletableViewModel(settingsRepository, ttsManager) {
 
     val childMainVM = MainViewModel(sessionRepository)
+    val childTrialVM = TrialActiveViewModel(trialRepository, sessionRepository)
+    
     val useDarkTheme: Flow<Boolean?> = settingsRepository.useDarkTheme
     var isDarkThemePreferred by mutableStateOf<Boolean?>(null)
         private set
@@ -57,6 +63,16 @@ class SettingsViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = false // Default to false
         )
+    
+    val isTrialActive: StateFlow<Boolean> = trialRepository.trialStatus
+        .map { it is TrialStatus.Active }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = false // Default to false
+        )
+
+
 
     sealed class UiEvent {
         data class ShowSnackbar(val messageText: UiText) : UiEvent()

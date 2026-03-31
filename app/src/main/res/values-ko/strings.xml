@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Speakify</string>
+    <string name="slogan">알림의 우선순위를 정하세요.\n가장 중요한 내용을 음성으로 들으세요.</string>
 
     <!-- Authentication Concerns -->
     <string name="signed_in">성공적으로 로그인되었습니다. 앱으로 리다이렉트 중입니다…</string>
@@ -7,6 +8,10 @@
     <string name="sign_in">로그인</string>
     <string name="sign_up">회원가입</string>
     <string name="forgot_password">비밀번호를 잊으셨나요?</string>
+
+    <string name="not_sure_yet">아직 고민 중이신가요?</string>
+    <string name="try_free">무료 체험하기 (%1$d일)</string>
+    <string name="trial_expired">체험 기간이 만료되었습니다. 계속하려면 가입해 주세요.</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">이미 계정이 있으신가요? 로그인</string>
@@ -332,5 +337,18 @@
     <string name="fetcher_loading_screen">%1$s 가져오는 중…</string>
     <string name="contacts_data_name">연락처</string>
     <string name="apps_data_name">앱</string>
+
+    <!-- Trial Active View -->
+    <string name="trial_active_header">Speakify 체험판에 오신 것을 환영합니다!</string>
+    <string name="trial_active_subtext">7일 동안 모든 기능을 제한 없이 이용해 보세요. 현재 회원가입은 필요하지 않습니다.</string>
+    <string name="trial_feature_scheduling_title">스마트 일정 예약</string>
+    <string name="trial_feature_scheduling_desc">Speakify가 활성화될 시간을 정확하게 설정하세요.</string>
+    <string name="trial_feature_messages_title">메시지 듣기</string>
+    <string name="trial_feature_messages_desc">운전, 요리 또는 청소 중에도 연결 상태를 유지하세요. Speakify가 수신 문자 및 채팅 메시지를 소리 내어 읽어줍니다.</string>
+    <string name="trial_feature_appointments_title">일정을 놓치지 마세요</string>
+    <string name="trial_feature_appointments_desc">캘린더 알림 및 리마인더를 듣고 하루 일정을 완벽하게 관리하세요.</string>
+    <string name="trial_button_enter_app">앱으로 바로 이동</string>
+    <string name="trial_button_end_trial">체험 종료</string>
+    <string name="trial_end_confirmation">체험을 종료하시겠습니까? 종료 시 모든 로컬 설정이 삭제됩니다.</string>
 
 </resources>

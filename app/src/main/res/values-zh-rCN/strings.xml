@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Speakify</string>
+    <string name="slogan">优先处理您的通知。\n听取最重要的内容。</string>
 
     <!-- Authentication Concerns -->
     <string name="signed_in">登录成功。正在重定向到应用…</string>
@@ -7,6 +8,10 @@
     <string name="sign_in">登录</string>
     <string name="sign_up">注册</string>
     <string name="forgot_password">忘记密码？</string>
+
+    <string name="not_sure_yet">还不确定吗？</string>
+    <string name="try_free">免费试用 (%1$d 天)</string>
+    <string name="trial_expired">您的试用已过期。请注册以继续使用。</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">已有账号？登录</string>
@@ -333,5 +338,18 @@
     <string name="fetcher_loading_screen">正在获取 %1$s…</string>
     <string name="contacts_data_name">联系人</string>
     <string name="apps_data_name">应用</string>
+
+    <!-- Trial Active View -->
+    <string name="trial_active_header">欢迎体验 Speakify 试用版！</string>
+    <string name="trial_active_subtext">享受 7 天所有功能的完整访问权限。目前无需注册。</string>
+    <string name="trial_feature_scheduling_title">智能调度</string>
+    <string name="trial_feature_scheduling_desc">精确设置您希望 Speakify 激活的时间。</string>
+    <string name="trial_feature_messages_title">听取您的消息</string>
+    <string name="trial_feature_messages_desc">在驾驶、烹饪或清洁时保持联系。Speakify 会朗读收到的文本和聊天消息。</string>
+    <string name="trial_feature_appointments_title">绝不错过预约</string>
+    <string name="trial_feature_appointments_desc">听取您的日历警报和提醒，助您掌控每一天。</string>
+    <string name="trial_button_enter_app">直接进入应用</string>
+    <string name="trial_button_end_trial">结束试用</string>
+    <string name="trial_end_confirmation">您确定要结束试用吗？这将清除您的所有本地设置。</string>
 
 </resources>
