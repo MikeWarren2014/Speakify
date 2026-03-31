@@ -1,9 +1,9 @@
 [versions]
-agp = "9.0.1"
+agp = "9.1.0"
 androidxJunit = "1.2.1"
 coilCompose = "2.7.0"
 core = "1.6.1"
-gradle = "9.0.1"
+gradle = "9.1.0"
 hiltAndroidGradlePlugin = "2.57.2"
 hiltNavigationCompose = "1.2.0"
 kotlin = "2.2.21"
@@ -11,8 +11,8 @@ coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-kotlinSerialization = "2.1.20"
-kotlinTest = "2.1.20"
+kotlinSerialization = "2.2.21"
+kotlinTest = "2.2.21"
 kotlinxSerializationJson = "1.8.1"
 libphonenumber = "9.0.5"
 lifecycleRuntimeKtx = "2.9.1"
@@ -93,3 +93,4 @@ firebase-crashlytics-ndk = { group = "com.google.firebase", name = "firebase-cra
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
