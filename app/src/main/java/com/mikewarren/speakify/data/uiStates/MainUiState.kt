@@ -8,4 +8,5 @@ sealed interface MainUiState {
     data object TrialUsage: MainUiState
     data object TrialEnded: MainUiState
     data object SignedOut : MainUiState
+    data object TrialConversion: MainUiState
 }

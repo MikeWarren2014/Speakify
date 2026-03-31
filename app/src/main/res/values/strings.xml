@@ -13,7 +13,10 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="not_sure_yet">Not sure yet?</string>
     <string name="try_free">Try for Free (%1$d Days)</string>
+    <string name="trial_usage_redirect">Going to app. Enjoy your trial period!</string>
     <string name="trial_expired">Your trial has expired. Please sign up to continue.</string>
+    <string name="trial_ended_main_activity">Thank you for trying out Speakify! Redirecting back to title screen…</string>
+    <string name="trial_conversion">Sign up now to save your settings and preferences forever!</string>
 
 
     <!-- Sign In/Up View -->
@@ -206,6 +209,7 @@
     <string name="settings_restore_title">Restore Data</string>
     <string name="settings_restore_description">Import settings from a backup file.</string>
     <string name="settings_import">Import</string>
+    <string name="settings_ready_to_convert">Ready to Take the Next Step?</string>
     <string name="settings_section_danger">Danger Zone</string>
     <string name="settings_sign_out">Sign Out</string>
     <string name="settings_delete_account">Delete Account</string>

@@ -163,10 +163,27 @@ fun SettingsView(onNavigateToDeleteAccount: () -> Unit) {
                 }
             }
 
+            val isTrialActive by viewModel.isTrialActive.collectAsStateWithLifecycle()
+
+            if (isTrialActive) {
+                SettingsSection(stringResource(R.string.settings_ready_to_convert)) {
+                    SingleColumnSettingsItemCard(
+                        title = stringResource(R.string.sign_up),
+                        description = stringResource(R.string.trial_conversion)
+                    ) {
+                        Button(
+                            onClick = { viewModel.childTrialVM.goToSignUp() },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(stringResource(R.string.sign_up))
+                        }
+                    }
+                }
+            }
+
             Spacer(modifier = Modifier.height(32.dp))
 
             SettingsSection(stringResource(R.string.settings_section_danger)) {
-                val isTrialActive by viewModel.isTrialActive.collectAsStateWithLifecycle()
 
                 if (!isTrialActive) {
                     Button(

@@ -11,7 +11,10 @@
 
     <string name="not_sure_yet">还不确定吗？</string>
     <string name="try_free">免费试用 (%1$d 天)</string>
+    <string name="trial_usage_redirect">进入应用。祝您试用愉快！</string>
     <string name="trial_expired">您的试用已过期。请注册以继续使用。</string>
+    <string name="trial_ended_main_activity">感谢您试用 Speakify！正在返回标题界面…</string>
+    <string name="trial_conversion">立即注册，永久保存您的设置和偏好！</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">已有账号？登录</string>
@@ -203,6 +206,7 @@
     <string name="settings_restore_title">恢复数据</string>
     <string name="settings_restore_description">从备份文件中导入设置。</string>
     <string name="settings_import">导入</string>
+    <string name="settings_ready_to_convert">准备好迈出下一步了吗？</string>
     <string name="settings_section_danger">危险区域</string>
     <string name="settings_sign_out">登出</string>
     <string name="settings_delete_account">删除账号</string>

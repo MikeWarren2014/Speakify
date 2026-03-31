@@ -11,7 +11,10 @@
 
     <string name="not_sure_yet">Noch nicht sicher?</string>
     <string name="try_free">Kostenlos testen (%1$d Tage)</string>
+    <string name="trial_usage_redirect">Weiter zur App. Viel Spaß mit Ihrem Testzeitraum!</string>
     <string name="trial_expired">Ihr Testzeitraum ist abgelaufen. Bitte registrieren Sie sich, um fortzufahren.</string>
+    <string name="trial_ended_main_activity">Vielen Dank, dass Sie Speakify ausprobiert haben! Weiterleitung zum Startbildschirm…</string>
+    <string name="trial_conversion">Registrieren Sie sich jetzt, um Ihre Einstellungen und Präferenzen dauerhaft zu speichern!</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">Haben Sie bereits ein Konto? Anmelden</string>
@@ -202,6 +205,7 @@
     <string name="settings_restore_title">Daten wiederherstellen</string>
     <string name="settings_restore_description">Einstellungen aus einer Sicherungsdatei importieren.</string>
     <string name="settings_import">Importieren</string>
+    <string name="settings_ready_to_convert">Bereit für den nächsten Schritt?</string>
     <string name="settings_section_danger">Gefahrenzone</string>
     <string name="settings_sign_out">Abmelden</string>
     <string name="settings_delete_account">Konto löschen</string>

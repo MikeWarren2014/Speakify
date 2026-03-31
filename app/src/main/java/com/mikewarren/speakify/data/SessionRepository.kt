@@ -127,10 +127,6 @@ class SessionRepository @Inject constructor(
      */
     fun onAppOpened() {
         isTrialAuthorized = false
-        // If we were showing the "Thank you" screen, we're done with that now that the app is "re-opening" LoginActivity
-        if (_uiState.value == MainUiState.TrialEnded) {
-            _uiState.value = MainUiState.SignedOut
-        }
         // Re-evaluate state based on current trial status
         scope.launch { trialRepository.refreshTrialStatus() }
     }
@@ -138,6 +134,10 @@ class SessionRepository @Inject constructor(
     fun proceedToTrialSession() {
         isTrialAuthorized = true
         _uiState.value = MainUiState.TrialUsage
+    }
+
+    fun startTrialConversion() {
+        _uiState.value = MainUiState.TrialConversion
     }
 
     fun endTrial() {

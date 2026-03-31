@@ -11,7 +11,10 @@
 
     <string name="not_sure_yet">まだ迷っていますか？</string>
     <string name="try_free">無料で試す (%1$d日間)</string>
+    <string name="trial_usage_redirect">アプリへ移動します。トライアル期間をお楽しみください！</string>
     <string name="trial_expired">トライアル期間が終了しました。継続するにはサインアップしてください。</string>
+    <string name="trial_ended_main_activity">Speakify をお試しいただきありがとうございました！タイトル画面に戻ります…</string>
+    <string name="trial_conversion">今すぐ登録して、設定や好みを永久に保存しましょう！</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">既にアカウントをお持ちですか？サインイン</string>
@@ -202,6 +205,7 @@
     <string name="settings_restore_title">データの復元</string>
     <string name="settings_restore_description">バックアップファイルから設定をインポートします。</string>
     <string name="settings_import">インポート</string>
+    <string name="settings_ready_to_convert">次のステップに進む準備はできましたか？</string>
     <string name="settings_section_danger">危険ゾーン</string>
     <string name="settings_sign_out">サインアウト</string>
     <string name="settings_delete_account">アカウント削除</string>

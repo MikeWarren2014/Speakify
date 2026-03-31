@@ -24,6 +24,9 @@ class TrialActiveViewModel @Inject constructor(
         }
     }
 
+    fun goToSignUp() {
+        sessionRepository.startTrialConversion()
+    }
 
     fun endTrial() {
         viewModelScope.launch {

@@ -17,14 +17,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.constants.ActionConstants
+import com.mikewarren.speakify.data.uiStates.InitialScreenUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.ui.theme.MyApplicationTheme
 import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.InitialScreenView
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.auth.SignInOrUpView
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.TrialActiveView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -73,18 +77,24 @@ class LoginActivity : ComponentActivity() {
                             is MainUiState.Loading -> CircularProgressIndicator()
                             is MainUiState.SignedOut ->  InitialScreenView()
                             is MainUiState.SignedIn -> {
-                                Text(getString(R.string.signed_in))
+                                Text(getString(R.string.signed_in),
+                                    textAlign = TextAlign.Center,
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
                             }
 
                             MainUiState.TrialActive -> TrialActiveView()
 
                             MainUiState.TrialUsage -> {
-                                Text("Going to app. Enjoy your trial period!")
+                                Text(
+                                    stringResource(R.string.trial_usage_redirect),
+                                    textAlign = TextAlign.Center,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                )
                             }
+                            MainUiState.TrialConversion -> SignInOrUpView(InitialScreenUiState.SignUp)
 
-                            MainUiState.TrialEnded -> {
-                                // Nothing to see here!
-                            }
+                            MainUiState.TrialEnded -> InitialScreenView()
 
                         }
                     }

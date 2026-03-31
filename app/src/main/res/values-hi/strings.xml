@@ -11,7 +11,10 @@
 
     <string name="not_sure_yet">अभी निश्चित नहीं हैं?</string>
     <string name="try_free">मुफ्त में आज़माएं (%1$d दिन)</string>
+    <string name="trial_usage_redirect">ऐप पर जा रहे हैं। अपनी परीक्षण अवधि का आनंद लें!</string>
     <string name="trial_expired">आपका ट्रायल समाप्त हो गया है। कृपया जारी रखने के लिए साइन अप करें।</string>
+    <string name="trial_ended_main_activity">Speakify को आज़माने के लिए धन्यवाद! वापस शीर्षक स्क्रीन पर रीडायरेक्ट किया जा रहा है…</string>
+    <string name="trial_conversion">अपनी सेटिंग्स और प्राथमिकताओं को हमेशा के लिए सहेजने के लिए अभी साइन अप करें!</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">पहले से ही एक खाता है? साइन इन करें</string>
@@ -202,13 +205,14 @@
     <string name="settings_restore_title">डेटा पुनर्स्थापित करें</string>
     <string name="settings_restore_description">बैकअप फ़ाइल से सेटिंग्स आयात करें।</string>
     <string name="settings_import">आयात (Import)</string>
+    <string name="settings_ready_to_convert">अगला कदम उठाने के लिए तैयार हैं?</string>
     <string name="settings_section_danger">खतरनाक क्षेत्र</string>
     <string name="settings_sign_out">साइन आउट करें</string>
     <string name="settings_delete_account">खाता हटाएं</string>
     <string name="warning">चेतावनी</string>
 
     <!-- Scheduling View -->
-    <string name="scheduling_loading_status">स्थिति लोड हो रही है...</string>
+    <string name="scheduling_loading_status">स्थिति लोड हो रही है…</string>
     <string name="scheduling_status_header">स्थिति</string>
     <string name="scheduling_status_text">ऐप वर्तमान में %1$s है!</string>
     <string name="scheduling_status_on">चालू (ON)</string>

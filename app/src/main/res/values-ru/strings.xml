@@ -11,7 +11,10 @@
 
     <string name="not_sure_yet">Еще не уверены?</string>
     <string name="try_free">Попробовать бесплатно (%1$d дней)</string>
+    <string name="trial_usage_redirect">Переход в приложение. Приятного пробного периода!</string>
     <string name="trial_expired">Ваш пробный период истек. Пожалуйста, зарегистрируйтесь, чтобы продолжить.</string>
+    <string name="trial_ended_main_activity">Спасибо, что попробовали Speakify! Перенаправление на главный экран…</string>
+    <string name="trial_conversion">Зарегистрируйтесь сейчас, чтобы сохранить свои настройки и предпочтения навсегда!</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">Уже есть аккаунт? Войти</string>
@@ -202,13 +205,14 @@
     <string name="settings_restore_title">Восстановление данных</string>
     <string name="settings_restore_description">Импортируйте настройки из файла резервной копии.</string>
     <string name="settings_import">Импорт</string>
+    <string name="settings_ready_to_convert">Готовы сделать следующий шаг?</string>
     <string name="settings_section_danger">Опасная зона</string>
     <string name="settings_sign_out">Выйти</string>
     <string name="settings_delete_account">Удалить аккаунт</string>
     <string name="warning">Предупреждение</string>
 
     <!-- Scheduling View -->
-    <string name="scheduling_loading_status">Загрузка статуса...</string>
+    <string name="scheduling_loading_status">Загрузка статуса…</string>
     <string name="scheduling_status_header">Статус</string>
     <string name="scheduling_status_text">Приложение сейчас %1$s!</string>
     <string name="scheduling_status_on">ВКЛЮЧЕНО</string>

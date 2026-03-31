@@ -4,6 +4,5 @@ sealed interface InitialScreenUiState {
     data object Title : InitialScreenUiState
     data object SignUp : InitialScreenUiState
     data object SignIn : InitialScreenUiState
-    data object Onboarding: InitialScreenUiState
 
 }

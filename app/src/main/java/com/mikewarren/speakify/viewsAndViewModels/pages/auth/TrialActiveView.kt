@@ -120,6 +120,19 @@ fun TrialActiveView(
 
             Spacer(modifier = Modifier.height(12.dp))
 
+            Button(
+                onClick = { viewModel.goToSignUp() },
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.medium,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary
+                )
+            ) {
+                Text(stringResource(R.string.sign_up))
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
             OutlinedButton(
                 onClick = { showEndTrialConfirm = true },
                 modifier = Modifier.fillMaxWidth(),

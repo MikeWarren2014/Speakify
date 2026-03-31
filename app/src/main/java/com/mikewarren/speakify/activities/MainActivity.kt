@@ -21,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -90,7 +91,7 @@ class MainActivity : ComponentActivity()  {
                 }
             }
 
-            if (state is MainUiState.TrialActive) {
+            if (state is MainUiState.TrialActive || state is MainUiState.TrialConversion) {
                 LaunchedEffect(state) {
                     startActivity(Intent(this@MainActivity, LoginActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -111,7 +112,9 @@ class MainActivity : ComponentActivity()  {
                         }
                         is MainUiState.SignedOut -> {
                             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                Text(getString(R.string.signed_out))
+                                Text(getString(R.string.signed_out),
+                                    textAlign = TextAlign.Center,
+                                    style = MaterialTheme.typography.bodyLarge)
                             }
                         }
                         is MainUiState.SignedIn -> {
@@ -129,10 +132,16 @@ class MainActivity : ComponentActivity()  {
                         MainUiState.TrialEnded -> {
                             Box(modifier = Modifier.fillMaxSize().padding(24.dp), contentAlignment = Alignment.Center) {
                                 Text(
-                                    "Thank you for trying out Speakify! Redirecting back to title screen...",
+                                    stringResource(R.string.trial_ended_main_activity),
                                     textAlign = TextAlign.Center,
                                     style = MaterialTheme.typography.bodyLarge
                                 )
+                            }
+                        }
+
+                        MainUiState.TrialConversion -> {
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                CircularProgressIndicator()
                             }
                         }
                     }

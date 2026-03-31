@@ -11,7 +11,10 @@
 
     <string name="not_sure_yet">Ще не впевнені?</string>
     <string name="try_free">Спробувати безкоштовно (%1$d днів)</string>
+    <string name="trial_usage_redirect">Перехід до програми. Насолоджуйтесь пробним періодом!</string>
     <string name="trial_expired">Термін вашого пробного періоду закінчився. Будь ласка, зареєструйтеся, щоб продовжити.</string>
+    <string name="trial_ended_main_activity">Дякуємо, що спробували Speakify! Перенаправлення на головний екран…</string>
+    <string name="trial_conversion">Зареєструйтеся зараз, щоб зберегти свої налаштування та вподобання назавжди!</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">Вже маєте обліковий запис? Увійти</string>
@@ -202,13 +205,14 @@
     <string name="settings_restore_title">Відновлення даних</string>
     <string name="settings_restore_description">Імпортуйте налаштування з файлу резервної копії.</string>
     <string name="settings_import">Імпорт</string>
+    <string name="settings_ready_to_convert">Готові зробити наступний крок?</string>
     <string name="settings_section_danger">Небезпечна зона</string>
     <string name="settings_sign_out">Вийти</string>
     <string name="settings_delete_account">Видалити обліковий запис</string>
     <string name="warning">Попередження</string>
 
     <!-- Scheduling View -->
-    <string name="scheduling_loading_status">Завантаження статусу...</string>
+    <string name="scheduling_loading_status">Завантаження статусу…</string>
     <string name="scheduling_status_header">Статус</string>
     <string name="scheduling_status_text">Програма зараз %1$s!</string>
     <string name="scheduling_status_on">УВІМКНЕНО</string>
@@ -224,7 +228,7 @@
     <string name="scheduling_pause_duration_error_hours_too_long">Це поле може містити не більше 3 цифр.</string>
     <string name="confirm">Підтвердити</string>
 
-    <string name="scheduling_schedule_loading">Завантаження розкладу...</string>
+    <string name="scheduling_schedule_loading">Завантаження розкладу…</string>
     <string name="scheduling_weekly_schedule_header">Тижневий розклад</string>
     <string name="timepicker_select_time">Виберіть час</string>
 

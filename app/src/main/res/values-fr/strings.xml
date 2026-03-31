@@ -11,7 +11,10 @@
 
     <string name="not_sure_yet">Pas encore sûr ?</string>
     <string name="try_free">Essayer gratuitement (%1$d jours)</string>
+    <string name="trial_usage_redirect">Accès à l\'application. Profitez de votre période d\'essai !</string>
     <string name="trial_expired">Votre essai a expiré. Veuillez vous inscrire pour continuer.</string>
+    <string name="trial_ended_main_activity">Merci d\'avoir essayé Speakify ! Redirection vers l\'écran titre…</string>
+    <string name="trial_conversion">Inscrivez-vous maintenant pour enregistrer vos paramètres et préférences pour toujours !</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">Vous avez déjà un compte ? Connectez-vous</string>
@@ -202,6 +205,7 @@
     <string name="settings_restore_title">Restaurer les données</string>
     <string name="settings_restore_description">Importer les paramètres depuis un fichier de sauvegarde.</string>
     <string name="settings_import">Importer</string>
+    <string name="settings_ready_to_convert">Prêt à passer à l\'étape suivante ?</string>
     <string name="settings_section_danger">Zone de danger</string>
     <string name="settings_sign_out">Se déconnecter</string>
     <string name="settings_delete_account">Supprimer le compte</string>
@@ -338,6 +342,7 @@
 \n
         P.S. Si c\'est un retour positif, je noterai Speakify sur le Google Play Store !
     </string>
+
     <!-- Trial Active View -->
     <string name="trial_active_header">Bienvenue dans votre essai Speakify !</string>
     <string name="trial_active_subtext">Profitez d\'un accès complet à toutes les fonctionnalités pendant 7 jours. Aucune inscription n\'est requise pour le moment.</string>
