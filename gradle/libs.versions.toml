@@ -1,18 +1,18 @@
 [versions]
-agp = "9.0.1"
+agp = "9.1.0"
 androidxJunit = "1.2.1"
 coilCompose = "2.7.0"
 core = "1.6.1"
-gradle = "9.0.1"
-hiltAndroidGradlePlugin = "2.57.2"
+gradle = "9.1.0"
+hiltAndroidGradlePlugin = "2.59.2"
 hiltNavigationCompose = "1.2.0"
-kotlin = "2.2.21"
+kotlin = "2.3.20"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-kotlinSerialization = "2.1.20"
-kotlinTest = "2.1.20"
+kotlinSerialization = "2.1.0"
+kotlinTest = "2.1.0"
 kotlinxSerializationJson = "1.8.1"
 libphonenumber = "9.0.5"
 lifecycleRuntimeKtx = "2.9.1"
@@ -37,12 +37,15 @@ ui = "1.9.4"
 foundation = "1.9.4"
 uiVersion = "1.10.0"
 firebaseBom = "34.10.0"
+room = "2.7.1"
 
 [libraries]
 androidx-core = { module = "androidx.test:core", version.ref = "core" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomRuntime" }
 androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
 androidx-storage = { module = "androidx.test.services:storage", version.ref = "storage" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
@@ -71,7 +74,7 @@ androidx-datastore = { group = "androidx.datastore", name = "datastore-preferenc
 androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
 androidx-datastore-preferences-core-jvm = { group = "androidx.datastore", name = "datastore-preferences-core-jvm", version.ref = "datastorePreferencesCoreJvm" }
 androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
-kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlinSerialization" }
+kotlin-serialization-lib = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlinSerialization" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlinTest" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -93,3 +96,9 @@ firebase-crashlytics-ndk = { group = "com.google.firebase", name = "firebase-cra
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroidGradlePlugin" }
+room = { id = "androidx.room", version.ref = "room" }
+google-services = { id = "com.google.gms.google-services", version = "4.4.2" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.3" }
