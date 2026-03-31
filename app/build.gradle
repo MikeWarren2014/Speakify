@@ -38,13 +38,13 @@ android {
         applicationId packageName
         minSdk 28
         targetSdk androidSdkVersion
-        versionCode 27
+        versionCode 28
         versionName "1.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         Properties properties = new Properties()
-        properties.load(project.rootProject.file('gradle.properties').newDataInputStream())
+        properties.load(project.rootProject.file('apiKeys.properties').newDataInputStream())
         buildConfigField "String", "CLERK_PUBLISHABLE_KEY", "\"${properties.getProperty('CLERK_PUBLISHABLE_KEY')}\""
     }
 
