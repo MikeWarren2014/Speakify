@@ -1,0 +1,4 @@
+- Nuove impostazioni di messaggistica: Lettura dei messaggi, ignora messaggi di una sola parola e ignora reazioni.
+- Supporto potenziato per Facebook Messenger: Annuncio intelligente di chiamate audio/video, filtraggio dei contatti e richieste di messaggi.
+- Nuova pagina di pianificazione: Metti in pausa Speakify con orari di ripresa personalizzati e gestisci le ore di attività giornaliere.
+- Prova gratuita di 7 giorni: Prova tutte le funzionalità premium senza rischi per 7 giorni.

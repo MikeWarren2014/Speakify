@@ -1,0 +1,4 @@
+- Neue Nachrichteneinstellungen: Nachrichten lesen, Ein-Wort-Nachrichten ignorieren und Reaktionen ignorieren.
+- Verbesserte Unterstützung für Facebook Messenger: Intelligente Ankündigung von Audio- und Videoanrufen, Kontaktfilterung und Nachrichtenanfragen.
+- Ganz neue Planungsseite: Speakify mit benutzerdefinierten Fortsetzungszeiten pausieren und tägliche aktive Stunden verwalten.
+- 7-tägige kostenlose Testversion: Testen Sie alle Premium-Funktionen 7 Tage lang risikofrei.
