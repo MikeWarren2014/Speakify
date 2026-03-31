@@ -60,23 +60,26 @@ class AppSettingsViewModel(
 
     init {
         viewModelScope.launch {
-            val model = modelFlow.filterNotNull()
-                .first()
-            _settings.value = model
-
-
-            childAnnouncerVoiceSectionViewModel = AnnouncerVoiceSectionViewModel(
-                settingsRepository,
-                ttsManager,
-                initialVoice = model.announcerVoice ?: Constants.DefaultTTSVoice,
-                onSave = { voiceName: String ->
-                    _settings.update { model: AppSettingsModel ->
-                        model.copy(announcerVoice = voiceName)
-                    }
+            modelFlow.collectLatest { model: AppSettingsModel? ->
+                if (model == null) {
+                    return@collectLatest
                 }
-            )
-            childNotificationListViewModel = createNotificationSourceListViewModel(model)
-            childAdditionalSettingsViewModel = createAdditionalSettingsViewModel(model)
+                _settings.value = model
+
+
+                childAnnouncerVoiceSectionViewModel = AnnouncerVoiceSectionViewModel(
+                    settingsRepository,
+                    ttsManager,
+                    initialVoice = model.announcerVoice ?: Constants.DefaultTTSVoice,
+                    onSave = { voiceName: String ->
+                        _settings.update { model: AppSettingsModel ->
+                            model.copy(announcerVoice = voiceName)
+                        }
+                    }
+                )
+                childNotificationListViewModel = createNotificationSourceListViewModel(model)
+                childAdditionalSettingsViewModel = createAdditionalSettingsViewModel(model)
+            }
         }
     }
 

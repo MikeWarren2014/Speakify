@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Speakify</string>
+    <string name="slogan">अपनी सूचनाओं को प्राथमिकता दें।\nवही सुनें जो सबसे महत्वपूर्ण है।</string>
 
     <!-- Authentication Concerns -->
     <string name="signed_in">सफलतापूर्वक साइन इन किया गया। ऐप पर रीडायरेक्ट किया जा रहा है…</string>
@@ -7,6 +8,13 @@
     <string name="sign_in">साइन इन करें</string>
     <string name="sign_up">साइन अप करें</string>
     <string name="forgot_password">पासवर्ड भूल गए?</string>
+
+    <string name="not_sure_yet">अभी निश्चित नहीं हैं?</string>
+    <string name="try_free">मुफ्त में आज़माएं (%1$d दिन)</string>
+    <string name="trial_usage_redirect">ऐप पर जा रहे हैं। अपनी परीक्षण अवधि का आनंद लें!</string>
+    <string name="trial_expired">आपका ट्रायल समाप्त हो गया है। कृपया जारी रखने के लिए साइन अप करें।</string>
+    <string name="trial_ended_main_activity">Speakify को आज़माने के लिए धन्यवाद! वापस शीर्षक स्क्रीन पर रीडायरेक्ट किया जा रहा है…</string>
+    <string name="trial_conversion">अपनी सेटिंग्स और प्राथमिकताओं को हमेशा के लिए सहेजने के लिए अभी साइन अप करें!</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">पहले से ही एक खाता है? साइन इन करें</string>
@@ -197,13 +205,14 @@
     <string name="settings_restore_title">डेटा पुनर्स्थापित करें</string>
     <string name="settings_restore_description">बैकअप फ़ाइल से सेटिंग्स आयात करें।</string>
     <string name="settings_import">आयात (Import)</string>
+    <string name="settings_ready_to_convert">अगला कदम उठाने के लिए तैयार हैं?</string>
     <string name="settings_section_danger">खतरनाक क्षेत्र</string>
     <string name="settings_sign_out">साइन आउट करें</string>
     <string name="settings_delete_account">खाता हटाएं</string>
     <string name="warning">चेतावनी</string>
 
     <!-- Scheduling View -->
-    <string name="scheduling_loading_status">स्थिति लोड हो रही है...</string>
+    <string name="scheduling_loading_status">स्थिति लोड हो रही है…</string>
     <string name="scheduling_status_header">स्थिति</string>
     <string name="scheduling_status_text">ऐप वर्तमान में %1$s है!</string>
     <string name="scheduling_status_on">चालू (ON)</string>
@@ -332,5 +341,18 @@
 \n
         P.S. यदि यह सकारात्मक प्रतिक्रिया है, तो मैं निश्चित रूप से Google Play Store पर Speakify को रेटिंग देने पर विचार करूँगा!
     </string>
+
+    <!-- Trial Active View -->
+    <string name="trial_active_header">आपके Speakify ट्रायल में आपका स्वागत है!</string>
+    <string name="trial_active_subtext">7 दिनों के लिए सभी सुविधाओं का पूरा लाभ उठाएं। अभी साइन-अप की आवश्यकता नहीं है।</string>
+    <string name="trial_feature_scheduling_title">स्मार्ट शेड्यूलिंग</string>
+    <string name="trial_feature_scheduling_desc">ठीक उसी समय सेट करें जब आप Speakify को सक्रिय करना चाहते हैं।</string>
+    <string name="trial_feature_messages_title">अपने संदेश सुनें</string>
+    <string name="trial_feature_messages_desc">ड्राइविंग, खाना बनाते समय या सफाई करते समय जुड़े रहें। Speakify आने वाले टेक्स्ट और चैट संदेशों को ज़ोर से पढ़ता है।</string>
+    <string name="trial_feature_appointments_title">कोई अपॉइंटमेंट न चूकें</string>
+    <string name="trial_feature_appointments_desc">अपने कैलेंडर अलर्ट और रिमाइंडर सुनें ताकि आप अपने दिन के शीर्ष पर रहें।</string>
+    <string name="trial_button_enter_app">बस मुझे ऐप पर ले चलें</string>
+    <string name="trial_button_end_trial">ट्रायल समाप्त करें</string>
+    <string name="trial_end_confirmation">क्या आप वाकई अपना ट्रायल समाप्त करना चाहते हैं? इससे आपकी सभी स्थानीय सेटिंग्स मिट जाएंगी।</string>
 
 </resources>

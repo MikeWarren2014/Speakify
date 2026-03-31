@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Speakify</string>
+    <string name="slogan">اعلان‌های خود را اولویت‌بندی کنید.\nآنچه را که بیشتر اهمیت دارد بشنوید.</string>
 
     <!-- Authentication Concerns -->
     <string name="signed_in">با موفقیت وارد شدید. در حال انتقال به برنامه…</string>
@@ -7,6 +8,13 @@
     <string name="sign_in">ورود</string>
     <string name="sign_up">ثبت نام</string>
     <string name="forgot_password">رمز عبور را فراموش کرده‌اید؟</string>
+
+    <string name="not_sure_yet">هنوز مطمئن نیستید؟</string>
+    <string name="try_free">امتحان رایگان (%1$d روز)</string>
+    <string name="trial_usage_redirect">در حال انتقال به برنامه. از دوره آزمایشی خود لذت ببرید!</string>
+    <string name="trial_expired">دوره آزمایشی شما به پایان رسیده است. برای ادامه لطفا ثبت نام کنید.</string>
+    <string name="trial_ended_main_activity">از اینکه Speakify را امتحان کردید متشکریم! در حال انتقال به صفحه اصلی…</string>
+    <string name="trial_conversion">اکنون ثبت‌نام کنید تا تنظیمات و ترجیحات خود را برای همیشه ذخیره کنید!</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">قبلاً حساب کاربری داشته‌اید؟ وارد شوید</string>
@@ -197,6 +205,7 @@
     <string name="settings_restore_title">بازیابی داده‌ها</string>
     <string name="settings_restore_description">وارد کردن تنظیمات از یک فایل پشتیبان.</string>
     <string name="settings_import">وارد کردن</string>
+    <string name="settings_ready_to_convert">برای برداشتن قدم بعدی آماده‌اید؟</string>
     <string name="settings_section_danger">منطقه خطر</string>
     <string name="settings_sign_out">خروج از حساب</string>
     <string name="settings_delete_account">حذف حساب کاربری</string>
@@ -333,5 +342,18 @@
 \n
         پ.ن: اگر این یک بازخورد مثبت است، من قطعاً رتبه‌بندی Speakify را در فروشگاه گوگل پلی در نظر خواهم گرفت!
     </string>
+
+    <!-- Trial Active View -->
+    <string name="trial_active_header">به نسخه آزمایشی Speakify خوش آمدید!</string>
+    <string name="trial_active_subtext">از دسترسی کامل به تمام ویژگی‌ها به مدت ۷ روز لذت ببرید. هنوز نیازی به ثبت‌نام نیست.</string>
+    <string name="trial_feature_scheduling_title">زمان‌بندی هوشمند</string>
+    <string name="trial_feature_scheduling_desc">دقیقاً تعیین کنید چه زمانی می‌خواهید Speakify فعال باشد.</string>
+    <string name="trial_feature_messages_title">شنیدن پیام‌های شما</string>
+    <string name="trial_feature_messages_desc">هنگام رانندگی، آشپزی یا نظافت در ارتباط بمانید. Speakify پیام‌های متنی و چت‌های ورودی را با صدای بلند می‌خواند.</string>
+    <string name="trial_feature_appointments_title">هرگز قراری را از دست ندهید</string>
+    <string name="trial_feature_appointments_desc">هشدارهای تقویم و یادآوری‌های خود را بشنوید تا از برنامه‌های روزانه خود عقب نمانید.</string>
+    <string name="trial_button_enter_app">فقط من را به برنامه ببر</string>
+    <string name="trial_button_end_trial">پایان دوره آزمایشی</string>
+    <string name="trial_end_confirmation">آیا مطمئن هستید که می‌خواهید به دوره آزمایشی خود پایان دهید؟ این کار تمام تنظیمات محلی شما را پاک می‌کند.</string>
 
 </resources>

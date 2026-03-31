@@ -19,7 +19,7 @@ class SpeakifyEngineGatekeeper @Inject constructor(
      * Checks scheduling, manual pauses, and global status.
      */
     suspend fun canSpeakNow(): Boolean {
-        if (!checkAuthentication()) {
+        if ((!checkAuthentication()) && (!hasStartedTheApp())) {
             return false
         }
 
@@ -39,5 +39,9 @@ class SpeakifyEngineGatekeeper @Inject constructor(
 
     fun checkAuthentication(): Boolean {
         return Clerk.user != null
+    }
+
+    suspend fun hasStartedTheApp(): Boolean {
+        return settingsRepository.startTimestamp.first() > 0L
     }
 }

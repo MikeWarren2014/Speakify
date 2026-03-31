@@ -31,6 +31,7 @@ class SessionRepository @Inject constructor(
     private val firestoreSyncRepository: FirestoreSyncRepository,
     private val accountDeletionFirestoreRepository: AccountDeletionFirestoreRepository,
     private val settingsRepository: SettingsRepository,
+    private val trialRepository: TrialRepository
 ) {
     private val _accountDeletionUiState = MutableStateFlow<AccountDeletionUiState>(
         AccountDeletionUiState.NotRequested)
@@ -42,21 +43,35 @@ class SessionRepository @Inject constructor(
     private val scope = CoroutineScope(Dispatchers.Main)
     private val firebaseAuth = FirebaseAuth.getInstance()
 
+    // Flag to track if the user has dismissed the TrialActiveView in the current "session"
+    private var isTrialAuthorized = false
+
     init {
-        combine(Clerk.isInitialized, Clerk.userFlow) { isInitialized, user ->
-            isInitialized to user
+        combine(Clerk.isInitialized, Clerk.userFlow, trialRepository.trialStatus) { isInitialized, user, trialStatus ->
+            Triple(isInitialized, user, trialStatus)
         }
             .distinctUntilChanged()
-            .onEach { (isInitialized, user) ->
+            .onEach { (isInitialized, user, trialStatus) ->
                 if (!isInitialized) {
                     _uiState.value = MainUiState.Loading
                     return@onEach
                 }
 
                 if (user == null) {
+                    // If we are currently in the TrialEnded state (showing thank you message), 
+                    // we don't want the automated logic to jump immediately to SignedOut.
+                    if (_uiState.value == MainUiState.TrialEnded) return@onEach
+
+                    if (isHandlingSpecialTrialStatus(trialStatus)) {
+                        return@onEach
+                    }
                     onSuccessfulSignOut()
                     return@onEach
                 }
+
+                // User is logged in
+                isTrialAuthorized = false // Reset trial flag if they log in
+                scope.launch { trialRepository.recordDeviceActivity() }
 
                 // 1. Sign into Firebase using Clerk's OIDC JWT
                 scope.launch(Dispatchers.IO) {
@@ -91,6 +106,42 @@ class SessionRepository @Inject constructor(
 
             }
             .launchIn(scope)
+    }
+
+    private fun isHandlingSpecialTrialStatus(trialStatus: TrialStatus): Boolean {
+        if (trialStatus is TrialStatus.Active) {
+            _uiState.value = if (isTrialAuthorized) MainUiState.TrialUsage else MainUiState.TrialActive
+            return true
+        }
+        if (trialStatus is TrialStatus.Loading) {
+            _uiState.value = MainUiState.Loading
+            scope.launch { trialRepository.refreshTrialStatus() }
+            return true
+        }
+        return false
+    }
+
+    /**
+     * Call this when the app is "opened" (e.g. LoginActivity starts) to ensure 
+     * the trial screen is shown again if applicable.
+     */
+    fun onAppOpened() {
+        isTrialAuthorized = false
+        // Re-evaluate state based on current trial status
+        scope.launch { trialRepository.refreshTrialStatus() }
+    }
+
+    fun proceedToTrialSession() {
+        isTrialAuthorized = true
+        _uiState.value = MainUiState.TrialUsage
+    }
+
+    fun startTrialConversion() {
+        _uiState.value = MainUiState.TrialConversion
+    }
+
+    fun endTrial() {
+        _uiState.value = MainUiState.TrialEnded
     }
 
     fun setAccountDeletionUiState(state: AccountDeletionUiState) {

@@ -31,7 +31,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -40,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mikewarren.speakify.R
+import com.mikewarren.speakify.viewsAndViewModels.widgets.EndTrialAlertDialog
 import com.mikewarren.speakify.viewsAndViewModels.widgets.TTSAutoCompletableView
 import kotlin.math.roundToInt
 
@@ -54,6 +57,8 @@ fun SettingsView(onNavigateToDeleteAccount: () -> Unit) {
 
     val scrollState = rememberScrollState()
     val context = LocalContext.current
+
+    var showEndTrialConfirm by remember { mutableStateOf(false) }
 
     // --- Backup Launchers ---
 
@@ -158,22 +163,46 @@ fun SettingsView(onNavigateToDeleteAccount: () -> Unit) {
                 }
             }
 
+            val isTrialActive by viewModel.isTrialActive.collectAsStateWithLifecycle()
+
+            if (isTrialActive) {
+                SettingsSection(stringResource(R.string.settings_ready_to_convert)) {
+                    SingleColumnSettingsItemCard(
+                        title = stringResource(R.string.sign_up),
+                        description = stringResource(R.string.trial_conversion)
+                    ) {
+                        Button(
+                            onClick = { viewModel.childTrialVM.goToSignUp() },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(stringResource(R.string.sign_up))
+                        }
+                    }
+                }
+            }
+
             Spacer(modifier = Modifier.height(32.dp))
 
             SettingsSection(stringResource(R.string.settings_section_danger)) {
 
-                Button(
-                    onClick = { viewModel.childMainVM.signOut() },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(stringResource(R.string.settings_sign_out))
+                if (!isTrialActive) {
+                    Button(
+                        onClick = { viewModel.childMainVM.signOut() },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(stringResource(R.string.settings_sign_out))
+                    }
                 }
 
                 Button(
                     onClick = {
+                        if (isTrialActive) {
+                            showEndTrialConfirm = true
+                            return@Button
+                        }
                         viewModel.childMainVM.markAccountForDeletion()
                         onNavigateToDeleteAccount()
-                  },
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error,
@@ -186,10 +215,25 @@ fun SettingsView(onNavigateToDeleteAccount: () -> Unit) {
                         modifier = Modifier.size(ButtonDefaults.IconSize)
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text(stringResource(R.string.settings_delete_account))
+                    Text(
+                        stringResource(
+                            if (isTrialActive) R.string.trial_button_end_trial 
+                            else R.string.settings_delete_account
+                        )
+                    )
                 }
             }
         }
+    }
+
+    if (showEndTrialConfirm) {
+        EndTrialAlertDialog(
+            onDismissRequest = { showEndTrialConfirm = false },
+            onConfirm = {
+                viewModel.childTrialVM.endTrial()
+                showEndTrialConfirm = false
+            }
+        )
     }
 }
 

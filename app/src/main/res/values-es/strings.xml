@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Speakify</string>
+    <string name="slogan">Prioriza tus notificaciones.\nEscucha lo que más importa.</string>
 
     <!-- Authentication Concerns -->
     <string name="signed_in">Sesión iniciada correctamente. Redirigiendo a la aplicación…</string>
@@ -7,6 +8,13 @@
     <string name="sign_in">Iniciar sesión</string>
     <string name="sign_up">Registrarse</string>
     <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+
+    <string name="not_sure_yet">¿Aún no estás seguro?</string>
+    <string name="try_free">Probar gratis (%1$d días)</string>
+    <string name="trial_usage_redirect">Yendo a la aplicación. ¡Disfruta de tu período de prueba!</string>
+    <string name="trial_expired">Tu prueba ha caducado. Regístrate para continuar.</string>
+    <string name="trial_ended_main_activity">¡Gracias por probar Speakify! Redirigiendo a la pantalla de título…</string>
+    <string name="trial_conversion">¡Regístrate ahora para guardar tus ajustes y preferencias para siempre!</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">¿Ya tienes una cuenta? Inicia sesión</string>
@@ -187,6 +195,7 @@
     <string name="settings_min_volume_description">El nivel de volumen más bajo que la aplicación usará al hablar las notificaciones.</string>
     <string name="settings_maximize_volume_title">Maximizar volumen con pantalla apagada</string>
     <string name="settings_maximize_volume_description">Aumenta el volumen de las notificaciones al máximo cuando la pantalla está bloqueada.\n\nADVERTENCIA: Esto puede afectar a otros audios como música o podcasts. Desactiva esto si escuchas otros medios.</string>
+
     <string name="settings_section_privacy">Privacidad</string>
     <string name="settings_crashlytics_title">Compartir datos de uso</string>
     <string name="settings_crashlytics_description">Ayuda a mejorar Speakify compartiendo informes de errores anónimos y estadísticas de uso a través de Firebase.</string>
@@ -197,6 +206,7 @@
     <string name="settings_restore_title">Restaurar datos</string>
     <string name="settings_restore_description">Importa ajustes desde un archivo de copia de seguridad.</string>
     <string name="settings_import">Importar</string>
+    <string name="settings_ready_to_convert">¿Listo para dar el siguiente paso?</string>
     <string name="settings_section_danger">Zona de peligro</string>
     <string name="settings_sign_out">Cerrar sesión</string>
     <string name="settings_delete_account">Eliminar cuenta</string>
@@ -334,5 +344,17 @@
         P.D. Si este es un comentario positivo, ¡definitivamente consideraré calificar Speakify en Google
         Play Store!
     </string>
+    <!-- Trial Active View -->
+    <string name="trial_active_header">¡Bienvenido a tu prueba de Speakify!</string>
+    <string name="trial_active_subtext">Disfruta de acceso total a todas las funciones durante 7 días. No es necesario registrarse todavía.</string>
+    <string name="trial_feature_scheduling_title">Programación inteligente</string>
+    <string name="trial_feature_scheduling_desc">Establece exactamente cuándo quieres que Speakify esté activo.</string>
+    <string name="trial_feature_messages_title">Escucha tus mensajes</string>
+    <string name="trial_feature_messages_desc">Mantente conectado mientras conduces, cocinas o limpias. Speakify lee tus mensajes de texto y chats en voz alta.</string>
+    <string name="trial_feature_appointments_title">No te pierdas ninguna cita</string>
+    <string name="trial_feature_appointments_desc">Escucha tus alertas de calendario y recordatorios para estar al tanto de tu día.</string>
+    <string name="trial_button_enter_app">Simplemente llévame a la aplicación</string>
+    <string name="trial_button_end_trial">Finalizar prueba</string>
+    <string name="trial_end_confirmation">¿Estás seguro de que quieres finalizar tu prueba? Esto borrará todos tus ajustes locales.</string>
 
 </resources>

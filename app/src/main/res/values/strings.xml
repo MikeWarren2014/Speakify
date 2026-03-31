@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Speakify</string>
+    <string name="slogan">
+        Prioritize your notifications.\n
+        Hear what matters most.
+    </string>
 
     <!-- Authentication Concerns -->
     <string name="signed_in">Successfully signed in. Redirecting to app…</string>
@@ -7,6 +11,13 @@
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="forgot_password">Forgot password?</string>
+    <string name="not_sure_yet">Not sure yet?</string>
+    <string name="try_free">Try for Free (%1$d Days)</string>
+    <string name="trial_usage_redirect">Going to app. Enjoy your trial period!</string>
+    <string name="trial_expired">Your trial has expired. Please sign up to continue.</string>
+    <string name="trial_ended_main_activity">Thank you for trying out Speakify! Redirecting back to title screen…</string>
+    <string name="trial_conversion">Sign up now to save your settings and preferences forever!</string>
+
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">Already have an account? Sign in</string>
@@ -198,6 +209,7 @@
     <string name="settings_restore_title">Restore Data</string>
     <string name="settings_restore_description">Import settings from a backup file.</string>
     <string name="settings_import">Import</string>
+    <string name="settings_ready_to_convert">Ready to Take the Next Step?</string>
     <string name="settings_section_danger">Danger Zone</string>
     <string name="settings_sign_out">Sign Out</string>
     <string name="settings_delete_account">Delete Account</string>
@@ -335,5 +347,18 @@
     <string name="fetcher_loading_screen">Fetching %1$s…</string>
     <string name="contacts_data_name">contacts</string>
     <string name="apps_data_name">apps</string>
+
+    <!-- Trial Active View -->
+    <string name="trial_active_header">Welcome to your Speakify Trial!</string>
+    <string name="trial_active_subtext">Enjoy full access to all features for %1$d days. No sign-up required yet.</string>
+    <string name="trial_feature_scheduling_title">Smart Scheduling</string>
+    <string name="trial_feature_scheduling_desc">Set exactly when you want Speakify to be active.</string>
+    <string name="trial_feature_messages_title">Hear Your Messages</string>
+    <string name="trial_feature_messages_desc">Stay connected while driving, cooking, or cleaning. Speakify reads incoming texts and chat messages aloud.</string>
+    <string name="trial_feature_appointments_title">Never Miss an Appointment</string>
+    <string name="trial_feature_appointments_desc">Hear your calendar alerts and reminders so you stay on top of your day.</string>
+    <string name="trial_button_enter_app">Just take me to the App</string>
+    <string name="trial_button_end_trial">End Trial</string>
+    <string name="trial_end_confirmation">Are you sure you want to end your trial? This will clear all your local settings.</string>
 
 </resources>

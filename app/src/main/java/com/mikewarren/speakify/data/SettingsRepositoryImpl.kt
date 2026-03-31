@@ -43,6 +43,11 @@ class SettingsRepositoryImpl @Inject constructor(
             initialValue = emptyMap()
         )
 
+    override val startTimestamp: Flow<Long> = userSettingsDataStore.data
+        .map { model: UserSettingsModel ->
+            model.startTimestamp
+        }
+
     override val useDarkTheme: Flow<Boolean?> = userSettingsDataStore.data
         .map { model: UserSettingsModel ->
             model.useDarkTheme
@@ -73,6 +78,12 @@ class SettingsRepositoryImpl @Inject constructor(
         .map { model: UserSettingsModel ->
             model.originalVolume
         }
+
+    override suspend fun updateStartTimestamp(timestamp: Long) {
+        userSettingsDataStore.updateData { model: UserSettingsModel ->
+            model.copy(startTimestamp = timestamp)
+        }
+    }
 
 
     override suspend fun updateUseDarkTheme(useDarkTheme: Boolean) {

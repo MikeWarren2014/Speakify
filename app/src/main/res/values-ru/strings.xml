@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Speakify</string>
+    <string name="slogan">Расставляйте приоритеты в своих уведомлениях.\nСлушайте то, что важнее всего.</string>
 
     <!-- Authentication Concerns -->
     <string name="signed_in">Вход выполнен. Перенаправление в приложение…</string>
@@ -7,6 +8,13 @@
     <string name="sign_in">Войти</string>
     <string name="sign_up">Регистрация</string>
     <string name="forgot_password">Забыли пароль?</string>
+
+    <string name="not_sure_yet">Еще не уверены?</string>
+    <string name="try_free">Попробовать бесплатно (%1$d дней)</string>
+    <string name="trial_usage_redirect">Переход в приложение. Приятного пробного периода!</string>
+    <string name="trial_expired">Ваш пробный период истек. Пожалуйста, зарегистрируйтесь, чтобы продолжить.</string>
+    <string name="trial_ended_main_activity">Спасибо, что попробовали Speakify! Перенаправление на главный экран…</string>
+    <string name="trial_conversion">Зарегистрируйтесь сейчас, чтобы сохранить свои настройки и предпочтения навсегда!</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">Уже есть аккаунт? Войти</string>
@@ -197,13 +205,14 @@
     <string name="settings_restore_title">Восстановление данных</string>
     <string name="settings_restore_description">Импортируйте настройки из файла резервной копии.</string>
     <string name="settings_import">Импорт</string>
+    <string name="settings_ready_to_convert">Готовы сделать следующий шаг?</string>
     <string name="settings_section_danger">Опасная зона</string>
     <string name="settings_sign_out">Выйти</string>
     <string name="settings_delete_account">Удалить аккаунт</string>
     <string name="warning">Предупреждение</string>
 
     <!-- Scheduling View -->
-    <string name="scheduling_loading_status">Загрузка статуса...</string>
+    <string name="scheduling_loading_status">Загрузка статуса…</string>
     <string name="scheduling_status_header">Статус</string>
     <string name="scheduling_status_text">Приложение сейчас %1$s!</string>
     <string name="scheduling_status_on">ВКЛЮЧЕНО</string>
@@ -333,5 +342,18 @@
         P.S. Если это положительный отзыв, я обязательно рассмотрю возможность оценки Speakify в Google
         Play Store!
     </string>
+
+    <!-- Trial Active View -->
+    <string name="trial_active_header">Добро пожаловать в Speakify Trial!</string>
+    <string name="trial_active_subtext">Пользуйтесь всеми функциями бесплатно в течение 7 дней. Регистрация пока не требуется.</string>
+    <string name="trial_feature_scheduling_title">Умное расписание</string>
+    <string name="trial_feature_scheduling_desc">Настройте точное время, когда Speakify должен быть активен.</string>
+    <string name="trial_feature_messages_title">Слушайте свои сообщения</string>
+    <string name="trial_feature_messages_desc">Оставайтесь на связи во время вождения, приготовления пищи или уборки. Speakify зачитывает входящие тексты и сообщения чатов вслух.</string>
+    <string name="trial_feature_appointments_title">Никогда не пропускайте встречи</string>
+    <string name="trial_feature_appointments_desc">Слушайте оповещения календаря и напоминания, чтобы всегда быть в курсе своих дел.</string>
+    <string name="trial_button_enter_app">Просто перейти к приложению</string>
+    <string name="trial_button_end_trial">Завершить пробный период</string>
+    <string name="trial_end_confirmation">Вы уверены, что хотите завершить пробный период? Это удалит все ваши локальные настройки.</string>
 
 </resources>

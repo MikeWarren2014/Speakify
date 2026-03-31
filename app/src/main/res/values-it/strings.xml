@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Speakify</string>
+    <string name="slogan">Priorità alle tue notifiche.\nAscolta ciò che conta di più.</string>
 
     <!-- Authentication Concerns -->
     <string name="signed_in">Accesso effettuato con successo. Reindirizzamento all\'app…</string>
@@ -7,6 +8,13 @@
     <string name="sign_in">Accedi</string>
     <string name="sign_up">Registrati</string>
     <string name="forgot_password">Password dimenticata?</string>
+
+    <string name="not_sure_yet">Non sei ancora sicuro?</string>
+    <string name="try_free">Prova gratis (%1$d giorni)</string>
+    <string name="trial_usage_redirect">Accesso all\'app. Goditi il tuo periodo di prova!</string>
+    <string name="trial_expired">La tua prova è scaduta. Registrati per continuare.</string>
+    <string name="trial_ended_main_activity">Grazie per aver provato Speakify! Reindirizzamento alla schermata iniziale…</string>
+    <string name="trial_conversion">Registrati ora per salvare le tue impostazioni e preferenze per sempre!</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">Hai già un account? Accedi</string>
@@ -197,13 +205,14 @@
     <string name="settings_restore_title">Ripristina Dati</string>
     <string name="settings_restore_description">Importa le impostazioni da un file di backup.</string>
     <string name="settings_import">Importa</string>
+    <string name="settings_ready_to_convert">Pronto per il passo successivo?</string>
     <string name="settings_section_danger">Zona di Pericolo</string>
     <string name="settings_sign_out">Esci</string>
     <string name="settings_delete_account">Elimina Account</string>
     <string name="warning">Avviso</string>
 
     <!-- Scheduling View -->
-    <string name="scheduling_loading_status">Caricamento stato...</string>
+    <string name="scheduling_loading_status">Caricamento stato…</string>
     <string name="scheduling_status_header">Stato</string>
     <string name="scheduling_status_text">L\'app è attualmente %1$s!</string>
     <string name="scheduling_status_on">ACCESA</string>
@@ -219,7 +228,7 @@
     <string name="scheduling_pause_duration_error_hours_too_long">Questo campo può avere al massimo 3 cifre.</string>
     <string name="confirm">Conferma</string>
 
-    <string name="scheduling_schedule_loading">Caricamento pianificazione...</string>
+    <string name="scheduling_schedule_loading">Caricamento pianificazione…</string>
     <string name="scheduling_weekly_schedule_header">Pianificazione settimanale</string>
     <string name="timepicker_select_time">Seleziona ora</string>
 
@@ -334,5 +343,18 @@
         P.S. Se questo è un feedback positivo, prenderò sicuramente in considerazione l\'idea di valutare Speakify sul Google
         Play Store!
     </string>
+
+    <!-- Trial Active View -->
+    <string name="trial_active_header">Benvenuto nella prova di Speakify!</string>
+    <string name="trial_active_subtext">Goditi l\'accesso completo a tutte le funzioni per 7 giorni. Non è ancora necessaria la registrazione.</string>
+    <string name="trial_feature_scheduling_title">Programmazione Intelligente</string>
+    <string name="trial_feature_scheduling_desc">Imposta esattamente quando vuoi che Speakify sia attivo.</string>
+    <string name="trial_feature_messages_title">Ascolta i tuoi Messaggi</string>
+    <string name="trial_feature_messages_desc">Rimani connesso mentre guidi, cucini o pulisci. Speakify legge ad alta voce i testi in arrivo e i messaggi di chat.</string>
+    <string name="trial_feature_appointments_title">Non Perdere mai un Appuntamento</string>
+    <string name="trial_feature_appointments_desc">Ascolta i tuoi avvisi e promemoria del calendario per rimanere aggiornato sulla tua giornata.</string>
+    <string name="trial_button_enter_app">Portami all\'App</string>
+    <string name="trial_button_end_trial">Termina Prova</string>
+    <string name="trial_end_confirmation">Sei sicuro di voler terminare la prova? Questo cancellerà tutte le tue impostazioni locali.</string>
 
 </resources>

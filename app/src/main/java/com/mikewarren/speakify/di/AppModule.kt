@@ -8,6 +8,8 @@ import com.mikewarren.speakify.data.MessengerContactsRepository
 import com.mikewarren.speakify.data.MessengerContactsRepositoryImpl
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.SettingsRepositoryImpl
+import com.mikewarren.speakify.data.TrialRepository
+import com.mikewarren.speakify.data.TrialRepositoryImpl
 import com.mikewarren.speakify.data.UserSettingsModel
 import com.mikewarren.speakify.data.db.AppDatabase
 import com.mikewarren.speakify.data.db.AppSettingsDao
@@ -45,6 +47,12 @@ abstract class AppModule {
     abstract fun bindMessengerContactsRepository(
         messengerContactsRepositoryImpl: MessengerContactsRepositoryImpl
     ): MessengerContactsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindTrialRepository(
+        trialRepositoryImpl: TrialRepositoryImpl
+    ): TrialRepository
 
     companion object {
         @Provides

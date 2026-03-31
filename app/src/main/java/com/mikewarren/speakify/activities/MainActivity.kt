@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +21,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,6 +39,7 @@ import com.mikewarren.speakify.utils.NotificationPermissionHelper
 import com.mikewarren.speakify.viewsAndViewModels.AppView
 import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -77,6 +82,23 @@ class MainActivity : ComponentActivity()  {
                 }
             }
 
+            if (state is MainUiState.TrialEnded) {
+                LaunchedEffect(state) {
+                    delay(2000)
+                    startActivity(Intent(this@MainActivity, LoginActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    })
+                }
+            }
+
+            if (state is MainUiState.TrialActive || state is MainUiState.TrialConversion) {
+                LaunchedEffect(state) {
+                    startActivity(Intent(this@MainActivity, LoginActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    })
+                }
+            }
+
             MyApplicationTheme(darkTheme = useDarkTheme ?: isSystemInDarkTheme()) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -90,11 +112,37 @@ class MainActivity : ComponentActivity()  {
                         }
                         is MainUiState.SignedOut -> {
                             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                Text(getString(R.string.signed_out))
+                                Text(getString(R.string.signed_out),
+                                    textAlign = TextAlign.Center,
+                                    style = MaterialTheme.typography.bodyLarge)
                             }
                         }
                         is MainUiState.SignedIn -> {
                             AppView()
+                        }
+
+                        MainUiState.TrialActive -> {
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                CircularProgressIndicator()
+                            }
+                        }
+                        MainUiState.TrialUsage -> {
+                            AppView()
+                        }
+                        MainUiState.TrialEnded -> {
+                            Box(modifier = Modifier.fillMaxSize().padding(24.dp), contentAlignment = Alignment.Center) {
+                                Text(
+                                    stringResource(R.string.trial_ended_main_activity),
+                                    textAlign = TextAlign.Center,
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
+                        }
+
+                        MainUiState.TrialConversion -> {
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                CircularProgressIndicator()
+                            }
                         }
                     }
                 }

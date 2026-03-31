@@ -17,6 +17,8 @@ data class UserSettingsModel(
     val isCrashlyticsEnabled: Boolean = false,
     val originalVolume: Int = -1,
     val scheduling: SchedulingModel = SchedulingModel(),
+
+    val startTimestamp : Long = 0L,
 ) {
     constructor() : this(
         useDarkTheme = true,
