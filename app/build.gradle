@@ -3,14 +3,12 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.kapt)
-
-    id 'com.google.dagger.hilt.android'
-    id 'org.jetbrains.kotlin.plugin.serialization'
-    id 'kotlin-parcelize'
-    id 'androidx.room'
-
-    id 'com.google.gms.google-services'
-    id 'com.google.firebase.crashlytics'
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.room)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 // Force exclusion of the profileinstaller to prevent installation errors
@@ -111,14 +109,19 @@ room {
 
 dependencies {
     implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.paging)
+
     implementation libs.androidx.media3.common.ktx
     implementation libs.androidx.appcompat
     implementation libs.androidx.preference
     implementation libs.material
     implementation libs.androidx.compose.ui
     implementation libs.androidx.compose.foundation
-    kapt(libs.hilt.compiler)
-    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.datastore)
     implementation libs.androidx.core.ktx
     implementation libs.androidx.lifecycle.runtime.ktx
@@ -134,7 +137,6 @@ dependencies {
     implementation libs.androidx.espresso.core
 
     implementation libs.androidx.datastore
-
     implementation libs.kotlinx.serialization.json
 
     testImplementation libs.junit
@@ -146,15 +148,8 @@ dependencies {
     debugImplementation libs.androidx.ui.test.manifest
 
     runtimeOnly libs.androidx.lifecycle
-
-    final String roomVersion = "2.7.1"
-    implementation libs.androidx.room.runtime
-    kapt("androidx.room:room-compiler:$roomVersion")
-    implementation("androidx.room:room-paging:$roomVersion")
     implementation libs.kotlin.test
-
     implementation libs.libphonenumber
-
     implementation(libs.coil.compose)
 
     implementation("com.clerk:clerk-android:0.1.24")
