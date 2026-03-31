@@ -109,6 +109,7 @@ tasks.register("printVersionCodeAndName") {
 
 room {
     schemaDirectory("$projectDir/schemas")
+
 }
 
 dependencies {
