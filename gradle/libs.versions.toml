@@ -4,7 +4,7 @@ androidxJunit = "1.2.1"
 coilCompose = "2.7.0"
 core = "1.6.1"
 gradle = "9.1.0"
-hiltAndroidGradlePlugin = "2.57.2"
+hiltAndroidGradlePlugin = "2.59.2"
 hiltNavigationCompose = "1.2.0"
 kotlin = "2.1.0"
 coreKtx = "1.16.0"
@@ -96,7 +96,6 @@ firebase-crashlytics-ndk = { group = "com.google.firebase", name = "firebase-cra
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-legacy-kapt = { id = "com.android.legacy-kapt", version.ref = "agp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroidGradlePlugin" }
