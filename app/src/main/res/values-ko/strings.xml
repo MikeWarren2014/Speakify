@@ -94,6 +94,15 @@
 
     <string name="notification_calendar_upcoming">예정된 이벤트: %1$s. %2$s</string>
 
+    <!-- GEOH Notification -->
+    <!-- GEOH Keywords -->
+    <string name="geoh_upcoming_keyword">예정된</string>
+    <string name="geoh_missed_clock_in_keyword">출근 미체크</string>
+    <string name="geoh_missed_clock_out_keyword">퇴근 미체크</string>
+
+    <!-- GEOH Announcement Text -->
+    <string name="geoh_strategy_upcoming_shift">예정된 간병 교대 근무: %1$s</string>
+
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
         <item>응답</item>

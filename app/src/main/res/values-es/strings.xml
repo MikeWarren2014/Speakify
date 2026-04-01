@@ -94,6 +94,15 @@
 
     <string name="notification_calendar_upcoming">Próximo evento: %1$s. %2$s</string>
 
+    <!-- GEOH Notification -->
+    <!-- GEOH Keywords -->
+    <string name="geoh_upcoming_keyword">próximo</string>
+    <string name="geoh_missed_clock_in_keyword">entrada omitida</string>
+    <string name="geoh_missed_clock_out_keyword">salida omitida</string>
+
+    <!-- GEOH Announcement Text -->
+    <string name="geoh_strategy_upcoming_shift">Próximo turno de cuidado: %1$s</string>
+
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
         <item>responder</item>

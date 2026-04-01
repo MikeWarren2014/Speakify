@@ -94,6 +94,15 @@
 
     <string name="notification_calendar_upcoming">Anstehendes Ereignis: %1$s. %2$s</string>
 
+    <!-- GEOH Notification -->
+    <!-- GEOH Keywords -->
+    <string name="geoh_upcoming_keyword">bevorstehend</string>
+    <string name="geoh_missed_clock_in_keyword">Einstempeln verpasst</string>
+    <string name="geoh_missed_clock_out_keyword">Ausstempeln verpasst</string>
+
+    <!-- GEOH Announcement Text -->
+    <string name="geoh_strategy_upcoming_shift">Bevorstehende Pflegeschicht: %1$s</string>
+
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
         <item>antworten</item>

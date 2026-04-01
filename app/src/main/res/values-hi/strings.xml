@@ -94,6 +94,15 @@
 
     <string name="notification_calendar_upcoming">आने वाला ईवेंट: %1$s। %2$s</string>
 
+    <!-- GEOH Notification -->
+    <!-- GEOH Keywords -->
+    <string name="geoh_upcoming_keyword">आगामी</string>
+    <string name="geoh_missed_clock_in_keyword">मिस्ड क्लॉक-इन</string>
+    <string name="geoh_missed_clock_out_keyword">मिस्ड क्लॉक-आउट</string>
+
+    <!-- GEOH Announcement Text -->
+    <string name="geoh_strategy_upcoming_shift">आगामी केयरगिविंग शिफ्ट: %1$s</string>
+
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
         <item>उत्तर दें</item>

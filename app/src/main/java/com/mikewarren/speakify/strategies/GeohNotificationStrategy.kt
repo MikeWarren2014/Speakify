@@ -27,12 +27,16 @@ class GeohNotificationStrategy(notification: StatusBarNotification,
         Other,
     }
     
-    fun getNotificationType(): NotificationType { 
-        if (SearchUtils.HasAnyMatches(listOf(title, text), context.getString(R.string.geoh_upcoming_keyword)))
+    fun getNotificationType(): NotificationType {
+        val importantExtrasList = listOf(title, text)
+
+        if (SearchUtils.HasAnyMatches(importantExtrasList, context.getString(R.string.geoh_upcoming_keyword)))
             return NotificationType.UpcomingShift
 
+        if (SearchUtils.HasAnyMatches(importantExtrasList, context.getString(R.string.geoh_missed_clock_in_keyword)))
+            return NotificationType.MissedClockIn
 
-        if (SearchUtils.HasAnyMatches(listOf(title, text), context.getString(R.string.geoh_missed_clock_in_keyword)))
+        if (SearchUtils.HasAnyMatches(importantExtrasList, context.getString(R.string.geoh_missed_clock_out_keyword)))
             return NotificationType.MissedClockOut
         
         return NotificationType.Other

@@ -102,6 +102,7 @@
     <!-- GEOH Keywords -->
     <string name="geoh_upcoming_keyword">upcoming</string>
     <string name="geoh_missed_clock_in_keyword">missed check-in</string>
+    <string name="geoh_missed_clock_out_keyword">missed check-out</string>
 
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">Upcoming Caregiving Shift: %1$s"</string>

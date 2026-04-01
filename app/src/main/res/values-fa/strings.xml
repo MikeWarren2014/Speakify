@@ -94,6 +94,15 @@
 
     <string name="notification_calendar_upcoming">رویداد آینده: %1$s. %2$s</string>
 
+    <!-- GEOH Notification -->
+    <!-- GEOH Keywords -->
+    <string name="geoh_upcoming_keyword">آینده</string>
+    <string name="geoh_missed_clock_in_keyword">ورود فراموش شده</string>
+    <string name="geoh_missed_clock_out_keyword">خروج فراموش شده</string>
+
+    <!-- GEOH Announcement Text -->
+    <string name="geoh_strategy_upcoming_shift">شیفت مراقبتی آینده: %1$s</string>
+
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
         <item>پاسخ</item>
