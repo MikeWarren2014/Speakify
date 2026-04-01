@@ -69,7 +69,7 @@
     <string name="notification_active_content">Elaborazione delle notifiche in background.</string>
 
     <!-- Notification Strategies -->
-    <string name="simple_notification_strategy_text">Notifica da %1$s</string>
+    <string name="simple_notification_strategy_text">Notifica da %1$s: "%2$s"</string>
     <string name="sms_notification_strategy_text">SMS da %1$s</string>
     <string name="sms_text_out_loud">%1$s ti ha inviato un messaggio di testo: %2$s</string>
     <string name="messenger_notification_text">Messaggio Facebook in arrivo da %1$s</string>

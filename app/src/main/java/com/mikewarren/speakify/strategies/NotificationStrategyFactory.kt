@@ -24,6 +24,9 @@ object NotificationStrategyFactory {
         if (PackageNames.FacebookMessengerAppList.contains(notification.packageName))
             return MessengerNotificationStrategy(notification, appSettingsModel, context, ttsManager)
 
+        if (notification.packageName == PackageNames.GEOH)
+            return GeohNotificationStrategy(notification, appSettingsModel, context, ttsManager)
+
         return SimpleNotificationStrategy(notification, appSettingsModel, context, ttsManager)
     }
 }

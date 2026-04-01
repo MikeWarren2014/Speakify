@@ -69,7 +69,7 @@
     <string name="notification_active_content">백그라운드에서 알림을 처리하고 있습니다.</string>
 
     <!-- Notification Strategies -->
-    <string name="simple_notification_strategy_text">%1$s의 알림</string>
+    <string name="simple_notification_strategy_text">%1$s 님의 알림: \"%2$s\"</string>
     <string name="sms_notification_strategy_text">%1$s의 문자 메시지</string>
     <string name="sms_text_out_loud">%1$s님이 문자 메시지를 보냈습니다: %2$s</string>
     <string name="messenger_notification_text">%1$s님의 수신 Facebook 메시지</string>

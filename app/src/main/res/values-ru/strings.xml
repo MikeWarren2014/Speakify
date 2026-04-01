@@ -69,7 +69,7 @@
     <string name="notification_active_content">Обработка уведомлений в фоновом режиме.</string>
 
     <!-- Notification Strategies -->
-    <string name="simple_notification_strategy_text">Уведомление от %1$s</string>
+    <string name="simple_notification_strategy_text">Уведомление от %1$s: «%2$s»</string>
     <string name="sms_notification_strategy_text">SMS от %1$s</string>
     <string name="sms_text_out_loud">%1$s отправил(-а) вам SMS: %2$s</string>
     <string name="messenger_notification_text">Входящее сообщение Facebook от %1$s</string>

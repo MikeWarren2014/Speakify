@@ -6,6 +6,7 @@ import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.AppNameHelper
+import com.mikewarren.speakify.utils.NotificationExtractionUtils
 
 class SimpleNotificationStrategy(notification: StatusBarNotification,
                                  appSettingsModel: AppSettingsModel?,
@@ -13,6 +14,7 @@ class SimpleNotificationStrategy(notification: StatusBarNotification,
                                  ttsManager: TTSManager) : BaseNotificationStrategy(notification, appSettingsModel, context, ttsManager) {
     override fun textToSpeakify(): String {
         return context.getString(R.string.simple_notification_strategy_text,
-            AppNameHelper(context).getAppDisplayName(notification.packageName))
+            AppNameHelper(context).getAppDisplayName(notification.packageName),
+            NotificationExtractionUtils.ExtractText(notification))
     }
 }

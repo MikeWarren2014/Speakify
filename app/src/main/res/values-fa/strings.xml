@@ -69,7 +69,7 @@
     <string name="notification_active_content">در حال پردازش اعلان‌ها در پس‌زمینه.</string>
 
     <!-- Notification Strategies -->
-    <string name="simple_notification_strategy_text">اعلان از طرف %1$s</string>
+    <string name="simple_notification_strategy_text">اعلان از %1$s: \"%2$s\"</string>
     <string name="sms_notification_strategy_text">پیامک از طرف %1$s</string>
     <string name="sms_text_out_loud">%1$s برای شما یک پیامک فرستاد: %2$s</string>
     <string name="messenger_notification_text">پیام فیسبوک ورودی از %1$s</string>

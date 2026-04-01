@@ -69,7 +69,7 @@
     <string name="notification_active_content">バックグラウンドで通知を処理しています。</string>
 
     <!-- Notification Strategies -->
-    <string name="simple_notification_strategy_text">%1$s からの通知</string>
+    <string name="simple_notification_strategy_text">%1$s からの通知: 「%2$s」</string>
     <string name="sms_notification_strategy_text">%1$s からのメッセージ</string>
     <string name="sms_text_out_loud">%1$s からメッセージが届きました: %2$s</string>
     <string name="messenger_notification_text">%1$s からの Facebook メッセージ</string>

@@ -70,7 +70,7 @@
     <string name="notification_active_content">正在后台处理通知。</string>
 
     <!-- Notification Strategies -->
-    <string name="simple_notification_strategy_text">来自 %1$s 的通知</string>
+    <string name="simple_notification_strategy_text">来自 %1$s 的通知：“%2$s”</string>
     <string name="sms_notification_strategy_text">来自 %1$s 的短信</string>
     <string name="sms_text_out_loud">%1$s 向您发送了一条短信：%2$s</string>
     <string name="messenger_notification_text">收到来自 %1$s 的 Facebook 消息</string>
