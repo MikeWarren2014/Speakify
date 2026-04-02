@@ -103,6 +103,12 @@
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">次回のケアシフト: %1$s</string>
 
+    <!-- Amazon Shopping -->
+    <!-- Amazon Shopping Keywords -->
+    <string name="amazon_shopping_your_package_keyword">お荷物</string>
+    <string name="amazon_shopping_strategy_on_its_way">Amazonのお荷物が配送中です</string>
+    <string name="amazon_shopping_strategy_stops_away">Amazonのお荷物はあと%1$s件で到着します</string>
+
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
         <item>応答</item>

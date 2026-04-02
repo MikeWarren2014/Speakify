@@ -103,6 +103,12 @@
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">Bevorstehende Pflegeschicht: %1$s</string>
 
+    <!-- Amazon Shopping -->
+    <!-- Amazon Shopping Keywords -->
+    <string name="amazon_shopping_your_package_keyword">Ihr Paket</string>
+    <string name="amazon_shopping_strategy_on_its_way">Ihr Amazon-Paket ist unterwegs</string>
+    <string name="amazon_shopping_strategy_stops_away">Ihr Amazon-Paket ist noch %1$s Stationen entfernt</string>
+
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
         <item>antworten</item>

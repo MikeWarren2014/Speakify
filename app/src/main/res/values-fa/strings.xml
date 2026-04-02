@@ -103,6 +103,12 @@
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">شیفت مراقبتی آینده: %1$s</string>
 
+    <!-- Amazon Shopping -->
+    <!-- Amazon Shopping Keywords -->
+    <string name="amazon_shopping_your_package_keyword">بسته شما</string>
+    <string name="amazon_shopping_strategy_on_its_way">بسته آمازون شما در راه است</string>
+    <string name="amazon_shopping_strategy_stops_away">بسته آمازون شما %1$s ایستگاه فاصله دارد</string>
+
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
         <item>پاسخ</item>

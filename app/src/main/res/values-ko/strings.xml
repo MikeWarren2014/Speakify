@@ -103,6 +103,12 @@
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">예정된 간병 교대 근무: %1$s</string>
 
+    <!-- Amazon Shopping -->
+    <!-- Amazon Shopping Keywords -->
+    <string name="amazon_shopping_your_package_keyword">패키지</string>
+    <string name="amazon_shopping_strategy_on_its_way">아마존 패키지가 배송 중입니다</string>
+    <string name="amazon_shopping_strategy_stops_away">아마존 패키지가 %1$s정거장 남았습니다</string>
+
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
         <item>응답</item>

@@ -104,6 +104,12 @@
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">即将到来的护理班次：%1$s</string>
 
+    <!-- Amazon Shopping -->
+    <!-- Amazon Shopping Keywords -->
+    <string name="amazon_shopping_your_package_keyword">您的包裹</string>
+    <string name="amazon_shopping_strategy_on_its_way">您的亚马逊包裹正在运送途中</string>
+    <string name="amazon_shopping_strategy_stops_away">您的亚马逊包裹还剩 %1$s 站路程</string>
+
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
         <item>接听</item>

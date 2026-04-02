@@ -103,6 +103,12 @@
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">आगामी केयरगिविंग शिफ्ट: %1$s</string>
 
+    <!-- Amazon Shopping -->
+    <!-- Amazon Shopping Keywords -->
+    <string name="amazon_shopping_your_package_keyword">आपका पैकेज</string>
+    <string name="amazon_shopping_strategy_on_its_way">आपका अमेज़न पैकेज रास्ते में है</string>
+    <string name="amazon_shopping_strategy_stops_away">आपका अमेज़न पैकेज %1$s स्टॉप दूर है</string>
+
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
         <item>उत्तर दें</item>

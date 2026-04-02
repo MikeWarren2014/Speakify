@@ -5,6 +5,8 @@ object PackageNames {
     const val GoogleCalendar = "com.google.android.calendar"
 
     const val GEOH = "com.gogeoh.geoh"
+
+    const val AmazonShopping = "com.amazon.mShop.android.shopping"
     val PhoneAppList = listOf(
         "com.google.android.dialer",
         "com.android.dialer",

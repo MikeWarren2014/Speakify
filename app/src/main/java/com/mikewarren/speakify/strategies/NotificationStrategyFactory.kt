@@ -27,6 +27,9 @@ object NotificationStrategyFactory {
         if (notification.packageName == PackageNames.GEOH)
             return GeohNotificationStrategy(notification, appSettingsModel, context, ttsManager)
 
+        if (notification.packageName == PackageNames.AmazonShopping)
+            return AmazonShoppingNotificationStrategy(notification, appSettingsModel, context, ttsManager)
+
         return SimpleNotificationStrategy(notification, appSettingsModel, context, ttsManager)
     }
 }

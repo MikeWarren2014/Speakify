@@ -105,7 +105,13 @@
     <string name="geoh_missed_clock_out_keyword">missed check-out</string>
 
     <!-- GEOH Announcement Text -->
-    <string name="geoh_strategy_upcoming_shift">Upcoming Caregiving Shift: %1$s"</string>
+    <string name="geoh_strategy_upcoming_shift">Upcoming Caregiving Shift: %1$s</string>
+
+    <!-- Amazon Shopping -->
+    <!-- Amazon Shopping Keywords -->
+    <string name="amazon_shopping_your_package_keyword">your package</string>
+    <string name="amazon_shopping_strategy_on_its_way">Your Amazon package is on its way</string>
+    <string name="amazon_shopping_strategy_stops_away">Your Amazon package is %1$s stops away</string>
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">

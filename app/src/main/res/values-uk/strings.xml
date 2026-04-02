@@ -103,6 +103,12 @@
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">Майбутня зміна по догляду: %1$s</string>
 
+    <!-- Amazon Shopping -->
+    <!-- Amazon Shopping Keywords -->
+    <string name="amazon_shopping_your_package_keyword">ваша посилка</string>
+    <string name="amazon_shopping_strategy_on_its_way">Ваша посилка Amazon вже в дорозі</string>
+    <string name="amazon_shopping_strategy_stops_away">Ваша посилка Amazon знаходиться за %1$s зупинок від вас</string>
+
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
         <item>відповісти</item>

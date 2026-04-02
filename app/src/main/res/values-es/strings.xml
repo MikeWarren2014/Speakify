@@ -103,6 +103,12 @@
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">Próximo turno de cuidado: %1$s</string>
 
+    <!-- Amazon Shopping -->
+    <!-- Amazon Shopping Keywords -->
+    <string name="amazon_shopping_your_package_keyword">Su paquete</string>
+    <string name="amazon_shopping_strategy_on_its_way">Su paquete de Amazon está en camino</string>
+    <string name="amazon_shopping_strategy_stops_away">Su paquete de Amazon está a %1$s paradas</string>
+
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
         <item>responder</item>

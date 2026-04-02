@@ -3,6 +3,7 @@ package com.mikewarren.speakify.strategies
 import android.content.Context
 import android.service.notification.StatusBarNotification
 import android.text.format.DateUtils
+import android.util.Log
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.services.TTSManager
