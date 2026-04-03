@@ -18,6 +18,9 @@ interface UserAppsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(importantApp: UserAppModel)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertIgnore(importantApp: UserAppModel): Long
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg importantApps: UserAppModel)
 

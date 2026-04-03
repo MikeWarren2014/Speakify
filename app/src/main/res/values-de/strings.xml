@@ -69,7 +69,7 @@
     <string name="notification_active_content">Benachrichtigungen werden im Hintergrund verarbeitet.</string>
 
     <!-- Notification Strategies -->
-    <string name="simple_notification_strategy_text">Benachrichtigung von %1$s</string>
+    <string name="simple_notification_strategy_text">Benachrichtigung von %1$s: „%2$s“</string>
     <string name="sms_notification_strategy_text">SMS von %1$s</string>
     <string name="sms_text_out_loud">%1$s hat Ihnen eine SMS gesendet: %2$s</string>
     <string name="messenger_notification_text">Eingehende Facebook-Nachricht von %1$s</string>
@@ -93,6 +93,15 @@
     <string name="google_voice_strategy_unknown_notification_text">Unbekannte Google Voice Benachrichtigung</string>
 
     <string name="notification_calendar_upcoming">Anstehendes Ereignis: %1$s. %2$s</string>
+
+    <!-- GEOH Notification -->
+    <!-- GEOH Keywords -->
+    <string name="geoh_upcoming_keyword">bevorstehend</string>
+    <string name="geoh_missed_clock_in_keyword">Einstempeln verpasst</string>
+    <string name="geoh_missed_clock_out_keyword">Ausstempeln verpasst</string>
+
+    <!-- GEOH Announcement Text -->
+    <string name="geoh_strategy_upcoming_shift">Bevorstehende Pflegeschicht: %1$s</string>
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">

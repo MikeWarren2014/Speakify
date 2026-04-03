@@ -69,7 +69,7 @@
     <string name="notification_active_content">पृष्ठभूमि में सूचनाएं संसाधित की जा रही हैं।</string>
 
     <!-- Notification Strategies -->
-    <string name="simple_notification_strategy_text">%1$s से सूचना</string>
+    <string name="simple_notification_strategy_text">%1$s से सूचना: "%2$s"</string>
     <string name="sms_notification_strategy_text">%1$s से संदेश</string>
     <string name="sms_text_out_loud">%1$s ने आपको एक टेक्स्ट संदेश भेजा है: %2$s</string>
     <string name="messenger_notification_text">%1$s से इनकमिंग फेसबुक संदेश</string>
@@ -93,6 +93,15 @@
     <string name="google_voice_strategy_unknown_notification_text">अज्ञात Google Voice सूचना</string>
 
     <string name="notification_calendar_upcoming">आने वाला ईवेंट: %1$s। %2$s</string>
+
+    <!-- GEOH Notification -->
+    <!-- GEOH Keywords -->
+    <string name="geoh_upcoming_keyword">आगामी</string>
+    <string name="geoh_missed_clock_in_keyword">मिस्ड क्लॉक-इन</string>
+    <string name="geoh_missed_clock_out_keyword">मिस्ड क्लॉक-आउट</string>
+
+    <!-- GEOH Announcement Text -->
+    <string name="geoh_strategy_upcoming_shift">आगामी केयरगिविंग शिफ्ट: %1$s</string>
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">

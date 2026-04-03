@@ -20,19 +20,18 @@ interface AppSettingsDao {
     fun getAllFlow(): Flow<List<AppSettingsWithNotificationSources>>
 
     @Transaction
-
     @Query("SELECT * FROM app_settings")
     suspend fun getAllRaw(): List<AppSettingsDbModel>
+
     @Transaction
     @Query("SELECT * FROM app_settings WHERE package_name = :packageName")
     suspend fun getByPackageName(packageName: String): AppSettingsWithNotificationSources?
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(appSettings: AppSettingsDbModel): Long
 
     /**
      * Updates an AppSettings entity.
-     * Use REPLACE strategy to handle potential conflicts (e.g., if packageName is unique)
      */
     @Update
     suspend fun updateAppSettings(appSettings: AppSettingsDbModel)

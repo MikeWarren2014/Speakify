@@ -73,7 +73,7 @@
     <string name="notification_active_content">Processing notifications in the background.</string>
 
     <!-- Notification Strategies -->
-    <string name="simple_notification_strategy_text">Notification from %1$s</string>
+    <string name="simple_notification_strategy_text">Notification from %1$s: \"%2$s\"</string>
     <string name="sms_notification_strategy_text">Text from %1$s</string>
     <string name="sms_text_out_loud">%1$s sent you a text message: %2$s</string>
     <string name="messenger_notification_text">Incoming Facebook message from %1$s</string>
@@ -97,6 +97,15 @@
     <string name="google_voice_strategy_unknown_notification_text">Unknown Google Voice Notification</string>
 
     <string name="notification_calendar_upcoming">Upcoming event: %1$s. %2$s</string>
+
+    <!-- GEOH Notification -->
+    <!-- GEOH Keywords -->
+    <string name="geoh_upcoming_keyword">upcoming</string>
+    <string name="geoh_missed_clock_in_keyword">missed check-in</string>
+    <string name="geoh_missed_clock_out_keyword">missed check-out</string>
+
+    <!-- GEOH Announcement Text -->
+    <string name="geoh_strategy_upcoming_shift">Upcoming Caregiving Shift: %1$s"</string>
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">

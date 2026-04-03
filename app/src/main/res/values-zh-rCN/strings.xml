@@ -70,7 +70,7 @@
     <string name="notification_active_content">正在后台处理通知。</string>
 
     <!-- Notification Strategies -->
-    <string name="simple_notification_strategy_text">来自 %1$s 的通知</string>
+    <string name="simple_notification_strategy_text">来自 %1$s 的通知：“%2$s”</string>
     <string name="sms_notification_strategy_text">来自 %1$s 的短信</string>
     <string name="sms_text_out_loud">%1$s 向您发送了一条短信：%2$s</string>
     <string name="messenger_notification_text">收到来自 %1$s 的 Facebook 消息</string>
@@ -94,6 +94,15 @@
     <string name="google_voice_strategy_unknown_notification_text">未知的 Google Voice 通知</string>
 
     <string name="notification_calendar_upcoming">即将到来的活动：%1$s。%2$s</string>
+
+    <!-- GEOH Notification -->
+    <!-- GEOH Keywords -->
+    <string name="geoh_upcoming_keyword">即将到来</string>
+    <string name="geoh_missed_clock_in_keyword">未签到</string>
+    <string name="geoh_missed_clock_out_keyword">未签退</string>
+
+    <!-- GEOH Announcement Text -->
+    <string name="geoh_strategy_upcoming_shift">即将到来的护理班次：%1$s</string>
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">

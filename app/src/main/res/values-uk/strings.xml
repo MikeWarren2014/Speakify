@@ -69,7 +69,7 @@
     <string name="notification_active_content">Обробка сповіщень у фоновому режимі.</string>
 
     <!-- Notification Strategies -->
-    <string name="simple_notification_strategy_text">Сповіщення від %1$s</string>
+    <string name="simple_notification_strategy_text">Сповіщення від %1$s: \"%2$s\"</string>
     <string name="sms_notification_strategy_text">SMS від %1$s</string>
     <string name="sms_text_out_loud">%1$s надіслав(-ла) вам текстове повідомлення: %2$s</string>
     <string name="messenger_notification_text">Вхідне повідомлення Facebook від %1$s</string>
@@ -93,6 +93,15 @@
     <string name="google_voice_strategy_unknown_notification_text">Невідоме сповіщення Google Voice</string>
 
     <string name="notification_calendar_upcoming">Найближча подія: %1$s. %2$s</string>
+
+    <!-- GEOH Notification -->
+    <!-- GEOH Keywords -->
+    <string name="geoh_upcoming_keyword">майбутній</string>
+    <string name="geoh_missed_clock_in_keyword">пропущений прихід</string>
+    <string name="geoh_missed_clock_out_keyword">пропущений вихід</string>
+
+    <!-- GEOH Announcement Text -->
+    <string name="geoh_strategy_upcoming_shift">Майбутня зміна по догляду: %1$s</string>
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
