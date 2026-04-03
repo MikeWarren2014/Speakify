@@ -10,57 +10,72 @@ import java.util.Locale
 
 object TTSUtils: ITaggable {
 
+    /**
+     * Retrieves a list of recommended voices based on the current system locale.
+     */
     fun GetRecommendedDefaultVoiceModels(ttsEngine: TextToSpeech): List<VoiceInfoModel> {
         val availableVoices = ttsEngine.voices?.toList() ?: emptyList()
-        val usEnglishVoices = availableVoices.filter {
-            it.locale == Locale.US && it.name.contains("en-us", ignoreCase = true)
+        val systemLocale = Locale.getDefault()
+
+        // 1. Try to find voices matching the user's current system locale
+        var recommendedVoices = availableVoices.filter {
+            it.locale.language == systemLocale.language
         }
 
-        if (usEnglishVoices.isEmpty()) {
-            LogUtils.LogWarning(TAG, "No en-US voices found, falling back to system default.")
-            return emptyList() // Or return a list containing the system default voice
-        }
-
-        // Prioritize voices based on name (this is highly engine-dependent and might need adjustments)
-        val preferredNames = listOf("female", "male", "en-us") // Add names of voices you think sound good
-        val preferredVoices = usEnglishVoices.filter { voice ->
-            preferredNames.any { preferredName ->
-                voice.name.contains(preferredName, ignoreCase = true)
+        // 2. If no local voices, fallback to US English as a secondary recommendation
+        if (recommendedVoices.isEmpty() && systemLocale != Locale.US) {
+            recommendedVoices = availableVoices.filter {
+                it.locale.language == Locale.US.language
             }
         }
 
-        // If no preferred voices found, fallback to first two en-US voices
-        var voices = preferredVoices
-        if (preferredVoices.isNotEmpty())
-            voices = usEnglishVoices
+        // Prioritize voices that are "high quality" (not network dependent if possible)
+        // and try to provide a mix of genders if the engine provides that info in the name.
+        val prioritized = recommendedVoices.sortedByDescending { it.quality }
 
-        return voices.mapNotNull { voice: Voice -> ToVoiceInfoModel(voice) }
+        return prioritized.mapNotNull { voice: Voice -> ToVoiceInfoModel(voice) }
     }
 
     fun ToVoiceInfoModel(voice: Voice): VoiceInfoModel? {
         return voice.locale?.let { locale ->
             VoiceInfoModel(
                 name = voice.name,
-                displayName = locale.displayLanguage, // "English"
-                language = locale.language,           // "en"
-                country = locale.displayCountry       // "United States"
+                displayName = locale.displayName,
+                language = locale.language,
+                country = locale.displayCountry
             )
         }
     }
 
+    /**
+     * Sets the TTS voice. If voiceName is null or empty, it attempts to use the 
+     * best voice for the current system locale.
+     */
     fun SetTTSVoice(tts: TextToSpeech?, voiceName: String? = Constants.DefaultTTSVoice) {
         val voices = tts?.voices
         if (voices.isNullOrEmpty()) {
-            LogUtils.LogWarning(TAG, "TTS engine has no voices available, using system default.")
+            LogUtils.LogWarning(TAG, "TTS engine has no voices available.")
             return
         }
 
-        // Use provided voiceName or system default if null
-        val voice = voiceName?.let { name ->
-            voices.find { it.name == name }
-        } ?: voices.find { it.locale == Locale.getDefault() } ?: voices.firstOrNull()
+        val systemLocale = Locale.getDefault()
 
-        voice?.let {
+        // 1. Try to find the exact voice requested
+        var selectedVoice: Voice? = if (!voiceName.isNullOrBlank()) {
+            voices.find { it.name == voiceName }
+        } else {
+            null
+        }
+
+        // 2. If no specific voice requested (or not found), find best for system locale
+        if (selectedVoice == null) {
+            selectedVoice = voices.find { it.locale == systemLocale } 
+                ?: voices.find { it.locale.language == systemLocale.language }
+                ?: voices.firstOrNull()
+        }
+
+        selectedVoice?.let {
+            LogUtils.LogBreadcrumb(TAG, "Setting TTS voice to: ${it.name} (${it.locale})")
             tts.voice = it
         }
     }
