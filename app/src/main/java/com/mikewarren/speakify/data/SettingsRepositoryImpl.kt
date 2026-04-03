@@ -8,6 +8,7 @@ import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.AppSettingsDbModel
 import com.mikewarren.speakify.data.db.DbProvider
 import com.mikewarren.speakify.data.db.NotificationSourceModel
+import com.mikewarren.speakify.data.db.UserAppModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -130,6 +131,17 @@ class SettingsRepositoryImpl @Inject constructor(
     override suspend fun saveAppSettings(appSettingsModel: AppSettingsModel) {
         val appSettingsDao = _db.appSettingsDao()
         val notificationSourcesDao = _db.notificationSourcesDao()
+        val userAppsDao = _db.userAppsDao()
+
+        // Ensure the parent app exists in the 'important_apps' table to satisfy Foreign Key constraints.
+        // This is especially important during data restoration if 'app_settings' are restored before
+        // or without corresponding 'important_apps'.
+        userAppsDao.insertIgnore(
+            UserAppModel(
+                packageName = appSettingsModel.packageName,
+                appName = appSettingsModel.packageName // Default to package name if not present
+            )
+        )
 
         val appSettingsDbModel = AppSettingsDbModel(
             id = appSettingsModel.id,
@@ -156,6 +168,13 @@ class SettingsRepositoryImpl @Inject constructor(
 
     private suspend fun saveToDatabase(appSettingsDao: AppSettingsDao, appSettingsDbModel: AppSettingsDbModel) : Long {
         if (appSettingsDbModel.id == null) {
+            // Try to find if we already have an entry for this package to avoid duplicate entries with different IDs
+            val existing = appSettingsDao.getByPackageName(appSettingsDbModel.packageName)
+            if (existing != null) {
+                val updatedModel = appSettingsDbModel.copy(id = existing.appSettings.id)
+                appSettingsDao.updateAppSettings(updatedModel)
+                return existing.appSettings.id!!
+            }
             return appSettingsDao.insert(appSettingsDbModel)
 
         }

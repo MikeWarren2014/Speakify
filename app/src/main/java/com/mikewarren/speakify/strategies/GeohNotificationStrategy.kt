@@ -55,11 +55,11 @@ class GeohNotificationStrategy(notification: StatusBarNotification,
 
     private fun extractRelativeTime(text: String): String? {
         // Matches "on Wednesday, 2:30 PM" or "on Wednesday, 14:30"
-        val regex = """on\s+(\w+),\s+(\d{1,2}:\d{2}(?:\s?[APMapm]{2})?)""".toRegex()
+        val regex = """on\s+(?<dayOfWeek>\w+),\s+(?<date>\w+\s+\d{1,2}\s+\d{4},)\s+(?<time>\d{1,2}:\d{2}(?:\s?[APMapm]{2})?)""".toRegex()
         val matchResult = regex.find(text) ?: return null
 
-        val dayString = matchResult.groups[1]?.value ?: return null
-        val timeString = matchResult.groups[2]?.value ?: return null
+        val dayString = matchResult.groups["dayOfWeek"]?.value ?: return null
+        val timeString = matchResult.groups["time"]?.value ?: return null
 
         return try {
             val dayOfWeek = DayOfWeek.valueOf(dayString.uppercase(Locale.US))
