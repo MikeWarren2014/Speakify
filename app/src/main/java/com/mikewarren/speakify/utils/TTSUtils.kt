@@ -40,7 +40,7 @@ object TTSUtils: ITaggable {
         return voice.locale?.let { locale ->
             VoiceInfoModel(
                 name = voice.name,
-                displayName = "${locale.displayName} (${voice.name})", 
+                displayName = locale.displayName,
                 language = locale.language,
                 country = locale.displayCountry
             )
