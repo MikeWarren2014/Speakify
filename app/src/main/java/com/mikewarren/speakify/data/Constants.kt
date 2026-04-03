@@ -10,7 +10,7 @@ object Constants {
     const val OneDay: Long = 24 * OneHour
 
 
-    const val DefaultTTSVoice = "en-US-language"
+    const val DefaultTTSVoice = "" // Empty signifies "System Default"
     const val AutoCompleteListSizeLimit = 5
     const val DefaultBooleanSetting = false
 
