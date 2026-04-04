@@ -31,15 +31,17 @@ jobs:
           cat version_output.txt
           echo "VERSION_CODE=$(grep VERSION_CODE version_output.txt | cut -d '=' -f2)" >> $GITHUB_ENV
           echo "VERSION_NAME=$(grep VERSION_NAME version_output.txt | cut -d '=' -f2)" >> $GITHUB_ENV
-#      - name: Bump Version Code
-#        uses: chkfung/android-version-actions@v1.2.1
-#        with:
-#          gradlePath: app/build.gradle
-#          versionCode: $(( ${{ github.run_number }} + 27 - 22 ))
-#          versionName: ${{ env.VERSION_NAME }}
+      # Source - https://stackoverflow.com/a/75127891
+      # Posted by Pieter Svenson, modified by community. See post 'Timeline' for change history
+      # Retrieved 2026-04-04, License - CC BY-SA 4.0
+
+      - name: Create Google Services JSON File
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $GOOGLE_SERVICES_JSON | base64 -di > ./app/google-services.json
 
       - name: Build prodRelease
-        run: ./gradlew bundleRelease -Pandroid.injected.versionCode=$((${{ github.run_number }} + 27)) -Pandroid.injected.versionName=${{ env.VERSION_NAME }}
+        run: ./gradlew bundleRelease -Pandroid.injected.versionCode=${{ github.run_number }} -Pandroid.injected.versionName=${{ env.VERSION_NAME }}
       - name: Sign AAB
         id: sign
         uses: r0adkll/sign-android-release@v1
