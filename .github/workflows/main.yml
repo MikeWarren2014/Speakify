@@ -39,9 +39,7 @@ jobs:
 #          versionName: ${{ env.VERSION_NAME }}
 
       - name: Build prodRelease
-        run: ./gradlew bundleRelease \
-          -Pandroid.injected.versionCode=$((${{ github.run_number }} + 27)) \
-          -Pandroid.injected.versionName=${{ env.VERSION_NAME }}
+        run: ./gradlew bundleRelease -Pandroid.injected.versionCode=$((${{ github.run_number }} + 27)) -Pandroid.injected.versionName=${{ env.VERSION_NAME }}
       - name: Sign AAB
         id: sign
         uses: r0adkll/sign-android-release@v1
