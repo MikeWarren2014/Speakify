@@ -1,4 +1,4 @@
-- Nuevos ajustes de mensajería: leer mensajes, ignorar mensajes de una sola palabra e ignorar reacciones.
-- Soporte mejorado para Facebook Messenger: anuncio inteligente de llamadas de audio y video, filtrado de contactos y solicitudes de mensajes.
-- Nueva página de programación: pausa Speakify con tiempos de reanudación personalizados y gestiona tus horas activas diarias.
-- Prueba gratuita de 7 días: prueba todas las funciones premium sin riesgo durante 7 días.
+- El nombre de la voz predeterminada se basará en el idioma del usuario
+- Ahora se leerá el texto de la mayoría de las notificaciones
+- Soporte parcial para notificaciones de compras de Amazon (ej. cuando los paquetes están a x paradas)
+- Mejoras menores en la interfaz de usuario
