@@ -108,8 +108,8 @@ kotlin {
 
 tasks.register("printVersionCodeAndName") {
     doLast {
-        println "VERSION_CODE=${android.defaultConfig.versionCode}"
-        println "VERSION_NAME=${android.defaultConfig.versionName}"
+        println "VERSION_CODE=${project.android.defaultConfig.versionCode}"
+        println "VERSION_NAME=${project.android.defaultConfig.versionName}"
     }
 }
 
