@@ -1,4 +1,4 @@
-- Nouveaux paramètres de messagerie : lecture des messages, ignorance des messages d'un seul mot et ignorance des réactions.
-- Prise en charge améliorée de Facebook Messenger : annonce intelligente des appels audio et vidéo, ajout de contacts récents à la liste des sources importantes et acceptation des demandes de messages.
-- Page de planification complète : bouton de pause avec heure de reprise personnalisée et paramètres quotidiens (toute la journée, désactivé, horaires programmés).
-- Mode d'essai gratuit de 7 jours : profitez de toutes les fonctionnalités sans risque pendant 7 jours.
+- Le nom de la voix par défaut sera basé sur la langue de l'utilisateur
+- Le texte de la plupart des notifications sera désormais lu
+- Prise en charge partielle des notifications d'achat Amazon (ex. : lorsqu'un colis est à x arrêts)
+- Améliorations mineures de l'interface utilisateur

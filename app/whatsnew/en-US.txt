@@ -1,4 +1,4 @@
-- New messaging settings: Read messages, ignore single-word messages, and ignore reactions.
-- Enhanced Facebook Messenger support: Intelligent audio/video call announcing, contact filtering, and Message Requests.
-- All-new Scheduling page: Pause Speakify with custom resume times and manage daily active hours.
-- 7-Day Free Trial: Try all premium features risk-free for 7 days.
+- Default voice name will be based on the user's language
+- Most notifications will now have their text read
+- Some support for Amazon shopping notifications (i.e. when packages are x stops away)
+- Minor UI improvements

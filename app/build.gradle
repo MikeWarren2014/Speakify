@@ -29,7 +29,7 @@ final String packageName = 'com.mikewarren.speakify'
 
 android {
     namespace packageName
-    compileSdk androidSdkVersion
+    compileSdk = androidSdkVersion
 
     // Disable baseline profile generation to prevent installation errors
     experimentalProperties["android.experimental.enableBaselineProfile"] = false
@@ -42,6 +42,8 @@ android {
         versionName "1.1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        assert project.rootProject.file('apiKeys.properties').exists()
 
         Properties properties = new Properties()
         properties.load(project.rootProject.file('apiKeys.properties').newDataInputStream())
@@ -63,7 +65,8 @@ android {
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            // NOTE: Uncomment this line if doing release build locally
+//            signingConfig signingConfigs.release
 
             minifyEnabled true
             shrinkResources true
@@ -106,16 +109,19 @@ kotlin {
     }
 }
 
+
 tasks.register("printVersionCodeAndName") {
+    def vCode = project.provider { android.defaultConfig.versionCode }
+    def vName = project.provider { android.defaultConfig.versionName }
+
     doLast {
-        println "VERSION_CODE=${android.defaultConfig.versionCode}"
-        println "VERSION_NAME=${android.defaultConfig.versionName}"
+        println "VERSION_CODE=${vCode.get()}"
+        println "VERSION_NAME=${vName.get()}"
     }
 }
 
 room {
-    schemaDirectory("$projectDir/schemas")
-
+    schemaDirectory "$projectDir/schemas"
 }
 
 dependencies {
