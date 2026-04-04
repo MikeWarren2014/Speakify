@@ -38,6 +38,7 @@ class ImportantAppsViewModel @Inject constructor(
 
     val packageListDataSource = PackageListDataRequester.GetInstance(settingsRepository.getContext())
     private val _allAppsFlow : StateFlow<List<ApplicationInfo>> = packageListDataSource.observeData()
+    val isLoading: StateFlow<Boolean> = packageListDataSource.isLoading
 
     var childAddAppMenuViewModel: AddAppMenuViewModel? = null
 
