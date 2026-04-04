@@ -35,7 +35,7 @@ jobs:
         uses: chkfung/android-version-actions@v1.2.1
         with:
           gradlePath: app/build.gradle
-          versionCode: $((${{ github.run_number }} + 27)) # TODO: confirm whether versionCode in the build.gradle file automatically updates or stays the same. Change if it updates .
+          versionCode: ${{ github.run_number + 27 }}
           versionName: ${{ env.VERSION_NAME }}
       - name: Build prodRelease
         run: ./gradlew bundleRelease

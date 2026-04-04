@@ -118,7 +118,7 @@ tasks.register("printVersionCodeAndName") {
 }
 
 room {
-    schemaDirectory("$projectDir/schemas")
+    schemaDirectory(project.file("schemas"))
 
 }
 
