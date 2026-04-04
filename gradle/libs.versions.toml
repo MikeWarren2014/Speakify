@@ -40,6 +40,7 @@ firebaseBom = "34.10.0"
 room = "2.7.1"
 mockk = "1.13.13"
 robolectric = "4.14.1"
+kotlinxCoroutines = "1.10.1"
 
 [libraries]
 androidx-core = { module = "androidx.test:core", version.ref = "core" }
@@ -95,6 +96,7 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 firebase-crashlytics-ndk = { group = "com.google.firebase", name = "firebase-crashlytics-ndk" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
