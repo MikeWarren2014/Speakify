@@ -39,7 +39,7 @@ jobs:
           versionName: ${{ env.VERSION_NAME }}
       - name: Check the existence of the schemas folder
         run: |
-          if [[ -d "$projectDir/schemas" ]]; then
+          if [[ -d "/home/runner/work/Speakify/Speakify/app/schemas" ]]; then
             echo "Directory exists."
           fi
 
