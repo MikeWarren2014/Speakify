@@ -106,10 +106,13 @@ kotlin {
     }
 }
 
+final String versionCode = android.defaultConfig.versionCode
+final String versionName = android.defaultConfig.versionName
+
 tasks.register("printVersionCodeAndName") {
     doLast {
-        println "VERSION_CODE=${project.android.defaultConfig.versionCode}"
-        println "VERSION_NAME=${project.android.defaultConfig.versionName}"
+        println "VERSION_CODE=${versionCode}"
+        println "VERSION_NAME=${versionName}"
     }
 }
 
