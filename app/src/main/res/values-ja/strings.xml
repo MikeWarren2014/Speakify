@@ -179,6 +179,7 @@
     <string name="loading">読み込み中…</string>
     <string name="no_notification_sources_yet">%1$s はまだありません。</string>
     <string name="no_notification_sources_instruction">%1$s を追加して特定の通知のみを受け取るか、空のままにしてすべての %1$s の通知を受け取ります。</string>
+    <string name="add">追加</string>
     <string name="remove">削除</string>
     <string name="notification_sources">通知ソース</string>
 

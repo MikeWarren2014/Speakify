@@ -179,6 +179,7 @@
     <string name="loading">로딩 중…</string>
     <string name="no_notification_sources_yet">아직 %1$s이(가) 없습니다.</string>
     <string name="no_notification_sources_instruction">특정 알림만 받으려면 %1$s을(를) 추가하고, 모든 %1$s 알림을 받으려면 비워 두세요.</string>
+    <string name="add">추가</string>
     <string name="remove">제거</string>
     <string name="notification_sources">알림 소스</string>
 

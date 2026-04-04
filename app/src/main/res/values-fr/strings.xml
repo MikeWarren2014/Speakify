@@ -179,6 +179,7 @@
     <string name="loading">Chargement…&#8230;</string>
     <string name="no_notification_sources_yet">Pas encore de %1$s.</string>
     <string name="no_notification_sources_instruction">Ajoutez des %1$s pour n\'être notifié que pour eux, ou laissez vide pour être notifié pour TOUS les %1$s.</string>
+    <string name="add">Ajouter</string>
     <string name="remove">Supprimer</string>
     <string name="notification_sources">sources de notification</string>
 

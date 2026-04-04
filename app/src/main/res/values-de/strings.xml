@@ -179,6 +179,7 @@
     <string name="loading">Wird geladen…</string>
     <string name="no_notification_sources_yet">Noch keine %1$s vorhanden.</string>
     <string name="no_notification_sources_instruction">Fügen Sie einige %1$s hinzu, um nur über diese benachrichtigt zu werden, oder lassen Sie dies leer, um über ALLE %1$s benachrichtigt zu werden.</string>
+    <string name="add">Hinzufügen</string>
     <string name="remove">Entfernen</string>
     <string name="notification_sources">Benachrichtigungsquellen</string>
 

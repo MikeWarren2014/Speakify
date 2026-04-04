@@ -179,6 +179,7 @@
     <string name="loading">در حال بارگذاری…</string>
     <string name="no_notification_sources_yet">هنوز %1$s وجود ندارد.</string>
     <string name="no_notification_sources_instruction">برخی %1$s را اضافه کنید تا فقط درباره آن‌ها مطلع شوید، یا این را خالی بگذارید تا درباره همه %1$s مطلع شوید.</string>
+    <string name="add">افزودن</string>
     <string name="remove">حذف</string>
     <string name="notification_sources">منابع اعلان</string>
 

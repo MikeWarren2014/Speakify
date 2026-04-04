@@ -39,6 +39,7 @@ fun <T>AutoCompletableView(
     onCheckSearchValue: (String, List<T>) -> Boolean,
     itemLineHeight: TextUnit = TextUnit.Unspecified,
     supportingText: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
 ) {
     val filteredChoices : List<T> = remember(viewModel.searchText) {
         (if (viewModel.searchText.isBlank()) {
@@ -82,7 +83,8 @@ fun <T>AutoCompletableView(
                 viewModel.getLabelText().asString()))
             },
             enabled = !viewModel.isDisabled,
-            supportingText = supportingText
+            supportingText = supportingText,
+            leadingIcon = leadingIcon,
         )
 
         if (filteredChoices.isNotEmpty() && viewModel.isAutocompleteDropdownOpen) {

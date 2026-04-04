@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -143,6 +144,12 @@ fun <T : Any?> NotificationSourceListView(
                 )
             }
         },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Filled.Add,
+                contentDescription = stringResource(R.string.add),
+            )
+        }
     )
 }
 
@@ -151,14 +158,23 @@ fun NotificationSourceItemView(source: String, onRemove: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(modifier = Modifier.padding(horizontal = 16.dp),
-            text = source)
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .weight(1f), // Ensures text takes only available space and wraps if needed
+            text = source,
+            style = MaterialTheme.typography.bodyLarge
+        )
         IconButton(onClick = onRemove) {
-            Icon(Icons.Filled.Delete, contentDescription = stringResource(R.string.remove))
+            Icon(
+                imageVector = Icons.Filled.Delete,
+                contentDescription = stringResource(R.string.remove),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }
