@@ -180,6 +180,7 @@
     <string name="loading">正在加载…</string>
     <string name="no_notification_sources_yet">暂无 %1$s。</string>
     <string name="no_notification_sources_instruction">添加一些 %1$s 以仅接收它们的通知，或留空以接收所有 %1$s 的通知。</string>
+    <string name="add">添加</string>
     <string name="remove">移除</string>
     <string name="notification_sources">通知源</string>
 

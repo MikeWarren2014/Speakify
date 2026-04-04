@@ -179,6 +179,7 @@
     <string name="loading">लोड हो रहा है…</string>
     <string name="no_notification_sources_yet">अभी तक कोई %1$s नहीं है।</string>
     <string name="no_notification_sources_instruction">केवल उनके बारे में सूचित होने के लिए कुछ %1$s जोड़ें, या सभी %1$s के बारे में सूचित होने के लिए इसे खाली छोड़ दें।</string>
+    <string name="add">जोड़ें</string>
     <string name="remove">हटाएं</string>
     <string name="notification_sources">सूचना स्रोत</string>
 
@@ -342,10 +343,10 @@
 \n
 \n
         --------------------------------------------------\n
-        उपयोगकर्ता खाता: %3$s\n
-        डिवाइस जानकारी (स्वत: भरी हुई):\n
-        मॉडल: %1$s\n
-        Android संस्करण: %2$s\n
+        User Account: %3$s\n
+        Device Info (Auto-filled):\n
+        Model: %1$s\n
+        Android Version: %2$s\n
         --------------------------------------------------\n
 \n
         P.S. यदि यह सकारात्मक प्रतिक्रिया है, तो मैं निश्चित रूप से Google Play Store पर Speakify को रेटिंग देने पर विचार करूँगा!

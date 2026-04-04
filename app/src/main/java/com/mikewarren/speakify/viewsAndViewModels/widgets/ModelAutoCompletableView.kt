@@ -13,6 +13,7 @@ fun <T> ModelAutoCompletableView(
     onGetAnnotatedString: @Composable (T) -> AnnotatedString,
     itemLineHeight: TextUnit = TextUnit.Unspecified,
     supportingText: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
 ) {
     AutoCompletableView(
         viewModel,
@@ -24,5 +25,6 @@ fun <T> ModelAutoCompletableView(
         },
         itemLineHeight,
         supportingText,
+        leadingIcon,
     )
 }

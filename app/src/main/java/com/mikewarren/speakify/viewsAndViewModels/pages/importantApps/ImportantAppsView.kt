@@ -3,6 +3,7 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -12,11 +13,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,14 +37,13 @@ import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AddAppMenuView
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.DeleteConfirmationDialog
 
-import androidx.compose.runtime.LaunchedEffect
-
 @Composable
 fun ImportantAppsView() {
     val viewModel: ImportantAppsViewModel = hiltViewModel()
     val appVMs by viewModel.filteredApps.collectAsState()
     val searchText by viewModel.searchText.collectAsState()
-    val selectedCount by viewModel.selectedCount.collectAsState() // Observe selection count
+    val selectedCount by viewModel.selectedCount.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
     
     var isAddMenuExpanded by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -65,32 +67,45 @@ fun ImportantAppsView() {
         )
         Spacer(Modifier.height(16.dp))
 
-        // App List
-        if (appVMs.isEmpty()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f) // Take available space
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center // Center vertically as well
-            ) {
-                Text(
-                    text = stringResource(R.string.no_apps_added),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                )
-                Text(
-                    text = stringResource(R.string.add_app_instruction),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                )
+        // App List Content
+        Column(modifier = Modifier.weight(1f)) {
+            if (isLoading) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    CircularProgressIndicator()
+                    Spacer(Modifier.height(16.dp))
+                    Text(
+                        text = stringResource(R.string.loading),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                return@Column
             }
-        } else {
-
-            LazyColumn(modifier = Modifier.weight(1f)) {
+            if (appVMs.isEmpty()) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.no_apps_added),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    )
+                    Text(
+                        text = stringResource(R.string.add_app_instruction),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    )
+                }
+                return@Column
+            }
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(appVMs) { appVM ->
                     AppListItemView(
                         viewModel = appVM as ConfigurableAppListItemViewModel,
@@ -98,9 +113,10 @@ fun ImportantAppsView() {
                 }
             }
         }
+
         Spacer(Modifier.height(16.dp))
 
-        // Add/Delete Button (Use observed selectedCount)
+        // Add/Delete Button
         var buttonText: String = stringResource(R.string.add_app)
         var colors = ButtonDefaults.buttonColors()
         if (selectedCount > 0) {
@@ -121,6 +137,7 @@ fun ImportantAppsView() {
             },
             modifier = Modifier.align(Alignment.End),
             colors = colors,
+            enabled = !isLoading
         ) {
             Text(buttonText)
         }

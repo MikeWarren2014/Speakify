@@ -179,6 +179,7 @@
     <string name="loading">Загрузка…</string>
     <string name="no_notification_sources_yet">Источников %1$s пока нет.</string>
     <string name="no_notification_sources_instruction">Добавьте источники %1$s, чтобы получать уведомления только от них, или оставьте поле пустым, чтобы получать уведомления от ВСЕХ источников %1$s.</string>
+    <string name="add">Добавить</string>
     <string name="remove">Удалить</string>
     <string name="notification_sources">источники уведомлений</string>
 

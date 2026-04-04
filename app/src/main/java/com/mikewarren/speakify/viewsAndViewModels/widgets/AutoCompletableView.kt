@@ -3,12 +3,15 @@ package com.mikewarren.speakify.viewsAndViewModels.widgets
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -23,10 +26,14 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.Constants
 
@@ -39,6 +46,7 @@ fun <T>AutoCompletableView(
     onCheckSearchValue: (String, List<T>) -> Boolean,
     itemLineHeight: TextUnit = TextUnit.Unspecified,
     supportingText: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
 ) {
     val filteredChoices : List<T> = remember(viewModel.searchText) {
         (if (viewModel.searchText.isBlank()) {
@@ -49,6 +57,7 @@ fun <T>AutoCompletableView(
     }
 
     val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
     val isTextFieldFocused by interactionSource.collectIsFocusedAsState()
 
@@ -82,7 +91,19 @@ fun <T>AutoCompletableView(
                 viewModel.getLabelText().asString()))
             },
             enabled = !viewModel.isDisabled,
-            supportingText = supportingText
+            interactionSource = interactionSource,
+            supportingText = supportingText,
+            leadingIcon = leadingIcon,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    if (filteredChoices.size == 1) {
+                        onHandleSelection(viewModel, viewModel.toViewString(filteredChoices[0]))
+                    }
+                    viewModel.setAutocompleteDropdownState(false)
+                    focusManager.clearFocus()
+                }
+            )
         )
 
         if (filteredChoices.isNotEmpty() && viewModel.isAutocompleteDropdownOpen) {

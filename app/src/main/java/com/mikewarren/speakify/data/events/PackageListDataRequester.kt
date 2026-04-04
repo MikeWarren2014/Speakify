@@ -28,12 +28,15 @@ class PackageListDataRequester protected constructor(context: Context) : BaseDat
                 when (event) {
                     is PackageQueryEvent.DataFetched -> {
                         dataFlow.emit(event.data)
+                        _isLoading.value = false
                     }
                     is PackageQueryEvent.FetchFailed -> {
                         Log.e(TAG, "Error when fetching the packages: ${event.message}")
+                        _isLoading.value = false
                     }
                     PackageQueryEvent.PermissionDenied -> {
                         Log.e(TAG, "Permission denied for fetching the packages")
+                        _isLoading.value = false
                     }
                     PackageQueryEvent.RequestData -> onRequestData()
                 }

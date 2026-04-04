@@ -179,6 +179,7 @@
     <string name="loading">Завантаження…</string>
     <string name="no_notification_sources_yet">Ще немає %1$s.</string>
     <string name="no_notification_sources_instruction">Додайте деякі %1$s, щоб отримувати сповіщення лише про них, або залиште це поле порожнім, щоб отримувати сповіщення про ВСІ %1$s.</string>
+    <string name="add">Додати</string>
     <string name="remove">Видалити</string>
     <string name="notification_sources">джерела сповіщень</string>
 
