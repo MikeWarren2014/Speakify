@@ -118,8 +118,8 @@ tasks.register("printVersionCodeAndName") {
 }
 
 room {
-    schemaDirectory(project.file("schemas"))
-
+//    schemaDirectory = project.file("schemas")
+    schemaDirectory = "$projectDir/schemas"
 }
 
 dependencies {
