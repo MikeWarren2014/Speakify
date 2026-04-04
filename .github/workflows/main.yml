@@ -35,8 +35,14 @@ jobs:
         uses: chkfung/android-version-actions@v1.2.1
         with:
           gradlePath: app/build.gradle
-          versionCode: $(( ${{ github.run_number }} + 27 ))
+          versionCode: $(( ${{ github.run_number }} + 27 - 22 ))
           versionName: ${{ env.VERSION_NAME }}
+      - name: Check the existence of the schemas folder
+        run: |
+          if [[ -d "$projectDir/schemas" ]]; then
+            echo "Directory exists."
+          fi
+
       - name: Build prodRelease
         run: ./gradlew bundleRelease
       - name: Sign AAB

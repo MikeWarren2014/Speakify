@@ -27,6 +27,13 @@ if (keystorePropertiesFile.exists()) {
 final int androidSdkVersion = 36
 final String packageName = 'com.mikewarren.speakify'
 
+// Move property loading to a separate variable before the android block
+def apiProperties = new Properties()
+def apiFile = rootProject.file('apiKeys.properties')
+if (apiFile.exists()) {
+    apiFile.withInputStream { apiProperties.load(it) }
+}
+
 android {
     namespace packageName
     compileSdk androidSdkVersion
@@ -43,9 +50,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file('apiKeys.properties').newDataInputStream())
-        buildConfigField "String", "CLERK_PUBLISHABLE_KEY", "\"${properties.getProperty('CLERK_PUBLISHABLE_KEY')}\""
+        buildConfigField "String", "CLERK_PUBLISHABLE_KEY", "\"${apiProperties.getProperty('CLERK_PUBLISHABLE_KEY')}\""
     }
 
     signingConfigs {
@@ -118,8 +123,7 @@ tasks.register("printVersionCodeAndName") {
 }
 
 room {
-//    schemaDirectory = project.file("schemas")
-    schemaDirectory("$projectDir/schemas")
+    schemaDirectory "$projectDir/schemas"
 }
 
 dependencies {
