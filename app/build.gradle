@@ -112,8 +112,8 @@ tasks.register("printVersionCodeAndName") {
     def vName = project.provider { android.defaultConfig.versionName }
 
     doLast {
-        println "VERSION_CODE=${versionCode}"
-        println "VERSION_NAME=${versionName}"
+        println "VERSION_CODE=${vCode}"
+        println "VERSION_NAME=${vName}"
     }
 }
 
