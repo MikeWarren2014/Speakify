@@ -31,20 +31,17 @@ jobs:
           cat version_output.txt
           echo "VERSION_CODE=$(grep VERSION_CODE version_output.txt | cut -d '=' -f2)" >> $GITHUB_ENV
           echo "VERSION_NAME=$(grep VERSION_NAME version_output.txt | cut -d '=' -f2)" >> $GITHUB_ENV
-      - name: Bump Version Code
-        uses: chkfung/android-version-actions@v1.2.1
-        with:
-          gradlePath: app/build.gradle
-          versionCode: $(( ${{ github.run_number }} + 27 - 22 ))
-          versionName: ${{ env.VERSION_NAME }}
-      - name: Check the existence of the schemas folder
-        run: |
-          if [[ -d "/home/runner/work/Speakify/Speakify/app/schemas" ]]; then
-            echo "Directory exists."
-          fi
+#      - name: Bump Version Code
+#        uses: chkfung/android-version-actions@v1.2.1
+#        with:
+#          gradlePath: app/build.gradle
+#          versionCode: $(( ${{ github.run_number }} + 27 - 22 ))
+#          versionName: ${{ env.VERSION_NAME }}
 
       - name: Build prodRelease
-        run: ./gradlew bundleRelease
+        run: ./gradlew bundleRelease \
+          -Pandroid.injected.versionCode=$((${{ github.run_number }} + 27)) \
+          -Pandroid.injected.versionName=${{ env.VERSION_NAME }}
       - name: Sign AAB
         id: sign
         uses: r0adkll/sign-android-release@v1
