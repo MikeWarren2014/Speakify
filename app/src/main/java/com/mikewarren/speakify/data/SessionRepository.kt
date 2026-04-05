@@ -121,16 +121,6 @@ class SessionRepository @Inject constructor(
         return false
     }
 
-    /**
-     * Call this when the app is "opened" (e.g. LoginActivity starts) to ensure 
-     * the trial screen is shown again if applicable.
-     */
-    fun onAppOpened() {
-        isTrialAuthorized = false
-        // Re-evaluate state based on current trial status
-        scope.launch { trialRepository.refreshTrialStatus() }
-    }
-
     fun proceedToTrialSession() {
         isTrialAuthorized = true
         _uiState.value = MainUiState.TrialUsage

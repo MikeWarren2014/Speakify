@@ -40,8 +40,6 @@ class LoginActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         val viewModel: MainViewModel by viewModels()
-        // Reset trial authorization whenever the activity is created (app opened)
-        viewModel.onAppOpened()
 
         setContent {
             val settingsViewModel: SettingsViewModel by viewModels()

@@ -3,6 +3,7 @@ package com.mikewarren.speakify.data
 import android.util.Log
 import com.clerk.api.Clerk
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mikewarren.speakify.data.models.TrialModel
 import com.mikewarren.speakify.utils.DeviceIdProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,40 +27,50 @@ class TrialRepositoryImpl @Inject constructor(
     override val trialStatus: Flow<TrialStatus> = _trialStatus.asStateFlow()
 
     override suspend fun refreshTrialStatus() {
-        if (_trialStatus.value is TrialStatus.NotNeeded)
-            return
+        val localTrialModel = settingsRepository.trialModel.first()
 
-        val deviceId = deviceIdProvider.deviceId
-        
-        // 1. Check local DataStore first
-        var localStart = settingsRepository.startTimestamp.first()
-        
-        if (localStart == 0L) {
-            // 2. Check Firestore if not set locally
-            try {
-                val doc = trialCollection.document(deviceId).get().await()
-                if (doc.exists()) {
-                    localStart = doc.getLong("startTimestamp") ?: 0L
-                    if (localStart != 0L) {
-                        settingsRepository.updateStartTimestamp(localStart)
-                    }
-                }
-            } catch (e: Exception) {
-                // Network error or other issues, fallback to NotStarted or Expired safely
-            }
-        }
-
-        if (localStart == 0L) {
-            _trialStatus.value = TrialStatus.NotStarted
+        if (localTrialModel.isConverted) {
+            _trialStatus.value = TrialStatus.NotNeeded
             return
         }
+
         if (Clerk.user != null) {
             _trialStatus.value = TrialStatus.NotNeeded
             return
         }
 
+        val deviceId = deviceIdProvider.deviceId
+        var currentTrialModel = localTrialModel
+
+        if (currentTrialModel.startTimestamp == 0L) {
+            // 2. Check Firestore if not set locally
+            try {
+                val doc = trialCollection.document(deviceId).get().await()
+                if (doc.exists()) {
+                    val start = doc.getLong("startTimestamp") ?: 0L
+                    val converted = doc.getBoolean("isConverted") ?: false
+                    currentTrialModel = TrialModel(start, converted)
+                    if (start != 0L) {
+                        settingsRepository.updateTrialModel(currentTrialModel)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("TrialRepository", "Failed to refresh trial status from Firestore", e)
+            }
+        }
+
+        if (currentTrialModel.isConverted) {
+            _trialStatus.value = TrialStatus.NotNeeded
+            return
+        }
+
+        if (currentTrialModel.startTimestamp == 0L) {
+            _trialStatus.value = TrialStatus.NotStarted
+            return
+        }
+
         val now = System.currentTimeMillis()
-        val diff = now - localStart
+        val diff = now - currentTrialModel.startTimestamp
 
         val daysPassed = TimeUnit.MILLISECONDS.toDays(diff).toInt()
         if (daysPassed >= Constants.TrialNumberOfDays) {
@@ -71,27 +82,35 @@ class TrialRepositoryImpl @Inject constructor(
 
     override suspend fun startTrial(): Result<Unit> {
         val now = System.currentTimeMillis()
-        return recordStartTime(now)
+        return recordTrialModel(TrialModel(startTimestamp = now, isConverted = false))
     }
 
     override suspend fun recordDeviceActivity() {
-        val localStart = settingsRepository.startTimestamp.first()
-        if (localStart == 0L) {
+        val localTrialModel = settingsRepository.trialModel.first()
+        if (localTrialModel.startTimestamp == 0L) {
             // If we don't have a start timestamp yet (e.g. they just signed up/in without a trial),
             // we should set one now to mark the beginning of their relationship with this device.
-            recordStartTime(System.currentTimeMillis())
+            recordTrialModel(TrialModel(startTimestamp = System.currentTimeMillis(), isConverted = false))
             return
         }
         // Even if we have one, ensure Firestore is synced with this device ID
         val deviceId = deviceIdProvider.deviceId
         try {
             trialCollection.document(deviceId)
-                .set(hashMapOf("startTimestamp" to localStart))
+                .set(localTrialModel)
                 .await()
         } catch (e: Exception) {
             // Ignore failures here as it's a side-effect
             Log.e("TrialRepository", "Failed to record device activity", e)
         }
+    }
+
+    override suspend fun convertToFullVersion(): Result<Unit> {
+        val localTrialModel = settingsRepository.trialModel.first()
+        if (localTrialModel.startTimestamp == 0L)
+            return Result.success(Unit)
+
+        return recordTrialModel(localTrialModel.copy(isConverted = true))
     }
 
     override suspend fun endTrial(): Result<Unit> {
@@ -106,14 +125,14 @@ class TrialRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun recordStartTime(timestamp: Long): Result<Unit> {
+    private suspend fun recordTrialModel(trialModel: TrialModel): Result<Unit> {
         val deviceId = deviceIdProvider.deviceId
         return try {
             trialCollection.document(deviceId)
-                .set(hashMapOf("startTimestamp" to timestamp))
+                .set(trialModel)
                 .await()
             
-            settingsRepository.updateStartTimestamp(timestamp)
+            settingsRepository.updateTrialModel(trialModel)
             refreshTrialStatus() // Refresh status
             Result.success(Unit)
         } catch (e: Exception) {

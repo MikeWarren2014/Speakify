@@ -42,6 +42,6 @@ class SpeakifyEngineGatekeeper @Inject constructor(
     }
 
     suspend fun hasStartedTheApp(): Boolean {
-        return settingsRepository.startTimestamp.first() > 0L
+        return settingsRepository.trialModel.first().startTimestamp > 0L
     }
 }

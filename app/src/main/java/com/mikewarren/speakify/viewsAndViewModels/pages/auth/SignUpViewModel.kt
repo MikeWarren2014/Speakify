@@ -14,14 +14,19 @@ import com.clerk.api.network.serialization.onSuccess
 import com.clerk.api.signup.SignUp
 import com.clerk.api.signup.attemptVerification
 import com.clerk.api.signup.prepareVerification
+import com.mikewarren.speakify.data.TrialRepository
 import com.mikewarren.speakify.data.UserModel
 import com.mikewarren.speakify.data.uiStates.SignUpUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-class SignUpViewModel : ViewModel() {
+@HiltViewModel
+class SignUpViewModel @Inject constructor(
+    private val trialRepository: TrialRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow<SignUpUiState>(SignUpUiState.SignedOut)
     val uiState = _uiState.asStateFlow()
 
@@ -75,6 +80,7 @@ class SignUpViewModel : ViewModel() {
                 .onSuccess {
                     if (it.status == SignUp.Status.COMPLETE) {
                         _uiState.value = SignUpUiState.Success
+                        convertToFullVersion()
                         onDone(true, SignUpUiState.Success)
                         return@onSuccess
                     }
@@ -120,6 +126,7 @@ class SignUpViewModel : ViewModel() {
             inProgressSignUp.attemptVerification(SignUp.AttemptVerificationParams.EmailCode(code))
                 .onSuccess {
                     _uiState.value = SignUpUiState.Success
+                    convertToFullVersion()
                     onDone(true, SignUpUiState.Success)
                 }
                 .onFailure {
@@ -128,6 +135,12 @@ class SignUpViewModel : ViewModel() {
                     Log.e("SignUpViewModel", it.longErrorMessageOrNull, it.throwable)
                     onDone(false, SignUpUiState.NeedsVerification)
                 }
+        }
+    }
+
+    private fun convertToFullVersion() {
+        viewModelScope.launch {
+            trialRepository.convertToFullVersion()
         }
     }
 
