@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.constants.DocumentURLs
@@ -35,7 +36,7 @@ import com.mikewarren.speakify.data.uiStates.SignUpUiState
 import com.mikewarren.speakify.viewsAndViewModels.widgets.PasswordField
 
 @Composable
-fun SignUpView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
+fun SignUpView(viewModel: SignUpViewModel = hiltViewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
 
     val state by viewModel.uiState.collectAsState()
 
@@ -51,7 +52,7 @@ fun SignUpView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boole
 }
 
 @Composable
-fun SignUpScreenView(viewModel: SignUpViewModel = viewModel(), state: SignUpUiState, onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
+fun SignUpScreenView(viewModel: SignUpViewModel = hiltViewModel(), state: SignUpUiState, onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
     if (state is SignUpUiState.NeedsVerification) {
         VerificationView(viewModel, onDone)
         return
@@ -61,7 +62,7 @@ fun SignUpScreenView(viewModel: SignUpViewModel = viewModel(), state: SignUpUiSt
 
 @Composable
 fun VerificationView(
-    viewModel: SignUpViewModel = viewModel(),
+    viewModel: SignUpViewModel = hiltViewModel(),
     onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit
 ) {
     val verificationViewModel: EmailVerificationViewModel = viewModel()
@@ -82,7 +83,7 @@ fun VerificationView(
 }
 
 @Composable
-fun SignUpFormView(viewModel: SignUpViewModel = viewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
+fun SignUpFormView(viewModel: SignUpViewModel = hiltViewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
     val focusManager = LocalFocusManager.current
     val uriHandler = LocalUriHandler.current
 

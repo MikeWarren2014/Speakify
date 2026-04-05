@@ -6,7 +6,7 @@ interface TrialRepository {
     val trialStatus: Flow<TrialStatus>
     suspend fun startTrial(): Result<Unit>
     suspend fun refreshTrialStatus()
-    suspend fun recordDeviceActivity()
+    suspend fun recordSignUp(): Result<Unit>
     suspend fun convertToFullVersion(): Result<Unit>
     suspend fun recordDirectSignUp(): Result<Unit>
     suspend fun endTrial(): Result<Unit>

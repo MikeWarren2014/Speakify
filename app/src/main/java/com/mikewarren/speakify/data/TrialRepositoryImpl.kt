@@ -22,6 +22,7 @@ class TrialRepositoryImpl @Inject constructor(
 
     private val firestore = FirebaseFirestore.getInstance()
     private val trialCollection = firestore.collection("trials")
+    private val directSignUpCollection = firestore.collection("directSignUps")
 
     private val _trialStatus = MutableStateFlow<TrialStatus>(TrialStatus.Loading)
     override val trialStatus: Flow<TrialStatus> = _trialStatus.asStateFlow()
@@ -40,6 +41,7 @@ class TrialRepositoryImpl @Inject constructor(
         }
 
         val deviceId = deviceIdProvider.deviceId
+        // TODO: we should check if there is a direct sign-up. If there is, trial status is not needed
         var currentTrialModel = localTrialModel
 
         if (currentTrialModel.startTimestamp == 0L) {
@@ -85,32 +87,39 @@ class TrialRepositoryImpl @Inject constructor(
         return recordTrialModel(TrialModel(startTimestamp = now, isConverted = false))
     }
 
-    override suspend fun recordDeviceActivity() {
+    override suspend fun recordSignUp(): Result<Unit> {
         val localTrialModel = settingsRepository.trialModel.first()
         if (localTrialModel.startTimestamp == 0L) {
-            // If we don't have a start timestamp yet (e.g. they just signed up/in without a trial),
-            // we should set one now to mark the beginning of their relationship with this device.
-            recordTrialModel(TrialModel(startTimestamp = System.currentTimeMillis(), isConverted = false))
-            return
+            return recordDirectSignUp()
         }
-        // Even if we have one, ensure Firestore is synced with this device ID
-        val deviceId = deviceIdProvider.deviceId
-        try {
-            trialCollection.document(deviceId)
-                .set(localTrialModel)
-                .await()
-        } catch (e: Exception) {
-            // Ignore failures here as it's a side-effect
-            Log.e("TrialRepository", "Failed to record device activity", e)
-        }
+
+        return convertToFullVersion()
     }
 
     override suspend fun convertToFullVersion(): Result<Unit> {
         val localTrialModel = settingsRepository.trialModel.first()
-        if (localTrialModel.startTimestamp == 0L)
-            return Result.success(Unit)
-
         return recordTrialModel(localTrialModel.copy(isConverted = true))
+    }
+
+    override suspend fun recordDirectSignUp(): Result<Unit> {
+        val user = Clerk.user ?: return Result.failure(Exception("User not logged in"))
+        val deviceId = deviceIdProvider.deviceId
+        // if there is a trial for this deviceId, there is no direct signup
+        if (trialCollection.document(deviceId).get().await().exists()) {
+            return Result.success(Unit)
+        }
+
+        return try {
+            directSignUpCollection.document(deviceId)
+                .set(mapOf(
+                    "userEmail" to user.emailAddresses.first().emailAddress,
+                    "timestamp" to System.currentTimeMillis()
+                ))
+                .await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun endTrial(): Result<Unit> {

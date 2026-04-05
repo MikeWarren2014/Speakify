@@ -80,7 +80,7 @@ class SignUpViewModel @Inject constructor(
                 .onSuccess {
                     if (it.status == SignUp.Status.COMPLETE) {
                         _uiState.value = SignUpUiState.Success
-                        convertToFullVersion()
+                        recordSignUp()
                         onDone(true, SignUpUiState.Success)
                         return@onSuccess
                     }
@@ -126,7 +126,7 @@ class SignUpViewModel @Inject constructor(
             inProgressSignUp.attemptVerification(SignUp.AttemptVerificationParams.EmailCode(code))
                 .onSuccess {
                     _uiState.value = SignUpUiState.Success
-                    convertToFullVersion()
+                    recordSignUp()
                     onDone(true, SignUpUiState.Success)
                 }
                 .onFailure {
@@ -138,9 +138,9 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    private fun convertToFullVersion() {
+    private fun recordSignUp() {
         viewModelScope.launch {
-            trialRepository.convertToFullVersion()
+            trialRepository.recordSignUp()
         }
     }
 

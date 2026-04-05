@@ -8,15 +8,21 @@ import com.clerk.api.network.serialization.longErrorMessageOrNull
 import com.clerk.api.network.serialization.onFailure
 import com.clerk.api.network.serialization.onSuccess
 import com.clerk.api.signin.SignIn
+import com.mikewarren.speakify.data.TrialRepository
 import com.mikewarren.speakify.data.uiStates.SignInUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SignInViewModel : ViewModel() {
+@HiltViewModel
+class SignInViewModel @Inject constructor(
+    private val trialRepository: TrialRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<SignInUiState>(SignInUiState.Idle)
     val uiState = _uiState.asStateFlow()
@@ -33,7 +39,10 @@ class SignInViewModel : ViewModel() {
         viewModelScope.launch {
             _uiState.update { SignInUiState.Loading }
             SignIn.create(SignIn.CreateParams.Strategy.Password(identifier = email, password = password))
-                .onSuccess { _uiState.value = SignInUiState.Success }
+                .onSuccess {
+                    _uiState.value = SignInUiState.Success
+                    recordDirectSignUp()
+                }
                 .onFailure { failure: ClerkResult.Failure<ClerkErrorResponse> ->
                     if (failure.error?.errors?.firstOrNull()?.code == "form_password_pwned") {
                         _uiState.value = SignInUiState.ResetPassword(SignInUiState.ResetPassword.PwnedCredentials)
@@ -49,6 +58,12 @@ class SignInViewModel : ViewModel() {
     fun onClickForgotPassword() {
         viewModelScope.launch {
             _uiState.update { SignInUiState.ResetPassword(SignInUiState.ResetPassword.ForgotPassword) }
+        }
+    }
+
+    private fun recordDirectSignUp() {
+        viewModelScope.launch {
+            trialRepository.recordDirectSignUp()
         }
     }
 }

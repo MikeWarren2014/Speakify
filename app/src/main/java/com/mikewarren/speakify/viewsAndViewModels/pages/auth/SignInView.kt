@@ -26,8 +26,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.uiStates.SignInUiState
 import com.mikewarren.speakify.viewsAndViewModels.widgets.PasswordField
@@ -35,7 +35,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 
 @Composable
-fun SignInView(viewModel: SignInViewModel = viewModel()) {
+fun SignInView(viewModel: SignInViewModel = hiltViewModel()) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
