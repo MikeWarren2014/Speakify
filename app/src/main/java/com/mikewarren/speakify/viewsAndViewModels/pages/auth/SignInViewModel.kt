@@ -41,7 +41,7 @@ class SignInViewModel @Inject constructor(
             SignIn.create(SignIn.CreateParams.Strategy.Password(identifier = email, password = password))
                 .onSuccess {
                     _uiState.value = SignInUiState.Success
-                    recordDirectSignUp()
+                    recordSignUp()
                 }
                 .onFailure { failure: ClerkResult.Failure<ClerkErrorResponse> ->
                     if (failure.error?.errors?.firstOrNull()?.code == "form_password_pwned") {
@@ -61,9 +61,9 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    private fun recordDirectSignUp() {
+    private fun recordSignUp() {
         viewModelScope.launch {
-            trialRepository.recordDirectSignUp()
+            trialRepository.recordSignUp()
         }
     }
 }

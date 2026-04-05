@@ -49,10 +49,8 @@ class TrialRepositoryImpl @Inject constructor(
             try {
                 val doc = trialCollection.document(deviceId).get().await()
                 if (doc.exists()) {
-                    val start = doc.getLong("startTimestamp") ?: 0L
-                    val converted = doc.getBoolean("isConverted") ?: false
-                    currentTrialModel = TrialModel(start, converted)
-                    if (start != 0L) {
+                    currentTrialModel = doc.toObject(TrialModel::class.java) ?: TrialModel()
+                    if (currentTrialModel.startTimestamp != 0L) {
                         settingsRepository.updateTrialModel(currentTrialModel)
                     }
                 }
@@ -104,8 +102,8 @@ class TrialRepositoryImpl @Inject constructor(
     override suspend fun recordDirectSignUp(): Result<Unit> {
         val user = Clerk.user ?: return Result.failure(Exception("User not logged in"))
         val deviceId = deviceIdProvider.deviceId
-        // if there is a trial for this deviceId, there is no direct signup
-        if (trialCollection.document(deviceId).get().await().exists()) {
+        // if there already is a direct signup document for this deviceId, we're done
+        if (directSignUpCollection.document(deviceId).get().await().exists()) {
             return Result.success(Unit)
         }
 
