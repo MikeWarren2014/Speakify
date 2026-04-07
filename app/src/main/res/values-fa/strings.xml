@@ -306,14 +306,14 @@
     <string name="snackbar_export_success">پشتیبان با موفقیت صادر شد!</string>
     <string name="snackbar_export_failed">خروجی ناموفق بود: %1$s</string>
 
+    <string name="snackbar_importing">در حال بازیابی داده‌ها…</string>
+    <string name="snackbar_import_success">داده‌ها با موفقیت بازیابی شدند!</string>
+    <string name="snackbar_import_failed">وارد کردن ناموفق بود: %1$s</string>
+
     <!-- Fetcher concerns -->
     <string name="fetcher_loading_screen">در حال دریافت %1$s…</string>
     <string name="contacts_data_name">مخاطبین</string>
     <string name="apps_data_name">برنامه‌ها</string>
-
-    <string name="snackbar_importing">در حال بازیابی داده‌ها…</string>
-    <string name="snackbar_import_success">داده‌ها با موفقیت بازیابی شدند!</string>
-    <string name="snackbar_import_failed">وارد کردن ناموفق بود: %1$s</string>
 
 
     <!-- Preference Titles -->
@@ -355,7 +355,8 @@
 
     <!-- Trial Active View -->
     <string name="trial_active_header">به نسخه آزمایشی Speakify خوش آمدید!</string>
-    <string name="trial_active_subtext">از دسترسی کامل به تمام ویژگی‌ها به مدت ۷ روز لذت ببرید. هنوز نیازی به ثبت‌نام نیست.</string>
+    <string name="trial_active_subtext">از دسترسی کامل به تمام ویژگی‌ها به مدت %1$d روز لذت ببرید. هنوز نیازی به ثبت‌نام نیست.</string>
+    <string name="trial_days_remaining">روزهای باقی‌مانده: %1$d</string>
     <string name="trial_feature_scheduling_title">زمان‌بندی هوشمند</string>
     <string name="trial_feature_scheduling_desc">دقیقاً تعیین کنید چه زمانی می‌خواهید Speakify فعال باشد.</string>
     <string name="trial_feature_messages_title">شنیدن پیام‌های شما</string>

@@ -361,6 +361,7 @@
     <!-- Trial Active View -->
     <string name="trial_active_header">Welcome to your Speakify Trial!</string>
     <string name="trial_active_subtext">Enjoy full access to all features for %1$d days. No sign-up required yet.</string>
+    <string name="trial_days_remaining">Days remaining: %1$d</string>
     <string name="trial_feature_scheduling_title">Smart Scheduling</string>
     <string name="trial_feature_scheduling_desc">Set exactly when you want Speakify to be active.</string>
     <string name="trial_feature_messages_title">Hear Your Messages</string>

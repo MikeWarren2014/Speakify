@@ -356,6 +356,7 @@
     <!-- Trial Active View -->
     <string name="trial_active_header">Добро пожаловать в Speakify Trial!</string>
     <string name="trial_active_subtext">Пользуйтесь всеми функциями бесплатно в течение 7 дней. Регистрация пока не требуется.</string>
+    <string name="trial_days_remaining">Осталось дней: %1$d</string>
     <string name="trial_feature_scheduling_title">Умное расписание</string>
     <string name="trial_feature_scheduling_desc">Настройте точное время, когда Speakify должен быть активен.</string>
     <string name="trial_feature_messages_title">Слушайте свои сообщения</string>

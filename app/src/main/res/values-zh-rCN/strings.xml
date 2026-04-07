@@ -356,6 +356,7 @@
     <!-- Trial Active View -->
     <string name="trial_active_header">欢迎体验 Speakify 试用版！</string>
     <string name="trial_active_subtext">享受 7 天所有功能的完整访问权限。目前无需注册。</string>
+    <string name="trial_days_remaining">剩余天数：%1$d</string>
     <string name="trial_feature_scheduling_title">智能调度</string>
     <string name="trial_feature_scheduling_desc">精确设置您希望 Speakify 激活的时间。</string>
     <string name="trial_feature_messages_title">听取您的消息</string>

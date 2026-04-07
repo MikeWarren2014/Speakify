@@ -355,6 +355,7 @@
     <!-- Trial Active View -->
     <string name="trial_active_header">Speakify トライアルへようこそ！</string>
     <string name="trial_active_subtext">7日間、すべての機能をフルにお楽しみいただけます。まだサインアップは不要です。</string>
+    <string name="trial_days_remaining">残り日数: %1$d</string>
     <string name="trial_feature_scheduling_title">スマートスケジュール</string>
     <string name="trial_feature_scheduling_desc">Speakify をアクティブにする時間を正確に設定できます。</string>
     <string name="trial_feature_messages_title">メッセージを聞く</string>
