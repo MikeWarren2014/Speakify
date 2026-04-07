@@ -4,7 +4,6 @@ import com.clerk.api.Clerk
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.MessengerContactsRepository
 import com.mikewarren.speakify.data.SettingsRepository
-import com.mikewarren.speakify.data.TrialRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -22,8 +21,6 @@ class FirestoreSyncRepository @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val appsRepository: AppsRepository,
     private val messengerContactsRepository: MessengerContactsRepository,
-
-    private val trialRepository: TrialRepository,
 
     private val uploadRepository: UploadRepository,
     private val downloadRepository: DownloadRepository

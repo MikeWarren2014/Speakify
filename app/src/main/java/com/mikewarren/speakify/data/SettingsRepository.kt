@@ -6,8 +6,6 @@ import com.mikewarren.speakify.data.models.TrialModel
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
-
-    val trialModel: Flow<TrialModel>
     val useDarkTheme: Flow<Boolean?>
     val selectedTTSVoice: Flow<String?>
     val appSettings: Flow<Map<String, AppSettingsModel>>
@@ -18,8 +16,6 @@ interface SettingsRepository {
 
     val isCrashlyticsEnabled: Flow<Boolean>
     val originalVolume: Flow<Int> // Persisted original volume
-
-    suspend fun updateTrialModel(trialModel: TrialModel)
 
     suspend fun updateUseDarkTheme(useDarkTheme: Boolean)
     suspend fun saveSelectedVoice(voiceName: String)

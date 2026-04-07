@@ -45,11 +45,6 @@ class SettingsRepositoryImpl @Inject constructor(
             initialValue = emptyMap()
         )
 
-    override val trialModel: Flow<TrialModel> = userSettingsDataStore.data
-        .map { model: UserSettingsModel ->
-            model.trialModel
-        }
-
     override val useDarkTheme: Flow<Boolean?> = userSettingsDataStore.data
         .map { model: UserSettingsModel ->
             model.useDarkTheme
@@ -80,13 +75,6 @@ class SettingsRepositoryImpl @Inject constructor(
         .map { model: UserSettingsModel ->
             model.originalVolume
         }
-
-    override suspend fun updateTrialModel(trialModel: TrialModel) {
-        userSettingsDataStore.updateData { model: UserSettingsModel ->
-            model.copy(trialModel = trialModel)
-        }
-    }
-
 
     override suspend fun updateUseDarkTheme(useDarkTheme: Boolean) {
         userSettingsDataStore.updateData { model: UserSettingsModel ->

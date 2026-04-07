@@ -48,7 +48,9 @@ class SessionRepository @Inject constructor(
     private var isTrialAuthorized = false
 
     init {
-        combine(Clerk.isInitialized, Clerk.userFlow, trialRepository.trialStatus) { isInitialized, user, trialStatus ->
+        combine(Clerk.isInitialized, Clerk.userFlow, trialRepository.trialModelFlow) { isInitialized, user, trialModel ->
+            val trialStatus = trialModel.status
+
             Triple(isInitialized, user, trialStatus)
         }
             .distinctUntilChanged()
@@ -66,6 +68,13 @@ class SessionRepository @Inject constructor(
                     if (isHandlingSpecialTrialStatus(trialStatus)) {
                         return@onEach
                     }
+                    
+                    // If trial status is NotNeeded but user is null, we are likely in the middle 
+                    // of a sign-up/sign-in transition. We should NOT sign out and clear data yet.
+                    if (trialStatus == TrialStatus.NotNeeded) {
+                        return@onEach
+                    }
+
                     onSuccessfulSignOut()
                     return@onEach
                 }

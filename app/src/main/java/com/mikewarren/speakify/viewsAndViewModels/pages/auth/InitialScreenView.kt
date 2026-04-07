@@ -34,14 +34,13 @@ import com.mikewarren.speakify.data.uiStates.InitialScreenUiState
 @Composable
 fun InitialScreenView(viewModel: InitialScreenViewModel = hiltViewModel()) {
     var initialScreenUiState by remember { mutableStateOf<InitialScreenUiState>(InitialScreenUiState.Title) }
-    val trialStatus by viewModel.trialStatus.collectAsStateWithLifecycle()
+
 
     if (initialScreenUiState is InitialScreenUiState.Title) {
          TitleView(
-            trialStatus = trialStatus,
+            viewModel,
             onSignInClicked = { initialScreenUiState = InitialScreenUiState.SignIn },
             onSignUpClicked = { initialScreenUiState = InitialScreenUiState.SignUp },
-            onTryFreeClicked = { viewModel.startTrial() }
         )
         return
     }
@@ -50,11 +49,12 @@ fun InitialScreenView(viewModel: InitialScreenViewModel = hiltViewModel()) {
 
 @Composable
 fun TitleView(
-    trialStatus: TrialStatus,
+    viewModel: InitialScreenViewModel = hiltViewModel(),
     onSignInClicked: () -> Unit,
     onSignUpClicked: () -> Unit,
-    onTryFreeClicked: () -> Unit
 ) {
+    val trialStatus by viewModel.trialStatus.collectAsStateWithLifecycle()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -107,7 +107,7 @@ fun TitleView(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Button(
-                onClick = onTryFreeClicked,
+                onClick = { viewModel.startTrial() },
                 modifier = Modifier.fillMaxWidth(),
                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary
