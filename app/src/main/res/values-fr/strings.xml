@@ -355,7 +355,8 @@
 
     <!-- Trial Active View -->
     <string name="trial_active_header">Bienvenue dans votre essai Speakify !</string>
-    <string name="trial_active_subtext">Profitez d\'un accès complet à toutes les fonctionnalités pendant 7 jours. Aucune inscription n\'est requise pour le moment.</string>
+    <string name="trial_active_subtext">Profitez d\'un accès complet à toutes les fonctionnalités pendant %1$d jours. Aucune inscription n\'est requise pour le moment.</string>
+    <string name="trial_days_remaining">Jours restants : %1$d</string>
     <string name="trial_feature_scheduling_title">Planification intelligente</string>
     <string name="trial_feature_scheduling_desc">Définissez exactement quand vous voulez que Speakify soit actif.</string>
     <string name="trial_feature_messages_title">Écoutez vos messages</string>

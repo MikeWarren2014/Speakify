@@ -144,9 +144,11 @@ class UploadRepository @Inject constructor(
 
     private suspend fun transaction(document: DocumentReference, data: Any) : Result<Unit> {
         return try {
-            document
-                .set(data)
-                .await()
+            safeFirestoreCall {
+                document
+                    .set(data)
+                    .await()
+            }
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
@@ -159,15 +161,21 @@ class UploadRepository @Inject constructor(
         data: T
     ) : Result<Unit> {
         return try {
-            documentCollection.get()
-                .await()
-                .documents
+            val documents = safeFirestoreCall {
+                documentCollection.get()
+                    .await()
+                    .documents
+            }
+            
+            documents
                 .filter { documentSnapshot ->
                     onCheckStaleRecord(documentSnapshot, data)
                 }
                 .forEach { documentSnapshot ->
-                    documentSnapshot.reference.delete()
-                        .await()
+                    safeFirestoreCall {
+                        documentSnapshot.reference.delete()
+                            .await()
+                    }
                 }
 
             Result.success(Unit)

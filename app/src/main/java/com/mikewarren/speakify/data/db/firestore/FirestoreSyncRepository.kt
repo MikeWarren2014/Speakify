@@ -1,10 +1,9 @@
 package com.mikewarren.speakify.data.db.firestore
 
+import com.clerk.api.Clerk
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.MessengerContactsRepository
 import com.mikewarren.speakify.data.SettingsRepository
-import com.mikewarren.speakify.data.TrialRepository
-import com.mikewarren.speakify.data.TrialStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -13,7 +12,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -23,8 +21,6 @@ class FirestoreSyncRepository @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val appsRepository: AppsRepository,
     private val messengerContactsRepository: MessengerContactsRepository,
-
-    private val trialRepository: TrialRepository,
 
     private val uploadRepository: UploadRepository,
     private val downloadRepository: DownloadRepository
@@ -38,8 +34,6 @@ class FirestoreSyncRepository @Inject constructor(
     @OptIn(FlowPreview::class)
     private fun startObservingChanges() {
         scope.launch {
-            if (trialRepository.trialStatus.first() is TrialStatus.Active)
-                return@launch
 
             // Combine all settings into a single flow and debounce to avoid rapid-fire uploads
             combine(
@@ -56,7 +50,8 @@ class FirestoreSyncRepository @Inject constructor(
                 .debounce(2000)
                 .distinctUntilChanged()
                 .collectLatest {
-                    uploadAllData()
+                    if (Clerk.user != null)
+                        uploadAllData()
                 }
         }
     }

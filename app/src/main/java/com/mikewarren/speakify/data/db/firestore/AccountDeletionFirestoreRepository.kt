@@ -19,11 +19,19 @@ class AccountDeletionFirestoreRepository @Inject constructor() : BaseChildFirest
             
             val collections = listOf("config", "important_apps", "app_settings", "recent_messenger_contacts")
             collections.forEach { collectionName ->
-                val snapshots = userDoc.collection(collectionName).get().await()
-                snapshots.documents.forEach { it.reference.delete().await() }
+                val snapshots = safeFirestoreCall {
+                    userDoc.collection(collectionName).get().await()
+                }
+                snapshots.documents.forEach { doc ->
+                    safeFirestoreCall {
+                        doc.reference.delete().await()
+                    }
+                }
             }
             
-            userDoc.delete().await()
+            safeFirestoreCall {
+                userDoc.delete().await()
+            }
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)

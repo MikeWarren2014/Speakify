@@ -1,5 +1,6 @@
 package com.mikewarren.speakify.data
 
+import com.mikewarren.speakify.data.models.TrialModel
 import com.mikewarren.speakify.data.models.scheduling.SchedulingModel
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
@@ -16,9 +17,10 @@ data class UserSettingsModel(
 
     val isCrashlyticsEnabled: Boolean = false,
     val originalVolume: Int = -1,
+
     val scheduling: SchedulingModel = SchedulingModel(),
 
-    val startTimestamp : Long = 0L,
+    val trialModel: TrialModel = TrialModel(),
 ) {
     constructor() : this(
         useDarkTheme = true,

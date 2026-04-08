@@ -81,7 +81,7 @@ fun TrialActiveView(
             )
             
             Text(
-                text = "Days remaining: $daysRemaining",
+                text = stringResource(R.string.trial_days_remaining, daysRemaining),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.secondary,
                 fontWeight = FontWeight.Bold

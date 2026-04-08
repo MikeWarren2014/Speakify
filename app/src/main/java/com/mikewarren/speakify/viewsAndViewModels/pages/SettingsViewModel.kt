@@ -32,8 +32,8 @@ class SettingsViewModel @Inject constructor(
     settingsRepository: SettingsRepository,
     ttsManager: TTSManager,
     private val backupRepository: BackupRepository,
-    private val sessionRepository: SessionRepository,
-    private val trialRepository: TrialRepository,
+    sessionRepository: SessionRepository,
+    trialRepository: TrialRepository,
 ) : BaseTTSAutoCompletableViewModel(settingsRepository, ttsManager) {
 
     val childMainVM = MainViewModel(sessionRepository)
@@ -64,8 +64,8 @@ class SettingsViewModel @Inject constructor(
             initialValue = false // Default to false
         )
     
-    val isTrialActive: StateFlow<Boolean> = trialRepository.trialStatus
-        .map { it is TrialStatus.Active }
+    val isTrialActive: StateFlow<Boolean> = trialRepository.trialModelFlow
+        .map { it.status is TrialStatus.Active }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),

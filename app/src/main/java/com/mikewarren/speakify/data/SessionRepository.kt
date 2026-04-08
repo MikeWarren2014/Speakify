@@ -15,6 +15,7 @@ import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -47,7 +48,9 @@ class SessionRepository @Inject constructor(
     private var isTrialAuthorized = false
 
     init {
-        combine(Clerk.isInitialized, Clerk.userFlow, trialRepository.trialStatus) { isInitialized, user, trialStatus ->
+        combine(Clerk.isInitialized, Clerk.userFlow, trialRepository.trialModelFlow) { isInitialized, user, trialModel ->
+            val trialStatus = trialModel.status
+
             Triple(isInitialized, user, trialStatus)
         }
             .distinctUntilChanged()
@@ -65,17 +68,30 @@ class SessionRepository @Inject constructor(
                     if (isHandlingSpecialTrialStatus(trialStatus)) {
                         return@onEach
                     }
-                    onSuccessfulSignOut()
+                    
+                    // If trial status is NotNeeded but user is null, we are likely in the middle 
+                    // of a sign-up/sign-in transition. We should NOT sign out and clear data yet.
+                    if (trialStatus == TrialStatus.NotNeeded) {
+                        Log.d("SessionRepository", "_uiState.value == ${_uiState.value}")
+                        if (_uiState.value == MainUiState.Loading)
+                            _uiState.value = MainUiState.SignedOut
+                        return@onEach
+                    }
+
+                    onSuccessfulSessionEnd(trialStatus)
                     return@onEach
                 }
 
                 // User is logged in
                 isTrialAuthorized = false // Reset trial flag if they log in
-                scope.launch { trialRepository.recordDeviceActivity() }
 
                 // 1. Sign into Firebase using Clerk's OIDC JWT
                 scope.launch(Dispatchers.IO) {
                     try {
+                        // Check if already signed in to the correct user to avoid redundant calls
+                        if (firebaseAuth.currentUser?.email == user.emailAddresses.firstOrNull()?.emailAddress) {
+                            return@launch
+                        }
                         // Fetch the token using the 'firebase' template we created in Clerk
                         Clerk.session?.fetchToken(GetTokenOptions("firebase"))
                             ?.onSuccess { tokenResource ->
@@ -88,8 +104,15 @@ class SessionRepository @Inject constructor(
                                 try {
                                     firebaseAuth.signInWithCredential(credential).await()
                                     Log.d("SessionRepo", "Successfully bridged Clerk to Firebase via OIDC")
+
+                                    // Give Firebase a brief moment to initialize its connection/state
+                                    delay(500)
+
                                     // 2. Trigger sync
-                                    firestoreSyncRepository.downloadAndRestoreData()
+                                    val result = firestoreSyncRepository.downloadAndRestoreData()
+                                    if (result.isFailure) {
+                                        Log.e("SessionRepo", "Failed to sync Firestore data after login", result.exceptionOrNull())
+                                    }
                                 } catch (e: Exception) {
                                     Log.e("SessionRepo", "Failed to sign into Firebase with credential", e)
                                 }
@@ -114,21 +137,15 @@ class SessionRepository @Inject constructor(
             return true
         }
         if (trialStatus is TrialStatus.Loading) {
-            _uiState.value = MainUiState.Loading
-            scope.launch { trialRepository.refreshTrialStatus() }
+            // Check current state to avoid infinite loop if it's already MainUiState.Loading
+            if (_uiState.value != MainUiState.Loading) {
+                _uiState.value = MainUiState.Loading
+            }
+            // Launch on IO to avoid blocking main thread
+            scope.launch(Dispatchers.IO) { trialRepository.refreshTrialStatus() }
             return true
         }
         return false
-    }
-
-    /**
-     * Call this when the app is "opened" (e.g. LoginActivity starts) to ensure 
-     * the trial screen is shown again if applicable.
-     */
-    fun onAppOpened() {
-        isTrialAuthorized = false
-        // Re-evaluate state based on current trial status
-        scope.launch { trialRepository.refreshTrialStatus() }
     }
 
     fun proceedToTrialSession() {
@@ -138,6 +155,14 @@ class SessionRepository @Inject constructor(
 
     fun startTrialConversion() {
         _uiState.value = MainUiState.TrialConversion
+    }
+
+    fun resetTrialAuthorized() {
+        isTrialAuthorized = false
+        // Reset the UI state to Loading so we don't show a stale state on re-entry
+        if (_uiState.value is MainUiState.TrialUsage) {
+            _uiState.value = MainUiState.TrialActive
+        }
     }
 
     fun endTrial() {
@@ -179,8 +204,16 @@ class SessionRepository @Inject constructor(
     }
 
     private suspend fun onSuccessfulSignOut() {
-        firebaseAuth.signOut()
+        onSuccessfulSessionEnd(TrialStatus.NotNeeded)
+    }
+
+    private suspend fun onSuccessfulSessionEnd(trialStatus: TrialStatus){
         settingsRepository.clearAllData()
+        if (trialStatus is TrialStatus.Expired) {
+            _uiState.value = MainUiState.TrialEnded
+            return
+        }
+        firebaseAuth.signOut()
         _uiState.value = MainUiState.SignedOut
     }
 

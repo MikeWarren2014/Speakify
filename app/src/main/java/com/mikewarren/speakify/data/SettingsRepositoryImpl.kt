@@ -9,6 +9,7 @@ import com.mikewarren.speakify.data.db.AppSettingsDbModel
 import com.mikewarren.speakify.data.db.DbProvider
 import com.mikewarren.speakify.data.db.NotificationSourceModel
 import com.mikewarren.speakify.data.db.UserAppModel
+import com.mikewarren.speakify.data.models.TrialModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,11 +45,6 @@ class SettingsRepositoryImpl @Inject constructor(
             initialValue = emptyMap()
         )
 
-    override val startTimestamp: Flow<Long> = userSettingsDataStore.data
-        .map { model: UserSettingsModel ->
-            model.startTimestamp
-        }
-
     override val useDarkTheme: Flow<Boolean?> = userSettingsDataStore.data
         .map { model: UserSettingsModel ->
             model.useDarkTheme
@@ -79,13 +75,6 @@ class SettingsRepositoryImpl @Inject constructor(
         .map { model: UserSettingsModel ->
             model.originalVolume
         }
-
-    override suspend fun updateStartTimestamp(timestamp: Long) {
-        userSettingsDataStore.updateData { model: UserSettingsModel ->
-            model.copy(startTimestamp = timestamp)
-        }
-    }
-
 
     override suspend fun updateUseDarkTheme(useDarkTheme: Boolean) {
         userSettingsDataStore.updateData { model: UserSettingsModel ->

@@ -26,10 +26,12 @@ class DownloadRepository @Inject constructor(
     }
 
     override suspend fun settingsTransaction(): Result<Unit> {
-        val settingsSnapshot = userDoc.collection("config")
-            .document("settings")
-            .get()
-            .await()
+        val settingsSnapshot = safeFirestoreCall {
+            userDoc.collection("config")
+                .document("settings")
+                .get()
+                .await()
+        }
         
         if (!settingsSnapshot.exists()) {
             return Result.failure(IllegalStateException("Settings document does not exist"))
@@ -56,65 +58,74 @@ class DownloadRepository @Inject constructor(
     }
 
     override suspend fun importantAppsTransactionList(): List<suspend () -> Result<Unit>> {
-        return userDoc.collection("important_apps")
-            .get()
-            .await()
-            .documents
-            .mapNotNull { doc ->
-                val app = doc.toObject(UserAppModel::class.java)
-                if (app == null)
-                    return@mapNotNull null
-                return@mapNotNull suspend { transaction(doc, { _ ->
-                    appsRepository.addImportantApp(app)
-                }) }
-            }
+        val documents = safeFirestoreCall {
+            userDoc.collection("important_apps")
+                .get()
+                .await()
+                .documents
+        }
+
+        return documents.mapNotNull { doc ->
+            val app = doc.toObject(UserAppModel::class.java)
+            if (app == null)
+                return@mapNotNull null
+            return@mapNotNull suspend { transaction(doc, { _ ->
+                appsRepository.addImportantApp(app)
+            }) }
+        }
     }
 
     override suspend fun appSettingsTransactionsList(): List<suspend () -> Result<Unit>> {
-        return userDoc.collection("app_settings")
-            .get()
-            .await()
-            .documents
-            .map { documentSnapshot ->
-                return@map suspend { transaction(documentSnapshot, { doc ->
-                    val packageName = doc.getString("packageName") ?: return@transaction
-                    val announcerVoice = doc.getString("announcerVoice")
-                    @Suppress("UNCHECKED_CAST")
-                    val notificationSources = doc.get("notificationSources") as? List<String> ?: emptyList()
-                    @Suppress("UNCHECKED_CAST")
-                    val additionalSettings = doc.get("additionalSettings") as? Map<String, String> ?: emptyMap()
+        val documents = safeFirestoreCall {
+            userDoc.collection("app_settings")
+                .get()
+                .await()
+                .documents
+        }
+
+        return documents.map { documentSnapshot ->
+            return@map suspend { transaction(documentSnapshot, { doc ->
+                val packageName = doc.getString("packageName") ?: return@transaction
+                val announcerVoice = doc.getString("announcerVoice")
+                @Suppress("UNCHECKED_CAST")
+                val notificationSources = doc.get("notificationSources") as? List<String> ?: emptyList()
+                @Suppress("UNCHECKED_CAST")
+                val additionalSettings = doc.get("additionalSettings") as? Map<String, String> ?: emptyMap()
 
 
-                    settingsRepository.saveAppSettings(
-                        AppSettingsModel(
-                            id = null,
-                            packageName,
-                            announcerVoice,
-                            notificationSources,
-                            additionalSettings,
-                        )
+                settingsRepository.saveAppSettings(
+                    AppSettingsModel(
+                        id = null,
+                        packageName,
+                        announcerVoice,
+                        notificationSources,
+                        additionalSettings,
                     )
-                }) }
-            }
+                )
+            }) }
+        }
     }
 
     override suspend fun recentMessengerContactsTransactionList(): List<suspend () -> Result<Unit>> {
-        return userDoc.collection("recent_messenger_contacts")
-            .get()
-            .await()
-            .documents
-            .map { documentSnapshot ->
-                return@map suspend { transaction(documentSnapshot, { doc ->
-                    val name = doc.getString("name")
-                    val lastSeen = doc.getLong("lastSeen")
+        val documents = safeFirestoreCall {
+            userDoc.collection("recent_messenger_contacts")
+                .get()
+                .await()
+                .documents
+        }
 
-                    if (name != null && lastSeen != null) {
-                        messengerContactsRepository.insertContact(
-                            RecentMessengerContactModel(name, lastSeen)
-                        )
-                    }
-                }) }
-            }
+        return documents.map { documentSnapshot ->
+            return@map suspend { transaction(documentSnapshot, { doc ->
+                val name = doc.getString("name")
+                val lastSeen = doc.getLong("lastSeen")
+
+                if (name != null && lastSeen != null) {
+                    messengerContactsRepository.insertContact(
+                        RecentMessengerContactModel(name, lastSeen)
+                    )
+                }
+            }) }
+        }
     }
 
     private suspend fun transaction(

@@ -2,12 +2,10 @@
 package com.mikewarren.speakify.data
 
 import android.content.Context
+import com.mikewarren.speakify.data.models.TrialModel
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
-
-
-    val startTimestamp: Flow<Long>
     val useDarkTheme: Flow<Boolean?>
     val selectedTTSVoice: Flow<String?>
     val appSettings: Flow<Map<String, AppSettingsModel>>
@@ -18,8 +16,6 @@ interface SettingsRepository {
 
     val isCrashlyticsEnabled: Flow<Boolean>
     val originalVolume: Flow<Int> // Persisted original volume
-
-    suspend fun updateStartTimestamp(timestamp: Long)
 
     suspend fun updateUseDarkTheme(useDarkTheme: Boolean)
     suspend fun saveSelectedVoice(voiceName: String)
