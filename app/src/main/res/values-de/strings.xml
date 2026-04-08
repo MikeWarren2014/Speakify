@@ -368,4 +368,30 @@
     <string name="trial_button_end_trial">Testzeitraum beenden</string>
     <string name="trial_end_confirmation">Sind Sie sicher, dass Sie Ihren Testzeitraum beenden möchten? Dadurch werden alle Ihre lokalen Einstellungen gelöscht.</string>
 
+    <!-- Onboarding View -->
+
+    <!-- Satisfaction Survey -->
+    <string name="satisfaction_survey_very_dissatisfied_header">Sehr unzufrieden</string>
+    <string name="satisfaction_survey_dissatisfied_header">Unzufrieden</string>
+    <string name="satisfaction_survey_neutral_header">Neutral</string>
+    <string name="satisfaction_survey_satisfied_header">Zufrieden</string>
+    <string name="satisfaction_survey_very_satisfied_header">Sehr zufrieden</string>
+
+
+    <string name="satisfaction_survey_header">Wie gefällt Ihnen Speakify bisher?</string>
+    <string name="next">Weiter</string>
+
+    <!-- Preference Gathering -->
+    <string name="what_is_your_primary_goal">Was ist Ihr Hauptziel?</string>
+
+    <string name="preference_gathering_option_accessibility">Barrierefreiheit</string>
+    <string name="preference_gathering_option_productivity">Produktivität</string>
+    <string name="preference_gathering_option_hands_free_use">Freihändige Nutzung</string>
+    <string name="preference_gathering_option_other">Sonstiges</string>
+
+    <!-- Conversion Ready -->
+    <string name="conversion_ready_header">Bereit für das volle Erlebnis?</string>
+    <string name="conversion_ready_description">Erstellen Sie ein Konto, um Ihre Einstellungen geräteübergreifend zu synchronisieren und Ihren Testfortschritt dauerhaft zu speichern.</string>
+    <string name="conversion_ready_button_sign_up">Jetzt registrieren</string>
+    <string name="conversion_ready_button_continue">Mit Testzeitraum fortfahren</string>
 </resources>

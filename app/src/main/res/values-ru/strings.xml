@@ -367,4 +367,29 @@
     <string name="trial_button_end_trial">Завершить пробный период</string>
     <string name="trial_end_confirmation">Вы уверены, что хотите завершить пробный период? Это удалит все ваши локальные настройки.</string>
 
+    <!-- Onboarding View -->
+
+    <!-- Satisfaction Survey -->
+    <string name="satisfaction_survey_very_dissatisfied_header">Очень недоволен</string>
+    <string name="satisfaction_survey_dissatisfied_header">Недоволен</string>
+    <string name="satisfaction_survey_neutral_header">Нейтрально</string>
+    <string name="satisfaction_survey_satisfied_header">Доволен</string>
+    <string name="satisfaction_survey_very_satisfied_header">Очень доволен</string>
+
+    <string name="satisfaction_survey_header">Как вам Speakify на данный момент?</string>
+    <string name="next">Далее</string>
+
+    <!-- Preference Gathering -->
+    <string name="what_is_your_primary_goal">Какова ваша основная цель?</string>
+
+    <string name="preference_gathering_option_accessibility">Доступность</string>
+    <string name="preference_gathering_option_productivity">Продуктивность</string>
+    <string name="preference_gathering_option_hands_free_use">Использование без рук</string>
+    <string name="preference_gathering_option_other">Другое</string>
+
+    <!-- Conversion Ready -->
+    <string name="conversion_ready_header">Готовы к полному доступу?</string>
+    <string name="conversion_ready_description">Создайте аккаунт, чтобы синхронизировать настройки между устройствами и сохранить свой пробный прогресс навсегда.</string>
+    <string name="conversion_ready_button_sign_up">Зарегистрироваться сейчас</string>
+    <string name="conversion_ready_button_continue">Продолжить пробный период</string>
 </resources>

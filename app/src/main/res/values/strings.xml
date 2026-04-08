@@ -372,4 +372,30 @@
     <string name="trial_button_end_trial">End Trial</string>
     <string name="trial_end_confirmation">Are you sure you want to end your trial? This will clear all your local settings.</string>
 
+    <!-- Onboarding View -->
+
+    <!-- Satisfaction Survey -->
+    <string name="satisfaction_survey_very_dissatisfied_header">Very Dissatisfied</string>
+    <string name="satisfaction_survey_dissatisfied_header">Dissatisfied</string>
+    <string name="satisfaction_survey_neutral_header">Neutral</string>
+    <string name="satisfaction_survey_satisfied_header">Satisfied</string>
+    <string name="satisfaction_survey_very_satisfied_header">Very Satisfied</string>
+
+
+    <string name="satisfaction_survey_header">How are you enjoying Speakify so far?</string>
+    <string name="next">Next</string>
+
+    <!-- Preference Gathering -->
+    <string name="what_is_your_primary_goal">What\'s your primary goal?</string>
+
+    <string name="preference_gathering_option_accessibility">Accessibility</string>
+    <string name="preference_gathering_option_productivity">Productivity</string>
+    <string name="preference_gathering_option_hands_free_use">Hands-free Use</string>
+    <string name="preference_gathering_option_other">Other</string>
+
+    <!-- Conversion Ready -->
+    <string name="conversion_ready_header">Ready to unlock the full experience?</string>
+    <string name="conversion_ready_description">Create an account to sync your settings across devices and keep your trial progress forever.</string>
+    <string name="conversion_ready_button_sign_up">Sign Up Now</string>
+    <string name="conversion_ready_button_continue">Continue with Trial</string>
 </resources>

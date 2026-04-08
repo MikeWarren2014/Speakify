@@ -368,4 +368,31 @@
     <string name="trial_button_end_trial">Завершити пробний період</string>
     <string name="trial_end_confirmation">Ви впевнені, що хочете завершити пробний період? Це призведе до видалення всіх ваших локальних налаштувань.</string>
 
+    <!-- Onboarding View -->
+
+    <!-- Satisfaction Survey -->
+    <string name="satisfaction_survey_very_dissatisfied_header">Дуже незадоволений</string>
+    <string name="satisfaction_survey_dissatisfied_header">Незадоволений</string>
+    <string name="satisfaction_survey_neutral_header">Нейтрально</string>
+    <string name="satisfaction_survey_satisfied_header">Задоволений</string>
+    <string name="satisfaction_survey_very_satisfied_header">Дуже задоволений</string>
+
+
+    <string name="satisfaction_survey_header">Як вам Speakify на даний момент?</string>
+    <string name="next">Далі</string>
+
+    <!-- Preference Gathering -->
+    <string name="what_is_your_primary_goal">Яка ваша основна мета?</string>
+
+    <string name="preference_gathering_option_accessibility">Доступність</string>
+    <string name="preference_gathering_option_productivity">Продуктивність</string>
+    <string name="preference_gathering_option_hands_free_use">Використання без рук</string>
+    <string name="preference_gathering_option_other">Інше</string>
+
+    <!-- Conversion Ready -->
+    <string name="conversion_ready_header">Готові розкрити повний потенціал?</string>
+    <string name="conversion_ready_description">Створіть обліковий запис, щоб синхронізувати налаштування між пристроями та назавжди зберегти свій прогрес.</string>
+    <string name="conversion_ready_button_sign_up">Зареєструватися зараз</string>
+    <string name="conversion_ready_button_continue">Продовжити пробний період</string>
+
 </resources>

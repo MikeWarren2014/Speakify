@@ -367,4 +367,31 @@
     <string name="trial_button_end_trial">结束试用</string>
     <string name="trial_end_confirmation">您确定要结束试用吗？这将清除您的所有本地设置。</string>
 
+    <!-- Onboarding View -->
+
+    <!-- Satisfaction Survey -->
+    <string name="satisfaction_survey_very_dissatisfied_header">非常不满意</string>
+    <string name="satisfaction_survey_dissatisfied_header">不满意</string>
+    <string name="satisfaction_survey_neutral_header">一般</string>
+    <string name="satisfaction_survey_satisfied_header">满意</string>
+    <string name="satisfaction_survey_very_satisfied_header">非常满意</string>
+
+
+    <string name="satisfaction_survey_header">您目前对 Speakify 的体验如何？</string>
+    <string name="next">下一步</string>
+
+    <!-- Preference Gathering -->
+    <string name="what_is_your_primary_goal">您的主要目标是什么？</string>
+
+    <string name="preference_gathering_option_accessibility">辅助功能</string>
+    <string name="preference_gathering_option_productivity">生产力</string>
+    <string name="preference_gathering_option_hands_free_use">免提使用</string>
+    <string name="preference_gathering_option_other">其他</string>
+
+    <!-- Conversion Ready -->
+    <string name="conversion_ready_header">准备好解锁完整体验了吗？</string>
+    <string name="conversion_ready_description">创建账号以在设备间同步设置，并永久保留您的试用进度。</string>
+    <string name="conversion_ready_button_sign_up">立即注册</string>
+    <string name="conversion_ready_button_continue">继续试用</string>
+
 </resources>

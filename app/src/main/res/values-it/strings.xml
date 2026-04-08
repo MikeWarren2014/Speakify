@@ -368,4 +368,29 @@
     <string name="trial_button_end_trial">Termina Prova</string>
     <string name="trial_end_confirmation">Sei sicuro di voler terminare la prova? Questo cancellerà tutte le tue impostazioni locali.</string>
 
+    <!-- Onboarding View -->
+
+    <!-- Satisfaction Survey -->
+    <string name="satisfaction_survey_very_dissatisfied_header">Molto insoddisfatto</string>
+    <string name="satisfaction_survey_dissatisfied_header">Insoddisfatto</string>
+    <string name="satisfaction_survey_neutral_header">Neutrale</string>
+    <string name="satisfaction_survey_satisfied_header">Soddisfatto</string>
+    <string name="satisfaction_survey_very_satisfied_header">Molto soddisfatto</string>
+
+    <string name="satisfaction_survey_header">Come ti stai trovando con Speakify finora?</string>
+    <string name="next">Avanti</string>
+
+    <!-- Preference Gathering -->
+    <string name="what_is_your_primary_goal">Qual è il tuo obiettivo principale?</string>
+
+    <string name="preference_gathering_option_accessibility">Accessibilità</string>
+    <string name="preference_gathering_option_productivity">Produttività</string>
+    <string name="preference_gathering_option_hands_free_use">Uso a mani libere</string>
+    <string name="preference_gathering_option_other">Altro</string>
+
+    <!-- Conversion Ready -->
+    <string name="conversion_ready_header">Pronto a sbloccare l\'esperienza completa?</string>
+    <string name="conversion_ready_description">Crea un account per sincronizzare le tue impostazioni tra i dispositivi e conservare i tuoi progressi di prova per sempre.</string>
+    <string name="conversion_ready_button_sign_up">Registrati ora</string>
+    <string name="conversion_ready_button_continue">Continua con la prova</string>
 </resources>
