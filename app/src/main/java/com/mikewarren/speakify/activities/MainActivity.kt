@@ -130,7 +130,9 @@ class MainActivity : ComponentActivity()  {
                             AppView()
                         }
                         MainUiState.TrialEnded -> {
-                            Box(modifier = Modifier.fillMaxSize().padding(24.dp), contentAlignment = Alignment.Center) {
+                            Box(modifier = Modifier
+                                .fillMaxSize()
+                                .padding(24.dp), contentAlignment = Alignment.Center) {
                                 Text(
                                     stringResource(R.string.trial_ended_main_activity),
                                     textAlign = TextAlign.Center,
@@ -140,6 +142,12 @@ class MainActivity : ComponentActivity()  {
                         }
 
                         MainUiState.TrialConversion -> {
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                CircularProgressIndicator()
+                            }
+                        }
+
+                        is MainUiState.Onboarding -> {
                             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                                 CircularProgressIndicator()
                             }
