@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.mikewarren.speakify.data.SessionRepository
 import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
+import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,6 +42,25 @@ class MainViewModel @Inject constructor(
         sessionRepository.signOut()
     }
 
+    fun incrementAppOpenCount() {
+        sessionRepository.incrementAppOpenCount()
+    }
+
+    fun updateOnboardingStep(step: OnboardingUiState) {
+        sessionRepository.updateOnboardingStep(step)
+    }
+
+    fun saveSurveyResult(result: String) {
+        sessionRepository.saveSurveyResult(result)
+    }
+
+    fun startTrialConversion() {
+        sessionRepository.startTrialConversion()
+    }
+
+    fun proceedToTrialSession() {
+        sessionRepository.proceedToTrialSession()
+    }
 }
 
 

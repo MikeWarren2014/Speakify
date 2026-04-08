@@ -6,6 +6,8 @@ import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.AppsRepositoryImpl
 import com.mikewarren.speakify.data.MessengerContactsRepository
 import com.mikewarren.speakify.data.MessengerContactsRepositoryImpl
+import com.mikewarren.speakify.data.OnboardingRepository
+import com.mikewarren.speakify.data.OnboardingRepositoryImpl
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.SettingsRepositoryImpl
 import com.mikewarren.speakify.data.TrialRepository
@@ -53,6 +55,12 @@ abstract class AppModule {
     abstract fun bindTrialRepository(
         trialRepositoryImpl: TrialRepositoryImpl
     ): TrialRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindOnboardingRepository(
+        onboardingRepositoryImpl: OnboardingRepositoryImpl
+    ): OnboardingRepository
 
     companion object {
         @Provides

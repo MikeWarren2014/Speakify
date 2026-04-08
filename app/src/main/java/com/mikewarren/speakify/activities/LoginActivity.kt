@@ -29,6 +29,7 @@ import com.mikewarren.speakify.ui.theme.MyApplicationTheme
 import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.InitialScreenView
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.auth.OnboardingView
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.SignInOrUpView
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.TrialActiveView
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,6 +46,7 @@ class LoginActivity : ComponentActivity() {
         if (savedInstanceState == null) {
             Log.d("LoginActivity", "onCreate called with savedInstanceState null")
             viewModel.resetTrialAuthorized()
+            viewModel.incrementAppOpenCount()
         }
 
         setContent {
@@ -89,6 +91,11 @@ class LoginActivity : ComponentActivity() {
 
                             MainUiState.TrialActive -> TrialActiveView()
 
+                            is MainUiState.Onboarding -> {
+                                val onboardingState = state as MainUiState.Onboarding
+                                OnboardingView(onboardingState.step)
+                            }
+
                             MainUiState.TrialUsage -> {
                                 Text(
                                     stringResource(R.string.trial_usage_redirect),
@@ -99,7 +106,6 @@ class LoginActivity : ComponentActivity() {
                             MainUiState.TrialConversion -> SignInOrUpView(InitialScreenUiState.SignUp)
 
                             MainUiState.TrialEnded -> InitialScreenView()
-
                         }
                     }
                 }

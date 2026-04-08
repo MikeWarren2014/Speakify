@@ -3,6 +3,7 @@ package com.mikewarren.speakify.data
 
 import android.content.Context
 import com.mikewarren.speakify.data.models.TrialModel
+import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {

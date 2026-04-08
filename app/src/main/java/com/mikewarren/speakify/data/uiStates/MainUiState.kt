@@ -5,6 +5,8 @@ sealed interface MainUiState {
     data object SignedIn : MainUiState
     data object TrialActive : MainUiState
 
+    data class Onboarding(val step: OnboardingUiState) : MainUiState
+
     data object TrialUsage: MainUiState
     data object TrialEnded: MainUiState
     data object SignedOut : MainUiState

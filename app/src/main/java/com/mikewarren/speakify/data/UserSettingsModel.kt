@@ -2,6 +2,7 @@ package com.mikewarren.speakify.data
 
 import com.mikewarren.speakify.data.models.TrialModel
 import com.mikewarren.speakify.data.models.scheduling.SchedulingModel
+import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonIgnoreUnknownKeys
@@ -21,6 +22,10 @@ data class UserSettingsModel(
     val scheduling: SchedulingModel = SchedulingModel(),
 
     val trialModel: TrialModel = TrialModel(),
+
+    val appOpenCount: Int = 0,
+    val onboardingStep: OnboardingUiState = OnboardingUiState.NotStarted,
+    val surveyResult: String? = null,
 ) {
     constructor() : this(
         useDarkTheme = true,

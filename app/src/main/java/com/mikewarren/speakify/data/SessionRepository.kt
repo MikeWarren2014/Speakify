@@ -10,9 +10,12 @@ import com.clerk.api.session.fetchToken
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
 import com.mikewarren.speakify.data.db.firestore.AccountDeletionFirestoreRepository
+import com.mikewarren.speakify.data.db.firestore.FeedbackFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FirestoreSyncRepository
+import com.mikewarren.speakify.utils.AnalyticsHelper
 import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
+import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -30,9 +33,12 @@ import javax.inject.Singleton
 @Singleton
 class SessionRepository @Inject constructor(
     private val firestoreSyncRepository: FirestoreSyncRepository,
+    private val feedbackFirestoreRepository: FeedbackFirestoreRepository,
     private val accountDeletionFirestoreRepository: AccountDeletionFirestoreRepository,
     private val settingsRepository: SettingsRepository,
-    private val trialRepository: TrialRepository
+    private val trialRepository: TrialRepository,
+    private val onboardingRepository: OnboardingRepository,
+    private val analyticsHelper: AnalyticsHelper
 ) {
     private val _accountDeletionUiState = MutableStateFlow<AccountDeletionUiState>(
         AccountDeletionUiState.NotRequested)
@@ -48,13 +54,17 @@ class SessionRepository @Inject constructor(
     private var isTrialAuthorized = false
 
     init {
-        combine(Clerk.isInitialized, Clerk.userFlow, trialRepository.trialModelFlow) { isInitialized, user, trialModel ->
-            val trialStatus = trialModel.status
-
-            Triple(isInitialized, user, trialStatus)
+        combine(
+            Clerk.isInitialized,
+            Clerk.userFlow,
+            trialRepository.trialModelFlow,
+            onboardingRepository.appOpenCount,
+            onboardingRepository.onboardingStep
+        ) { isInitialized, user, trialModel, openCount, onboardingStep ->
+            DataBundle(isInitialized, user, trialModel.status, openCount, onboardingStep)
         }
             .distinctUntilChanged()
-            .onEach { (isInitialized, user, trialStatus) ->
+            .onEach { (isInitialized, user, trialStatus, openCount, onboardingStep) ->
                 if (!isInitialized) {
                     _uiState.value = MainUiState.Loading
                     return@onEach
@@ -65,7 +75,7 @@ class SessionRepository @Inject constructor(
                     // we don't want the automated logic to jump immediately to SignedOut.
                     if (_uiState.value == MainUiState.TrialEnded) return@onEach
 
-                    if (isHandlingSpecialTrialStatus(trialStatus)) {
+                    if (isHandlingSpecialTrialStatus(trialStatus, openCount, onboardingStep)) {
                         return@onEach
                     }
                     
@@ -131,8 +141,19 @@ class SessionRepository @Inject constructor(
             .launchIn(scope)
     }
 
-    private fun isHandlingSpecialTrialStatus(trialStatus: TrialStatus): Boolean {
+    private fun isHandlingSpecialTrialStatus(
+        trialStatus: TrialStatus,
+        openCount: Int,
+        onboardingStep: OnboardingUiState
+    ): Boolean {
         if (trialStatus is TrialStatus.Active) {
+            // Trigger onboarding after 2 opens if not already completed
+            if (openCount >= 2 && onboardingStep != OnboardingUiState.Completed) {
+                _uiState.value = MainUiState.Onboarding(onboardingStep)
+                analyticsHelper.logOnboardingStep(onboardingStep.toString())
+                return true
+            }
+
             _uiState.value = if (isTrialAuthorized) MainUiState.TrialUsage else MainUiState.TrialActive
             return true
         }
@@ -151,10 +172,12 @@ class SessionRepository @Inject constructor(
     fun proceedToTrialSession() {
         isTrialAuthorized = true
         _uiState.value = MainUiState.TrialUsage
+        analyticsHelper.logTrialContinued()
     }
 
     fun startTrialConversion() {
         _uiState.value = MainUiState.TrialConversion
+        analyticsHelper.logTrialConversionStarted()
     }
 
     fun resetTrialAuthorized() {
@@ -165,8 +188,34 @@ class SessionRepository @Inject constructor(
         }
     }
 
+    fun incrementAppOpenCount() {
+        scope.launch {
+            onboardingRepository.incrementAppOpenCount()
+        }
+    }
+
     fun endTrial() {
         _uiState.value = MainUiState.TrialEnded
+    }
+
+    fun updateOnboardingStep(step: OnboardingUiState) {
+        scope.launch {
+            onboardingRepository.updateOnboardingStep(step)
+            analyticsHelper.logOnboardingStep(step.toString())
+            if (Clerk.user != null) {
+                feedbackFirestoreRepository.syncFeedback()
+            }
+        }
+    }
+
+    fun saveSurveyResult(result: String) {
+        scope.launch {
+            onboardingRepository.saveSurveyResult(result)
+            analyticsHelper.logSurveyResult(result)
+            if (Clerk.user != null) {
+                feedbackFirestoreRepository.syncFeedback()
+            }
+        }
     }
 
     fun setAccountDeletionUiState(state: AccountDeletionUiState) {
@@ -220,4 +269,12 @@ class SessionRepository @Inject constructor(
     suspend fun deleteUserData(): Result<Unit> {
         return accountDeletionFirestoreRepository.deleteUserData()
     }
+
+    private data class DataBundle(
+        val isInitialized: Boolean,
+        val user: com.clerk.api.user.User?,
+        val trialStatus: TrialStatus,
+        val openCount: Int,
+        val onboardingStep: OnboardingUiState
+    )
 }
