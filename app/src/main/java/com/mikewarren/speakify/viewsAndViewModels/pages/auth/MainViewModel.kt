@@ -21,6 +21,9 @@ class MainViewModel @Inject constructor(
     val isDeletionInProgress: Flow<Boolean> = sessionRepository.accountDeletionUiState
         .map { it !is AccountDeletionUiState.NotRequested }
 
+    fun resetTrialAuthorized() {
+        sessionRepository.resetTrialAuthorized()
+    }
 
     fun markAccountForDeletion() {
         sessionRepository.markAccountForDeletion()

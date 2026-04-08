@@ -72,10 +72,13 @@ class SessionRepository @Inject constructor(
                     // If trial status is NotNeeded but user is null, we are likely in the middle 
                     // of a sign-up/sign-in transition. We should NOT sign out and clear data yet.
                     if (trialStatus == TrialStatus.NotNeeded) {
+                        Log.d("SessionRepository", "_uiState.value == ${_uiState.value}")
+                        if (_uiState.value == MainUiState.Loading)
+                            _uiState.value = MainUiState.SignedOut
                         return@onEach
                     }
 
-                    onSuccessfulSignOut()
+                    onSuccessfulSessionEnd(trialStatus)
                     return@onEach
                 }
 
@@ -154,6 +157,14 @@ class SessionRepository @Inject constructor(
         _uiState.value = MainUiState.TrialConversion
     }
 
+    fun resetTrialAuthorized() {
+        isTrialAuthorized = false
+        // Reset the UI state to Loading so we don't show a stale state on re-entry
+        if (_uiState.value is MainUiState.TrialUsage) {
+            _uiState.value = MainUiState.TrialActive
+        }
+    }
+
     fun endTrial() {
         _uiState.value = MainUiState.TrialEnded
     }
@@ -193,8 +204,16 @@ class SessionRepository @Inject constructor(
     }
 
     private suspend fun onSuccessfulSignOut() {
-        firebaseAuth.signOut()
+        onSuccessfulSessionEnd(TrialStatus.NotNeeded)
+    }
+
+    private suspend fun onSuccessfulSessionEnd(trialStatus: TrialStatus){
         settingsRepository.clearAllData()
+        if (trialStatus is TrialStatus.Expired) {
+            _uiState.value = MainUiState.TrialEnded
+            return
+        }
+        firebaseAuth.signOut()
         _uiState.value = MainUiState.SignedOut
     }
 

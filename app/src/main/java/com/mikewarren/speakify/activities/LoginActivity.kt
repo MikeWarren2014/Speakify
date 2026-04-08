@@ -2,6 +2,7 @@ package com.mikewarren.speakify.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -40,6 +41,11 @@ class LoginActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         val viewModel: MainViewModel by viewModels()
+
+        if (savedInstanceState == null) {
+            Log.d("LoginActivity", "onCreate called with savedInstanceState null")
+            viewModel.resetTrialAuthorized()
+        }
 
         setContent {
             val settingsViewModel: SettingsViewModel by viewModels()

@@ -30,6 +30,7 @@ sealed class TrialStatus(val statusText: String) {
     @SerialName("Expired")
     data object Expired : TrialStatus("expired")
 
+    // TODO: I think this is YAGNI
     @Serializable
     @SerialName("Loading")
     data object Loading : TrialStatus("loading")

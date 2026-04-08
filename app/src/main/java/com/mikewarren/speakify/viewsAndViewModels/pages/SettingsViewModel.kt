@@ -32,8 +32,8 @@ class SettingsViewModel @Inject constructor(
     settingsRepository: SettingsRepository,
     ttsManager: TTSManager,
     private val backupRepository: BackupRepository,
-    private val sessionRepository: SessionRepository,
-    private val trialRepository: TrialRepository,
+    sessionRepository: SessionRepository,
+    trialRepository: TrialRepository,
 ) : BaseTTSAutoCompletableViewModel(settingsRepository, ttsManager) {
 
     val childMainVM = MainViewModel(sessionRepository)
