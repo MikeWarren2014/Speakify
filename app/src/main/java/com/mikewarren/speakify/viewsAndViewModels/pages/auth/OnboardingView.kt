@@ -75,11 +75,21 @@ fun OnboardingView(
 fun SatisfactionSurvey(onResult: (String) -> Unit) {
     var selectedOption by remember { mutableStateOf<Int?>(null) }
     val options = listOf(
-        "Very Dissatisfied" to Icons.Default.SentimentVeryDissatisfied,
-        "Dissatisfied" to Icons.Default.SentimentDissatisfied,
-        "Neutral" to Icons.Default.SentimentNeutral,
-        "Satisfied" to Icons.Default.SentimentSatisfied,
-        "Very Satisfied" to Icons.Default.SentimentVerySatisfied
+        Triple("Very Dissatisfied",
+            stringResource(R.string.satisfaction_survey_very_dissatisfied_header),
+            Icons.Default.SentimentVeryDissatisfied),
+        Triple("Dissatisfied",
+            stringResource(R.string.satisfaction_survey_dissatisfied_header),
+            Icons.Default.SentimentDissatisfied),
+        Triple("Neutral",
+            stringResource(R.string.satisfaction_survey_neutral_header),
+            Icons.Default.SentimentNeutral),
+        Triple("Satisfied",
+            stringResource(R.string.satisfaction_survey_satisfied_header),
+            Icons.Default.SentimentSatisfied),
+        Triple("Very Satisfied",
+            stringResource(R.string.satisfaction_survey_very_satisfied_header),
+            Icons.Default.SentimentVerySatisfied),
     )
 
     Column(
@@ -90,7 +100,7 @@ fun SatisfactionSurvey(onResult: (String) -> Unit) {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "How are you enjoying Speakify so far?",
+            text = stringResource(R.string.satisfaction_survey_header),
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold
@@ -102,7 +112,7 @@ fun SatisfactionSurvey(onResult: (String) -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            options.forEachIndexed { index, (label, icon) ->
+            options.forEachIndexed { index, (_, label, icon) ->
                 SurveyIcon(
                     icon = icon,
                     label = label,
@@ -119,7 +129,7 @@ fun SatisfactionSurvey(onResult: (String) -> Unit) {
             enabled = selectedOption != null,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Next")
+            Text(stringResource(R.string.next))
         }
     }
 }
@@ -159,7 +169,7 @@ fun PreferenceGathering(onComplete: () -> Unit) {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "What's your primary goal?",
+            text = stringResource(R.string.what_is_your_primary_goal),
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold
@@ -167,25 +177,30 @@ fun PreferenceGathering(onComplete: () -> Unit) {
         
         Spacer(modifier = Modifier.height(24.dp))
 
-        val goals = listOf("Accessibility", "Productivity", "Hands-free Use", "Other")
-        var selectedGoal by remember { mutableStateOf(goals[0]) }
+        val goals = listOf(
+            "Accessibility" to stringResource(R.string.preference_gathering_option_accessibility),
+            "Productivity" to stringResource(R.string.preference_gathering_option_productivity),
+            "Hands-free Use" to stringResource(R.string.preference_gathering_option_hands_free_use),
+            "Other" to stringResource(R.string.preference_gathering_option_other),
+        )
+        var selectedValue by remember { mutableStateOf(goals[0].first) }
 
         Column(Modifier.selectableGroup()) {
-            goals.forEach { text ->
+            goals.forEach { (value, text) ->
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .height(56.dp)
                         .selectable(
-                            selected = (text == selectedGoal),
-                            onClick = { selectedGoal = text },
+                            selected = value == selectedValue,
+                            onClick = { selectedValue = value },
                             role = Role.RadioButton
                         )
                         .padding(horizontal = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
-                        selected = (text == selectedGoal),
+                        selected = (value == selectedValue),
                         onClick = null // null recommended for accessibility with screen readers
                     )
                     Text(
@@ -203,7 +218,7 @@ fun PreferenceGathering(onComplete: () -> Unit) {
             onClick = onComplete,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Next")
+            Text(stringResource(R.string.next))
         }
     }
 }
@@ -218,7 +233,7 @@ fun ConversionReady(onSignUp: () -> Unit, onLater: () -> Unit) {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Ready to unlock the full experience?",
+            text = stringResource(R.string.conversion_ready_header),
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold
@@ -227,7 +242,7 @@ fun ConversionReady(onSignUp: () -> Unit, onLater: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Create an account to sync your settings across devices and keep your trial progress forever.",
+            text = stringResource(R.string.conversion_ready_description),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center
         )
@@ -238,7 +253,7 @@ fun ConversionReady(onSignUp: () -> Unit, onLater: () -> Unit) {
             onClick = onSignUp,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Sign Up Now")
+            Text(stringResource(R.string.conversion_ready_button_sign_up))
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -248,7 +263,7 @@ fun ConversionReady(onSignUp: () -> Unit, onLater: () -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             colors = androidx.compose.material3.ButtonDefaults.filledTonalButtonColors()
         ) {
-            Text("Continue with Trial")
+            Text(stringResource(R.string.conversion_ready_button_continue))
         }
     }
 }

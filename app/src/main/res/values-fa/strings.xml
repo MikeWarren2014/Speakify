@@ -367,4 +367,30 @@
     <string name="trial_button_end_trial">پایان دوره آزمایشی</string>
     <string name="trial_end_confirmation">آیا مطمئن هستید که می‌خواهید به دوره آزمایشی خود پایان دهید؟ این کار تمام تنظیمات محلی شما را پاک می‌کند.</string>
 
+    <!-- Onboarding View -->
+
+    <!-- Satisfaction Survey -->
+    <string name="satisfaction_survey_very_dissatisfied_header">بسیار ناراضی</string>
+    <string name="satisfaction_survey_dissatisfied_header">ناراضی</string>
+    <string name="satisfaction_survey_neutral_header">خنثی</string>
+    <string name="satisfaction_survey_satisfied_header">راضی</string>
+    <string name="satisfaction_survey_very_satisfied_header">بسیار راضی</string>
+
+
+    <string name="satisfaction_survey_header">تا اینجای کار چقدر از Speakify لذت برده‌اید؟</string>
+    <string name="next">بعدی</string>
+
+    <!-- Preference Gathering -->
+    <string name="what_is_your_primary_goal">هدف اصلی شما چیست؟</string>
+
+    <string name="preference_gathering_option_accessibility">قابلیت دسترسی</string>
+    <string name="preference_gathering_option_productivity">بهره‌وری</string>
+    <string name="preference_gathering_option_hands_free_use">استفاده بدون دست</string>
+    <string name="preference_gathering_option_other">سایر موارد</string>
+
+    <!-- Conversion Ready -->
+    <string name="conversion_ready_header">آماده باز کردن تجربه کامل هستید؟</string>
+    <string name="conversion_ready_description">برای همگام‌سازی تنظیمات خود در تمام دستگاه‌ها و حفظ پیشرفت دوره آزمایشی خود برای همیشه، یک حساب کاربری ایجاد کنید.</string>
+    <string name="conversion_ready_button_sign_up">اکنون ثبت‌نام کنید</string>
+    <string name="conversion_ready_button_continue">ادامه با دوره آزمایشی</string>
 </resources>

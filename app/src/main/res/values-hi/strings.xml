@@ -366,4 +366,31 @@
     <string name="trial_button_end_trial">ट्रायल समाप्त करें</string>
     <string name="trial_end_confirmation">क्या आप वाकई अपना ट्रायल समाप्त करना चाहते हैं? इससे आपकी सभी स्थानीय सेटिंग्स मिट जाएंगी।</string>
 
+    <!-- Onboarding View -->
+
+    <!-- Satisfaction Survey -->
+    <string name="satisfaction_survey_very_dissatisfied_header">बहुत असंतुष्ट</string>
+    <string name="satisfaction_survey_dissatisfied_header">असंतुष्ट</string>
+    <string name="satisfaction_survey_neutral_header">तटस्थ</string>
+    <string name="satisfaction_survey_satisfied_header">संतुष्ट</string>
+    <string name="satisfaction_survey_very_satisfied_header">बहुत संतुष्ट</string>
+
+
+    <string name="satisfaction_survey_header">अब तक आप Speakify का आनंद कैसे ले रहे हैं?</string>
+    <string name="next">अगला</string>
+
+    <!-- Preference Gathering -->
+    <string name="what_is_your_primary_goal">आपका प्राथमिक लक्ष्य क्या है?</string>
+
+    <string name="preference_gathering_option_accessibility">एक्सेसिबिलिटी</string>
+    <string name="preference_gathering_option_productivity">उत्पादकता</string>
+    <string name="preference_gathering_option_hands_free_use">हैंड्स-फ्री उपयोग</string>
+    <string name="preference_gathering_option_other">अन्य</string>
+
+    <!-- Conversion Ready -->
+    <string name="conversion_ready_header">पूर्ण अनुभव अनलॉक करने के लिए तैयार हैं?</string>
+    <string name="conversion_ready_description">सभी डिवाइस पर अपनी सेटिंग्स सिंक करने और अपनी ट्रायल प्रगति को हमेशा के लिए रखने के लिए एक खाता बनाएं।</string>
+    <string name="conversion_ready_button_sign_up">अभी साइन अप करें</string>
+    <string name="conversion_ready_button_continue">ट्रायल के साथ जारी रखें</string>
+
 </resources>

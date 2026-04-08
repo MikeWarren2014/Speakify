@@ -366,4 +366,29 @@
     <string name="trial_button_end_trial">トライアルを終了</string>
     <string name="trial_end_confirmation">トライアルを終了してもよろしいですか？これにより、すべてのローカル設定が消去されます。</string>
 
+    <!-- Onboarding View -->
+
+    <!-- Satisfaction Survey -->
+    <string name="satisfaction_survey_very_dissatisfied_header">非常に不満</string>
+    <string name="satisfaction_survey_dissatisfied_header">不満</string>
+    <string name="satisfaction_survey_neutral_header">どちらでもない</string>
+    <string name="satisfaction_survey_satisfied_header">満足</string>
+    <string name="satisfaction_survey_very_satisfied_header">非常に満足</string>
+
+    <string name="satisfaction_survey_header">これまでのところ、Speakifyはいかがですか？</string>
+    <string name="next">次へ</string>
+
+    <!-- Preference Gathering -->
+    <string name="what_is_your_primary_goal">主な目的は何ですか？</string>
+
+    <string name="preference_gathering_option_accessibility">アクセシビリティ</string>
+    <string name="preference_gathering_option_productivity">生産性向上</string>
+    <string name="preference_gathering_option_hands_free_use">ハンズフリーでの使用</string>
+    <string name="preference_gathering_option_other">その他</string>
+
+    <!-- Conversion Ready -->
+    <string name="conversion_ready_header">フル機能を体験する準備はできましたか？</string>
+    <string name="conversion_ready_description">アカウントを作成すると、デバイス間で設定を同期し、トライアルの進行状況を永久に保存できます。</string>
+    <string name="conversion_ready_button_sign_up">今すぐサインアップ</string>
+    <string name="conversion_ready_button_continue">トライアルを続ける</string>
 </resources>

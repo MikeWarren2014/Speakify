@@ -9,8 +9,6 @@ import com.mikewarren.speakify.data.db.AppSettingsDbModel
 import com.mikewarren.speakify.data.db.DbProvider
 import com.mikewarren.speakify.data.db.NotificationSourceModel
 import com.mikewarren.speakify.data.db.UserAppModel
-import com.mikewarren.speakify.data.models.TrialModel
-import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
