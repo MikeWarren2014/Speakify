@@ -110,8 +110,11 @@ class TTSManager @Inject constructor(
         val minVolume = settingsRepository.minVolume.first()
         val currentVolume = audioManager.getVolume()
         if (currentVolume < minVolume) {
-            audioManager.setVolume(minVolume)
+            audioManager.setVolume(minVolume, force = true)
         }
+        
+        audioManager.requestAudioFocus()
+
         return try {
             suspendCancellableCoroutine { continuation ->
                 val utteranceId = UUID.randomUUID().toString()
@@ -145,6 +148,7 @@ class TTSManager @Inject constructor(
             // Since restoreVolume is a suspend function, we must use withContext(NonCancellable)
             // to ensure it can execute even when the parent coroutine is cancelled.
             withContext(NonCancellable) {
+                audioManager.abandonAudioFocus()
                 audioManager.restoreVolume()
             }
         }
@@ -183,6 +187,7 @@ class TTSManager @Inject constructor(
         // Force flush the queue with an empty string to clear any hardware buffers
         tts?.speak("", TextToSpeech.QUEUE_FLUSH, null, "stop_utterance")
         tts?.stop()
+        audioManager.abandonAudioFocus()
         audioManager.restoreVolume()
     }
 
