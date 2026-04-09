@@ -157,13 +157,20 @@ class SessionRepository @Inject constructor(
             _uiState.value = if (isTrialAuthorized) MainUiState.TrialUsage else MainUiState.TrialActive
             return true
         }
+        // TODO: are we *ever* using this status anywhere?
         if (trialStatus is TrialStatus.Loading) {
             // Check current state to avoid infinite loop if it's already MainUiState.Loading
             if (_uiState.value != MainUiState.Loading) {
                 _uiState.value = MainUiState.Loading
             }
             // Launch on IO to avoid blocking main thread
-            scope.launch(Dispatchers.IO) { trialRepository.refreshTrialStatus() }
+            scope.launch(Dispatchers.IO) {
+                try {
+                    trialRepository.refreshTrialStatus()
+                } catch (e: Exception) {
+                    Log.e("SessionRepository", "Failed to refresh trial status", e)
+                }
+            }
             return true
         }
         return false

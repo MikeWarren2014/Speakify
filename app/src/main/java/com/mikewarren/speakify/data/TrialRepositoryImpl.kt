@@ -3,7 +3,7 @@ package com.mikewarren.speakify.data
 import android.util.Log
 import androidx.datastore.core.DataStore
 import com.clerk.api.Clerk
-import com.google.firebase.firestore.FirebaseFirestore
+import com.mikewarren.speakify.data.db.firestore.BaseFirestoreRepository
 import com.mikewarren.speakify.data.models.TrialModel
 import com.mikewarren.speakify.utils.DeviceIdProvider
 import kotlinx.coroutines.flow.Flow
@@ -19,9 +19,8 @@ class TrialRepositoryImpl @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val deviceIdProvider: DeviceIdProvider,
     private val userSettingsDataStore: DataStore<UserSettingsModel>,
-) : TrialRepository {
+) : BaseFirestoreRepository(), TrialRepository {
 
-    private val firestore = FirebaseFirestore.getInstance()
     private val trialCollection = firestore.collection("trials")
     private val directSignUpCollection = firestore.collection("directSignUps")
 
@@ -54,7 +53,9 @@ class TrialRepositoryImpl @Inject constructor(
         
         // Check for direct sign-up document
         try {
-            val directSignUpDoc = directSignUpCollection.document(deviceId).get().await()
+            val directSignUpDoc = safeFirestoreCall {
+                directSignUpCollection.document(deviceId).get().await()
+            }
             if (directSignUpDoc.exists()) {
                 updateTrialModel(TrialModel(status = TrialStatus.NotNeeded))
                 return
@@ -67,7 +68,9 @@ class TrialRepositoryImpl @Inject constructor(
 
         if (currentTrialModel.startTimestamp == 0L) {
             try {
-                val doc = trialCollection.document(deviceId).get().await()
+                val doc = safeFirestoreCall {
+                    trialCollection.document(deviceId).get().await()
+                }
                 if (doc.exists()) {
                     currentTrialModel = doc.toObject(TrialModel::class.java) ?: TrialModel()
                     if (currentTrialModel.startTimestamp != 0L) {
@@ -122,18 +125,27 @@ class TrialRepositoryImpl @Inject constructor(
         val user = Clerk.user ?: return Result.failure(Exception("User not logged in"))
         val deviceId = deviceIdProvider.deviceId
         
-        if (directSignUpCollection.document(deviceId).get().await().exists()) {
-            updateTrialModel(TrialModel(status = TrialStatus.NotNeeded))
-            return Result.success(Unit)
+        try {
+            val directSignUpDoc = safeFirestoreCall {
+                directSignUpCollection.document(deviceId).get().await()
+            }
+            if (directSignUpDoc.exists()) {
+                updateTrialModel(TrialModel(status = TrialStatus.NotNeeded))
+                return Result.success(Unit)
+            }
+        } catch (e: Exception) {
+            return Result.failure(e)
         }
 
         return try {
-            directSignUpCollection.document(deviceId)
-                .set(mapOf(
-                    "userEmail" to user.emailAddresses.first().emailAddress,
-                    "timestamp" to System.currentTimeMillis()
-                ))
-                .await()
+            safeFirestoreCall {
+                directSignUpCollection.document(deviceId)
+                    .set(mapOf(
+                        "userEmail" to user.emailAddresses.first().emailAddress,
+                        "timestamp" to System.currentTimeMillis()
+                    ))
+                    .await()
+            }
             
             updateTrialModel(TrialModel(status = TrialStatus.NotNeeded))
             Result.success(Unit)
@@ -145,7 +157,9 @@ class TrialRepositoryImpl @Inject constructor(
     override suspend fun endTrial(): Result<Unit> {
         val deviceId = deviceIdProvider.deviceId
         return try {
-            trialCollection.document(deviceId).delete().await()
+            safeFirestoreCall {
+                trialCollection.document(deviceId).delete().await()
+            }
             settingsRepository.clearAllData()
 
             updateTrialModel(trialModelFlow.first().copy(status = TrialStatus.Expired))
@@ -158,9 +172,11 @@ class TrialRepositoryImpl @Inject constructor(
     private suspend fun recordTrialModel(trialModel: TrialModel): Result<Unit> {
         val deviceId = deviceIdProvider.deviceId
         return try {
-            trialCollection.document(deviceId)
-                .set(trialModel)
-                .await()
+            safeFirestoreCall {
+                trialCollection.document(deviceId)
+                    .set(trialModel)
+                    .await()
+            }
             
             updateTrialModel(trialModel)
             Result.success(Unit)

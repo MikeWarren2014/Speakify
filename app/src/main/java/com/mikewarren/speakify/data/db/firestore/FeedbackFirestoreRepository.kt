@@ -1,7 +1,8 @@
 package com.mikewarren.speakify.data.db.firestore
 
+import com.mikewarren.speakify.data.BaseUserFirestoreRepository
 import com.mikewarren.speakify.data.OnboardingRepository
-import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.utils.log.IResultLoggable
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -10,18 +11,10 @@ import javax.inject.Singleton
 @Singleton
 class FeedbackFirestoreRepository @Inject constructor(
     private val onboardingRepository: OnboardingRepository,
-) : BaseChildFirestoreRepository() {
-
+) : BaseUserFirestoreRepository(), IResultLoggable {
     override fun getSuccessLogMessage(): String = "Feedback synced successfully"
     override fun getFailureLogMessage(): String = "Failed to sync feedback"
 
-    override suspend fun settingsTransaction(): Result<Unit> = Result.success(Unit)
-
-    override suspend fun importantAppsTransactionList(): List<suspend () -> Result<Unit>> = emptyList()
-
-    override suspend fun appSettingsTransactionsList(): List<suspend () -> Result<Unit>> = emptyList()
-
-    override suspend fun recentMessengerContactsTransactionList(): List<suspend () -> Result<Unit>> = emptyList()
 
     suspend fun syncFeedback(): Result<Unit> {
         val onboardingStep = onboardingRepository.onboardingStep.first()
@@ -40,8 +33,10 @@ class FeedbackFirestoreRepository @Inject constructor(
                     .set(feedbackData)
                     .await()
             }
+            logSuccessResult()
             Result.success(Unit)
         } catch (e: Exception) {
+            logFailureResult(e)
             Result.failure(e)
         }
     }
