@@ -1,11 +1,13 @@
 package com.mikewarren.speakify.data.db.firestore
 
+import com.mikewarren.speakify.data.BaseUserFirestoreRepository
+import com.mikewarren.speakify.utils.log.IResultLoggable
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AccountDeletionFirestoreRepository @Inject constructor() : BaseChildFirestoreRepository() {
+class AccountDeletionFirestoreRepository @Inject constructor() : BaseUserFirestoreRepository(), IResultLoggable {
 
     override fun getSuccessLogMessage(): String = "User data deleted successfully for user $userId"
 
@@ -32,14 +34,12 @@ class AccountDeletionFirestoreRepository @Inject constructor() : BaseChildFirest
             safeFirestoreCall {
                 userDoc.delete().await()
             }
+            logSuccessResult()
             Result.success(Unit)
         } catch (e: Exception) {
+            logFailureResult(e)
             Result.failure(e)
         }
     }
 
-    override suspend fun settingsTransaction(): Result<Unit> = Result.success(Unit)
-    override suspend fun importantAppsTransactionList(): List<suspend () -> Result<Unit>> = emptyList()
-    override suspend fun appSettingsTransactionsList(): List<suspend () -> Result<Unit>> = emptyList()
-    override suspend fun recentMessengerContactsTransactionList(): List<suspend () -> Result<Unit>> = emptyList()
 }
