@@ -1,4 +1,7 @@
-- O nome da voz padrão será baseado no idioma do usuário
-- A maioria das notificações agora terá seu texto lido
-- Suporte parcial para notificações de compras da Amazon (ex: quando pacotes estão a x paradas de distância)
-- Pequenas melhorias na interface do usuário
+Novidades na v1.1.2:
+- Suporte total para 12 idiomas.
+- Smart Audio Focus: Abaixa apps em segundo plano como Spotify.
+- Volume Forçado: Notificações audíveis mesmo com música.
+- Novo Onboarding: Configuração guiada e metas.
+- Teste Melhorado: Criação de conta simples para salvar progresso.
+- Correções críticas e melhorias de estabilidade.
