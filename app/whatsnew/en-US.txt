@@ -1,4 +1,7 @@
-- Default voice name will be based on the user's language
-- Most notifications will now have their text read
-- Some support for Amazon shopping notifications (i.e. when packages are x stops away)
-- Minor UI improvements
+What's New in v1.1.2:
+- Full support for 12 languages.
+- Smart Audio Focus: Reliably "ducks" background apps like Spotify.
+- Forced Volume: Ensures notifications are heard even during music.
+- New Onboarding: Guided setup and goal tracking.
+- Improved Trial: Seamless account creation to save your progress.
+- Critical bug fixes and stability improvements.

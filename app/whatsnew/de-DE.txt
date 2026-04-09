@@ -1,4 +1,7 @@
-- Der Standardname der Stimme basiert auf der Sprache des Benutzers
-- Die Texte der meisten Benachrichtigungen werden jetzt vorgelesen
-- Teilweise Unterstützung für Amazon-Shopping-Benachrichtigungen (z. B. wenn Pakete x Stopps entfernt sind)
-- Kleinere UI-Verbesserungen
+Neu in v1.1.2:
+- Volle Unterstützung für 12 Sprachen.
+- Smart Audio Focus: Senkt Spotify & Co. zuverlässig ab.
+- Lautstärke-Erzwingung: Benachrichtigungen trotz Musik hörbar.
+- Neues Onboarding: Geführte Einrichtung und Zielverfolgung.
+- Verbesserter Testzeitraum: Einfache Kontoerstellung zum Speichern.
+- Kritische Fehlerbehebungen und Stabilitätsverbesserungen.
