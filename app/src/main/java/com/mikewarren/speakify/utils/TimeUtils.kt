@@ -1,8 +1,10 @@
 package com.mikewarren.speakify.utils
 
+import android.text.format.DateUtils
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -38,6 +40,23 @@ object TimeUtils {
                 if (amPM == "am" && hours == 12) hours = 0
             }
             localDateTime.withHour(hours).withMinute(minutes)
+        }
+    }
+
+    fun ExtractRelativeTime(text: String, onGetDateTime: (String) -> LocalDateTime?): String? {
+        val localDateTime = onGetDateTime(text) ?: return null
+
+        return try {
+            DateUtils.getRelativeTimeSpanString(
+
+                localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
+                System.currentTimeMillis(),
+                DateUtils.MINUTE_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_RELATIVE,
+            ).toString()
+
+        } catch (e: Exception) {
+            null
         }
     }
 }
