@@ -5,9 +5,11 @@ import com.clerk.api.Clerk
 import com.clerk.api.user.User
 import com.google.firebase.auth.FirebaseAuth
 import com.mikewarren.speakify.data.db.firestore.AccountDeletionFirestoreRepository
+import com.mikewarren.speakify.data.db.firestore.FeedbackFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FirestoreSyncRepository
 import com.mikewarren.speakify.data.models.TrialModel
 import com.mikewarren.speakify.data.uiStates.MainUiState
+import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -33,23 +35,29 @@ class SessionRepositoryTest {
     private val testDispatcher = StandardTestDispatcher()
 
     private lateinit var firestoreSyncRepository: FirestoreSyncRepository
+    private lateinit var feedbackFirestoreRepository: FeedbackFirestoreRepository
     private lateinit var accountDeletionFirestoreRepository: AccountDeletionFirestoreRepository
     private lateinit var settingsRepository: SettingsRepository
     private lateinit var trialRepository: TrialRepository
+    private lateinit var onboardingRepository: OnboardingRepository
     private lateinit var firebaseAuth: FirebaseAuth
 
     private val isInitializedFlow = MutableStateFlow(false)
     private val userFlow = MutableStateFlow<User?>(null)
     private val trialModelFlow = MutableStateFlow(TrialModel())
+    private val appOpenCountFlow = MutableStateFlow(1)
+    private val onboardingStepFlow = MutableStateFlow(OnboardingUiState.Completed)
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
 
         firestoreSyncRepository = mockk(relaxed = true)
+        feedbackFirestoreRepository = mockk(relaxed = true)
         accountDeletionFirestoreRepository = mockk(relaxed = true)
         settingsRepository = mockk(relaxed = true)
         trialRepository = mockk(relaxed = true)
+        onboardingRepository = mockk(relaxed = true)
         firebaseAuth = mockk(relaxed = true)
 
         mockkObject(Clerk)
@@ -65,6 +73,8 @@ class SessionRepositoryTest {
         every { FirebaseAuth.getInstance() } returns firebaseAuth
 
         every { trialRepository.trialModelFlow } returns trialModelFlow
+        every { onboardingRepository.appOpenCount } returns appOpenCountFlow
+        every { onboardingRepository.onboardingStep } returns onboardingStepFlow
     }
 
     @After
@@ -155,8 +165,11 @@ class SessionRepositoryTest {
 
     private fun createRepository() = SessionRepository(
         firestoreSyncRepository,
+        feedbackFirestoreRepository,
         accountDeletionFirestoreRepository,
         settingsRepository,
-        trialRepository
+        trialRepository,
+        onboardingRepository,
+        mockk(relaxed = true)
     )
 }

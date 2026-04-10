@@ -2,7 +2,6 @@ package com.mikewarren.speakify.strategies
 
 import android.content.Context
 import android.service.notification.StatusBarNotification
-import android.text.format.DateUtils
 import android.util.Log
 import androidx.annotation.VisibleForTesting
 import com.mikewarren.speakify.R
@@ -13,8 +12,6 @@ import com.mikewarren.speakify.utils.SearchUtils
 import com.mikewarren.speakify.utils.TimeUtils
 import com.mikewarren.speakify.utils.log.ITaggable
 import java.time.DayOfWeek
-import java.time.ZoneId
-import java.util.Locale
 
 class GeohNotificationStrategy(notification: StatusBarNotification,
                                appSettingsModel: AppSettingsModel?,
@@ -69,19 +66,11 @@ ITaggable {
 
         val timeString = matchResult.groups["time"]?.value ?: return null
 
-        return try {
-            val localDateTime = TimeUtils.GetLocalDateTimeWithHHMM( hhMM = timeString)
-            val millis = localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        return TimeUtils.ExtractRelativeTime(timeString,
+            onGetDateTime = { hhMM ->
+                TimeUtils.GetLocalDateTimeFrom(DayOfWeek.FRIDAY, hhMM)
+            })
 
-            DateUtils.getRelativeTimeSpanString(
-                millis,
-                System.currentTimeMillis(),
-                DateUtils.MINUTE_IN_MILLIS,
-                DateUtils.FORMAT_ABBREV_RELATIVE
-            ).toString()
-        } catch (e: Exception) {
-            null
-        }
     }
 
     override fun shouldSpeakify(): Boolean {
