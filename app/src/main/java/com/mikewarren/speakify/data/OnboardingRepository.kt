@@ -7,8 +7,12 @@ interface OnboardingRepository {
     val appOpenCount: Flow<Int>
     val onboardingStep: Flow<OnboardingUiState>
     val surveyResult: Flow<String?>
+    val primaryGoal: Flow<String?>
+    val veryImportantApps: Flow<List<String>>
 
     suspend fun incrementAppOpenCount()
     suspend fun updateOnboardingStep(step: OnboardingUiState)
     suspend fun saveSurveyResult(result: String)
+    suspend fun savePrimaryGoal(goal: String)
+    suspend fun saveVeryImportantApps(vias: List<String>)
 }

@@ -393,6 +393,10 @@
     <string name="preference_gathering_option_hands_free_use">Hands-free Use</string>
     <string name="preference_gathering_option_other">Other</string>
 
+    <!-- App Usage Insight (VIA) -->
+    <string name="via_header">Very Important Apps (VIA)</string>
+    <string name="via_description">What are the **most** important apps to you?</string>
+
     <!-- Conversion Ready -->
     <string name="conversion_ready_header">Ready to unlock the full experience?</string>
     <string name="conversion_ready_description">Create an account to sync your settings across devices and keep your trial progress forever.</string>

@@ -36,8 +36,8 @@ class SessionRepository @Inject constructor(
     private val feedbackFirestoreRepository: FeedbackFirestoreRepository,
     private val accountDeletionFirestoreRepository: AccountDeletionFirestoreRepository,
     private val settingsRepository: SettingsRepository,
-    private val trialRepository: TrialRepository,
-    private val onboardingRepository: OnboardingRepository,
+    val trialRepository: TrialRepository,
+    val onboardingRepository: OnboardingRepository,
     private val analyticsHelper: AnalyticsHelper
 ) {
     private val _accountDeletionUiState = MutableStateFlow<AccountDeletionUiState>(
@@ -222,6 +222,20 @@ class SessionRepository @Inject constructor(
             if (Clerk.user != null) {
                 feedbackFirestoreRepository.syncFeedback()
             }
+        }
+    }
+
+    fun savePrimaryGoal(goal: String) {
+        scope.launch {
+            onboardingRepository.savePrimaryGoal(goal)
+            analyticsHelper.logPrimaryGoal(goal)
+        }
+    }
+
+    fun saveVeryImportantApps(vias: List<String>) {
+        scope.launch {
+            onboardingRepository.saveVeryImportantApps(vias)
+            analyticsHelper.logVIAs(vias)
         }
     }
 

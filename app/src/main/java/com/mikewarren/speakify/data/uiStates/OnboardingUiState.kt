@@ -11,6 +11,8 @@ sealed interface OnboardingUiState {
     @Serializable
     data object PreferenceGathering : OnboardingUiState
     @Serializable
+    data object AppUsageInsight : OnboardingUiState
+    @Serializable
     data object ConversionReady : OnboardingUiState
     @Serializable
     data object Completed : OnboardingUiState
