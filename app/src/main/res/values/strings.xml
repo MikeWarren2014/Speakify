@@ -139,7 +139,9 @@
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Audio call</string>
     <string name="messenger_incoming_video_call_text">Video call</string>
-    <string name="facebook_reaction_prefix">Reacted</string>
+    <string-array name="facebook_reaction_prefixes">
+        <item>Reacted</item>
+    </string-array>
     <string name="facebook_reaction_suffix">to your message</string>
     <string name="emoji_to_your_message">%1$s to \"</string>
 

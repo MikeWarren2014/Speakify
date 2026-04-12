@@ -135,7 +135,9 @@
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Audioanruf</string>
     <string name="messenger_incoming_video_call_text">Videoanruf</string>
-    <string name="facebook_reaction_prefix">Reagierte</string>
+    <string-array name="facebook_reaction_prefixes">
+        <item>Reagierte</item>
+    </string-array>
     <string name="facebook_reaction_suffix">auf deine Nachricht</string>
     <string name="emoji_to_your_message">%1$s auf „</string>
 
