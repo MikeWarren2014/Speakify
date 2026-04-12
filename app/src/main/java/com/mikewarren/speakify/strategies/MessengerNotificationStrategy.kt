@@ -68,14 +68,15 @@ class MessengerNotificationStrategy(
     val title = NotificationExtractionUtils.ExtractTitle(notification)
 
     override fun isReaction(): Boolean {
-        val prefix = context.getString(R.string.facebook_reaction_prefix)
+        val prefixes = context.resources.getStringArray(R.array.facebook_reaction_prefixes)
         val suffix = context.getString(R.string.facebook_reaction_suffix)
 
-        // Check if it starts with the prefix and ends with the suffix
-        // and has something (the emoji) in the middle
-        return text.startsWith(prefix, ignoreCase = true) &&
-                text.endsWith(suffix, ignoreCase = true) &&
-                text.length > (prefix.length + suffix.length)
+        val textToCheck = if (text.contains(':')) text.substringBefore(':') else text
+
+        val hasPrefix = prefixes.any { textToCheck.contains(it, ignoreCase = true) }
+        val hasSuffix = textToCheck.contains(suffix, ignoreCase = true)
+
+        return hasPrefix && hasSuffix && textToCheck.length > (suffix.length + 5)
     }
 
     private val senderName: String? by lazy {

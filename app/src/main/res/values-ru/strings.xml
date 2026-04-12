@@ -135,7 +135,9 @@
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Аудиозвонок</string>
     <string name="messenger_incoming_video_call_text">Видеозвонок</string>
-    <string name="facebook_reaction_prefix">Отправил реакцию</string>
+    <string-array name="facebook_reaction_prefixes">
+        <item>Отправил реакцию</item>
+    </string-array>
     <string name="facebook_reaction_suffix">на ваше сообщение</string>
     <string name="emoji_to_your_message">%1$s на «</string>
 

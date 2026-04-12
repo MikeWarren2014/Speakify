@@ -135,7 +135,10 @@
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">تماس صوتی</string>
     <string name="messenger_incoming_video_call_text">تماس تصویری</string>
-    <string name="facebook_reaction_prefix">عکس‌العمل نشان داد</string>
+    <string-array name="facebook_reaction_prefixes">
+        <item>عکس‌العمل نشان داد</item>
+        <item>واکنش نشان داد</item>
+    </string-array>
     <string name="facebook_reaction_suffix">به پیام شما</string>
     <string name="emoji_to_your_message">%1$s به "</string>
 
