@@ -135,7 +135,9 @@
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Chiamata audio</string>
     <string name="messenger_incoming_video_call_text">Videochiamata</string>
-    <string name="facebook_reaction_prefix">Ha reagito</string>
+    <string-array name="facebook_reaction_prefixes">
+        <item>Ha reagito</item>
+    </string-array>
     <string name="facebook_reaction_suffix">al tuo messaggio</string>
     <string name="emoji_to_your_message">%1$s a \"</string>
 

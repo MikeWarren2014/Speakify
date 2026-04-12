@@ -135,7 +135,9 @@
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">오디오 통화</string>
     <string name="messenger_incoming_video_call_text">영상 통화</string>
-    <string name="facebook_reaction_prefix">반응을 남겼습니다</string>
+    <string-array name="facebook_reaction_prefixes">
+        <item>반응을 남겼습니다</item>
+    </string-array>
     <string name="facebook_reaction_suffix">메시지에</string>
     <string name="emoji_to_your_message">%1$s를 \"</string>
 

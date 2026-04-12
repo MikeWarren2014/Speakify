@@ -136,7 +136,9 @@
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">语音通话</string>
     <string name="messenger_incoming_video_call_text">视频通话</string>
-    <string name="facebook_reaction_prefix">已对</string>
+    <string-array name="facebook_reaction_prefixes">
+        <item>已对</item>
+    </string-array>
     <string name="facebook_reaction_suffix">你的消息做出回应</string>
     <string name="emoji_to_your_message">%1$s 到 \"</string>
 
