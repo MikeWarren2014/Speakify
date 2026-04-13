@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.logEvent
+import com.mikewarren.speakify.data.db.UserAppModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -44,7 +45,7 @@ class AnalyticsHelper @Inject constructor(
         }
     }
 
-    fun logVIAs(viaList: List<String>) {
+    fun logVIAs(viaList: List<UserAppModel>) {
         if (viaList.isEmpty()) return
         
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
@@ -52,8 +53,8 @@ class AnalyticsHelper @Inject constructor(
             param(FirebaseAnalytics.Param.ITEMS, 
                 viaList.map { item ->
                     Bundle().apply {
-                        putString(FirebaseAnalytics.Param.ITEM_ID, item)
-                        putString(FirebaseAnalytics.Param.ITEM_NAME, item)
+                        putString(FirebaseAnalytics.Param.ITEM_ID, item.packageName)
+                        putString(FirebaseAnalytics.Param.ITEM_NAME, item.appName)
                         putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "onboarding_via")
                     }
                 }.toTypedArray())

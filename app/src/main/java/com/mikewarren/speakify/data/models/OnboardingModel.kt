@@ -1,5 +1,6 @@
 package com.mikewarren.speakify.data.models
 
+import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import kotlinx.serialization.Serializable
 
@@ -9,5 +10,5 @@ data class OnboardingModel(
     val onboardingStep: OnboardingUiState = OnboardingUiState.NotStarted,
     val surveyResult: String? = null,
     val primaryGoal: String? = null,
-    val veryImportantApps: List<String> = emptyList(),
+    val veryImportantApps: List<UserAppModel> = emptyList(),
 )

@@ -9,6 +9,7 @@ import com.clerk.api.session.GetTokenOptions
 import com.clerk.api.session.fetchToken
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
+import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.db.firestore.AccountDeletionFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FeedbackFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FirestoreSyncRepository
@@ -232,7 +233,7 @@ class SessionRepository @Inject constructor(
         }
     }
 
-    fun saveVeryImportantApps(vias: List<String>) {
+    fun saveVeryImportantApps(vias: List<UserAppModel>) {
         scope.launch {
             onboardingRepository.saveVeryImportantApps(vias)
             analyticsHelper.logVIAs(vias)

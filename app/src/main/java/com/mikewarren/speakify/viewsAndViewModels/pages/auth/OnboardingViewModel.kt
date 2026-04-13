@@ -27,7 +27,7 @@ class OnboardingViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    val selectedAppsInsight: StateFlow<List<String>> = sessionRepository.onboardingRepository
+    val selectedAppsInsight: StateFlow<List<UserAppModel>> = sessionRepository.onboardingRepository
         .veryImportantApps
         .stateIn(
             scope = viewModelScope,
@@ -48,7 +48,7 @@ class OnboardingViewModel @Inject constructor(
         sessionRepository.savePrimaryGoal(goal)
     }
 
-    fun saveVeryImportantApps(vias: List<String>) {
+    fun saveVeryImportantApps(vias: List<UserAppModel>) {
         sessionRepository.saveVeryImportantApps(vias)
     }
 

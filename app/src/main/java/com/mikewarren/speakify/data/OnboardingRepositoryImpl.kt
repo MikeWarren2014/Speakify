@@ -1,6 +1,7 @@
 package com.mikewarren.speakify.data
 
 import androidx.datastore.core.DataStore
+import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -21,7 +22,7 @@ class OnboardingRepositoryImpl @Inject constructor(
     override val primaryGoal: Flow<String?> = userSettingsDataStore.data
         .map { model -> model.onboardingModel.primaryGoal }
 
-    override val veryImportantApps: Flow<List<String>> = userSettingsDataStore.data
+    override val veryImportantApps: Flow<List<UserAppModel>> = userSettingsDataStore.data
         .map { model -> model.onboardingModel.veryImportantApps }
 
     override suspend fun incrementAppOpenCount() {
@@ -64,7 +65,7 @@ class OnboardingRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveVeryImportantApps(vias: List<String>) {
+    override suspend fun saveVeryImportantApps(vias: List<UserAppModel>) {
         userSettingsDataStore.updateData { model ->
             model.copy(
                 onboardingModel = model.onboardingModel.copy(

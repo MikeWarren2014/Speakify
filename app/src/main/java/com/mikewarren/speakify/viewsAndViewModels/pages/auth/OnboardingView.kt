@@ -250,7 +250,7 @@ fun PreferenceGathering(onComplete: (String) -> Unit) {
 @Composable
 fun AppUsageInsightView(
     viewModel: OnboardingViewModel,
-    onComplete: (List<String>) -> Unit
+    onComplete: (List<UserAppModel>) -> Unit
 ) {
     val importantApps by viewModel.importantApps.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
@@ -266,8 +266,8 @@ fun AppUsageInsightView(
 
     // Initialize selectedApps from viewModel's state
     LaunchedEffect(selectedAppsInsight) {
-        selectedAppsInsight.forEach { appName ->
-            selectedApps[appName] = true
+        selectedAppsInsight.forEach { app ->
+            selectedApps[app.packageName] = true
         }
     }
 
@@ -343,9 +343,9 @@ fun AppUsageInsightView(
                 items(filteredApps) { app ->
                     AppUsageListItem(
                         app = app,
-                        isSelected = selectedApps[app.appName] == true,
+                        isSelected = selectedApps[app.packageName] == true,
                         onSelectedChange = { isSelected ->
-                            selectedApps[app.appName] = isSelected
+                            selectedApps[app.packageName] = isSelected
                         }
                     )
                 }
@@ -356,9 +356,8 @@ fun AppUsageInsightView(
 
         Button(
             onClick = {
-                val selectedList = selectedApps.filter { it.value }
-                    .keys
-                    .toList()
+                val selectedPackageNames = selectedApps.filter { it.value }.keys
+                val selectedList = importantApps.filter { it.packageName in selectedPackageNames }
                 onComplete(selectedList)
             },
             modifier = Modifier.fillMaxWidth()

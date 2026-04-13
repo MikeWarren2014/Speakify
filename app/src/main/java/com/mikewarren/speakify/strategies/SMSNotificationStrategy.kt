@@ -164,6 +164,10 @@ ITaggable {
 
         val notificationText = NotificationExtractionUtils.ExtractText(notification)
         val firstEmojiPosition = SearchUtils.GetEmojiPosition(notificationText)
+
+        if (firstEmojiPosition == -1)
+            return false
+
         val firstEmoji = notificationText[firstEmojiPosition]
 
         return notificationText.substring(firstEmojiPosition)
