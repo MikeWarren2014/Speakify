@@ -389,6 +389,10 @@
     <string name="preference_gathering_option_hands_free_use">हैंड्स-फ्री उपयोग</string>
     <string name="preference_gathering_option_other">अन्य</string>
 
+    <!-- App Usage Insight (VIA) -->
+    <string name="via_header">बेहद महत्वपूर्ण ऐप्स (VIA)</string>
+    <string name="via_description">आपके लिए **सबसे** महत्वपूर्ण ऐप्स कौन से हैं?</string>
+
     <!-- Conversion Ready -->
     <string name="conversion_ready_header">पूर्ण अनुभव अनलॉक करने के लिए तैयार हैं?</string>
     <string name="conversion_ready_description">सभी डिवाइस पर अपनी सेटिंग्स सिंक करने और अपनी ट्रायल प्रगति को हमेशा के लिए रखने के लिए एक खाता बनाएं।</string>

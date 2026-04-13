@@ -388,6 +388,10 @@
     <string name="preference_gathering_option_hands_free_use">ハンズフリーでの使用</string>
     <string name="preference_gathering_option_other">その他</string>
 
+    <!-- App Usage Insight (VIA) -->
+    <string name="via_header">非常に重要なアプリ (VIA)</string>
+    <string name="via_description">あなたにとって**最も**重要なアプリは何ですか？</string>
+
     <!-- Conversion Ready -->
     <string name="conversion_ready_header">フル機能を体験する準備はできましたか？</string>
     <string name="conversion_ready_description">アカウントを作成すると、デバイス間で設定を同期し、トライアルの進行状況を永久に保存できます。</string>

@@ -389,6 +389,10 @@
     <string name="preference_gathering_option_hands_free_use">Использование без рук</string>
     <string name="preference_gathering_option_other">Другое</string>
 
+    <!-- App Usage Insight (VIA) -->
+    <string name="via_header">Очень важные приложения (VIA)</string>
+    <string name="via_description">Какие приложения для вас **самые** важные?</string>
+
     <!-- Conversion Ready -->
     <string name="conversion_ready_header">Готовы к полному доступу?</string>
     <string name="conversion_ready_description">Создайте аккаунт, чтобы синхронизировать настройки между устройствами и сохранить свой пробный прогресс навсегда.</string>

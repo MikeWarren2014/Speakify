@@ -390,6 +390,10 @@
     <string name="preference_gathering_option_hands_free_use">免提使用</string>
     <string name="preference_gathering_option_other">其他</string>
 
+    <!-- App Usage Insight (VIA) -->
+    <string name="via_header">非常重要的应用 (VIA)</string>
+    <string name="via_description">哪些是对您**最**重要的应用？</string>
+
     <!-- Conversion Ready -->
     <string name="conversion_ready_header">准备好解锁完整体验了吗？</string>
     <string name="conversion_ready_description">创建账号以在设备间同步设置，并永久保留您的试用进度。</string>

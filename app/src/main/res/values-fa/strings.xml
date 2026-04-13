@@ -391,6 +391,10 @@
     <string name="preference_gathering_option_hands_free_use">استفاده بدون دست</string>
     <string name="preference_gathering_option_other">سایر موارد</string>
 
+    <!-- App Usage Insight (VIA) -->
+    <string name="via_header">برنامه‌های بسیار مهم (VIA)</string>
+    <string name="via_description">چه برنامه‌هایی برای شما **بیشترین** اهمیت را دارند؟</string>
+
     <!-- Conversion Ready -->
     <string name="conversion_ready_header">آماده باز کردن تجربه کامل هستید؟</string>
     <string name="conversion_ready_description">برای همگام‌سازی تنظیمات خود در تمام دستگاه‌ها و حفظ پیشرفت دوره آزمایشی خود برای همیشه، یک حساب کاربری ایجاد کنید.</string>
