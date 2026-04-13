@@ -46,21 +46,6 @@ class MainViewModel @Inject constructor(
         sessionRepository.incrementAppOpenCount()
     }
 
-    fun updateOnboardingStep(step: OnboardingUiState) {
-        sessionRepository.updateOnboardingStep(step)
-    }
-
-    fun saveSurveyResult(result: String) {
-        sessionRepository.saveSurveyResult(result)
-    }
-
-    fun startTrialConversion() {
-        sessionRepository.startTrialConversion()
-    }
-
-    fun proceedToTrialSession() {
-        sessionRepository.proceedToTrialSession()
-    }
 }
 
 

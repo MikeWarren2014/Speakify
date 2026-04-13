@@ -9,6 +9,7 @@ import com.clerk.api.session.GetTokenOptions
 import com.clerk.api.session.fetchToken
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
+import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.db.firestore.AccountDeletionFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FeedbackFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FirestoreSyncRepository
@@ -36,8 +37,8 @@ class SessionRepository @Inject constructor(
     private val feedbackFirestoreRepository: FeedbackFirestoreRepository,
     private val accountDeletionFirestoreRepository: AccountDeletionFirestoreRepository,
     private val settingsRepository: SettingsRepository,
-    private val trialRepository: TrialRepository,
-    private val onboardingRepository: OnboardingRepository,
+    val trialRepository: TrialRepository,
+    val onboardingRepository: OnboardingRepository,
     private val analyticsHelper: AnalyticsHelper
 ) {
     private val _accountDeletionUiState = MutableStateFlow<AccountDeletionUiState>(
@@ -222,6 +223,20 @@ class SessionRepository @Inject constructor(
             if (Clerk.user != null) {
                 feedbackFirestoreRepository.syncFeedback()
             }
+        }
+    }
+
+    fun savePrimaryGoal(goal: String) {
+        scope.launch {
+            onboardingRepository.savePrimaryGoal(goal)
+            analyticsHelper.logPrimaryGoal(goal)
+        }
+    }
+
+    fun saveVeryImportantApps(vias: List<UserAppModel>) {
+        scope.launch {
+            onboardingRepository.saveVeryImportantApps(vias)
+            analyticsHelper.logVIAs(vias)
         }
     }
 

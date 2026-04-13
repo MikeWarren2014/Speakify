@@ -391,6 +391,10 @@
     <string name="preference_gathering_option_hands_free_use">Uso manos libres</string>
     <string name="preference_gathering_option_other">Otro</string>
 
+    <!-- App Usage Insight (VIA) -->
+    <string name="via_header">Aplicaciones Muy Importantes (VIA)</string>
+    <string name="via_description">¿Cuáles son las aplicaciones **más** importantes para ti?</string>
+
     <!-- Conversion Ready -->
     <string name="conversion_ready_header">¿Listo para desbloquear la experiencia completa?</string>
     <string name="conversion_ready_description">Crea una cuenta para sincronizar tus ajustes en varios dispositivos y conservar tu progreso de la prueba para siempre.</string>

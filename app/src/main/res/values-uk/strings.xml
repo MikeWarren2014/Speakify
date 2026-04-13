@@ -391,6 +391,10 @@
     <string name="preference_gathering_option_hands_free_use">Використання без рук</string>
     <string name="preference_gathering_option_other">Інше</string>
 
+    <!-- App Usage Insight (VIA) -->
+    <string name="via_header">Дуже важливі програми (VIA)</string>
+    <string name="via_description">Які програми для вас **найбільш** важливі?</string>
+
     <!-- Conversion Ready -->
     <string name="conversion_ready_header">Готові розкрити повний потенціал?</string>
     <string name="conversion_ready_description">Створіть обліковий запис, щоб синхронізувати налаштування між пристроями та назавжди зберегти свій прогрес.</string>
