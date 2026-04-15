@@ -3,13 +3,10 @@ package com.mikewarren.speakify.activities
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
-import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.constants.PermissionCodes
 import com.mikewarren.speakify.data.events.NotificationPermissionEvent
@@ -21,6 +18,8 @@ class NotificationPermissionsActivity :
         eventBus = NotificationPermissionEventBus.GetInstance(),
         permissionRequestCode = PermissionCodes.NotificationPermissions
     ) {
+
+    private var activeDialog: AlertDialog? = null
 
     private val requestMultiplePermissionsLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -39,34 +38,9 @@ class NotificationPermissionsActivity :
             checkListenerPermission()
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // The Base class logic for requestPermissions() is slightly different here
-        // because we have a mix of Runtime + System Settings permissions.
-        startPermissionFlow()
-    }
-
-    private fun startPermissionFlow() {
-        val permissionsToRequest = getPermissions()
-
-        // if we are on Android 12 or below, we just check the listener permission
-        if (permissionsToRequest.isEmpty()) {
-            checkListenerPermission()
-            return
-        }
-
-        // If we have runtime permissions to request (Android 13+), do that first
-        val ungranted = permissionsToRequest.filter {
-            ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
-        }.toTypedArray()
-
-        if (ungranted.isEmpty()) {
-            // Runtime permissions already granted, check listener
-            checkListenerPermission()
-            return
-        }
-
-        requestMultiplePermissionsLauncher.launch(ungranted)
+    override fun onDestroy() {
+        activeDialog?.dismiss()
+        super.onDestroy()
     }
 
     override fun getPermissions(): Array<String> {
@@ -81,11 +55,11 @@ class NotificationPermissionsActivity :
             showListenerPermissionDialog()
             return
         }
-        onPermissionGranted()
+        allPermissionsGranted()
     }
 
     private fun showListenerPermissionDialog() {
-        AlertDialog.Builder(this)
+        activeDialog = AlertDialog.Builder(this)
             .setTitle(getString(R.string.notification_access_required_title))
             .setMessage(getString(R.string.notification_access_required_message))
             .setPositiveButton(getString(R.string.go_to_settings)) { _, _ ->
@@ -109,7 +83,7 @@ class NotificationPermissionsActivity :
             return
         }
         if (NotificationPermissionHelper(this).isNotificationServiceEnabled()) {
-            onPermissionGranted()
+            allPermissionsGranted()
             return
         }
         // User came back without enabling it
@@ -118,6 +92,10 @@ class NotificationPermissionsActivity :
     }
 
     override fun onPermissionGranted() {
+        checkListenerPermission()
+    }
+
+    private fun allPermissionsGranted() {
         Log.d(this.javaClass.name, "All notification permissions granted.")
         eventBus.post(NotificationPermissionEvent.PermissionGranted)
         finish()
@@ -133,8 +111,7 @@ class NotificationPermissionsActivity :
 
     override fun handleUngrantedPermissions(ungrantedPermissions: Array<String>) {
         // This is called by BasePermissionRequester if the initial runtime request fails
-        // or if we manually trigger it.
-        AlertDialog.Builder(this)
+        activeDialog = AlertDialog.Builder(this)
             .setTitle(getString(R.string.permissions_required_title))
             .setMessage(getString(R.string.permissions_required_message))
             .setPositiveButton(getString(R.string.ok)) { _, _ ->
