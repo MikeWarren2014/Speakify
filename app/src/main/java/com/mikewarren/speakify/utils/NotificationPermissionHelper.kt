@@ -10,7 +10,6 @@ import android.content.pm.ResolveInfo
 import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
-import androidx.core.content.ContextCompat
 
 
 class NotificationPermissionHelper(private val context: Context) {
@@ -84,8 +83,5 @@ class NotificationPermissionHelper(private val context: Context) {
         return false
     }
 
-    fun isPermissionGranted(permission: String): Boolean {
-        return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
-    }
 }
 
