@@ -27,6 +27,7 @@ object SearchUtils {
     fun HasAnyMatchesOf(list: Array<String>, searchStrings: List<CharSequence?>?): Boolean = HasAnyMatchesOf(list.toList(), searchStrings)
 
     fun HasAnyMatches(list: List<String>, searchString: String): Boolean{
+        if (searchString.isEmpty()) return false
         return list.any { item: String ->
             item.contains(searchString, ignoreCase = true)
         }
