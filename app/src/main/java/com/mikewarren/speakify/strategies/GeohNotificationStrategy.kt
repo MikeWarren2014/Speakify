@@ -68,7 +68,17 @@ ITaggable {
 
         return TimeUtils.ExtractRelativeTime(timeString,
             onGetDateTime = { hhMM ->
-                TimeUtils.GetLocalDateTimeFrom(DayOfWeek.FRIDAY, hhMM)
+                val dayOfWeek: DayOfWeek = when (matchResult.groups["dayOfWeek"]?.value) {
+                    "Mon" -> DayOfWeek.MONDAY
+                    "Tue" -> DayOfWeek.TUESDAY
+                    "Wed" -> DayOfWeek.WEDNESDAY
+                    "Thu" -> DayOfWeek.THURSDAY
+                    "Fri" -> DayOfWeek.FRIDAY
+                    "Sat" -> DayOfWeek.SATURDAY
+                    "Sun" -> DayOfWeek.SUNDAY
+                    else -> return@ExtractRelativeTime null
+                }
+                TimeUtils.GetLocalDateTimeFrom(dayOfWeek, hhMM)
             })
 
     }
