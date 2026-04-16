@@ -19,6 +19,11 @@ class NotificationPermissionsActivity :
         permissionRequestCode = PermissionCodes.NotificationPermissions
     ) {
 
+    val permissions = listOf(
+        Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE,
+        Manifest.permission.POST_NOTIFICATIONS,
+    )
+
     private var activeDialog: AlertDialog? = null
 
     private val requestMultiplePermissionsLauncher =
