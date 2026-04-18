@@ -139,16 +139,17 @@ class SettingsRepositoryImpl @Inject constructor(
         )
 
         if (appSettingsModel.id != null) {
-            notificationSourcesDao.deleteAllWithoutValues(appSettingsModel.id, appSettingsModel.notificationSources)
+            notificationSourcesDao.deleteAllWithoutValues(appSettingsModel.id, appSettingsModel.notificationSources.map { it.value })
         }
 
         val savedAppSettingsId = saveToDatabase(appSettingsDao, appSettingsDbModel)
 
-        notificationSourcesDao.insertAll(appSettingsModel.notificationSources.map { value: String ->
+        notificationSourcesDao.insertAll(appSettingsModel.notificationSources.map { source ->
             NotificationSourceModel(
                 id = null,
                 appSettingsId = savedAppSettingsId,
-                value,
+                value = source.value,
+                name = source.name
             )
         })
 

@@ -2,6 +2,7 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.MessengerContactModel
+import com.mikewarren.speakify.data.NotificationSource
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.events.MessengerContactListDataRequester
 import com.mikewarren.speakify.viewsAndViewModels.widgets.UiText
@@ -9,8 +10,8 @@ import kotlinx.coroutines.flow.StateFlow
 
 class MessengerImportantContactsListViewModel(
     override var settingsRepository: SettingsRepository,
-    notificationSourceList: List<String>,
-    onSave: (List<String>) -> Any,
+    notificationSourceList: List<NotificationSource>,
+    onSave: (List<NotificationSource>) -> Any,
 ) : BaseNotificationSourceListViewModel<MessengerContactModel>(
     settingsRepository,
     notificationSourceList,
@@ -36,6 +37,13 @@ class MessengerImportantContactsListViewModel(
 
     override fun toSourceString(sourceModel: MessengerContactModel): String {
         return sourceModel.name
+    }
+
+    override fun toNotificationSource(sourceModel: MessengerContactModel): NotificationSource {
+        return NotificationSource(
+            value = sourceModel.name,
+            name = sourceModel.name
+        )
     }
 
     override fun toViewString(sourceModel: MessengerContactModel): String {
