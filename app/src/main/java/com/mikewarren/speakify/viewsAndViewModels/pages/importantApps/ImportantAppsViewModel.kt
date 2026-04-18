@@ -149,32 +149,55 @@ class ImportantAppsViewModel @Inject constructor(
             val contactRequester = ContactListDataRequester.GetInstance(settingsRepository.getContext())
             val messengerRequester = MessengerContactListDataRequester.GetInstance(settingsRepository.getContext())
 
-            contactRequester.requestData()
-            messengerRequester.requestData()
-
             combine(
                 settingsRepository.appSettings,
                 contactRequester.observeData(),
                 messengerRequester.observeData()
             ) { appSettingsMap, contacts, messengerContacts ->
                 Triple(appSettingsMap, contacts, messengerContacts)
-            }.collectLatest { (appSettingsMap, contacts, messengerContacts) ->
+            }.collect { (appSettingsMap, contacts, messengerContacts) ->
+                var needsContacts = false
+                var needsMessenger = false
+
+                appSettingsMap.values.forEach { settings ->
+                    if (settings.notificationSources.any { it.name.isNullOrEmpty() }) {
+                        val packageName = settings.packageName
+                        if (packageName in PackageNames.PhoneAppList ||
+                            packageName in PackageNames.MessagingAppList ||
+                            packageName == PackageNames.GoogleVoice
+                        ) {
+                            needsContacts = true
+                        } else if (packageName in PackageNames.FacebookMessengerAppList) {
+                            needsMessenger = true
+                        }
+                    }
+                }
+
+                if (needsContacts && contacts.isEmpty() && !contactRequester.isLoading.value) {
+                    contactRequester.requestData()
+                }
+                if (needsMessenger && messengerContacts.isEmpty() && !messengerRequester.isLoading.value) {
+                    messengerRequester.requestData()
+                }
+
                 appSettingsMap.forEach { (packageName, settings) ->
                     val missingNames = settings.notificationSources.filter { it.name.isNullOrEmpty() }
                     if (missingNames.isNotEmpty()) {
                         val newSources = settings.notificationSources.map { source ->
-                            if (source.name.isNullOrEmpty()) {
-                                val foundName = when (packageName) {
-                                    in PackageNames.PhoneAppList, in PackageNames.MessagingAppList, PackageNames.GoogleVoice -> {
-                                        contacts.find { it.phoneNumber == source.value }?.name
-                                    }
-                                    in PackageNames.FacebookMessengerAppList -> {
-                                        messengerContacts.find { it.name == source.value }?.name
-                                    }
-                                    else -> null
+                            if (source.name?.isNotEmpty() == true)
+                                return@map source
+                            val foundName = when (packageName) {
+                                in PackageNames.PhoneAppList,
+                                in PackageNames.MessagingAppList,
+                                PackageNames.GoogleVoice -> {
+                                    contacts.find { it.phoneNumber == source.value }?.name
                                 }
-                                if (foundName != null) source.copy(name = foundName) else source
-                            } else source
+                                in PackageNames.FacebookMessengerAppList -> {
+                                    messengerContacts.find { it.name == source.value }?.name
+                                }
+                                else -> null
+                            }
+                            if (foundName != null) source.copy(name = foundName) else source
                         }
                         if (newSources != settings.notificationSources) {
                             settingsRepository.saveAppSettings(settings.copy(notificationSources = newSources))
