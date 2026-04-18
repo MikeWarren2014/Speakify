@@ -32,8 +32,10 @@ abstract class BasePhoneNotificationStrategy(notification: StatusBarNotification
         if (super.shouldSpeakify())
             return true;
 
+        val sourceValues = appSettingsModel?.notificationSources?.map { it.value } ?: emptyList()
+
         // get the phone number from the status bar notification, and compare it against the app settings notification sources
-        return SearchUtils.IsInPhoneNumberList(appSettingsModel?.notificationSources!!, extractedContactModel.phoneNumber)
+        return SearchUtils.IsInPhoneNumberList(sourceValues, extractedContactModel.phoneNumber)
     }
 
 }

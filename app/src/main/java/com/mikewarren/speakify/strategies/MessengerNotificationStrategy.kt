@@ -174,7 +174,7 @@ class MessengerNotificationStrategy(
             return false
         }
 
-        return ((super.shouldSpeakify()) || (appSettingsModel!!.notificationSources.contains(name))) &&
+        return ((super.shouldSpeakify()) || (appSettingsModel!!.notificationSources.any { it.value == name })) &&
                 (super.shouldSpeakifyBasedOnSettings())
     }
 

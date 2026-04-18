@@ -46,10 +46,14 @@ object SearchUtils {
     fun ContainsKeywords(keywords: Array<String>, searchString: String): Boolean = ContainsKeywords(keywords.toList(), searchString)
 
     fun IsInPhoneNumberList(listOfPhoneNumbers: List<String>, phoneNumber: String): Boolean {
+        if (phoneNumber.isEmpty()) return false
+
         val phoneNumberIntlFormat = PhoneNumberUtils.ExtractPhoneNumberWithLib(phoneNumber)
             .first
 
         return listOfPhoneNumbers.any { firstPhoneNumber: String ->
+            if (firstPhoneNumber.isEmpty()) return@any false
+
             val firstPhoneNumberIntlFormat = PhoneNumberUtils.ExtractPhoneNumberWithLib(firstPhoneNumber)
                 .first
 

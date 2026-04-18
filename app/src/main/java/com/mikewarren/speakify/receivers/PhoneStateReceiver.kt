@@ -114,7 +114,7 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
                     appSettingsModel = AppSettingsModel(packageName, defaultVoice)
                 }
 
-                if (appSettingsModel.notificationSources.isNotEmpty() && !SearchUtils.IsInPhoneNumberList(appSettingsModel.notificationSources, incomingNumber)) {
+                if (appSettingsModel.notificationSources.isNotEmpty() && !SearchUtils.IsInPhoneNumberList(appSettingsModel.notificationSources.map { it.value }, incomingNumber)) {
                     Log.d(TAG, "Number $incomingNumber is not in the allowed list.")
                     return@launch
                 }

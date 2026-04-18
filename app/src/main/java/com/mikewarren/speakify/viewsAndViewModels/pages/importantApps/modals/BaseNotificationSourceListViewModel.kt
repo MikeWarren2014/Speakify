@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.R
+import com.mikewarren.speakify.data.NotificationSource
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.viewsAndViewModels.widgets.BaseModelAutoCompletableViewModel
 import com.mikewarren.speakify.viewsAndViewModels.widgets.UiText
@@ -18,15 +19,15 @@ import kotlinx.coroutines.launch
 
 abstract class BaseNotificationSourceListViewModel<T>(
     override var settingsRepository: SettingsRepository,
-    protected var notificationSourceList: List<String>,
-    val onSave: (List<String>) -> Any,
+    notificationSourceList: List<NotificationSource>,
+    val onSave: (List<NotificationSource>) -> Any,
 ) : IAppSettingsSectionViewModel,
     BaseModelAutoCompletableViewModel<T>() {
     protected var selectedNotificationSources = notificationSourceList
     abstract val allData: StateFlow<List<T>>
 
     protected val _notificationSources = MutableStateFlow(notificationSourceList)
-    val notificationSources: StateFlow<List<String>> = _notificationSources.asStateFlow()
+    val notificationSources: StateFlow<List<NotificationSource>> = _notificationSources.asStateFlow()
 
     protected val _allAddableSourceModels = MutableStateFlow<List<T>>(emptyList())
     val allAddableSourceModels: StateFlow<List<T>> = _allAddableSourceModels.asStateFlow()
@@ -43,17 +44,17 @@ abstract class BaseNotificationSourceListViewModel<T>(
         }
     }
 
-    fun onDataLoaded() {
+    open fun onDataLoaded() {
         searchText = ""
-        _allAddableSourceModels.update { allData.value?.minus(getAddedSourceModels().toSet()) ?: emptyList() }
+        _allAddableSourceModels.update { allData.value.minus(getAddedSourceModels().toSet()) }
         isLoading = false
         isDisabled = allData.value.isEmpty()
     }
     
     fun getAddedSourceModels(): List<T> {
-        return allData.value?.filter { model: T -> toSourceString(model) in _notificationSources.value }
-            ?: emptyList()
-
+        val currentValues = _notificationSources.value.map { it.value }.toSet()
+        return allData.value
+            .filter { model: T -> toSourceString(model) in currentValues }
     }
 
     override fun getLabelText(): UiText {
@@ -64,13 +65,15 @@ abstract class BaseNotificationSourceListViewModel<T>(
         return UiText.StringResource(R.string.notification_sources)
     }
 
+    abstract fun toNotificationSource(sourceModel: T): NotificationSource
+
     fun addNotificationSource(selection: String) {
         val sourceModel = allAddableSourceModels.value.find { toViewString(it) == selection }
         if (sourceModel == null)
             throw IllegalStateException("Notification source $selection not found")
 
         viewModelScope.launch {
-            val updatedSources = _notificationSources.value + toSourceString(sourceModel)
+            val updatedSources = _notificationSources.value + toNotificationSource(sourceModel)
             _notificationSources.value = updatedSources
 
             onRemoveAddableSource(sourceModel)
@@ -78,13 +81,18 @@ abstract class BaseNotificationSourceListViewModel<T>(
     }
 
     fun removeNotificationSource(sourceModel: T) {
-        val source = toSourceString(sourceModel)
+        removeNotificationSource(toNotificationSource(sourceModel))
+    }
 
+    fun removeNotificationSource(source: NotificationSource) {
         viewModelScope.launch {
-            val updatedSources = _notificationSources.value - source
+            val updatedSources = _notificationSources.value.filter { it.value != source.value }
             _notificationSources.value = updatedSources
 
-            onAddAddableSource(sourceModel)
+            val sourceModel = allData.value.find { toSourceString(it) == source.value }
+            if (sourceModel != null) {
+                onAddAddableSource(sourceModel)
+            }
         }
     }
 

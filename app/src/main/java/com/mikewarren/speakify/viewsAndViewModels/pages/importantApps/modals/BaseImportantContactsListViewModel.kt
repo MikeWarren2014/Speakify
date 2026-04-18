@@ -2,6 +2,7 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals
 
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.ContactModel
+import com.mikewarren.speakify.data.NotificationSource
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.events.ContactListDataRequester
 import com.mikewarren.speakify.utils.PhoneNumberUtils
@@ -10,8 +11,8 @@ import kotlinx.coroutines.flow.StateFlow
 
 class BaseImportantContactsListViewModel(
     override var settingsRepository: SettingsRepository,
-    notificationSourceList: List<String>,
-    onSave: (List<String>) -> Any,
+    notificationSourceList: List<NotificationSource>,
+    onSave: (List<NotificationSource>) -> Any,
 ) : BaseNotificationSourceListViewModel<ContactModel>(settingsRepository,
     notificationSourceList,
     onSave,
@@ -25,12 +26,21 @@ class BaseImportantContactsListViewModel(
         dataRequester.requestData()
     }
 
+    override fun onOpen() {
+        super.onOpen()
+        fetchContacts()
+    }
+
     override fun getNotificationSourcesNameText(): UiText {
         return UiText.StringResource(R.string.contacts_name_text)
     }
 
     override fun toSourceString(sourceModel: ContactModel): String {
         return sourceModel.phoneNumber
+    }
+
+    override fun toNotificationSource(sourceModel: ContactModel): NotificationSource {
+        return NotificationSource(sourceModel.phoneNumber, sourceModel.name)
     }
 
     override fun toViewString(sourceModel: ContactModel): String {

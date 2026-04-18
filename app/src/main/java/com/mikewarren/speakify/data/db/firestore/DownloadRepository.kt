@@ -2,6 +2,7 @@ package com.mikewarren.speakify.data.db.firestore
 
 import com.google.firebase.firestore.DocumentSnapshot
 import com.mikewarren.speakify.data.AppSettingsModel
+import com.mikewarren.speakify.data.NotificationSource
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.MessengerContactsRepository
 import com.mikewarren.speakify.data.SettingsRepository
@@ -87,8 +88,17 @@ class DownloadRepository @Inject constructor(
             return@map suspend { transaction(documentSnapshot, { doc ->
                 val packageName = doc.getString("packageName") ?: return@transaction
                 val announcerVoice = doc.getString("announcerVoice")
-                @Suppress("UNCHECKED_CAST")
-                val notificationSources = doc.get("notificationSources") as? List<String> ?: emptyList()
+                val notificationSources = (doc.get("notificationSources") as? List<*>)?.mapNotNull { item ->
+                    when (item) {
+                        is String -> NotificationSource(item)
+                        is Map<*, *> -> {
+                            val value = item["value"] as? String
+                            val name = item["name"] as? String
+                            if (value != null) NotificationSource(value, name) else null
+                        }
+                        else -> null
+                    }
+                } ?: emptyList()
                 @Suppress("UNCHECKED_CAST")
                 val additionalSettings = doc.get("additionalSettings") as? Map<String, String> ?: emptyMap()
 
