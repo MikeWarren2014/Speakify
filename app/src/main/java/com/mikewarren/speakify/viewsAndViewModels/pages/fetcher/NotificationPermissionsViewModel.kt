@@ -1,8 +1,10 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.fetcher
 
+import android.Manifest
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mikewarren.speakify.utils.NotificationPermissionHelper
 import com.mikewarren.speakify.utils.PermissionUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -24,6 +26,9 @@ class NotificationPermissionsViewModel @Inject constructor(
         viewModelScope.launch {
             _permissionStates.update {
                 permissions.associateWith { permission ->
+                    if (permission == Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE) {
+                        return@associateWith NotificationPermissionHelper(context).isNotificationServiceEnabled()
+                    }
                     PermissionUtils.isPermissionGranted(context, permission)
                 }
             }

@@ -284,10 +284,11 @@
     <string name="account_deletion_deleting">계정 삭제 중…</string>
     <string name="account_deletion_please_wait">잠시 시간이 걸릴 수 있습니다. 앱을 닫지 마세요.</string>
 
-    <!-- Permissions Concerns -->
-    <string name="notification_access_required_title">알림 액세스 필요</string>
+    
+    <string name="notification_permissions_title">알림 권한</string>
+    <string name="read_notifications">알림 읽기</string>
+    <string name="post_notifications">알림 게시</string>
     <string name="notification_access_required_message">Speakify가 알림을 읽어주려면 알림을 ‘읽을’ 수 있는 권한이 필요합니다.\n\n시스템 설정으로 리다이렉트됩니다. \'Speakify\'를 찾아 활성화해 주세요.</string>
-    <string name="phone_permissions_required_message">수신 전화를 안내하려면 휴대폰 상태 및 통화 기록에 대한 액세스 권한이 필요합니다. 이러한 권한을 허용해 주세요.</string>
     <string name="go_to_settings">설정으로 이동</string>
     <string name="permissions_required_title">권한 필요</string>
     <string name="permissions_required_message">백그라운드에서 실행되려면 알림을 게시할 수 있는 권한이 필요합니다. 이 권한을 허용해 주세요.</string>
@@ -398,3 +399,5 @@
     <string name="conversion_ready_button_sign_up">지금 가입하기</string>
     <string name="conversion_ready_button_continue">체험판 계속하기</string>
 </resources>
+
+
