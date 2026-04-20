@@ -9,7 +9,9 @@ import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.constants.PermissionCodes
 import com.mikewarren.speakify.data.events.PhonePermissionEvent
 import com.mikewarren.speakify.data.events.PhonePermissionEventBus
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PhonePermissionsActivity() : BasePermissionRequesterActivity<PhonePermissionEvent>(
     eventBus = PhonePermissionEventBus.GetInstance(),
     permissionRequestCode = PermissionCodes.PhonePermissions,

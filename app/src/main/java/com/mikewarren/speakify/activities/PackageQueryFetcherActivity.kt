@@ -10,8 +10,10 @@ import com.mikewarren.speakify.data.events.PackageQueryEvent
 import com.mikewarren.speakify.data.events.PackageQueryEventBus
 import com.mikewarren.speakify.viewsAndViewModels.pages.fetcher.AppFetcherViewModel
 import com.mikewarren.speakify.utils.NotificationPermissionHelper
+import dagger.hilt.android.AndroidEntryPoint
 
 @RequiresApi(Build.VERSION_CODES.R)
+@AndroidEntryPoint
 class PackageQueryFetcherActivity: BaseFetcherActivity<ApplicationInfo, PackageQueryEvent>(
     eventBus = PackageQueryEventBus.GetInstance(),
     permission = Manifest.permission.QUERY_ALL_PACKAGES,

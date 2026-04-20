@@ -173,7 +173,7 @@ class ImportantAppsViewModel @Inject constructor(
                     }
                 }
 
-                if (needsContacts && contacts.isEmpty() && !contactRequester.isLoading.value) {
+                if (needsContacts && contacts.isEmpty()  && !contactRequester.isLoading.value) {
                     contactRequester.requestData()
                 }
                 if (needsMessenger && messengerContacts.isEmpty() && !messengerRequester.isLoading.value) {

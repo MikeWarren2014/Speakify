@@ -8,9 +8,11 @@ import com.mikewarren.speakify.data.constants.PermissionCodes
 import com.mikewarren.speakify.data.events.ContactEvent
 import com.mikewarren.speakify.data.events.ContactEventBus
 import com.mikewarren.speakify.viewsAndViewModels.pages.fetcher.ContactFetcherViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+@AndroidEntryPoint
 class ContactsFetcherActivity : BaseFetcherActivity<ContactModel, ContactEvent>(
     eventBus = ContactEventBus.GetInstance(),
     permission = Manifest.permission.READ_CONTACTS,
@@ -76,7 +78,4 @@ class ContactsFetcherActivity : BaseFetcherActivity<ContactModel, ContactEvent>(
             contacts
         }
     }
-
-
-
 }

@@ -27,30 +27,18 @@ fun ActionCard(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     onClick: () -> Unit
 ) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+    ItemCard(title, description) {
+        Button(
+            onClick = onClick,
+            modifier = Modifier.padding(start = 16.dp)
         ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(text = title, style = MaterialTheme.typography.bodyLarge)
-                Text(text = description, style = MaterialTheme.typography.bodySmall)
-            }
-            Button(
-                onClick = onClick,
-                modifier = Modifier.padding(start = 16.dp)
-            ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null, // Button text describes the action
-                    modifier = Modifier.height(18.dp) // Optional: size the icon
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(buttonText)
-            }
+            Icon(
+                imageVector = icon,
+                contentDescription = null, // Button text describes the action
+                modifier = Modifier.height(18.dp) // Optional: size the icon
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(buttonText)
         }
     }
 }

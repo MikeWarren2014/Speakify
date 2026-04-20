@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -36,6 +37,7 @@ import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.ui.theme.MyApplicationTheme
 import com.mikewarren.speakify.utils.NotificationPermissionHelper
+import com.mikewarren.speakify.utils.PermissionUtils
 import com.mikewarren.speakify.viewsAndViewModels.AppView
 import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -168,14 +170,9 @@ class MainActivity : ComponentActivity()  {
     }
 
     private fun checkPermissions() {
-        val helper = NotificationPermissionHelper(this)
-        val needsListener = !helper.isNotificationServiceEnabled()
-
-        // Check Post Notifications (Android 13+)
-        val needsPost = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) &&
-                (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
-
-        if (needsListener || needsPost) {
+        val permissions = NotificationPermissionsActivity.getPermissions()
+        
+        if (!PermissionUtils.areAllPermissionsGranted(this, permissions)) {
             val intent = Intent(this, NotificationPermissionsActivity::class.java)
             startActivity(intent)
         }
