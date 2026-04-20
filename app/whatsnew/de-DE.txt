@@ -1,7 +1,6 @@
-Neu in v1.1.2:
-- Volle Unterstützung für 12 Sprachen.
-- Smart Audio Focus: Senkt Spotify & Co. zuverlässig ab.
-- Lautstärke-Erzwingung: Benachrichtigungen trotz Musik hörbar.
-- Neues Onboarding: Geführte Einrichtung und Zielverfolgung.
-- Verbesserter Testzeitraum: Einfache Kontoerstellung zum Speichern.
-- Kritische Fehlerbehebungen und Stabilitätsverbesserungen.
+- Ereignisbenachrichtigungen kündigen jetzt die Zeit bis zum Beginn an.
+- Fehler bei der Ignorieren-Einstellung für Facebook Messenger-Reaktionen behoben.
+- Onboarding-App-Auswahl verbessert.
+- Absturz behoben und Berechtigungsanfragen überarbeitet.
+- Keine Ansagen mehr beim Senden von Fotos im Messenger.
+- Analytics-Fehler behoben.

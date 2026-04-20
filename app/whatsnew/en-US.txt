@@ -1,7 +1,6 @@
-What's New in v1.1.2:
-- Full support for 12 languages.
-- Smart Audio Focus: Reliably "ducks" background apps like Spotify.
-- Forced Volume: Ensures notifications are heard even during music.
-- New Onboarding: Guided setup and goal tracking.
-- Improved Trial: Seamless account creation to save your progress.
-- Critical bug fixes and stability improvements.
+- Event notifications now announce time until start.
+- Added disclosure regarding contact data usage for personalized announcements.
+- Fixed Facebook Messenger reactions ignore setting.
+- Improved onboarding app selection and analytics reporting.
+- Fixed a crash and revamped permission requests.
+- Stopped announcements when sending photos in Messenger.

@@ -400,6 +400,7 @@
     <string name="conversion_ready_button_sign_up">अभी साइन अप करें</string>
     <string name="conversion_ready_button_continue">ट्रायल के साथ जारी रखें</string>
 
+    <string name="contacts_usage_disclosure">Speakify कॉल करने वालों और संदेश भेजने वालों की पहचान करने के लिए आपके संपर्कों का उपयोग करता है ताकि वह उनके नामों की घोषणा कर सके। यह डेटा आपके डिवाइस पर स्थानीय रूप से संसाधित किया जाता है और साझा नहीं किया जाता है।</string>
 </resources>
 
 

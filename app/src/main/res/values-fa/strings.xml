@@ -401,6 +401,7 @@
     <string name="conversion_ready_description">برای همگام‌سازی تنظیمات خود در تمام دستگاه‌ها و حفظ پیشرفت دوره آزمایشی خود برای همیشه، یک حساب کاربری ایجاد کنید.</string>
     <string name="conversion_ready_button_sign_up">اکنون ثبت‌نام کنید</string>
     <string name="conversion_ready_button_continue">ادامه با دوره آزمایشی</string>
+    <string name="contacts_usage_disclosure">Speakify از مخاطبین شما برای شناسایی تماس‌گیرندگان و فرستندگان پیام استفاده می‌کند تا بتواند نام آن‌ها را برای شما اعلام کند. این داده‌ها به صورت محلی در دستگاه شما پردازش می‌شوند و به اشتراک گذاشته نمی‌شوند.</string>
 </resources>
 
 
