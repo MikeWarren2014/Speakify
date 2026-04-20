@@ -284,10 +284,11 @@
     <string name="account_deletion_deleting">Konto wird gelöscht…</string>
     <string name="account_deletion_please_wait">Dies kann einen Moment dauern. Bitte schließen Sie die App nicht.</string>
 
-    <!-- Permissions Concerns -->
-    <string name="notification_access_required_title">Benachrichtigungszugriff erforderlich</string>
+    
+    <string name="notification_permissions_title">Benachrichtigungsberechtigungen</string>
+    <string name="read_notifications">Benachrichtigungen lesen</string>
+    <string name="post_notifications">Benachrichtigungen senden</string>
     <string name="notification_access_required_message">Speakify benötigt die Berechtigung, Benachrichtigungen zu LESEN, damit sie laut vorgelesen werden können.\n\nSie werden zu den Systemeinstellungen weitergeleitet. Bitte suchen Sie \"Speakify\" und aktivieren Sie es.</string>
-    <string name="phone_permissions_required_message">Speakify benötigt Zugriff auf Ihren Telefonstatus und Ihre Anruflisten, um eingehende Anrufe anzukündigen. Bitte gewähren Sie diese Berechtigungen.</string>
     <string name="go_to_settings">Zu den Einstellungen</string>
     <string name="permissions_required_title">Berechtigungen erforderlich</string>
     <string name="permissions_required_message">Speakify benötigt die Berechtigung zum Senden von Benachrichtigungen, um im Hintergrund zu laufen. Bitte gewähren Sie diese Berechtigung.</string>
@@ -401,3 +402,5 @@
     <string name="conversion_ready_button_sign_up">Jetzt registrieren</string>
     <string name="conversion_ready_button_continue">Mit Testzeitraum fortfahren</string>
 </resources>
+
+

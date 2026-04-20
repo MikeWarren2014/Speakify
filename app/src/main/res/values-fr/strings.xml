@@ -284,10 +284,11 @@
     <string name="account_deletion_deleting">Suppression de votre compte en cours…</string>
     <string name="account_deletion_please_wait">Cela peut prendre un moment. Veuillez ne pas fermer l\'application.</string>
 
-    <!-- Permissions Concerns -->
-    <string name="notification_access_required_title">Accès aux notifications requis</string>
+    
+    <string name="notification_permissions_title">Autorisations de notification</string>
+    <string name="read_notifications">Lire les notifications</string>
+    <string name="post_notifications">Envoyer des notifications</string>
     <string name="notification_access_required_message">Speakify a besoin de lire les notifications pour les énoncer.\n\nVeuillez activer Speakify dans les paramètres système.</string>
-    <string name="phone_permissions_required_message">L\'accès à l\'état du téléphone est requis pour annoncer les appels entrants.</string>
     <string name="go_to_settings">Aller aux paramètres</string>
     <string name="permissions_required_title">Autorisations requises</string>
     <string name="permissions_required_message">L\'autorisation de notifier est requise pour fonctionner en arrière-plan.</string>
@@ -400,3 +401,5 @@
     <string name="conversion_ready_button_sign_up">S\'inscrire maintenant</string>
     <string name="conversion_ready_button_continue">Continuer avec l\'essai</string>
 </resources>
+
+

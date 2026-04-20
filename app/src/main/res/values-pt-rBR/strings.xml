@@ -284,10 +284,11 @@
     <string name="account_deletion_deleting">Excluindo sua conta…</string>
     <string name="account_deletion_please_wait">Isso pode levar um momento. Por favor, não feche o app.</string>
 
-    <!-- Permissions Concerns -->
-    <string name="notification_access_required_title">Acesso à Notificação Necessário</string>
+    
+    <string name="notification_permissions_title">Permissões de notificação</string>
+    <string name="read_notifications">Ler notificações</string>
+    <string name="post_notifications">Enviar notificações</string>
     <string name="notification_access_required_message">O Speakify precisa de permissão para LER notificações para poder falá-las em voz alta.\n\nVocê será redirecionado para as configurações do sistema. Encontre \'Speakify\' e ative-o.</string>
-    <string name="phone_permissions_required_message">O Speakify precisa de acesso ao estado do seu telefone e registros de chamadas para anunciar chamadas recebidas. Por favor, conceda estas permissões.</string>
     <string name="go_to_settings">Ir para Configurações</string>
     <string name="permissions_required_title">Permissões Necessárias</string>
     <string name="permissions_required_message">O Speakify requer permissão para postar notificações para rodar em segundo plano. Por favor, conceda esta permissão.</string>
@@ -400,3 +401,5 @@
     <string name="conversion_ready_button_sign_up">Cadastre-se agora</string>
     <string name="conversion_ready_button_continue">Continuar com o teste</string>
 </resources>
+
+

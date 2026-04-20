@@ -284,10 +284,11 @@
     <string name="account_deletion_deleting">アカウントを削除中…</string>
     <string name="account_deletion_please_wait">これには時間がかかる場合があります。アプリを閉じないでください。</string>
 
-    <!-- Permissions Concerns -->
-    <string name="notification_access_required_title">通知へのアクセスが必要です</string>
+    
+    <string name="notification_permissions_title">通知の権限</string>
+    <string name="read_notifications">通知の読み取り</string>
+    <string name="post_notifications">通知の送信</string>
     <string name="notification_access_required_message">Speakify が通知を読み上げるには、通知を「読み取る」権限が必要です。\n\nシステム設定にリダイレクトされます。「Speakify」を見つけて有効にしてください。</string>
-    <string name="phone_permissions_required_message">着信を通知するには、電話の状態と通話履歴へのアクセス権限が必要です。これらの権限を許可してください。</string>
     <string name="go_to_settings">設定へ移動</string>
     <string name="permissions_required_title">権限が必要です</string>
     <string name="permissions_required_message">バックグラウンドで動作し通知を表示するには、通知の送信権限が必要です。この権限を許可してください。</string>
@@ -398,3 +399,5 @@
     <string name="conversion_ready_button_sign_up">今すぐサインアップ</string>
     <string name="conversion_ready_button_continue">トライアルを続ける</string>
 </resources>
+
+

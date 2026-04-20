@@ -284,10 +284,11 @@
     <string name="account_deletion_deleting">आपका खाता हटाया जा रहा है…</string>
     <string name="account_deletion_please_wait">इसमें कुछ समय लग सकता है। कृपया ऐप बंद न करें।</string>
 
-    <!-- Permissions Concerns -->
-    <string name="notification_access_required_title">सूचना पहुंच आवश्यक है</string>
+    
+    <string name="notification_permissions_title">सूचना अनुमतियाँ</string>
+    <string name="read_notifications">सूचनाएं पढ़ें</string>
+    <string name="post_notifications">सूचनाएं भेजें</string>
     <string name="notification_access_required_message">Speakify को सूचनाएं पढ़ने की अनुमति चाहिए ताकि वह उन्हें जोर से बोल सके।\n\nआपको सिस्टम सेटिंग्स पर रीडायरेक्ट किया जाएगा। कृपया \'Speakify\' खोजें और इसे सक्षम करें।</string>
-    <string name="phone_permissions_required_message">आने वाली कॉलों की घोषणा करने के लिए Speakify को आपके फ़ोन की स्थिति और कॉल लॉग तक पहुंच की आवश्यकता है। कृपया ये अनुमतियां प्रदान करें।</string>
     <string name="go_to_settings">सेटिंग्स पर जाएं</string>
     <string name="permissions_required_title">अनुमतियाँ आवश्यक हैं</string>
     <string name="permissions_required_message">Speakify को बैकग्राउंड में चलने के लिए सूचनाएं पोस्ट करने की अनुमति चाहिए। कृपया यह अनुमति प्रदान करें।</string>
@@ -400,3 +401,5 @@
     <string name="conversion_ready_button_continue">ट्रायल के साथ जारी रखें</string>
 
 </resources>
+
+

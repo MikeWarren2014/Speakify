@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -72,12 +75,15 @@ fun NotificationPermissionsView(
             CenterAlignedTopAppBar(
                 title = { Text(stringResource(R.string.notification_permissions_title)) }
             )
-        }
+        },
+        modifier = Modifier.fillMaxSize()
     ) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .consumeWindowInsets(paddingValues)
+                .navigationBarsPadding()
         ) {
             Column(
                 modifier = Modifier
@@ -103,7 +109,7 @@ fun NotificationPermissionsView(
 
                     ToggleCard(
                         stringResource(R.string.post_notifications),
-                        stringResource(R.string.permissions_required_message),
+                        stringResource(R.string.post_notifications),
                         isPostNotificationsGranted,
                         isPostNotificationsGranted
                     ) { _ ->
@@ -138,7 +144,7 @@ fun NotificationPermissionsView(
                 AlertDialog(
                     onDismissRequest = { showRationaleDialog = null },
                     title = { Text(stringResource(R.string.permissions_required_title)) },
-                    text = { Text(stringResource(R.string.permissions_required_message)) },
+                    text = { Text(stringResource(R.string.post_notifications)) },
                     confirmButton = {
                         TextButton(onClick = {
                             showRationaleDialog = null

@@ -291,9 +291,7 @@
     <!-- Permissions Concerns -->
     <string name="notification_permissions_title">Notification Permissions</string>
     <string name="read_notifications">Read Notifications</string>
-    <string name="notification_access_required_title">Notification Access Required</string>
     <string name="notification_access_required_message">Speakify needs permission to READ notifications so it can speak them aloud.\n\nYou will be redirected to system settings. Please find \'Speakify\' and enable it.</string>
-    <string name="phone_permissions_required_message">Speakify needs access to your phone state and call logs to announce incoming calls. Please grant these permissions.</string>
     <string name="go_to_settings">Go to Settings</string>
     <string name="permissions_required_title">Permissions Required</string>
     <string name="post_notifications">Post Notifications</string>

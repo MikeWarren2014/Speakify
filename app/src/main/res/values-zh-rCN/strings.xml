@@ -285,10 +285,11 @@
     <string name="account_deletion_deleting">正在删除您的账号…</string>
     <string name="account_deletion_please_wait">这可能需要一些时间，请不要关闭应用。</string>
 
-    <!-- Permissions Concerns -->
-    <string name="notification_access_required_title">需要通知访问权限</string>
+    
+    <string name="notification_permissions_title">通知权限</string>
+    <string name="read_notifications">读取通知</string>
+    <string name="post_notifications">发送通知</string>
     <string name="notification_access_required_message">Speakify 需要“读取”通知的权限，以便为您播报。\n\n您将被重定向到系统设置。请找到“Speakify”并启用它。</string>
-    <string name="phone_permissions_required_message">Speakify 需要访问您的电话状态和通话记录以播报来电。请授予这些权限。</string>
     <string name="go_to_settings">前往设置</string>
     <string name="permissions_required_title">需要权限</string>
     <string name="permissions_required_message">Speakify 需要发送通知的权限以在后台运行。请授予此权限。</string>
@@ -401,3 +402,5 @@
     <string name="conversion_ready_button_continue">继续试用</string>
 
 </resources>
+
+

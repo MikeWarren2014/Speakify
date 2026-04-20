@@ -284,10 +284,11 @@
     <string name="account_deletion_deleting">Видалення вашого облікового запису…</string>
     <string name="account_deletion_please_wait">Це може зайняти деякий час. Будь ласка, не закривайте програму.</string>
 
-    <!-- Permissions Concerns -->
-    <string name="notification_access_required_title">Потрібен доступ до сповіщень</string>
+    
+    <string name="notification_permissions_title">Дозволи сповіщень</string>
+    <string name="read_notifications">Читати сповіщення</string>
+    <string name="post_notifications">Надсилати сповіщення</string>
     <string name="notification_access_required_message">Speakify потрібен дозвіл на ЧИТАННЯ сповіщень, щоб вона могла озвучувати їх вголос.\n\nВас буде перенаправлено до системних налаштувань. Будь ласка, знайдіть «Speakify» та увімкніть її.</string>
-    <string name="phone_permissions_required_message">Speakify потрібен доступ до стану вашого телефону та журналів викликів, щоб оголошувати вхідні дзвінки. Будь ласка, надайте ці дозволи.</string>
     <string name="go_to_settings">Перейти до налаштувань</string>
     <string name="permissions_required_title">Потрібні дозволи</string>
     <string name="permissions_required_message">Speakify потребує дозволу на надсилання сповіщень для роботи у фоновому режимі. Будь ласка, надайте цей дозвіл.</string>
@@ -402,3 +403,5 @@
     <string name="conversion_ready_button_continue">Продовжити пробний період</string>
 
 </resources>
+
+

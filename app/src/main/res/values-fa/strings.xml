@@ -285,13 +285,14 @@
     <string name="account_deletion_deleting">در حال حذف حساب شما…</string>
     <string name="account_deletion_please_wait">این ممکن است لحظاتی طول بکشد. لطفا برنامه را نبندید.</string>
 
-    <!-- Permissions Concerns -->
-    <string name="notification_access_required_title">دسترسی به اعلان‌ها الزامی است</string>
+    
+    <string name="notification_permissions_title">مجوزهای اعلان</string>
+    <string name="read_notifications">خواندن اعلان‌ها</string>
     <string name="notification_access_required_message">Speakify برای خواندن اعلان‌ها با صدای بلند، به مجوز خواندن اعلان‌ها نیاز دارد.\n\nشما به تنظیمات سیستم منتقل خواهید شد. لطفا «Speakify» را پیدا کرده و آن را فعال کنید.</string>
-    <string name="phone_permissions_required_message">Speakify برای اعلام تماس‌های ورودی، به دسترسی به وضعیت تلفن و گزارش تماس‌های شما نیاز دارد. لطفا این مجوزها را صادر کنید.</string>
     <string name="go_to_settings">رفتن به تنظیمات</string>
     <string name="permissions_required_title">مجوزهای الزامی</string>
     <string name="permissions_required_message">Speakify برای اجرا در پس‌زمینه به مجوز ارسال اعلان نیاز دارد. لطفا این مجوز را صادر کنید.</string>
+    <string name="post_notifications">Speakify برای اعلام پیام‌ها و رویدادهای تقویم شما با صدای بلند، به مجوز ارسال اعلان نیاز دارد. این کار همچنین به فعال نگه داشتن برنامه در پس‌زمینه کمک می‌کند.</string>
     <string name="ok">تایید</string>
 
     <!-- AutoComplete widgets -->
@@ -401,3 +402,5 @@
     <string name="conversion_ready_button_sign_up">اکنون ثبت‌نام کنید</string>
     <string name="conversion_ready_button_continue">ادامه با دوره آزمایشی</string>
 </resources>
+
+

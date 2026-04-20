@@ -286,9 +286,10 @@
     <string name="account_deletion_please_wait">Esto puede tardar un momento. Por favor, no cierres la aplicación.</string>
 
     <!-- Permissions Concerns -->
-    <string name="notification_access_required_title">Acceso a notificaciones requerido</string>
+    <string name="notification_permissions_title">Permisos de notificación</string>
+    <string name="read_notifications">Leer notificaciones</string>
+    <string name="post_notifications">Enviar notificaciones</string>
     <string name="notification_access_required_message">Speakify necesita permiso para LEER las notificaciones para poder decirlas en voz alta.\n\nSerás redirigido a los ajustes del sistema. Por favor, busca \'Speakify\' y actívalo.</string>
-    <string name="phone_permissions_required_message">Speakify necesita acceso al estado del teléfono y a los registros de llamadas para anunciar las llamadas entrantes. Por favor, concede estos permisos.</string>
     <string name="go_to_settings">Ir a Ajustes</string>
     <string name="permissions_required_title">Permisos requeridos</string>
     <string name="permissions_required_message">Speakify requiere permiso para publicar notificaciones para ejecutarse en segundo plano. Por favor, concede este permiso.</string>
