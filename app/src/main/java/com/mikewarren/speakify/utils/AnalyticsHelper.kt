@@ -34,31 +34,20 @@ class AnalyticsHelper @Inject constructor(
     }
 
     fun logPrimaryGoal(goal: String) {
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
-            param(FirebaseAnalytics.Param.ITEM_LIST_NAME, "onboarding_primary_goals")
-            param(FirebaseAnalytics.Param.ITEMS, arrayOf(
-                Bundle().apply {
-                    putString(FirebaseAnalytics.Param.ITEM_ID, goal)
-                    putString(FirebaseAnalytics.Param.ITEM_NAME, goal)
-                }
-            ))
+        val bundle = Bundle().apply {
+            putString("goal_name", goal)
         }
+        logEvent("onboarding_goal_selected", bundle)
     }
 
     fun logVIAs(viaList: List<UserAppModel>) {
         if (viaList.isEmpty()) return
         
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
-            param(FirebaseAnalytics.Param.ITEM_LIST_NAME, "very_important_apps")
-            param(FirebaseAnalytics.Param.ITEMS, 
-                viaList.map { item ->
-                    Bundle().apply {
-                        putString(FirebaseAnalytics.Param.ITEM_ID, item.packageName)
-                        putString(FirebaseAnalytics.Param.ITEM_NAME, item.appName)
-                        putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "onboarding_via")
-                    }
-                }.toTypedArray())
+        val bundle = Bundle().apply {
+            putInt("app_count", viaList.size)
+            putString("apps_list", viaList.joinToString(", ") { it.appName })
         }
+        logEvent("onboarding_vias_selected", bundle)
     }
 
     fun logTrialConversionStarted() {
