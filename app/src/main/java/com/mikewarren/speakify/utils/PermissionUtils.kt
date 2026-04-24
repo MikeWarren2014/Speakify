@@ -1,10 +1,12 @@
 package com.mikewarren.speakify.utils
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.mikewarren.speakify.utils.NotificationExtractionUtils
 
 object PermissionUtils {
     // Function to check if a specific permission is granted
@@ -18,8 +20,11 @@ object PermissionUtils {
 
     // Function to check if all permissions in a list are granted
     fun areAllPermissionsGranted(context: Context, permissions: Array<String>): Boolean {
-        // Use the `all` function to check if every permission in the list is granted
-        return permissions.all { isPermissionGranted(context, it) }
+        return permissions.all {
+            if (it != Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE)
+                return@all isPermissionGranted(context, it)
+            return@all NotificationPermissionHelper(context).isNotificationServiceEnabled()
+        }
     }
 
     // Function to determine if a rationale should be shown for a specific permission
