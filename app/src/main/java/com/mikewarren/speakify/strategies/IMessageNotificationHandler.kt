@@ -127,11 +127,11 @@ interface IMessageNotificationHandler<EnumType>: IMessageSettingsParser, ITaggab
     }
 
     fun shouldSpeakifyBasedOnSettings(): Boolean {
-        if (isIgnoreReactionsEnabled)
-            return !isReaction()
+        if ((isIgnoreReactionsEnabled) && (isReaction()))
+            return false
 
-        if (isIgnoreSingleWordMessagesEnabled)
-            return !isSingleWordMessage()
+        if ((isIgnoreSingleWordMessagesEnabled) && (isSingleWordMessage()))
+            return false
 
         return true
     }
