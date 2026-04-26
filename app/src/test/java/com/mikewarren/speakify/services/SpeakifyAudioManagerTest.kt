@@ -27,7 +27,7 @@ class SpeakifyAudioManagerTest {
     @Before
     fun setUp() {
         context = mockk()
-        audioManager = mockk()
+        audioManager = mockk(relaxed = true)
         settingsRepository = mockk(relaxed = true)
 
         every { context.getSystemService(Context.AUDIO_SERVICE) } returns audioManager
@@ -56,5 +56,47 @@ class SpeakifyAudioManagerTest {
         
         val actualVolume = speakifyAudioManager.getVolume()
         assertEquals(currentVolume, actualVolume)
+    }
+
+    @Test
+    fun `restoreVolume should restore to current volume if it was increased during notification`() = runTest {
+        // Given
+        val savedOriginalVolume = 4
+        val volumeIncreasedByUser = 8
+
+        // originalVolume is saved as 4
+        every { settingsRepository.originalVolume } returns flowOf(savedOriginalVolume)
+        
+        // But the user has since increased the volume to 8 (on their own or via system)
+        every { audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) } returns volumeIncreasedByUser
+
+        // When
+        speakifyAudioManager.restoreVolume()
+
+        // Then
+        // We expect it NOT to restore to 4, because 8 is higher/current.
+        // Actually, the requirement is to not revert to a LOWER volume than what the user set in the meantime.
+        // Or if originalVolume < currentVolume, we should probably keep currentVolume.
+        
+        // If we want to strictly reflect the user's issue: 
+        // "The volume gets restored to 4 instead of 8."
+        // This implies we SHOULD NOT call setStreamVolume(..., 4, ...) if current is 8.
+        
+        coVerify(exactly = 0) { audioManager.setStreamVolume(any(), any(), any()) }
+    }
+
+    @Test
+    fun `restoreVolume should restore to original volume if current volume is lower`() = runTest {
+        // Given
+        val savedOriginalVolume = 10
+        val currentVolume = 4
+        every { settingsRepository.originalVolume } returns flowOf(savedOriginalVolume)
+        every { audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) } returns currentVolume
+
+        // When
+        speakifyAudioManager.restoreVolume()
+
+        // Then
+        coVerify(exactly = 1) { audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, savedOriginalVolume, 0) }
     }
 }
