@@ -27,7 +27,7 @@ class SpeakifyAudioManagerTest {
     @Before
     fun setUp() {
         context = mockk()
-        audioManager = mockk()
+        audioManager = mockk(relaxed = true)
         settingsRepository = mockk(relaxed = true)
 
         every { context.getSystemService(Context.AUDIO_SERVICE) } returns audioManager
@@ -56,5 +56,41 @@ class SpeakifyAudioManagerTest {
         
         val actualVolume = speakifyAudioManager.getVolume()
         assertEquals(currentVolume, actualVolume)
+    }
+
+    @Test
+    fun `restoreVolume should restore to current volume if it was increased during notification`() = runTest {
+        // Given
+        val savedOriginalVolume = 4
+        val volumeIncreasedByUser = 8
+
+        // originalVolume is saved as 4
+        every { settingsRepository.originalVolume } returns flowOf(savedOriginalVolume)
+        
+        // But the user has since increased the volume to 8 (on their own or via system)
+        every { audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) } returns volumeIncreasedByUser
+
+        // When
+        speakifyAudioManager.setVolume(6, true)
+        speakifyAudioManager.restoreVolume()
+
+        // Then
+        assertEquals(volumeIncreasedByUser, speakifyAudioManager.getVolume())
+
+    }
+
+    @Test
+    fun `restoreVolume should restore to original volume if current volume is lower`() = runTest {
+        // Given
+        val savedOriginalVolume = 10
+        val currentVolume = 4
+        every { settingsRepository.originalVolume } returns flowOf(savedOriginalVolume)
+        every { audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) } returns currentVolume
+
+        // When
+        speakifyAudioManager.restoreVolume()
+
+        // Then
+        coVerify(exactly = 1) { audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, savedOriginalVolume, 0) }
     }
 }

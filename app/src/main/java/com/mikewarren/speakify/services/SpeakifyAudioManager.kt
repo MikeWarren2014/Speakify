@@ -39,8 +39,8 @@ class SpeakifyAudioManager @Inject constructor(
         }
 
         val originalVolume = settingsRepository.originalVolume.first()
-        if (originalVolume == -1) {
-            val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        if ((originalVolume == -1) || (originalVolume != currentVolume)) {
             settingsRepository.setOriginalVolume(currentVolume)
             Log.d("SpeakifyAudioManager", "Saved original music volume: $currentVolume")
         }
