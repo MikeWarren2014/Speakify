@@ -71,18 +71,12 @@ class SpeakifyAudioManagerTest {
         every { audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) } returns volumeIncreasedByUser
 
         // When
+        speakifyAudioManager.setVolume(6, true)
         speakifyAudioManager.restoreVolume()
 
         // Then
-        // We expect it NOT to restore to 4, because 8 is higher/current.
-        // Actually, the requirement is to not revert to a LOWER volume than what the user set in the meantime.
-        // Or if originalVolume < currentVolume, we should probably keep currentVolume.
-        
-        // If we want to strictly reflect the user's issue: 
-        // "The volume gets restored to 4 instead of 8."
-        // This implies we SHOULD NOT call setStreamVolume(..., 4, ...) if current is 8.
-        
-        coVerify(exactly = 0) { audioManager.setStreamVolume(any(), any(), any()) }
+        assertEquals(volumeIncreasedByUser, speakifyAudioManager.getVolume())
+
     }
 
     @Test
