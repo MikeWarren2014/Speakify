@@ -294,12 +294,13 @@
     <string name="permissions_required_message">백그라운드에서 실행되려면 알림을 게시할 수 있는 권한이 필요합니다. 이 권한을 허용해 주세요.</string>
     <string name="ok">확인</string>
 
+    <string name="pick_contact">연락처에서 선택</string>
+
     <!-- AutoComplete widgets -->
     <string name="search_for_entities">%1$s 검색</string>
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">추가할 알림 소스</string>
-    <string name="autocomplete_label_contact_name_phone_number">추가할 연락처 이름/전화번호</string>
     <string name="autocomplete_label_contact_name">추가할 연락처 이름</string>
     <string name="autocomplete_no_choices_available_yet">아직 %1s이(가) 없습니다.</string>
     <string name="autocomplete_label_tts">TTS 음성</string>

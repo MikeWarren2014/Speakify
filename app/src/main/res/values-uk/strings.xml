@@ -294,12 +294,13 @@
     <string name="permissions_required_message">Speakify потребує дозволу на надсилання сповіщень для роботи у фоновому режимі. Будь ласка, надайте цей дозвіл.</string>
     <string name="ok">ОК</string>
 
+    <string name="pick_contact">Вибрати з контактів</string>
+
     <!-- AutoComplete widgets -->
     <string name="search_for_entities">Шукати %1$s</string>
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">Джерела сповіщень для додавання</string>
-    <string name="autocomplete_label_contact_name_phone_number">Ім\'я контакту/Номер телефону для додавання</string>
     <string name="autocomplete_label_contact_name">Ім\'я контакту для додавання</string>
     <string name="autocomplete_no_choices_available_yet">Ще немає %1s доступних.</string>
     <string name="autocomplete_label_tts">Голос TTS</string>

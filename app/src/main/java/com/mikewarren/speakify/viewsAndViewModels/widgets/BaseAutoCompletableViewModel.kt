@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
-abstract class BaseAutoCompletableViewModel<T> : ViewModel() {
+abstract class BaseAutoCompletableViewModel<T> : ViewModel(), IStringConverter<T> {
     var selection by mutableStateOf<T?>(null)
         protected set
 
@@ -22,9 +22,19 @@ abstract class BaseAutoCompletableViewModel<T> : ViewModel() {
 
     abstract fun getAllChoices(): List<T>
 
-    abstract fun filterChoices(searchText: String): List<T>
+    open fun filterChoices(searchText: String): List<T> {
+        val allChoices = getAllChoices()
 
-    abstract fun toViewString(sourceModel: T): String
+        if (allChoices.isEmpty())
+            return emptyList()
+
+        return allChoices
+            .filter { choiceModel ->
+                toViewString(choiceModel).contains(searchText, true) ||
+                        toSourceString(choiceModel).contains(searchText, true)
+            }
+    }
+
 
     fun onSearchTextChanged(newSearchText: String, onCheckSearchText: (String) -> Any) {
         searchText = newSearchText
