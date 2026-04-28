@@ -9,5 +9,5 @@ fun MessengerImportantContactsListView(viewModel: MessengerImportantContactsList
         viewModel.fetchRecentContacts()
     }
 
-    NotificationSourceListView(viewModel)
+    AutoCompletableNotificationSourceListView(viewModel)
 }

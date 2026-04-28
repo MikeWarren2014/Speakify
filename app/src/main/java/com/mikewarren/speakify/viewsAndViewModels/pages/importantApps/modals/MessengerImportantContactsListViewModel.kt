@@ -10,11 +10,11 @@ import kotlinx.coroutines.flow.StateFlow
 
 class MessengerImportantContactsListViewModel(
     override var settingsRepository: SettingsRepository,
-    notificationSourceList: List<NotificationSource>,
+    selectedNotificationSources: List<NotificationSource>,
     onSave: (List<NotificationSource>) -> Any,
-) : BaseNotificationSourceListViewModel<MessengerContactModel>(
+) : BaseAutoCompletableNotificationSourceListViewModel<MessengerContactModel>(
     settingsRepository,
-    notificationSourceList,
+    selectedNotificationSources,
     onSave,
 ) {
 
@@ -35,8 +35,8 @@ class MessengerImportantContactsListViewModel(
         return UiText.StringResource(R.string.contacts_name_text)
     }
 
-    override fun toSourceString(sourceModel: MessengerContactModel): String {
-        return sourceModel.name
+    override fun toSourceString(value: MessengerContactModel): String {
+        return value.name
     }
 
     override fun toNotificationSource(sourceModel: MessengerContactModel): NotificationSource {
@@ -46,8 +46,8 @@ class MessengerImportantContactsListViewModel(
         )
     }
 
-    override fun toViewString(sourceModel: MessengerContactModel): String {
-        return sourceModel.name
+    override fun toViewString(value: MessengerContactModel): String {
+        return value.name
     }
 
     override fun getLabelText(): UiText {

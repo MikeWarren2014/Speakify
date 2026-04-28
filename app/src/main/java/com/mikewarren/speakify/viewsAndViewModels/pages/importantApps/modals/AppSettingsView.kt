@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -136,7 +135,7 @@ fun GetChildListView(viewModel: AppSettingsViewModel) {
     if ((packageName in PackageNames.PhoneAppList) ||
         (packageName in PackageNames.MessagingAppList) ||
         (packageName == PackageNames.GoogleVoice)) {
-        return ImportantContactsListView(viewModel.childNotificationListViewModel as BaseImportantContactsListViewModel)
+        return PhoneImportantContactsListView(viewModel.childNotificationListViewModel as PhoneImportantContactsListViewModel)
     }
 
     if (packageName in PackageNames.FacebookMessengerAppList) {
@@ -146,7 +145,7 @@ fun GetChildListView(viewModel: AppSettingsViewModel) {
     if (viewModel.childNotificationListViewModel == null)
         return NotSupportedView(viewModel.appModel.appName)
 
-    return NotificationSourceListView(viewModel.childNotificationListViewModel!!)
+    return NotificationSourceListView(viewModel.childNotificationListViewModel!!, {})
 }
 
 @Composable

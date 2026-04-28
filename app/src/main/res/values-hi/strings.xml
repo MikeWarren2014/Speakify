@@ -294,12 +294,13 @@
     <string name="permissions_required_message">Speakify को बैकग्राउंड में चलने के लिए सूचनाएं पोस्ट करने की अनुमति चाहिए। कृपया यह अनुमति प्रदान करें।</string>
     <string name="ok">ठीक है</string>
 
+    <string name="pick_contact">संपर्क से चुनें</string>
+
     <!-- AutoComplete widgets -->
     <string name="search_for_entities">%1$s के लिए खोजें</string>
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">जोड़ने के लिए सूचना स्रोत</string>
-    <string name="autocomplete_label_contact_name_phone_number">जोड़ने के लिए संपर्क का नाम/फ़ोन नंबर</string>
     <string name="autocomplete_label_contact_name">जोड़ने के लिए संपर्क का नाम</string>
     <string name="autocomplete_no_choices_available_yet">अभी तक कोई %1s उपलब्ध नहीं है।</string>
     <string name="autocomplete_label_tts">TTS आवाज़</string>

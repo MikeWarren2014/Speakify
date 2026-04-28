@@ -294,12 +294,13 @@
     <string name="permissions_required_message">Speakify richiede il permesso di pubblicare notifiche per funzionare in background. Si prega di concedere questo permesso.</string>
     <string name="ok">OK</string>
 
+    <string name="pick_contact">Scegli dai contatti</string>
+
     <!-- AutoComplete widgets -->
     <string name="search_for_entities">Cerca %1$s</string>
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">Fonti di Notifica da aggiungere</string>
-    <string name="autocomplete_label_contact_name_phone_number">Nome Contatto/Numero di Telefono da aggiungere</string>
     <string name="autocomplete_label_contact_name">Nome contatto da aggiungere</string>
     <string name="autocomplete_no_choices_available_yet">Ancora nessun %1s disponibile.</string>
     <string name="autocomplete_label_tts">Voce TTS</string>

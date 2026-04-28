@@ -294,12 +294,13 @@
     <string name="permissions_required_message">Speakify benötigt die Berechtigung zum Senden von Benachrichtigungen, um im Hintergrund zu laufen. Bitte gewähren Sie diese Berechtigung.</string>
     <string name="ok">OK</string>
 
+    <string name="pick_contact">Aus Kontakten wählen</string>
+
     <!-- AutoComplete widgets -->
     <string name="search_for_entities">Suche nach %1$s</string>
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">Benachrichtigungsquellen zum Hinzufügen</string>
-    <string name="autocomplete_label_contact_name_phone_number">Kontaktname/Telefonnummer zum Hinzufügen</string>
     <string name="autocomplete_label_contact_name">Kontaktname zum Hinzufügen</string>
     <string name="autocomplete_no_choices_available_yet">Noch keine %1s verfügbar.</string>
     <string name="autocomplete_label_tts">TTS-Stimme</string>
