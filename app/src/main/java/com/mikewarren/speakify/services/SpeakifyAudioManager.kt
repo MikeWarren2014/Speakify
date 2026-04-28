@@ -92,7 +92,8 @@ class SpeakifyAudioManager @Inject constructor(
      */
     suspend fun restoreVolume() {
         val originalVolume = settingsRepository.originalVolume.first()
-        if (originalVolume != -1) {
+        val currentVolume = getVolume()
+        if (originalVolume != -1 && currentVolume < originalVolume) {
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, originalVolume, 0)
             Log.d("SpeakifyAudioManager", "Restored music volume to: $originalVolume")
         }
