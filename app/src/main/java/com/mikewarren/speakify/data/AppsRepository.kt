@@ -10,4 +10,6 @@ interface AppsRepository {
 
     suspend fun addImportantApp(appModel: UserAppModel)
     suspend fun removeImportantApps(appsToRemove: List<UserAppModel>)
+
+    suspend fun substituteImportantApp(oldAppModel: UserAppModel, newAppModel: UserAppModel)
 }

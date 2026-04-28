@@ -8,8 +8,8 @@ import com.mikewarren.speakify.data.db.UserAppModel
 data class UserAppWithSettings(
     @Embedded val userApp: UserAppModel,
     @Relation(
-        parentColumn = "package_name",
-        entityColumn = "package_name"
+        parentColumn = "ua_id",
+        entityColumn = "ua_id"
     )
     val appSettings: AppSettingsDbModel,
 )

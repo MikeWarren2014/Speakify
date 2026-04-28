@@ -36,6 +36,7 @@ import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AddAppMenuView
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.DeleteConfirmationDialog
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.SubstituteAppsDialog
 
 @Composable
 fun ImportantAppsView() {
@@ -44,6 +45,7 @@ fun ImportantAppsView() {
     val searchText by viewModel.searchText.collectAsState()
     val selectedCount by viewModel.selectedCount.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    val substituteCandidates by viewModel.substituteCandidates.collectAsState()
     
     var isAddMenuExpanded by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -162,6 +164,22 @@ fun ImportantAppsView() {
                     showDeleteDialog = false
                 },
                 onDismiss = { showDeleteDialog = false }
+            )
+        }
+
+        // Substitute Apps Dialog
+        substituteCandidates.firstOrNull()?.let { candidate ->
+            SubstituteAppsDialog(
+                candidate = candidate,
+                onSubstitute = { substitute ->
+                    viewModel.substituteApp(candidate.missingApp, substitute)
+                },
+                onIgnore = {
+                    viewModel.ignoreSubstituteCandidate(candidate)
+                },
+                onDismiss = {
+                    viewModel.ignoreSubstituteCandidate(candidate)
+                }
             )
         }
     }

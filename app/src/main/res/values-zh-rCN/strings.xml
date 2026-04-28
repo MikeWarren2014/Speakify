@@ -171,6 +171,13 @@
     <string name="add_app">添加应用</string>
     <string name="delete_apps">删除应用 (%1$d)</string>
 
+    <!-- Substitute Apps Dialog -->
+    <string name="substitute_missing_app">替换缺失的应用？</string>
+    <string name="app_is_not_installed">看起来此设备上未安装 %1$s。您想改用其中之一吗？</string>
+    <string name="confirm_substitute">替换</string>
+    <string name="dont_ask_again">不再询问</string>
+    <string name="later">稍后</string>
+
     <!-- App Settings Dialog -->
     <string name="app_settings_title">%1$s 设置</string>
     <string name="announcer_voice">播报语音</string>

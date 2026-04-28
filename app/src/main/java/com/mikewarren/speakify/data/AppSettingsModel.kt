@@ -37,12 +37,12 @@ data class AppSettingsModel(
 
     companion object {
         fun FromDbModel(dbModel: AppSettingsWithNotificationSources?): AppSettingsModel? {
-            if (dbModel == null)
+            if (dbModel == null || dbModel.userApp == null)
                 return null
 
             return AppSettingsModel(
                 id = dbModel.appSettings.id!!,
-                packageName = dbModel.appSettings.packageName,
+                packageName = dbModel.userApp.packageName,
                 announcerVoice = dbModel.appSettings.announcerVoice,
                 notificationSources = dbModel.notificationSources.map { NotificationSource(it.value, it.name) },
                 additionalSettings = dbModel.appSettings.additionalSettings
