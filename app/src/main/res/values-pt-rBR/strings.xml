@@ -170,6 +170,13 @@
     <string name="add_app">Adicionar App</string>
     <string name="delete_apps">Excluir Apps (%1$d)</string>
 
+    <!-- Substitute Apps Dialog -->
+    <string name="substitute_missing_app">Substituir aplicativo ausente?</string>
+    <string name="app_is_not_installed">Parece que %1$s não está instalado neste dispositivo. Gostaria de usar um destes em vez disso?</string>
+    <string name="confirm_substitute">Substituir</string>
+    <string name="dont_ask_again">Não perguntar novamente</string>
+    <string name="later">Mais tarde</string>
+
     <!-- App Settings Dialog -->
     <string name="app_settings_title">Configurações de %1$s</string>
     <string name="announcer_voice">Voz do Locutor</string>

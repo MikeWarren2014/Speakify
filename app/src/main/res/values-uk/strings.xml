@@ -170,6 +170,13 @@
     <string name="add_app">Додати програму</string>
     <string name="delete_apps">Видалити програми (%1$d)</string>
 
+    <!-- Substitute Apps Dialog -->
+    <string name="substitute_missing_app">Замінити відсутній додаток?</string>
+    <string name="app_is_not_installed">Схоже, що %1$s не встановлено на цьому пристрої. Бажаєте використовувати один з цих замість нього?</string>
+    <string name="confirm_substitute">Замінити</string>
+    <string name="dont_ask_again">Більше не запитувати</string>
+    <string name="later">Пізніше</string>
+
     <!-- App Settings Dialog -->
     <string name="app_settings_title">Налаштування %1$s</string>
     <string name="announcer_voice">Голос диктора</string>

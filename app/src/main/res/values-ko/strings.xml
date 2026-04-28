@@ -170,6 +170,13 @@
     <string name="add_app">앱 추가</string>
     <string name="delete_apps">앱 삭제 (%1$d)</string>
 
+    <!-- Substitute Apps Dialog -->
+    <string name="substitute_missing_app">누락된 앱을 대체하시겠습니까?</string>
+    <string name="app_is_not_installed">%1$s이(가) 이 기기에 설치되어 있지 않은 것 같습니다. 대신 이 중 하나를 사용하시겠습니까?</string>
+    <string name="confirm_substitute">대체</string>
+    <string name="dont_ask_again">다시 묻지 않음</string>
+    <string name="later">나중에</string>
+
     <!-- App Settings Dialog -->
     <string name="app_settings_title">%1$s 설정</string>
     <string name="announcer_voice">안내 음성</string>

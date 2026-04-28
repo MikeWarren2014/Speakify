@@ -19,8 +19,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+data class SubstituteAppCandidate(
+    val missingApp: UserAppModel,
+    val substitutes: List<UserAppModel>
+)
 
 @HiltViewModel
 class ImportantAppsViewModel @Inject constructor(
@@ -41,6 +47,50 @@ class ImportantAppsViewModel @Inject constructor(
     val isLoading: StateFlow<Boolean> = packageListDataSource.isLoading
 
     var childAddAppMenuViewModel: AddAppMenuViewModel? = null
+
+    private val _ignoredSubstitutePackages = MutableStateFlow<Set<String>>(emptySet())
+
+    val substituteCandidates: StateFlow<List<SubstituteAppCandidate>> = combine(
+        repository.importantApps,
+        _allAppsFlow,
+        _ignoredSubstitutePackages
+    ) { importantApps, allInstalledApps, ignoredPackages ->
+        val installedPackageNames = allInstalledApps.map { it.packageName }.toSet()
+        val importantPackageNames = importantApps.map { it.packageName }.toSet()
+
+        val candidates = mutableListOf<SubstituteAppCandidate>()
+
+        importantApps.filter { it.packageName !in installedPackageNames && it.packageName !in ignoredPackages }
+            .forEach { missingApp ->
+                val substitutePackageNames = when {
+                    PackageNames.PhoneAppList.contains(missingApp.packageName) -> PackageNames.PhoneAppList
+                    PackageNames.MessagingAppList.contains(missingApp.packageName) -> PackageNames.MessagingAppList
+                    else -> null
+                }
+
+                if (substitutePackageNames != null) {
+                    val availableSubstitutes = allInstalledApps
+                        .filter { it.packageName in substitutePackageNames && it.packageName !in importantPackageNames }
+                        .map { appInfo ->
+                            UserAppModel(
+                                appName = AppNameHelper(settingsRepository.getContext())
+                                    .getAppDisplayName(appInfo),
+                                packageName = appInfo.packageName,
+                                enabled = true
+                            )
+                        }
+
+                    if (availableSubstitutes.isNotEmpty()) {
+                        candidates.add(SubstituteAppCandidate(missingApp, availableSubstitutes))
+                    }
+                }
+            }
+        candidates
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
 
     init {
         onInit()
@@ -149,6 +199,16 @@ class ImportantAppsViewModel @Inject constructor(
             // Reset selection count after deletion
             _selectedCount.value = 0
         }
+    }
+
+    fun substituteApp(missingApp: UserAppModel, substitute: UserAppModel) {
+        viewModelScope.launch {
+            repository.substituteImportantApp(missingApp, substitute)
+        }
+    }
+
+    fun ignoreSubstituteCandidate(candidate: SubstituteAppCandidate) {
+        _ignoredSubstitutePackages.update { it + candidate.missingApp.packageName }
     }
 
 }
