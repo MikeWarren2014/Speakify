@@ -72,9 +72,9 @@ abstract class BaseAutoCompletableNotificationSourceListViewModel<T>(
     }
 
     fun addNotificationSource(selection: String) {
-        val sourceModel = allAddableSourceModels.value.find { toViewString(it) == selection }
-        if (sourceModel == null)
-            throw IllegalStateException("Notification source $selection not found")
+        val sourceModel = allData.value.find { toViewString(it) == selection } ?: return
+
+        searchText = ""
 
         viewModelScope.launch {
             addNotificationSource(toNotificationSource(sourceModel))
@@ -85,10 +85,8 @@ abstract class BaseAutoCompletableNotificationSourceListViewModel<T>(
 
     // TODO: need to come up with more intuitive name for this method
     fun onRemoveAddableSource(sourceModel: T) {
-        viewModelScope.launch {
-            val updatedSources = _allAddableSourceModels.value - sourceModel
-            _allAddableSourceModels.value = updatedSources
-        }
+        val updatedSources = _allAddableSourceModels.value - sourceModel
+        _allAddableSourceModels.value = updatedSources
     }
 
     override fun removeNotificationSource(sourceModel: T) {
@@ -98,10 +96,8 @@ abstract class BaseAutoCompletableNotificationSourceListViewModel<T>(
 
     // TODO: need to come up with more intuitive names for this method
     fun onAddAddableSource(sourceModel: T) {
-        viewModelScope.launch {
-            val updatedSources = _allAddableSourceModels.value + sourceModel
-            _allAddableSourceModels.value = updatedSources
-        }
+        val updatedSources = _allAddableSourceModels.value + sourceModel
+        _allAddableSourceModels.value = updatedSources
     }
 
     override fun cancel() {
