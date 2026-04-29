@@ -407,6 +407,7 @@
     <!-- App Usage Insight (VIA) -->
     <string name="via_header">Very Important Apps (VIA)</string>
     <string name="via_description">What are the **most** important apps to you?</string>
+    <string name="contacts_usage_disclosure">Speakify uses your contacts to identify callers and message senders so it can announce their names to you. This data is processed locally on your device and is not shared.</string>
 
     <!-- Conversion Ready -->
     <string name="conversion_ready_header">Ready to unlock the full experience?</string>

@@ -409,6 +409,7 @@
     <string name="conversion_ready_button_sign_up">立即注册</string>
     <string name="conversion_ready_button_continue">继续试用</string>
 
+    <string name="contacts_usage_disclosure">Speakify 使用您的联系人来识别来电者和短信发送者，以便向您播报他们的姓名。此类数据在您的设备上进行本地处理，不会被分享。</string>
 </resources>
 
 

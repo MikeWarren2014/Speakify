@@ -1,7 +1,7 @@
-Novidades na v1.1.2:
-- Suporte total para 12 idiomas.
-- Smart Audio Focus: Abaixa apps em segundo plano como Spotify.
-- Volume Forçado: Notificações audíveis mesmo com música.
-- Novo Onboarding: Configuração guiada e metas.
-- Teste Melhorado: Criação de conta simples para salvar progresso.
-- Correções críticas e melhorias de estabilidade.
+- Corrigido erro de restauração de volume em novos dispositivos.
+- Mudança para o Google Contact Picker; permissão de contatos não é mais necessária.
+- Corrigido travamento ao apertar Enter nas fontes de notificação.
+- Adicionadas "Apps Substitutos" para apps importantes órfãos.
+- Corrigido problema de volume máximo fixo.
+- Corrigidos problemas nas configurações de apps de mensagens.
+- Tela de permissões de notificação adicionada para controle gradual.

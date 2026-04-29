@@ -1,7 +1,7 @@
-What's New in v1.1.2:
-- Full support for 12 languages.
-- Smart Audio Focus: Reliably "ducks" background apps like Spotify.
-- Forced Volume: Ensures notifications are heard even during music.
-- New Onboarding: Guided setup and goal tracking.
-- Improved Trial: Seamless account creation to save your progress.
-- Critical bug fixes and stability improvements.
+- Fixed volume restoration bug on new devices.
+- Switched to Google Contact Picker; contact permission no longer required.
+- Fixed crash when pressing enter in notification sources.
+- Added "Substitute Apps" for orphaned important apps.
+- Fixed hard-coded max volume issue.
+- Fixed message app settings issues.
+- Added Notification Permissions screen for gradual permission granting.

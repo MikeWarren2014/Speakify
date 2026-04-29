@@ -407,6 +407,7 @@
     <string name="conversion_ready_description">Создайте аккаунт, чтобы синхронизировать настройки между устройствами и сохранить свой пробный прогресс навсегда.</string>
     <string name="conversion_ready_button_sign_up">Зарегистрироваться сейчас</string>
     <string name="conversion_ready_button_continue">Продолжить пробный период</string>
+    <string name="contacts_usage_disclosure">Speakify использует ваши контакты для идентификации звонящих и отправителей сообщений, чтобы объявлять их имена. Эти данные обрабатываются локально на вашем устройстве и не передаются сторонним лицам.</string>
 </resources>
 
 

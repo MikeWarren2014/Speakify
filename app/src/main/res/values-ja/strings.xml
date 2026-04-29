@@ -406,6 +406,7 @@
     <string name="conversion_ready_description">アカウントを作成すると、デバイス間で設定を同期し、トライアルの進行状況を永久に保存できます。</string>
     <string name="conversion_ready_button_sign_up">今すぐサインアップ</string>
     <string name="conversion_ready_button_continue">トライアルを続ける</string>
+    <string name="contacts_usage_disclosure">Speakifyは、発信者やメッセージの送信者を特定し、その名前を読み上げるために連絡先を使用します。このデータはデバイス上でローカルに処理され、共有されることはありません。</string>
 </resources>
 
 

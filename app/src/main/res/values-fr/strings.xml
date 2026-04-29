@@ -408,6 +408,7 @@
     <string name="conversion_ready_description">Créez un compte pour synchroniser vos paramètres sur tous vos appareils et conserver votre progression d\'essai pour toujours.</string>
     <string name="conversion_ready_button_sign_up">S\'inscrire maintenant</string>
     <string name="conversion_ready_button_continue">Continuer avec l\'essai</string>
+    <string name="contacts_usage_disclosure">Speakify utilise vos contacts pour identifier les appelants et les expéditeurs de messages afin de pouvoir annoncer leurs noms. Ces données sont traitées localement sur votre appareil et ne sont pas partagées.</string>
 </resources>
 
 

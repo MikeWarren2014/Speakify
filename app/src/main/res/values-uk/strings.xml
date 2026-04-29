@@ -410,6 +410,7 @@
     <string name="conversion_ready_button_sign_up">Зареєструватися зараз</string>
     <string name="conversion_ready_button_continue">Продовжити пробний період</string>
 
+    <string name="contacts_usage_disclosure">Speakify використовує ваші контакти для ідентифікації тих, хто телефонує, та відправників повідомлень, щоб оголошувати їхні імена. Ці дані обробляються локально на вашому пристрої та не передаються іншим особам.</string>
 </resources>
 
 

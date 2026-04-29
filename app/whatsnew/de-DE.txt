@@ -1,7 +1,7 @@
-Neu in v1.1.2:
-- Volle Unterstützung für 12 Sprachen.
-- Smart Audio Focus: Senkt Spotify & Co. zuverlässig ab.
-- Lautstärke-Erzwingung: Benachrichtigungen trotz Musik hörbar.
-- Neues Onboarding: Geführte Einrichtung und Zielverfolgung.
-- Verbesserter Testzeitraum: Einfache Kontoerstellung zum Speichern.
-- Kritische Fehlerbehebungen und Stabilitätsverbesserungen.
+- Fehler bei der Lautstärkewiederherstellung auf neuen Geräten behoben.
+- Auf Google Contact Picker umgestellt; Kontaktberechtigung nicht mehr erforderlich.
+- Absturz beim Drücken der Eingabetaste in Benachrichtigungsquellen behoben.
+- Funktion "Ersatz-Apps" für verwaiste wichtige Apps hinzugefügt.
+- Problem mit fest codierter maximaler Lautstärke behoben.
+- Probleme mit Einstellungen für Nachrichten-Apps behoben.
+- Bildschirm für Benachrichtigungsberechtigungen zur schrittweisen Erteilung hinzugefügt.
