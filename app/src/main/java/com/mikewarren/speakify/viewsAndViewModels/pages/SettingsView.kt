@@ -121,6 +121,7 @@ fun SettingsView(onNavigateToDeleteAccount: () -> Unit) {
                     title = stringResource(R.string.settings_min_volume_title),
                     description = stringResource(R.string.settings_min_volume_description),
                     currentValue = minVolume,
+                    maxVolume = viewModel.maxVolume,
                     onValueChange = { viewModel.setMinVolume(it) }
                 )
                 SettingsToggleCard(
@@ -257,9 +258,9 @@ fun MinVolumeSettingCard(
     title: String,
     description: String,
     currentValue: Int,
+    maxVolume: Int,
     onValueChange: (Int) -> Unit
 ) {
-
     SingleColumnSettingsItemCard(title,
         description,
         {
@@ -269,11 +270,13 @@ fun MinVolumeSettingCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                val valueRange = 0f..maxVolume.toFloat()
+
                 Slider(
                     value = currentValue.toFloat(),
                     onValueChange = { onValueChange(it.roundToInt()) },
-                    valueRange = 0f..15f, // Standard Android media volume range is 0-15
-                    steps = 14, // 14 steps create 15 distinct values (0 to 15)
+                    valueRange = valueRange,
+                    steps = (valueRange.endInclusive - valueRange.start - 1).toInt(),
                     modifier = Modifier.weight(1f)
                 )
                 Text(
