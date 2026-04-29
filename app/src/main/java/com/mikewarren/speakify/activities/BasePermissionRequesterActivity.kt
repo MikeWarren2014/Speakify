@@ -23,7 +23,9 @@ abstract class BasePermissionRequesterActivity<Event>(
 
     }
 
-    abstract fun doDisplay()
+    open fun doDisplay() {
+
+    }
 
     protected fun requestPermissions() {
         val ungrantedPermissions = getUngrantedPermissions().toTypedArray()
