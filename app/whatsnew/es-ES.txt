@@ -1,6 +1,7 @@
-- Las notificaciones de eventos ahora anuncian el tiempo hasta el inicio.
-- Se corrigió el error en la configuración para ignorar reacciones de Facebook Messenger.
-- Se mejoró la selección de aplicaciones en el inicio.
-- Se corrigió un error de cierre y se renovaron las solicitudes de permisos.
-- Se detuvieron los anuncios al enviar fotos en Messenger.
-- Se corrigieron errores en los informes analíticos.
+- Se corrigió el error de restauración de volumen en dispositivos nuevos.
+- Cambiado a Google Contact Picker; ya no se requiere permiso de contactos.
+- Se corrigió el bloqueo al presionar Enter en fuentes de notificación.
+- Se agregaron "Aplicaciones Sustitutas" para aplicaciones importantes huérfanas.
+- Se corrigió el problema del volumen máximo codificado.
+- Se corrigieron problemas en la configuración de apps de mensajería.
+- Nueva pantalla de permisos de notificación para un control gradual.

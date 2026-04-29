@@ -1,6 +1,7 @@
-- Ereignisbenachrichtigungen kündigen jetzt die Zeit bis zum Beginn an.
-- Fehler bei der Ignorieren-Einstellung für Facebook Messenger-Reaktionen behoben.
-- Onboarding-App-Auswahl verbessert.
-- Absturz behoben und Berechtigungsanfragen überarbeitet.
-- Keine Ansagen mehr beim Senden von Fotos im Messenger.
-- Analytics-Fehler behoben.
+- Fehler bei der Lautstärkewiederherstellung auf neuen Geräten behoben.
+- Auf Google Contact Picker umgestellt; Kontaktberechtigung nicht mehr erforderlich.
+- Absturz beim Drücken der Eingabetaste in Benachrichtigungsquellen behoben.
+- Funktion "Ersatz-Apps" für verwaiste wichtige Apps hinzugefügt.
+- Problem mit fest codierter maximaler Lautstärke behoben.
+- Probleme mit Einstellungen für Nachrichten-Apps behoben.
+- Bildschirm für Benachrichtigungsberechtigungen zur schrittweisen Erteilung hinzugefügt.

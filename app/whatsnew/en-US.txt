@@ -1,6 +1,7 @@
-- Event notifications now announce time until start.
-- Added disclosure regarding contact data usage for personalized announcements.
-- Fixed Facebook Messenger reactions ignore setting.
-- Improved onboarding app selection and analytics reporting.
-- Fixed a crash and revamped permission requests.
-- Stopped announcements when sending photos in Messenger.
+- Fixed volume restoration bug on new devices.
+- Switched to Google Contact Picker; contact permission no longer required.
+- Fixed crash when pressing enter in notification sources.
+- Added "Substitute Apps" for orphaned important apps.
+- Fixed hard-coded max volume issue.
+- Fixed message app settings issues.
+- Added Notification Permissions screen for gradual permission granting.
