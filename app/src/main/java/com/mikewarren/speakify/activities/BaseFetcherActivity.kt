@@ -27,7 +27,6 @@ abstract class BaseFetcherActivity<Model, Event> (
     }
 
     override fun doDisplay() {
-        super.doDisplay()
         setContent {
             MyApplicationTheme {
                 // A surface container using the 'background' color from the theme

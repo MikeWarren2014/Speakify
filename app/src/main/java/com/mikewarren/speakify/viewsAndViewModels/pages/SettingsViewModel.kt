@@ -11,6 +11,7 @@ import com.mikewarren.speakify.data.SessionRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.TrialRepository
 import com.mikewarren.speakify.data.TrialStatus
+import com.mikewarren.speakify.services.SpeakifyAudioManager
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.TrialActiveViewModel
@@ -34,6 +35,7 @@ class SettingsViewModel @Inject constructor(
     private val backupRepository: BackupRepository,
     sessionRepository: SessionRepository,
     trialRepository: TrialRepository,
+    speakifyAudioManager: SpeakifyAudioManager,
 ) : BaseTTSAutoCompletableViewModel(settingsRepository, ttsManager) {
 
     val childMainVM = MainViewModel(sessionRepository)
@@ -72,7 +74,7 @@ class SettingsViewModel @Inject constructor(
             initialValue = false // Default to false
         )
 
-
+    val maxVolume = speakifyAudioManager.maxVolume
 
     sealed class UiEvent {
         data class ShowSnackbar(val messageText: UiText) : UiEvent()

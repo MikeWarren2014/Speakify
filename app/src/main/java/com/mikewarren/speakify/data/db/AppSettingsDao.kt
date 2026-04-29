@@ -24,7 +24,11 @@ interface AppSettingsDao {
     suspend fun getAllRaw(): List<AppSettingsDbModel>
 
     @Transaction
-    @Query("SELECT * FROM app_settings WHERE package_name = :packageName")
+    @Query("""
+        SELECT app_settings.* FROM app_settings 
+        INNER JOIN important_apps ON app_settings.ua_id = important_apps.ua_id 
+        WHERE important_apps.package_name = :packageName
+    """)
     suspend fun getByPackageName(packageName: String): AppSettingsWithNotificationSources?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -38,7 +42,10 @@ interface AppSettingsDao {
 
 
     @Transaction
-    @Query("DELETE FROM app_settings WHERE package_name = :packageName")
+    @Query("""
+        DELETE FROM app_settings 
+        WHERE ua_id IN (SELECT ua_id FROM important_apps WHERE package_name = :packageName)
+    """)
     suspend fun deleteAppSettingsByPackageName(packageName: String)
 
 

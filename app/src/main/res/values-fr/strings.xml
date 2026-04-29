@@ -170,6 +170,13 @@
     <string name="add_app">Ajouter une application</string>
     <string name="delete_apps">Supprimer les applications (%1$d)</string>
 
+    <!-- Substitute Apps Dialog -->
+    <string name="substitute_missing_app">Remplacer l\'application manquante ?</string>
+    <string name="app_is_not_installed">Il semble que %1$s n\'est pas installée sur cet appareil. Souhaitez-vous en utiliser une à la place ?</string>
+    <string name="confirm_substitute">Remplacer</string>
+    <string name="dont_ask_again">Ne plus demander</string>
+    <string name="later">Plus tard</string>
+
     <!-- App Settings Dialog -->
     <string name="app_settings_title">Paramètres de %1$s</string>
     <string name="announcer_voice">Voix de l\'annonceur</string>
@@ -294,12 +301,13 @@
     <string name="permissions_required_message">L\'autorisation de notifier est requise pour fonctionner en arrière-plan.</string>
     <string name="ok">OK</string>
 
+    <string name="pick_contact">Choisir parmi les contacts</string>
+
     <!-- AutoComplete widgets -->
     <string name="search_for_entities">Rechercher %1$s</string>
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">Sources de notification à ajouter</string>
-    <string name="autocomplete_label_contact_name_phone_number">Nom du contact / Numéro de téléphone à ajouter</string>
     <string name="autocomplete_label_contact_name">Nom du contact à ajouter</string>
     <string name="autocomplete_no_choices_available_yet">Pas encore de %1s disponible.</string>
     <string name="autocomplete_label_tts">Voix TTS</string>

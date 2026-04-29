@@ -170,6 +170,13 @@
     <string name="add_app">Добавить приложение</string>
     <string name="delete_apps">Удалить приложения (%1$d)</string>
 
+    <!-- Substitute Apps Dialog -->
+    <string name="substitute_missing_app">Заменить отсутствующее приложение?</string>
+    <string name="app_is_not_installed">Похоже, что %1$s не установлено на этом устройстве. Хотите использовать одно из этих приложений вместо него?</string>
+    <string name="confirm_substitute">Заменить</string>
+    <string name="dont_ask_again">Больше не спрашивать</string>
+    <string name="later">Позже</string>
+
     <!-- App Settings Dialog -->
     <string name="app_settings_title">Настройки %1$s</string>
     <string name="announcer_voice">Голос диктора</string>
@@ -294,12 +301,13 @@
     <string name="permissions_required_message">Speakify требуется разрешение на публикацию уведомлений для работы в фоновом режиме. Пожалуйста, предоставьте это разрешение.</string>
     <string name="ok">ОК</string>
 
+    <string name="pick_contact">Выбрать из контактов</string>
+
     <!-- AutoComplete widgets -->
     <string name="search_for_entities">Поиск %1$s</string>
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">Источники уведомлений для добавления</string>
-    <string name="autocomplete_label_contact_name_phone_number">Имя и номер телефона контакта для добавления</string>
     <string name="autocomplete_label_contact_name">Имя контакта для добавления</string>
     <string name="autocomplete_no_choices_available_yet">Источников %1s пока нет.</string>
     <string name="autocomplete_label_tts">Голос TTS</string>

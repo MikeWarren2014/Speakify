@@ -19,11 +19,12 @@ class SpeakifyAudioManager @Inject constructor(
     private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     private var focusRequest: AudioFocusRequest? = null
 
+    val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+
     /**
      * Maximizes the music stream volume after saving the current volume.
      */
     suspend fun maximizeVolume() {
-        val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         setVolume(maxVolume, force = true)
         Log.d("SpeakifyAudioManager", "Set music volume to max: $maxVolume")
     }
@@ -39,8 +40,8 @@ class SpeakifyAudioManager @Inject constructor(
         }
 
         val originalVolume = settingsRepository.originalVolume.first()
-        if (originalVolume == -1) {
-            val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        if ((originalVolume == -1) || (originalVolume != currentVolume)) {
             settingsRepository.setOriginalVolume(currentVolume)
             Log.d("SpeakifyAudioManager", "Saved original music volume: $currentVolume")
         }
@@ -92,7 +93,8 @@ class SpeakifyAudioManager @Inject constructor(
      */
     suspend fun restoreVolume() {
         val originalVolume = settingsRepository.originalVolume.first()
-        if (originalVolume != -1) {
+        val currentVolume = getVolume()
+        if (originalVolume != -1 && currentVolume < originalVolume) {
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, originalVolume, 0)
             Log.d("SpeakifyAudioManager", "Restored music volume to: $originalVolume")
         }

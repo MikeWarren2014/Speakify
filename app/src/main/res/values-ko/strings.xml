@@ -170,6 +170,13 @@
     <string name="add_app">앱 추가</string>
     <string name="delete_apps">앱 삭제 (%1$d)</string>
 
+    <!-- Substitute Apps Dialog -->
+    <string name="substitute_missing_app">누락된 앱을 대체하시겠습니까?</string>
+    <string name="app_is_not_installed">%1$s이(가) 이 기기에 설치되어 있지 않은 것 같습니다. 대신 이 중 하나를 사용하시겠습니까?</string>
+    <string name="confirm_substitute">대체</string>
+    <string name="dont_ask_again">다시 묻지 않음</string>
+    <string name="later">나중에</string>
+
     <!-- App Settings Dialog -->
     <string name="app_settings_title">%1$s 설정</string>
     <string name="announcer_voice">안내 음성</string>
@@ -294,12 +301,13 @@
     <string name="permissions_required_message">백그라운드에서 실행되려면 알림을 게시할 수 있는 권한이 필요합니다. 이 권한을 허용해 주세요.</string>
     <string name="ok">확인</string>
 
+    <string name="pick_contact">연락처에서 선택</string>
+
     <!-- AutoComplete widgets -->
     <string name="search_for_entities">%1$s 검색</string>
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">추가할 알림 소스</string>
-    <string name="autocomplete_label_contact_name_phone_number">추가할 연락처 이름/전화번호</string>
     <string name="autocomplete_label_contact_name">추가할 연락처 이름</string>
     <string name="autocomplete_no_choices_available_yet">아직 %1s이(가) 없습니다.</string>
     <string name="autocomplete_label_tts">TTS 음성</string>

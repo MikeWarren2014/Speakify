@@ -43,7 +43,6 @@ fun <T>AutoCompletableView(
     onGetDefaultValues: (BaseAutoCompletableViewModel<T>) -> List<T>,
     onHandleSelection: (BaseAutoCompletableViewModel<T>, String) -> Any,
     onGetAnnotatedString: @Composable (T) -> AnnotatedString,
-    onCheckSearchValue: (String, List<T>) -> Boolean,
     itemLineHeight: TextUnit = TextUnit.Unspecified,
     supportingText: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -71,7 +70,7 @@ fun <T>AutoCompletableView(
             onValueChange = { text: String ->
                 viewModel.setAutocompleteDropdownState(true)
                 viewModel.onSearchTextChanged(text, { newValue:String ->
-                    if ((filteredChoices.size == 1) && (onCheckSearchValue(newValue, filteredChoices))) {
+                    if ((filteredChoices.size == 1) && (filteredChoices.any { viewModel.toSourceString(it) == newValue })) {
                         onHandleSelection(viewModel, newValue)
                     }
                 })

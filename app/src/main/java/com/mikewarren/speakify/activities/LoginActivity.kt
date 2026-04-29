@@ -38,8 +38,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class LoginActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
 
         val viewModel: MainViewModel by viewModels()
 

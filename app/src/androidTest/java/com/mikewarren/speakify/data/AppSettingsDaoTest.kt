@@ -51,52 +51,68 @@ class AppSettingsDaoTest {
         db.close()
     }
 
+    private suspend fun insertTestApp(): Long {
+        val userApp = UserAppModel(packageName = PhoneAppPackageName, appName = "Phone")
+        userAppDao.insert(userApp)
+        return userAppDao.getByPackageName(PhoneAppPackageName)!!.id!!
+    }
+
     @Test
     @Throws(Exception::class)
     fun testInsertUpdatesId() = runTest {
+        val uaId = insertTestApp()
         val appSettingsDbModel = AppSettingsDbModel(
             id = null,
-            packageName = PhoneAppPackageName,
+            userAppId = uaId,
             announcerVoice = "en-US-language-male",
         )
         val appSettingsId = appSettingsDao.insert(appSettingsDbModel)
-        assertNotEquals(0,appSettingsId)
+        assertNotEquals(0, appSettingsId)
         assertNotNull(appSettingsId)
-
     }
 
     @Test
     @Throws(Exception::class)
     fun testInsertAlreadyExisting() = runTest {
+        val uaId = insertTestApp()
         val appSettingsDbModel = AppSettingsDbModel(
             id = null,
-            packageName = PhoneAppPackageName,
+            userAppId = uaId,
             announcerVoice = "en-US-language-male",
         )
         appSettingsDao.insert(appSettingsDbModel)
         appSettingsDao.insert(appSettingsDbModel)
 
         assert(appSettingsDao.getAll().size == 1)
-
         assertEquals(1L, appSettingsDao.getAll().first().appSettings.id)
-
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetByPackageName() = runTest {
+        val uaId = insertTestApp()
+        val appSettingsDbModel = AppSettingsDbModel(
+            id = null,
+            userAppId = uaId,
+            announcerVoice = "en-US-language-male",
+        )
+        val asId = appSettingsDao.insert(appSettingsDbModel)
+
         notificationSourcesDao.insertAll(listOf(
             NotificationSourceModel(
                 id = null,
-                appSettingsId = 1,
+                appSettingsId = asId,
                 value = "test",
-                ),
+            ),
             NotificationSourceModel(
                 id = null,
-                appSettingsId = 1,
+                appSettingsId = asId,
                 value = "test2",
             ),
         ))
 
+        val result = appSettingsDao.getByPackageName(PhoneAppPackageName)
+        assertNotNull(result)
+        assertEquals(2, result?.notificationSources?.size)
     }
 }

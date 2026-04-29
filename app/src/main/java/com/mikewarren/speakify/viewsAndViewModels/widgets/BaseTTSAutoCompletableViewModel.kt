@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 abstract class BaseTTSAutoCompletableViewModel(
     protected open val settingsRepository: SettingsRepository,
     val ttsManager: TTSManager,
-) : BaseModelAutoCompletableViewModel<VoiceInfoModel>() {
+) : BaseAutoCompletableViewModel<VoiceInfoModel>() {
 
     protected val choicesMap: Map<String, VoiceInfoModel> by lazy {
         getAllChoices().associateBy { toSourceString(it) }

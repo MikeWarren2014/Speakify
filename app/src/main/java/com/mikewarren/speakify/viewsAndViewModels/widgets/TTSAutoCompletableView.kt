@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.sp
 fun TTSAutoCompletableView(viewModel: BaseTTSAutoCompletableViewModel,
                            onHandleSelection: (BaseTTSAutoCompletableViewModel, String) -> Any) {
 
-    ModelAutoCompletableView(
+    AutoCompletableView(
         viewModel,
         onGetDefaultValues = { viewModel ->
             (viewModel as BaseTTSAutoCompletableViewModel).ttsManager

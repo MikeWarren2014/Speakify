@@ -170,6 +170,13 @@
     <string name="add_app">アプリを追加</string>
     <string name="delete_apps">アプリを削除 (%1$d)</string>
 
+    <!-- Substitute Apps Dialog -->
+    <string name="substitute_missing_app">不足しているアプリを置き換えますか？</string>
+    <string name="app_is_not_installed">%1$s がこのデバイスにインストールされていないようです。代わりにこれらの一つを使用しますか？</string>
+    <string name="confirm_substitute">置き換える</string>
+    <string name="dont_ask_again">再表示しない</string>
+    <string name="later">後で</string>
+
     <!-- App Settings Dialog -->
     <string name="app_settings_title">%1$s の設定</string>
     <string name="announcer_voice">読み上げ音声</string>
@@ -294,12 +301,13 @@
     <string name="permissions_required_message">バックグラウンドで動作し通知を表示するには、通知の送信権限が必要です。この権限を許可してください。</string>
     <string name="ok">OK</string>
 
+    <string name="pick_contact">連絡先から選択</string>
+
     <!-- AutoComplete widgets -->
     <string name="search_for_entities">%1$s を検索</string>
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">追加する通知ソース</string>
-    <string name="autocomplete_label_contact_name_phone_number">追加する連絡先名／電話番号</string>
     <string name="autocomplete_label_contact_name">追加する連絡先名</string>
     <string name="autocomplete_no_choices_available_yet">%1s はまだありません。</string>
     <string name="autocomplete_label_tts">TTS 音声</string>

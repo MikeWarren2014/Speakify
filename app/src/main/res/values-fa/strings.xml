@@ -171,6 +171,13 @@
     <string name="add_app">افزودن برنامه</string>
     <string name="delete_apps">حذف برنامه‌ها (%1$d)</string>
 
+    <!-- Substitute Apps Dialog -->
+    <string name="substitute_missing_app">جایگزینی برنامه مفقود؟</string>
+    <string name="app_is_not_installed">به نظر می‌رسد %1$s روی این دستگاه نصب نیست. آیا می‌خواهید به جای آن از یکی از این‌ها استفاده کنید؟</string>
+    <string name="confirm_substitute">جایگزین کردن</string>
+    <string name="dont_ask_again">دوباره نپرس</string>
+    <string name="later">بعداً</string>
+
     <!-- App Settings Dialog -->
     <string name="app_settings_title">تنظیمات %1$s</string>
     <string name="announcer_voice">صدای گوینده</string>
@@ -295,12 +302,13 @@
     <string name="post_notifications">Speakify برای اعلام پیام‌ها و رویدادهای تقویم شما با صدای بلند، به مجوز ارسال اعلان نیاز دارد. این کار همچنین به فعال نگه داشتن برنامه در پس‌زمینه کمک می‌کند.</string>
     <string name="ok">تایید</string>
 
+    <string name="pick_contact">انتخاب از مخاطبین</string>
+
     <!-- AutoComplete widgets -->
     <string name="search_for_entities">جستجو برای %1$s</string>
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">منابع اعلان برای افزودن</string>
-    <string name="autocomplete_label_contact_name_phone_number">نام/شماره تلفن برای اضافه کردن</string>
     <string name="autocomplete_label_contact_name">نام مخاطب برای اضافه کردن</string>
     <string name="autocomplete_no_choices_available_yet">هنوز %1s موجود نیست.</string>
     <string name="autocomplete_label_tts">صدای TTS</string>

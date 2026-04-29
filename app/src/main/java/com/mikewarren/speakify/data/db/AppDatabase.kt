@@ -12,7 +12,7 @@ import androidx.room.TypeConverters
         NotificationSourceModel::class,
         RecentMessengerContactModel::class
     ],
-    version = 5,
+    version = 7,
     autoMigrations = [
         AutoMigration(from = 2, to = 3),
         AutoMigration(from = 3, to = 4),
@@ -22,6 +22,7 @@ import androidx.room.TypeConverters
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
+
     abstract fun userAppsDao(): UserAppsDao
     abstract fun notificationSourcesDao(): NotificationSourcesDao
     abstract fun appSettingsDao(): AppSettingsDao

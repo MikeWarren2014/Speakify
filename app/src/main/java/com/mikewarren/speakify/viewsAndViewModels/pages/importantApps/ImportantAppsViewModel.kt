@@ -7,8 +7,6 @@ import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.UserAppModel
-import com.mikewarren.speakify.data.events.ContactListDataRequester
-import com.mikewarren.speakify.data.events.MessengerContactListDataRequester
 import com.mikewarren.speakify.data.events.PackageListDataRequester
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.AppNameHelper
@@ -19,11 +17,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+data class SubstituteAppCandidate(
+    val missingApp: UserAppModel,
+    val substitutes: List<UserAppModel>
+)
 
 @HiltViewModel
 class ImportantAppsViewModel @Inject constructor(
@@ -45,14 +48,56 @@ class ImportantAppsViewModel @Inject constructor(
 
     var childAddAppMenuViewModel: AddAppMenuViewModel? = null
 
+    private val _ignoredSubstitutePackages = MutableStateFlow<Set<String>>(emptySet())
+
+    val substituteCandidates: StateFlow<List<SubstituteAppCandidate>> = combine(
+        repository.importantApps,
+        _allAppsFlow,
+        _ignoredSubstitutePackages
+    ) { importantApps, allInstalledApps, ignoredPackages ->
+        val installedPackageNames = allInstalledApps.map { it.packageName }.toSet()
+        val importantPackageNames = importantApps.map { it.packageName }.toSet()
+
+        val candidates = mutableListOf<SubstituteAppCandidate>()
+
+        importantApps.filter { it.packageName !in installedPackageNames && it.packageName !in ignoredPackages }
+            .forEach { missingApp ->
+                val substitutePackageNames = when {
+                    PackageNames.PhoneAppList.contains(missingApp.packageName) -> PackageNames.PhoneAppList
+                    PackageNames.MessagingAppList.contains(missingApp.packageName) -> PackageNames.MessagingAppList
+                    else -> null
+                }
+
+                if (substitutePackageNames != null) {
+                    val availableSubstitutes = allInstalledApps
+                        .filter { it.packageName in substitutePackageNames && it.packageName !in importantPackageNames }
+                        .map { appInfo ->
+                            UserAppModel(
+                                appName = AppNameHelper(settingsRepository.getContext())
+                                    .getAppDisplayName(appInfo),
+                                packageName = appInfo.packageName,
+                                enabled = true
+                            )
+                        }
+
+                    if (availableSubstitutes.isNotEmpty()) {
+                        candidates.add(SubstituteAppCandidate(missingApp, availableSubstitutes))
+                    }
+                }
+            }
+        candidates
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+
     init {
         onInit()
     }
 
     override fun onInit() {
         super.onInit()
-
-        syncNotificationSourceNames()
 
         childAddAppMenuViewModel = AddAppMenuViewModel(repository,
             combine(_allAppsFlow, repository.importantApps) { allApps, importantApps ->
@@ -144,70 +189,6 @@ class ImportantAppsViewModel @Inject constructor(
         }
     }
 
-    private fun syncNotificationSourceNames() {
-        viewModelScope.launch {
-            val contactRequester = ContactListDataRequester.GetInstance(settingsRepository.getContext())
-            val messengerRequester = MessengerContactListDataRequester.GetInstance(settingsRepository.getContext())
-
-            combine(
-                settingsRepository.appSettings,
-                contactRequester.observeData(),
-                messengerRequester.observeData()
-            ) { appSettingsMap, contacts, messengerContacts ->
-                Triple(appSettingsMap, contacts, messengerContacts)
-            }.collect { (appSettingsMap, contacts, messengerContacts) ->
-                var needsContacts = false
-                var needsMessenger = false
-
-                appSettingsMap.values.forEach { settings ->
-                    if (settings.notificationSources.any { it.name.isNullOrEmpty() }) {
-                        val packageName = settings.packageName
-                        if (packageName in PackageNames.PhoneAppList ||
-                            packageName in PackageNames.MessagingAppList ||
-                            packageName == PackageNames.GoogleVoice
-                        ) {
-                            needsContacts = true
-                        } else if (packageName in PackageNames.FacebookMessengerAppList) {
-                            needsMessenger = true
-                        }
-                    }
-                }
-
-                if (needsContacts && contacts.isEmpty()  && !contactRequester.isLoading.value) {
-                    contactRequester.requestData()
-                }
-                if (needsMessenger && messengerContacts.isEmpty() && !messengerRequester.isLoading.value) {
-                    messengerRequester.requestData()
-                }
-
-                appSettingsMap.forEach { (packageName, settings) ->
-                    val missingNames = settings.notificationSources.filter { it.name.isNullOrEmpty() }
-                    if (missingNames.isNotEmpty()) {
-                        val newSources = settings.notificationSources.map { source ->
-                            if (source.name?.isNotEmpty() == true)
-                                return@map source
-                            val foundName = when (packageName) {
-                                in PackageNames.PhoneAppList,
-                                in PackageNames.MessagingAppList,
-                                PackageNames.GoogleVoice -> {
-                                    contacts.find { it.phoneNumber == source.value }?.name
-                                }
-                                in PackageNames.FacebookMessengerAppList -> {
-                                    messengerContacts.find { it.name == source.value }?.name
-                                }
-                                else -> null
-                            }
-                            if (foundName != null) source.copy(name = foundName) else source
-                        }
-                        if (newSources != settings.notificationSources) {
-                            settingsRepository.saveAppSettings(settings.copy(notificationSources = newSources))
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     fun deleteSelectedApps() {
         viewModelScope.launch {
             val selectedApps = getSelectedApps()
@@ -218,6 +199,16 @@ class ImportantAppsViewModel @Inject constructor(
             // Reset selection count after deletion
             _selectedCount.value = 0
         }
+    }
+
+    fun substituteApp(missingApp: UserAppModel, substitute: UserAppModel) {
+        viewModelScope.launch {
+            repository.substituteImportantApp(missingApp, substitute)
+        }
+    }
+
+    fun ignoreSubstituteCandidate(candidate: SubstituteAppCandidate) {
+        _ignoredSubstitutePackages.update { it + candidate.missingApp.packageName }
     }
 
 }

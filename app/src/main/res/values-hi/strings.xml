@@ -170,6 +170,13 @@
     <string name="add_app">ऐप जोड़ें</string>
     <string name="delete_apps">ऐप्स हटाएं (%1$d)</string>
 
+    <!-- Substitute Apps Dialog -->
+    <string name="substitute_missing_app">लापता ऐप को बदलें?</string>
+    <string name="app_is_not_installed">ऐसा लगता है कि इस डिवाइस पर %1$s इंस्टॉल नहीं है। क्या आप इसके बजाय इनमें से किसी एक का उपयोग करना चाहेंगे?</string>
+    <string name="confirm_substitute">बदलें</string>
+    <string name="dont_ask_again">फिर से न पूछें</string>
+    <string name="later">बाद में</string>
+
     <!-- App Settings Dialog -->
     <string name="app_settings_title">%1$s सेटिंग्स</string>
     <string name="announcer_voice">अनाउन्सर आवाज़</string>
@@ -294,12 +301,13 @@
     <string name="permissions_required_message">Speakify को बैकग्राउंड में चलने के लिए सूचनाएं पोस्ट करने की अनुमति चाहिए। कृपया यह अनुमति प्रदान करें।</string>
     <string name="ok">ठीक है</string>
 
+    <string name="pick_contact">संपर्क से चुनें</string>
+
     <!-- AutoComplete widgets -->
     <string name="search_for_entities">%1$s के लिए खोजें</string>
 
     <!-- AutoComplete labels -->
     <string name="autocomplete_label_notifications">जोड़ने के लिए सूचना स्रोत</string>
-    <string name="autocomplete_label_contact_name_phone_number">जोड़ने के लिए संपर्क का नाम/फ़ोन नंबर</string>
     <string name="autocomplete_label_contact_name">जोड़ने के लिए संपर्क का नाम</string>
     <string name="autocomplete_no_choices_available_yet">अभी तक कोई %1s उपलब्ध नहीं है।</string>
     <string name="autocomplete_label_tts">TTS आवाज़</string>

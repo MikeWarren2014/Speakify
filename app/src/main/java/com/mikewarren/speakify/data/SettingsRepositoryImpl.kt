@@ -124,16 +124,20 @@ class SettingsRepositoryImpl @Inject constructor(
         // Ensure the parent app exists in the 'important_apps' table to satisfy Foreign Key constraints.
         // This is especially important during data restoration if 'app_settings' are restored before
         // or without corresponding 'important_apps'.
-        userAppsDao.insertIgnore(
-            UserAppModel(
-                packageName = appSettingsModel.packageName,
-                appName = appSettingsModel.packageName // Default to package name if not present
+        var userApp = userAppsDao.getByPackageName(appSettingsModel.packageName)
+        if (userApp == null) {
+            val newId = userAppsDao.insertIgnore(
+                UserAppModel(
+                    packageName = appSettingsModel.packageName,
+                    appName = appSettingsModel.packageName // Default to package name if not present
+                )
             )
-        )
+            userApp = userAppsDao.getByPackageName(appSettingsModel.packageName)
+        }
 
         val appSettingsDbModel = AppSettingsDbModel(
             id = appSettingsModel.id,
-            packageName = appSettingsModel.packageName,
+            userAppId = userApp?.id,
             announcerVoice = appSettingsModel.announcerVoice,
             additionalSettings = appSettingsModel.additionalSettings,
         )
@@ -142,7 +146,7 @@ class SettingsRepositoryImpl @Inject constructor(
             notificationSourcesDao.deleteAllWithoutValues(appSettingsModel.id, appSettingsModel.notificationSources.map { it.value })
         }
 
-        val savedAppSettingsId = saveToDatabase(appSettingsDao, appSettingsDbModel)
+        val savedAppSettingsId = saveToDatabase(appSettingsDao, appSettingsDbModel, appSettingsModel.packageName)
 
         notificationSourcesDao.insertAll(appSettingsModel.notificationSources.map { source ->
             NotificationSourceModel(
@@ -155,10 +159,10 @@ class SettingsRepositoryImpl @Inject constructor(
 
     }
 
-    private suspend fun saveToDatabase(appSettingsDao: AppSettingsDao, appSettingsDbModel: AppSettingsDbModel) : Long {
+    private suspend fun saveToDatabase(appSettingsDao: AppSettingsDao, appSettingsDbModel: AppSettingsDbModel, packageName: String) : Long {
         if (appSettingsDbModel.id == null) {
             // Try to find if we already have an entry for this package to avoid duplicate entries with different IDs
-            val existing = appSettingsDao.getByPackageName(appSettingsDbModel.packageName)
+            val existing = appSettingsDao.getByPackageName(packageName)
             if (existing != null) {
                 val updatedModel = appSettingsDbModel.copy(id = existing.appSettings.id)
                 appSettingsDao.updateAppSettings(updatedModel)

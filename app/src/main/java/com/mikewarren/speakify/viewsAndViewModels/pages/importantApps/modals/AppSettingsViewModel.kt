@@ -22,8 +22,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -52,7 +50,7 @@ class AppSettingsViewModel(
     val settings: StateFlow<AppSettingsModel> = _settings.asStateFlow()
 
     var childAnnouncerVoiceSectionViewModel: AnnouncerVoiceSectionViewModel? = null
-    var childNotificationListViewModel: BaseNotificationSourceListViewModel<*>? = null
+    var childNotificationListViewModel: INotificationSourceListViewModel<*>? = null
     var childAdditionalSettingsViewModel: BaseAppAdditionalSettingsViewModel? = null
 
     fun getPackageName(): String {
@@ -92,14 +90,14 @@ class AppSettingsViewModel(
         childAdditionalSettingsViewModel?.onOpen()
     }
 
-    fun createNotificationSourceListViewModel(model: AppSettingsModel): BaseNotificationSourceListViewModel<*>? {
+    fun createNotificationSourceListViewModel(model: AppSettingsModel): INotificationSourceListViewModel<*>? {
         Log.d("AppSettingsViewModel", "packageName = '${appModel.packageName}' , notificationSources = ${model.notificationSources}")
 
         if ((getPackageName() in PackageNames.PhoneAppList) ||
             (getPackageName() in PackageNames.MessagingAppList) ||
             (getPackageName() == PackageNames.GoogleVoice)
         )
-            return BaseImportantContactsListViewModel(
+            return PhoneImportantContactsListViewModel(
                 settingsRepository,
                 model.notificationSources,
                 { importantContacts: List<NotificationSource> ->

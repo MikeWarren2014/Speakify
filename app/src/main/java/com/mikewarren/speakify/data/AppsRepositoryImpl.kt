@@ -28,4 +28,7 @@ class AppsRepositoryImpl @Inject constructor(
 
     }
 
+    override suspend fun substituteImportantApp(oldAppModel: UserAppModel, newAppModel: UserAppModel) {
+        userAppsDao.update(newAppModel.copy(id = oldAppModel.id))
+    }
 }
