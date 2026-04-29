@@ -54,8 +54,8 @@ class MainActivity : ComponentActivity()  {
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
 
         val viewModel: SettingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
 

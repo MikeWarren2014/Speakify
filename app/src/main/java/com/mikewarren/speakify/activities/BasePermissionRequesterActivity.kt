@@ -1,7 +1,7 @@
 package com.mikewarren.speakify.activities
 
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import com.mikewarren.speakify.data.events.BaseEventBus
 
 import android.os.Bundle
@@ -11,9 +11,10 @@ import androidx.core.content.ContextCompat
 abstract class BasePermissionRequesterActivity<Event>(
     protected val eventBus: BaseEventBus<Event>,
     protected val permissionRequestCode : Int,
-): AppCompatActivity() {
+): ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?){
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         doDisplay()
@@ -22,10 +23,7 @@ abstract class BasePermissionRequesterActivity<Event>(
 
     }
 
-    open fun doDisplay() {
-        enableEdgeToEdge()
-        supportActionBar?.hide()
-    }
+    abstract fun doDisplay()
 
     protected fun requestPermissions() {
         val ungrantedPermissions = getUngrantedPermissions().toTypedArray()
@@ -57,7 +55,7 @@ abstract class BasePermissionRequesterActivity<Event>(
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<out String>,
+        permissions: Array<String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
