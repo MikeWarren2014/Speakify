@@ -109,7 +109,7 @@ class StatusSectionViewModel(
     }
 
     fun calculateTurnOnTime(): Long {
-        if (!isAppOn) {
+        if (isAppOn) {
             return System.currentTimeMillis()
         }
 

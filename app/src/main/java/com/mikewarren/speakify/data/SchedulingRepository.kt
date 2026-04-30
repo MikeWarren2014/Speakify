@@ -41,6 +41,15 @@ class SchedulingRepository @Inject constructor(
         val dayOfWeek = LocalDateTime.now(ZoneId.systemDefault())
             .dayOfWeek
 
+        // Status check takes priority, then check by schedule
+        val statusModel = schedulingModel.statusModel
+        if (statusModel is StatusModel.Off) {
+            if (currentTimeMillis < statusModel.turnOnTime!!)
+                return schedulingModel
+
+            return schedulingModel.copy(statusModel = StatusModel.On)
+        }
+
         // check the schedule for that day
         val daySchedule = schedulingModel.weeklySchedule[dayOfWeek]
             ?: return schedulingModel
