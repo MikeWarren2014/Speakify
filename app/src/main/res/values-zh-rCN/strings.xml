@@ -408,8 +408,6 @@
     <string name="conversion_ready_description">创建账号以在设备间同步设置，并永久保留您的试用进度。</string>
     <string name="conversion_ready_button_sign_up">立即注册</string>
     <string name="conversion_ready_button_continue">继续试用</string>
-
-    <string name="contacts_usage_disclosure">Speakify 使用您的联系人来识别来电者和短信发送者，以便向您播报他们的姓名。此类数据在您的设备上进行本地处理，不会被分享。</string>
 </resources>
 
 
