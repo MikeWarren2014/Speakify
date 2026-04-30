@@ -409,7 +409,6 @@
     <string name="conversion_ready_description">Erstellen Sie ein Konto, um Ihre Einstellungen geräteübergreifend zu synchronisieren und Ihren Testfortschritt dauerhaft zu speichern.</string>
     <string name="conversion_ready_button_sign_up">Jetzt registrieren</string>
     <string name="conversion_ready_button_continue">Mit Testzeitraum fortfahren</string>
-    <string name="contacts_usage_disclosure">Speakify nutzt Ihre Kontakte, um Anrufer und Absender von Nachrichten zu identifizieren, damit deren Namen angesagt werden können. Diese Daten werden lokal auf Ihrem Gerät verarbeitet und nicht geteilt.</string>
 </resources>
 
 

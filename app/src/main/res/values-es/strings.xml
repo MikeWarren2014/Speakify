@@ -409,5 +409,4 @@
     <string name="conversion_ready_description">Crea una cuenta para sincronizar tus ajustes en varios dispositivos y conservar tu progreso de la prueba para siempre.</string>
     <string name="conversion_ready_button_sign_up">Registrarse ahora</string>
     <string name="conversion_ready_button_continue">Continuar con la prueba</string>
-    <string name="contacts_usage_disclosure">Speakify utiliza tus contactos para identificar a las personas que llaman y a los remitentes de mensajes para poder anunciar sus nombres. Estos datos se procesan localmente en tu dispositivo y no se comparten.</string>
 </resources>
