@@ -13,6 +13,9 @@ interface NotificationSourcesDao {
     @Query("SELECT * FROM notification_sources WHERE as_id = :appSettingsId")
     suspend fun getByAppSettingsId(appSettingsId: Long): List<NotificationSourceModel>
 
+    @Query("SELECT * FROM notification_sources WHERE ns_value = :value LIMIT 1")
+    suspend fun getByValue(value: String): NotificationSourceModel
+
     @Query("DELETE FROM notification_sources WHERE as_id = :appSettingsId")
     suspend fun deleteByAppSettingsId(appSettingsId: Long)
 

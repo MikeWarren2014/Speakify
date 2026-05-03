@@ -305,6 +305,15 @@
     <string name="permissions_required_message">Speakify requires permission to post notifications to run in the background and keep you informed of its status.</string>
     <string name="ok">OK</string>
 
+    <!-- Phone Permissions Concerns -->
+    <string name="phone_permissions_title">Phone Permissions</string>
+    <string name="read_phone_state">Read Phone State</string>
+    <string name="read_phone_state_description">Allows Speakify to detect when you have an incoming call so it can announce it.</string>
+    <string name="read_contacts">Read Contacts</string>
+    <string name="read_contacts_description">Allows Speakify to look up the name of the person calling you from your contact list.</string>
+    <string name="call_screening">Call Screening</string>
+    <string name="call_screening_description">Allows Speakify to announce calls more reliably on newer Android versions. \n\nYou will be prompted to set Speakify as your default Call Screening app.</string>
+
     <string name="pick_contact">Pick from Contacts</string>
 
     <!-- AutoComplete widgets -->

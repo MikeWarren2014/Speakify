@@ -301,6 +301,15 @@
     <string name="permissions_required_message">L\'autorisation de notifier est requise pour fonctionner en arrière-plan.</string>
     <string name="ok">OK</string>
 
+    <!-- Phone Permissions Concerns -->
+    <string name="phone_permissions_title">Autorisations de téléphone</string>
+    <string name="read_phone_state">Lire l\'état du téléphone</string>
+    <string name="read_phone_state_description">Permet à Speakify de détecter quand vous avez un appel entrant afin de pouvoir l\'annoncer.</string>
+    <string name="read_contacts">Lire les contacts</string>
+    <string name="read_contacts_description">Permet à Speakify de rechercher le nom de la person qui vous appelle dans votre liste de contacts.</string>
+    <string name="call_screening">Filtrage d\'appels</string>
+    <string name="call_screening_description">Permet à Speakify d\'annoncer les appels de manière plus fiable sur les versions récentes d\'Android. \n\nVous serez invité à définir Speakify comme application de filtrage d\'appels par défaut.</string>
+
     <string name="pick_contact">Choisir parmi les contacts</string>
 
     <!-- AutoComplete widgets -->

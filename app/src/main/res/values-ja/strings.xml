@@ -301,6 +301,15 @@
     <string name="permissions_required_message">バックグラウンドで動作し通知を表示するには、通知の送信権限が必要です。この権限を許可してください。</string>
     <string name="ok">OK</string>
 
+    <!-- Phone Permissions Concerns -->
+    <string name="phone_permissions_title">電話の権限</string>
+    <string name="read_phone_state">電話の状態の読み取り</string>
+    <string name="read_phone_state_description">着信を検知して音声で知らせることを Speakify に許可します。</string>
+    <string name="read_contacts">連絡先の読み取り</string>
+    <string name="read_contacts_description">連絡先リストから発信者の名前を検索することを Speakify に許可します。</string>
+    <string name="call_screening">通話スクリーニング</string>
+    <string name="call_screening_description">新しいバージョンの Android で、より確実に着信を知らせることを Speakify に許可します。\n\nSpeakify をデフォルトの通話スクリーニングアプリとして設定するよう求められます。</string>
+
     <string name="pick_contact">連絡先から選択</string>
 
     <!-- AutoComplete widgets -->

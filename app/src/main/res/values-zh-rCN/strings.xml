@@ -302,6 +302,15 @@
     <string name="permissions_required_message">Speakify 需要发送通知的权限以在后台运行。请授予此权限。</string>
     <string name="ok">确定</string>
 
+    <!-- Phone Permissions Concerns -->
+    <string name="phone_permissions_title">电话权限</string>
+    <string name="read_phone_state">读取电话状态</string>
+    <string name="read_phone_state_description">允许 Speakify 检测您何时有来电，以便进行播报。</string>
+    <string name="read_contacts">读取联系人</string>
+    <string name="read_contacts_description">允许 Speakify 在您的联系人列表中查找来电者的姓名。</string>
+    <string name="call_screening">通话筛选</string>
+    <string name="call_screening_description">允许 Speakify 在较新版本的 Android 上更可靠地播报通话。\n\n系统将提示您将 Speakify 设置为默认的通话筛选应用。</string>
+
     <string name="pick_contact">从联系人中选择</string>
 
     <!-- AutoComplete widgets -->

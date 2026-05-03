@@ -301,6 +301,15 @@
     <string name="permissions_required_message">Speakify потребує дозволу на надсилання сповіщень для роботи у фоновому режимі. Будь ласка, надайте цей дозвіл.</string>
     <string name="ok">ОК</string>
 
+    <!-- Phone Permissions Concerns -->
+    <string name="phone_permissions_title">Дозволи для телефону</string>
+    <string name="read_phone_state">Читання стану телефону</string>
+    <string name="read_phone_state_description">Дозволяє Speakify виявляти вхідні дзвінки, щоб мати змогу оголошувати їх.</string>
+    <string name="read_contacts">Читання контактів</string>
+    <string name="read_contacts_description">Дозволяє Speakify шукати ім\'я того, хто телефонує, у вашому списку контактів.</string>
+    <string name="call_screening">Скринінг дзвінків</string>
+    <string name="call_screening_description">Дозволяє Speakify надійніше оголошувати дзвінки в нових версіях Android. \n\nВам буде запропоновано встановити Speakify як програму для скринінгу дзвінків за замовчуванням.</string>
+
     <string name="pick_contact">Вибрати з контактів</string>
 
     <!-- AutoComplete widgets -->

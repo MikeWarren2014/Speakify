@@ -301,6 +301,15 @@
     <string name="permissions_required_message">Speakify को बैकग्राउंड में चलने के लिए सूचनाएं पोस्ट करने की अनुमति चाहिए। कृपया यह अनुमति प्रदान करें।</string>
     <string name="ok">ठीक है</string>
 
+    <!-- Phone Permissions Concerns -->
+    <string name="phone_permissions_title">फोन अनुमतियाँ</string>
+    <string name="read_phone_state">फोन की स्थिति पढ़ें</string>
+    <string name="read_phone_state_description">Speakify को यह पता लगाने की अनुमति देता है कि आपके पास कब कोई इनकमिंग कॉल आती है ताकि वह इसकी घोषणा कर सके।</string>
+    <string name="read_contacts">संपर्क पढ़ें</string>
+    <string name="read_contacts_description">Speakify को आपकी संपर्क सूची से कॉल करने वाले व्यक्ति का नाम खोजने की अनुमति देता है।</string>
+    <string name="call_screening">कॉल स्क्रीनिंग</string>
+    <string name="call_screening_description">Speakify को Android के नए वर्ज़न पर अधिक भरोसेमंद रूप से कॉल की घोषणा करने की अनुमति देता है। \n\nआपको Speakify को अपने डिफ़ॉल्ट कॉल स्क्रीनिंग ऐप के रूप में सेट करने के लिए कहा जाएगा।</string>
+
     <string name="pick_contact">संपर्क से चुनें</string>
 
     <!-- AutoComplete widgets -->

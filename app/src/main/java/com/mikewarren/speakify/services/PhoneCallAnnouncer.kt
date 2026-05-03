@@ -21,7 +21,7 @@ import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton // This makes it a singleton, accessible via Hilt
+@Singleton
 class PhoneCallAnnouncer @Inject constructor(
     @ApplicationContext private val context: Context,
     private val ttsManager: TTSManager

@@ -11,6 +11,13 @@ import com.mikewarren.speakify.utils.NotificationExtractionUtils
 object PermissionUtils {
     // Function to check if a specific permission is granted
     fun isPermissionGranted(context: Context, permission: String): Boolean {
+        if (permission == Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE) {
+            return NotificationPermissionHelper(context).isNotificationServiceEnabled()
+        }
+        if (permission == Manifest.permission.BIND_SCREENING_SERVICE) {
+            return NotificationPermissionHelper(context).isCallScreeningServiceEnabled()
+        }
+
         // Use `ContextCompat.checkSelfPermission` to verify if the permission is granted
         return ContextCompat.checkSelfPermission(
             context,
@@ -21,9 +28,7 @@ object PermissionUtils {
     // Function to check if all permissions in a list are granted
     fun areAllPermissionsGranted(context: Context, permissions: Array<String>): Boolean {
         return permissions.all {
-            if (it != Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE)
-                return@all isPermissionGranted(context, it)
-            return@all NotificationPermissionHelper(context).isNotificationServiceEnabled()
+            return@all isPermissionGranted(context, it)
         }
     }
 

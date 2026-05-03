@@ -1,6 +1,7 @@
 package com.mikewarren.speakify.utils
 
 import android.app.AppOpsManager
+import android.app.role.RoleManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -10,6 +11,7 @@ import android.content.pm.ResolveInfo
 import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
+import androidx.core.content.ContextCompat
 
 
 class NotificationPermissionHelper(private val context: Context) {
@@ -81,6 +83,15 @@ class NotificationPermissionHelper(private val context: Context) {
             }
         }
         return false
+    }
+
+    fun isCallScreeningServiceEnabled(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val roleManager = context.getSystemService(RoleManager::class.java)
+            roleManager?.isRoleHeld(RoleManager.ROLE_CALL_SCREENING) == true
+        } else {
+            true
+        }
     }
 
 }

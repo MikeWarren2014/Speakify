@@ -1,6 +1,7 @@
 package com.mikewarren.speakify.receivers
 
 import android.Manifest
+import android.app.role.RoleManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -61,14 +62,8 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
             return
         }
 
-        val incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
-
         val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
 
-        if (incomingNumber.isNullOrEmpty()) {
-            Log.d(TAG, "Incoming number is null or empty. Cannot announce.")
-            return
-        }
 
         if (state == lastProcessedState) {
             Log.d(TAG, "State is the same as last time. Skipping.")
@@ -81,6 +76,22 @@ class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
             applicationScope.launch {
                 announcer.stopAnnouncing()
             }
+            return
+        }
+
+        // If the user has granted the CallScreeningService role, we let that service handle
+        // the announcement. It's more reliable and triggers earlier.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val roleManager = context.getSystemService(RoleManager::class.java)
+            if (roleManager?.isRoleHeld(RoleManager.ROLE_CALL_SCREENING) == true) {
+                Log.d(TAG, "CallScreeningRole is held. Letting service handle announcement.")
+                return
+            }
+        }
+
+        val incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
+        if (incomingNumber.isNullOrEmpty()) {
+            Log.d(TAG, "Incoming number is null or empty. Cannot announce.")
             return
         }
 
