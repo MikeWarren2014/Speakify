@@ -7,6 +7,7 @@ import com.mikewarren.speakify.data.events.BaseEventBus
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.core.content.ContextCompat
+import com.mikewarren.speakify.utils.PermissionUtils
 
 abstract class BasePermissionRequesterActivity<Event>(
     protected val eventBus: BaseEventBus<Event>,
@@ -48,10 +49,7 @@ abstract class BasePermissionRequesterActivity<Event>(
     protected fun getUngrantedPermissions(): List<String> {
 
         return this.getPermissions().filter { permission ->
-            ContextCompat.checkSelfPermission(
-                this,
-                permission,
-            ) != PackageManager.PERMISSION_GRANTED
+            !PermissionUtils.isPermissionGranted(this, permission)
         }
     }
 

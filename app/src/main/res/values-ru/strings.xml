@@ -301,6 +301,15 @@
     <string name="permissions_required_message">Speakify требуется разрешение на публикацию уведомлений для работы в фоновом режиме. Пожалуйста, предоставьте это разрешение.</string>
     <string name="ok">ОК</string>
 
+    <!-- Phone Permissions Concerns -->
+    <string name="phone_permissions_title">Разрешения для телефона</string>
+    <string name="read_phone_state">Чтение состояния телефона</string>
+    <string name="read_phone_state_description">Позволяет Speakify обнаруживать входящие звонки для их озвучивания. </string>
+    <string name="read_contacts">Чтение контактов</string>
+    <string name="read_contacts_description">Позволяет Speakify искать имя звонящего в вашем списке контактов.</string>
+    <string name="call_screening">Фильтр звонков</string>
+    <string name="call_screening_description">Позволяет Speakify более надежно озвучивать звонки в новых версиях Android. \n\nВам будет предложено установить Speakify в качестве приложения для фильтрации звонков по умолчанию.</string>
+
     <string name="pick_contact">Выбрать из контактов</string>
 
     <!-- AutoComplete widgets -->

@@ -301,6 +301,15 @@
     <string name="permissions_required_message">Speakify benötigt die Berechtigung zum Senden von Benachrichtigungen, um im Hintergrund zu laufen. Bitte gewähren Sie diese Berechtigung.</string>
     <string name="ok">OK</string>
 
+    <!-- Phone Permissions Concerns -->
+    <string name="phone_permissions_title">Telefonberechtigungen</string>
+    <string name="read_phone_state">Telefonstatus lesen</string>
+    <string name="read_phone_state_description">Ermöglicht es Speakify zu erkennen, wenn Sie einen eingehenden Anruf haben, um diesen anzukündigen.</string>
+    <string name="read_contacts">Kontakte lesen</string>
+    <string name="read_contacts_description">Ermöglicht es Speakify, den Namen der anrufenden Person in Ihrer Kontaktliste nachzuschlagen.</string>
+    <string name="call_screening">Anruffilterung</string>
+    <string name="call_screening_description">Ermöglicht es Speakify, Anrufe auf neueren Android-Versionen zuverlässiger anzukündigen. \n\nSie werden aufgefordert, Speakify als Ihre Standard-App zur Anruffilterung festzulegen.</string>
+
     <string name="pick_contact">Aus Kontakten wählen</string>
 
     <!-- AutoComplete widgets -->

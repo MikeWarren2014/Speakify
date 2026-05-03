@@ -78,10 +78,6 @@ class NotificationPermissionsActivity :
         return NotificationPermissionsActivity.getPermissions()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
     override fun onPermissionGranted() {
         // Wait for user to interact with the view
         // NOTE: this is disabled in favor of the NotificationPermissionView

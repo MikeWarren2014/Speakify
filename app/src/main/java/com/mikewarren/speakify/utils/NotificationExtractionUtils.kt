@@ -170,6 +170,7 @@ object NotificationExtractionUtils: ITaggable {
         return contactId
     }
 
+    // TODO: this may be YAGNI, considering that we save the contact names along with their phone numbers
     @OptIn(UnstableApi::class)
     @SuppressLint("Range")
     fun GetDisplayNameForPhoneNumber(context: Context, phoneNumber: String): String {

@@ -302,6 +302,15 @@
     <string name="post_notifications">Speakify برای اعلام پیام‌ها و رویدادهای تقویم شما با صدای بلند، به مجوز ارسال اعلان نیاز دارد. این کار همچنین به فعال نگه داشتن برنامه در پس‌زمینه کمک می‌کند.</string>
     <string name="ok">تایید</string>
 
+    <!-- Phone Permissions Concerns -->
+    <string name="phone_permissions_title">مجوزهای تلفن</string>
+    <string name="read_phone_state">خواندن وضعیت تلفن</string>
+    <string name="read_phone_state_description">به Speakify اجازه می‌دهد تا زمانی که تماس ورودی دارید، آن را شناسایی کرده و اعلام کند.</string>
+    <string name="read_contacts">خواندن مخاطبین</string>
+    <string name="read_contacts_description">به Speakify اجازه می‌دهد تا نام فردی را که با شما تماس می‌گیرد از لیست مخاطبین شما جستجو کند.</string>
+    <string name="call_screening">غربالگری تماس</string>
+    <string name="call_screening_description">به Speakify اجازه می‌دهد تا تماس‌ها را در نسخه‌های جدیدتر اندروید با اطمینان بیشتری اعلام کند. \n\nاز شما خواسته می‌شود Speakify را به عنوان برنامه پیش‌فرض غربالگری تماس خود تنظیم کنید.</string>
+
     <string name="pick_contact">انتخاب از مخاطبین</string>
 
     <!-- AutoComplete widgets -->
