@@ -2,34 +2,20 @@ package com.mikewarren.speakify.activities
 
 import android.Manifest
 import android.app.role.RoleManager
-import android.content.Intent
 import android.os.Build
-import android.util.Log
-import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.Composable
 import com.mikewarren.speakify.data.constants.PermissionCodes
 import com.mikewarren.speakify.data.events.PhonePermissionEvent
 import com.mikewarren.speakify.data.events.PhonePermissionEventBus
-import com.mikewarren.speakify.ui.theme.MyApplicationTheme
 import com.mikewarren.speakify.viewsAndViewModels.pages.fetcher.PhonePermissionsView
-import com.mikewarren.speakify.viewsAndViewModels.pages.fetcher.PhonePermissionsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PhonePermissionsActivity : BasePermissionRequesterActivity<PhonePermissionEvent>(
+class PhonePermissionsActivity : BaseMutliplePermissionsActivity<PhonePermissionEvent>(
     eventBus = PhonePermissionEventBus.GetInstance(),
     permissionRequestCode = PermissionCodes.PhonePermissions,
 ) {
-
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            onPermissionResult?.invoke(isGranted)
-            onPermissionResult = null
-        }
 
     private val roleLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -38,38 +24,23 @@ class PhonePermissionsActivity : BasePermissionRequesterActivity<PhonePermission
             onPermissionResult = null
         }
 
-    private var onPermissionResult: ((Boolean) -> Unit)? = null
-
-    override fun doDisplay() {
-        super.doDisplay()
-        setContent {
-            MyApplicationTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    PhonePermissionsView(
-                        permissions = getPermissions(),
-                        onRequestPermission = { permission: String, onDone: (Boolean) -> Unit ->
-                            onPermissionResult = onDone
-                            if (permission == Manifest.permission.BIND_SCREENING_SERVICE) {
-                                requestCallScreeningRole()
-                            } else {
-                                requestPermissionLauncher.launch(permission)
-                            }
-                        },
-                        onDone = { success ->
-                            if (success) {
-                                onPermissionGranted()
-                                return@PhonePermissionsView
-                            }
-                            eventBus.post(getPermissionDeniedEvent())
-                            finish()
-                        }
-                    )
-                }
-            }
+    override fun onCheckPermission(permission: String) {
+        if (permission == Manifest.permission.BIND_SCREENING_SERVICE) {
+            requestCallScreeningRole()
+            return
         }
+        requestPermissionLauncher.launch(permission)
+    }
+
+    @Composable
+    override fun PermissionListView(
+        permissions: Array<String>,
+        onRequestPermission: (String, (Boolean) -> Unit) -> Unit,
+        onDone: (Boolean) -> Unit
+    ) {
+        PhonePermissionsView(permissions = permissions,
+            onRequestPermission = onRequestPermission,
+            onDone = onDone)
     }
 
     private fun requestCallScreeningRole() {
@@ -103,13 +74,8 @@ class PhonePermissionsActivity : BasePermissionRequesterActivity<PhonePermission
         return PhonePermissionEvent.Failure(message)
     }
 
-    override fun onPermissionGranted() {
-        Log.d(this.javaClass.name, "Phone permissions granted.")
-        eventBus.post(PhonePermissionEvent.PermissionGranted)
-        finish()
+    override fun getPermissionGrantedEvent(): PhonePermissionEvent {
+        return PhonePermissionEvent.PermissionGranted
     }
 
-    override fun handleUngrantedPermissions(ungrantedPermissions: Array<String>) {
-        // Handled via PhonePermissionsView toggles
-    }
 }

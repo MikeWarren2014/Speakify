@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.mikewarren.speakify.data.events.BaseEventBus
 import com.mikewarren.speakify.data.events.NotificationPermissionEvent
@@ -24,6 +25,8 @@ abstract class BaseMutliplePermissionsActivity<T>(
     permissionRequestCode: Int,
     ):
     BasePermissionRequesterActivity<T>(eventBus, permissionRequestCode){
+
+    protected val requestPermissionLauncher = createPermissionLauncher()
 
     protected var onPermissionResult: ((Boolean) -> Unit)? = null
 
@@ -42,9 +45,7 @@ abstract class BaseMutliplePermissionsActivity<T>(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // TODO: replace with a permission list view
-                    // TODO: create PermissionListView
-                    NotificationPermissionsView(
+                    PermissionListView(
                         permissions = getPermissions(),
                         onRequestPermission = { permission: String, onDone: (Boolean) -> Unit ->
                             onPermissionResult = onDone
@@ -53,7 +54,7 @@ abstract class BaseMutliplePermissionsActivity<T>(
                         onDone = { success ->
                             if (success) {
                                 onPermissionGranted()
-                                return@NotificationPermissionsView
+                                return@PermissionListView
                             }
                             eventBus.post(getPermissionDeniedEvent())
                             finish()
@@ -63,6 +64,13 @@ abstract class BaseMutliplePermissionsActivity<T>(
             }
         }
     }
+
+    @Composable
+    protected abstract fun PermissionListView(
+        permissions: Array<String>,
+        onRequestPermission: (String, (Boolean) -> Unit) -> Unit,
+        onDone: (Boolean) -> Unit,
+    )
 
     protected abstract fun onCheckPermission(permission: String)
 
