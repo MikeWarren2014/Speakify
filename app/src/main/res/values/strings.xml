@@ -130,6 +130,14 @@
         <item>was sent</item>
     </string-array>
 
+    <string-array name="messenger_non_contact_titles">
+        <item>Your photo is sending</item>
+        <item>Your photo was sent</item>
+        <item>Your video is sending</item>
+        <item>Your video was sent</item>
+        <item>Messenger Audio call</item>
+    </string-array>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Audio call</string>
     <string name="messenger_incoming_video_call_text">Video call</string>

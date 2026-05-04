@@ -126,6 +126,14 @@
         <item>भेज दिया गया</item>
     </string-array>
 
+    <string-array name="messenger_non_contact_titles">
+        <item>आपकी फोटो भेजी जा रही है</item>
+        <item>आपकी फोटो भेज दी गई है</item>
+        <item>आपका वीडियो भेजा जा रहा है</item>
+        <item>आपका वीडियो भेज दिया गया है</item>
+        <item>मैसेंजर ऑडियो कॉल</item>
+    </string-array>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">ऑडियो कॉल</string>
     <string name="messenger_incoming_video_call_text">वीडियो कॉल</string>
