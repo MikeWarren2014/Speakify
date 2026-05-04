@@ -74,15 +74,9 @@
     <string name="sms_text_out_loud">%1$s ti ha inviato un messaggio di testo: %2$s</string>
     <string name="messenger_notification_text">Messaggio Facebook in arrivo da %1$s</string>
     <string name="messenger_text_out_loud">%1$s ti ha inviato un messaggio su Facebook: %2$s</string>
-    <string name="messenger_message_request">Richiesta di messaggio Facebook in arrivo da %1$s</string>
     <string name="messenger_notification_audio_call">Chiamata Facebook in arrivo da %1$s</string>
     <string name="messenger_notification_video_call">Videochiamata Facebook in arrivo da %1$s</string>
     <string name="messenger_notification_strategy_unknown">Notifica Facebook Messenger sconosciuta</string>
-    <string-array name="messenger_message_request_keywords">
-        <item>Richiesta di messaggio</item>
-        <item>desidera connettersi</item>
-        <item>ha richiesto di inviarti un messaggio</item>
-    </string-array>
 
     <string name="contact_unknown">Qualcuno</string>
 
@@ -197,8 +191,6 @@
     <string name="ignore_single_word_messages">Ignora messaggi di una sola parola</string>
     <string name="ignore_reactions">Ignora reazioni</string>
 
-    <!-- Messenger Settings -->
-    <string name="messenger_include_message_requests">Includi richieste di messaggi</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">fonti di notifica</string>

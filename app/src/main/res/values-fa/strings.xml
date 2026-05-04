@@ -74,15 +74,9 @@
     <string name="sms_text_out_loud">%1$s برای شما یک پیامک فرستاد: %2$s</string>
     <string name="messenger_notification_text">پیام فیسبوک ورودی از %1$s</string>
     <string name="messenger_text_out_loud">%1$s برای شما یک پیام فیسبوک فرستاد: %2$s</string>
-    <string name="messenger_message_request">درخواست پیام فیسبوک ورودی از %1$s</string>
     <string name="messenger_notification_audio_call">تماس فیسبوک ورودی از %1$s</string>
     <string name="messenger_notification_video_call">تماس تصویری فیسبوک ورودی از %1$s</string>
     <string name="messenger_notification_strategy_unknown">اعلان فیسبوک مسنجر ناشناخته</string>
-    <string-array name="messenger_message_request_keywords">
-        <item>درخواست پیام</item>
-        <item>می‌خواهد متصل شود</item>
-        <item>درخواست پیام داده است</item>
-    </string-array>
 
     <string name="contact_unknown">یک نفر</string>
 
@@ -198,8 +192,6 @@
     <string name="ignore_single_word_messages">نادیده گرفتن پیام‌های تک‌کلمه‌ای</string>
     <string name="ignore_reactions">نادیده گرفتن عکس‌العمل‌ها</string>
 
-    <!-- Messenger Settings -->
-    <string name="messenger_include_message_requests">شامل درخواست‌های پیام</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">منابع اعلان</string>

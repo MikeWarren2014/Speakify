@@ -78,15 +78,9 @@
     <string name="sms_text_out_loud">%1$s sent you a text message: %2$s</string>
     <string name="messenger_notification_text">Incoming Facebook message from %1$s</string>
     <string name="messenger_text_out_loud">%1$s sent you a Facebook message: %2$s</string>
-    <string name="messenger_message_request">Incoming Facebook message request from %1$s</string>
     <string name="messenger_notification_audio_call">Incoming Facebook call from %1$s</string>
     <string name="messenger_notification_video_call">Incoming Facebook video call from %1$s</string>
     <string name="messenger_notification_strategy_unknown">Unknown Facebook messenger Notification</string>
-    <string-array name="messenger_message_request_keywords">
-        <item>Message Request</item>
-        <item>wants to connect</item>
-        <item>requested to message</item>
-    </string-array>
 
     <string name="contact_unknown">Someone</string>
 
@@ -201,8 +195,6 @@
     <string name="ignore_single_word_messages">Ignore single word messages</string>
     <string name="ignore_reactions">Ignore reactions</string>
 
-    <!-- Messenger Settings -->
-    <string name="messenger_include_message_requests">Include message requests</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">notification sources</string>

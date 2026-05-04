@@ -75,15 +75,9 @@
     <string name="sms_text_out_loud">%1$s 向您发送了一条短信：%2$s</string>
     <string name="messenger_notification_text">收到来自 %1$s 的 Facebook 消息</string>
     <string name="messenger_text_out_loud">%1$s 向您发送了一条 Facebook 消息：%2$s</string>
-    <string name="messenger_message_request">收到来自 %1$s 的 Facebook 消息请求</string>
     <string name="messenger_notification_audio_call">收到来自 %1$s 的 Facebook 电话</string>
     <string name="messenger_notification_video_call">收到来自 %1$s 的 Facebook 视频电话</string>
     <string name="messenger_notification_strategy_unknown">未知的 Facebook Messenger 通知</string>
-    <string-array name="messenger_message_request_keywords">
-        <item>消息请求</item>
-        <item>想和你建立联系</item>
-        <item>请求发送消息</item>
-    </string-array>
 
     <string name="contact_unknown">某人</string>
 
@@ -198,8 +192,6 @@
     <string name="ignore_single_word_messages">忽略单字消息</string>
     <string name="ignore_reactions">忽略回应</string>
 
-    <!-- Messenger Settings -->
-    <string name="messenger_include_message_requests">包括消息请求</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">通知源</string>
