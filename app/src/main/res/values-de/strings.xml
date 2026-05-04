@@ -126,6 +126,14 @@
         <item>wurde gesendet</item>
     </string-array>
 
+    <string-array name="messenger_non_contact_titles">
+        <item>Dein Foto wird gesendet</item>
+        <item>Dein Foto wurde gesendet</item>
+        <item>Dein Video wird gesendet</item>
+        <item>Dein Video wurde gesendet</item>
+        <item>Messenger Audioanruf</item>
+    </string-array>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Audioanruf</string>
     <string name="messenger_incoming_video_call_text">Videoanruf</string>

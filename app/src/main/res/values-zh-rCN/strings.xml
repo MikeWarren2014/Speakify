@@ -127,6 +127,14 @@
         <item>已发送</item>
     </string-array>
 
+    <string-array name="messenger_non_contact_titles">
+        <item>正在发送照片</item>
+        <item>您的照片已发送</item>
+        <item>正在发送视频</item>
+        <item>您的视频已发送</item>
+        <item>Messenger 语音通话</item>
+    </string-array>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">语音通话</string>
     <string name="messenger_incoming_video_call_text">视频通话</string>

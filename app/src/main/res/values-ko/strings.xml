@@ -126,6 +126,14 @@
         <item>전송됨</item>
     </string-array>
 
+    <string-array name="messenger_non_contact_titles">
+        <item>사진을 보내는 중입니다</item>
+        <item>사진을 보냈습니다</item>
+        <item>동영상을 보내는 중입니다</item>
+        <item>동영상을 보냈습니다</item>
+        <item>Messenger 오디오 통화</item>
+    </string-array>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">오디오 통화</string>
     <string name="messenger_incoming_video_call_text">영상 통화</string>

@@ -126,6 +126,14 @@
         <item>è stato inviato</item>
     </string-array>
 
+    <string-array name="messenger_non_contact_titles">
+        <item>Invio della foto in corso</item>
+        <item>La tua foto è stata inviata</item>
+        <item>Invio del video in corso</item>
+        <item>Il tuo video è stato inviato</item>
+        <item>Chiamata audio Messenger</item>
+    </string-array>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Chiamata audio</string>
     <string name="messenger_incoming_video_call_text">Videochiamata</string>

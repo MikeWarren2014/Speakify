@@ -126,6 +126,14 @@
         <item>ارسال شد</item>
     </string-array>
 
+    <string-array name="messenger_non_contact_titles">
+        <item>عکس شما در حال ارسال است</item>
+        <item>عکس شما ارسال شد</item>
+        <item>ویدیوی شما در حال ارسال است</item>
+        <item>ویدیوی شما ارسال شد</item>
+        <item>تماس صوتی مسنجر</item>
+    </string-array>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">تماس صوتی</string>
     <string name="messenger_incoming_video_call_text">تماس تصویری</string>

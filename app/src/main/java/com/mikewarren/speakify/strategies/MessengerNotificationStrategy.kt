@@ -151,7 +151,8 @@ class MessengerNotificationStrategy(
         val name = senderName ?: return false
 
         // Save to recent contacts regardless of whether we speak it
-        saveToRecentContacts(name)
+        if (isPotentialContact(name))
+            saveToRecentContacts(name)
 
         val notificationType = getNotificationType()
         doLog("notificationType == ${notificationType}")
@@ -192,6 +193,20 @@ class MessengerNotificationStrategy(
 
         // 2. Fallback to EXTRA_TITLE
         return title
+    }
+
+    private fun isPotentialContact(name: String): Boolean {
+        if (name.isBlank())
+            return false
+
+        if (name == "Messenger")
+            return false
+
+        if (SearchUtils.ContainsKeywords(context.resources.getStringArray(R.array.messenger_non_contact_titles),
+            name))
+            return false
+
+        return true
     }
 
     private fun saveToRecentContacts(name: String) {

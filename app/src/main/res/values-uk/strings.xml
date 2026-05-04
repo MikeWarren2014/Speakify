@@ -126,6 +126,14 @@
         <item>надіслано</item>
     </string-array>
 
+    <string-array name="messenger_non_contact_titles">
+        <item>Ваше фото надсилається</item>
+        <item>Ваше фото надіслано</item>
+        <item>Ваше відео надсилається</item>
+        <item>Ваше відео надіслано</item>
+        <item>Аудіодзвінок Messenger</item>
+    </string-array>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Аудіодзвінок</string>
     <string name="messenger_incoming_video_call_text">Відеодзвінок</string>
