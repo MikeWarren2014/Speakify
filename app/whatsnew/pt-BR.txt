@@ -1,7 +1,5 @@
-- Corrigido erro de restauração de volume em novos dispositivos.
-- Mudança para o Google Contact Picker; permissão de contatos não é mais necessária.
-- Corrigido travamento ao apertar Enter nas fontes de notificação.
-- Adicionadas "Apps Substitutos" para apps importantes órfãos.
-- Corrigido problema de volume máximo fixo.
-- Corrigidos problemas nas configurações de apps de mensagens.
-- Tela de permissões de notificação adicionada para controle gradual.
+- Corrigidos os anúncios de chamadas e SMS recebidos.
+- Adicionado suporte ao serviço de filtragem de chamadas.
+- Adicionada visualização de permissões para permissões de telefone ausentes.
+- Removidas "Solicitações de mensagens" das configurações do Messenger.
+- Removidos não contatos das sugestões de preenchimento automático do Messenger.
