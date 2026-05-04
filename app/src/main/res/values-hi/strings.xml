@@ -74,15 +74,9 @@
     <string name="sms_text_out_loud">%1$s ने आपको एक टेक्स्ट संदेश भेजा है: %2$s</string>
     <string name="messenger_notification_text">%1$s से इनकमिंग फेसबुक संदेश</string>
     <string name="messenger_text_out_loud">%1$s ने आपको एक फेसबुक संदेश भेजा है: %2$s</string>
-    <string name="messenger_message_request">%1$s से इनकमिंग फेसबुक संदेश अनुरोध</string>
     <string name="messenger_notification_audio_call">%1$s से इनकमिंग फेसबुक कॉल</string>
     <string name="messenger_notification_video_call">%1$s से इनकमिंग फेसबुक वीडियो कॉल</string>
     <string name="messenger_notification_strategy_unknown">अज्ञात फेसबुक मैसेंजर सूचना</string>
-    <string-array name="messenger_message_request_keywords">
-        <item>संदेश अनुरोध</item>
-        <item>जुड़ना चाहते हैं</item>
-        <item>संदेश भेजने का अनुरोध किया</item>
-    </string-array>
 
     <string name="contact_unknown">कोई</string>
 
@@ -197,8 +191,6 @@
     <string name="ignore_single_word_messages">एक शब्द वाले संदेशों को अनदेखा करें</string>
     <string name="ignore_reactions">प्रतिक्रियाओं को अनदेखा करें</string>
 
-    <!-- Messenger Settings -->
-    <string name="messenger_include_message_requests">संदेश अनुरोध शामिल करें</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">सूचना स्रोत</string>

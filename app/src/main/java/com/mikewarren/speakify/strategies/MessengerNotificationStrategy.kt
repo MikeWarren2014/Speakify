@@ -134,9 +134,6 @@ class MessengerNotificationStrategy(
                     notificationSource,
                     text,
                 )
-            if (isMessageRequest())
-                return context.getString(R.string.messenger_message_request,
-                    notificationSource)
             return context.getString(R.string.messenger_notification_text,
                 notificationSource)
         }
@@ -153,11 +150,6 @@ class MessengerNotificationStrategy(
     override fun shouldSpeakify(): Boolean {
         val name = senderName ?: return false
 
-        if (isMessageRequest())  {
-            return ((appSettingsModel?.getBooleanSetting(MessagingAppKeys.KEY_INCLUDE_MESSAGE_REQUESTS, true)) ?: Constants.DefaultBooleanSetting) &&
-                    (super.shouldSpeakifyBasedOnSettings())
-        }
-        
         // Save to recent contacts regardless of whether we speak it
         saveToRecentContacts(name)
 
@@ -176,11 +168,6 @@ class MessengerNotificationStrategy(
 
         return ((super.shouldSpeakify()) || (appSettingsModel!!.notificationSources.any { it.value == name })) &&
                 (super.shouldSpeakifyBasedOnSettings())
-    }
-
-    private fun isMessageRequest(): Boolean {
-        return SearchUtils.HasAnyMatchesOf(context.resources.getStringArray(R.array.messenger_message_request_keywords),
-            listOf(title, text))
     }
 
     private fun extractSenderName(): String? {

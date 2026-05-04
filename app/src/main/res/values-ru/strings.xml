@@ -74,15 +74,9 @@
     <string name="sms_text_out_loud">%1$s отправил(-а) вам SMS: %2$s</string>
     <string name="messenger_notification_text">Входящее сообщение Facebook от %1$s</string>
     <string name="messenger_text_out_loud">%1$s отправил(-а) вам сообщение в Facebook: %2$s</string>
-    <string name="messenger_message_request">Входящий запрос сообщения Facebook от %1$s</string>
     <string name="messenger_notification_audio_call">Входящий звонок Facebook от %1$s</string>
     <string name="messenger_notification_video_call">Входящий видеозвонок Facebook от %1$s</string>
     <string name="messenger_notification_strategy_unknown">Неизвестное уведомление Facebook Messenger</string>
-    <string-array name="messenger_message_request_keywords">
-        <item>Запрос переписки</item>
-        <item>хочет связаться</item>
-        <item>запросил переписку</item>
-    </string-array>
 
     <string name="contact_unknown">Кто-то</string>
 
@@ -197,8 +191,6 @@
     <string name="ignore_single_word_messages">Игнорировать сообщения из одного слова</string>
     <string name="ignore_reactions">Игнорировать реакции</string>
 
-    <!-- Messenger Settings -->
-    <string name="messenger_include_message_requests">Включать запросы сообщений</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">источники уведомлений</string>

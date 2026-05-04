@@ -74,15 +74,9 @@
     <string name="sms_text_out_loud">%1$s からメッセージが届きました: %2$s</string>
     <string name="messenger_notification_text">%1$s からの Facebook メッセージ</string>
     <string name="messenger_text_out_loud">%1$s から Facebook メッセージが届きました: %2$s</string>
-    <string name="messenger_message_request">%1$s からの Facebook メッセージリクエスト</string>
     <string name="messenger_notification_audio_call">%1$s からの Facebook 着信</string>
     <string name="messenger_notification_video_call">%1$s からの Facebook 映像通話着信</string>
     <string name="messenger_notification_strategy_unknown">不明な Facebook メッセンジャーの通知</string>
-    <string-array name="messenger_message_request_keywords">
-        <item>メッセージリクエスト</item>
-        <item>つながりを希望しています</item>
-        <item>メッセージをリクエストしました</item>
-    </string-array>
 
     <string name="contact_unknown">誰か</string>
 
@@ -197,8 +191,6 @@
     <string name="ignore_single_word_messages">単語1つのメッセージを無視する</string>
     <string name="ignore_reactions">リアクションを無視する</string>
 
-    <!-- Messenger Settings -->
-    <string name="messenger_include_message_requests">メッセージリクエストを含める</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">通知ソース</string>

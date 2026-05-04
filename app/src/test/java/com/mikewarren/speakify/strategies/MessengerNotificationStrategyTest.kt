@@ -54,7 +54,6 @@ class MessengerNotificationStrategyTest {
         every { resources.getStringArray(R.array.action_mark_read) } returns arrayOf("mark as read", "mark read")
         every { resources.getStringArray(R.array.action_outgoing_call) } returns arrayOf("end call", "hang up", "speaker")
         every { resources.getStringArray(R.array.action_incoming_call_list) } returns arrayOf("answer", "decline")
-        every { resources.getStringArray(R.array.messenger_message_request_keywords) } returns arrayOf("Message Request", "wants to connect", "requested to message")
 
         val ttsManager = mockk<TTSManager>(relaxed = true)
 
@@ -89,7 +88,6 @@ class MessengerNotificationStrategyTest {
         every { resources.getStringArray(R.array.action_mark_read) } returns arrayOf("mark as read", "mark read")
         every { resources.getStringArray(R.array.action_outgoing_call) } returns arrayOf("end call", "hang up", "speaker")
         every { resources.getStringArray(R.array.action_incoming_call_list) } returns arrayOf("answer", "decline")
-        every { resources.getStringArray(R.array.messenger_message_request_keywords) } returns arrayOf("Message Request", "wants to connect", "requested to message")
 
         val ttsManager = mockk<TTSManager>(relaxed = true)
 

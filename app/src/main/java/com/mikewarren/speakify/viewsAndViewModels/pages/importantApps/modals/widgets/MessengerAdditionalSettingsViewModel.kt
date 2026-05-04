@@ -13,26 +13,5 @@ class MessengerAdditionalSettingsViewModel(
     onSaveSettings: (Map<String, String>) -> Unit,
 ) : BaseMessagingAppAdditionalSettingsViewModel(settingsRepository, initialAdditionalSettings, onSaveSettings) {
 
-    var includeMessageRequests by mutableStateOf(
-        initialAdditionalSettings[MessagingAppKeys.KEY_INCLUDE_MESSAGE_REQUESTS]?.toBoolean() ?: Constants.DefaultBooleanSetting
-    )
-
-    private var originalIncludeMessageRequests = includeMessageRequests
-
-    override fun cancel() {
-        super.cancel()
-        includeMessageRequests = originalIncludeMessageRequests
-    }
-
-    override fun onSave() {
-        originalIncludeMessageRequests = includeMessageRequests
-        super.onSave()
-    }
-
-    override fun makeAdditionalSettingsDict(): Map<String, String> {
-        val baseMap = super.makeAdditionalSettingsDict().toMutableMap()
-        baseMap[MessagingAppKeys.KEY_INCLUDE_MESSAGE_REQUESTS] = includeMessageRequests.toString()
-        return baseMap
-    }
 
 }

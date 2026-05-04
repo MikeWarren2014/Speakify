@@ -74,15 +74,9 @@
     <string name="sms_text_out_loud">%1$s님이 문자 메시지를 보냈습니다: %2$s</string>
     <string name="messenger_notification_text">%1$s님의 수신 Facebook 메시지</string>
     <string name="messenger_text_out_loud">%1$s님이 Facebook 메시지를 보냈습니다: %2$s</string>
-    <string name="messenger_message_request">%1$s님의 수신 Facebook 메시지 요청</string>
     <string name="messenger_notification_audio_call">%1$s님의 수신 Facebook 전화</string>
     <string name="messenger_notification_video_call">%1$s님의 수신 Facebook 영상 전화</string>
     <string name="messenger_notification_strategy_unknown">알 수 없는 Facebook 메신저 알림</string>
-    <string-array name="messenger_message_request_keywords">
-        <item>메시지 요청</item>
-        <item>연결하고 싶어함</item>
-        <item>메시지 요청함</item>
-    </string-array>
 
     <string name="contact_unknown">누군가</string>
 
@@ -197,8 +191,6 @@
     <string name="ignore_single_word_messages">한 단어 메시지 무시</string>
     <string name="ignore_reactions">반응 무시</string>
 
-    <!-- Messenger Settings -->
-    <string name="messenger_include_message_requests">메시지 요청 포함</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">알림 소스</string>
