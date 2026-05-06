@@ -1,7 +1,5 @@
-- Fehler bei der Lautstärkewiederherstellung auf neuen Geräten behoben.
-- Auf Google Contact Picker umgestellt; Kontaktberechtigung nicht mehr erforderlich.
-- Absturz beim Drücken der Eingabetaste in Benachrichtigungsquellen behoben.
-- Funktion "Ersatz-Apps" für verwaiste wichtige Apps hinzugefügt.
-- Problem mit fest codierter maximaler Lautstärke behoben.
-- Probleme mit Einstellungen für Nachrichten-Apps behoben.
-- Bildschirm für Benachrichtigungsberechtigungen zur schrittweisen Erteilung hinzugefügt.
+- Fehler bei Ankündigungen eingehender Anrufe und SMS behoben.
+- Unterstützung für Anruffilterungsdienst hinzugefügt.
+- Berechtigungsansicht für fehlende Telefonberechtigungen hinzugefügt.
+- „Nachrichtenanfragen“ aus den Messenger-Einstellungen entfernt.
+- Nicht-Kontakte aus der Messenger-Autovervollständigung entfernt.

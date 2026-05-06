@@ -1,7 +1,5 @@
-- Risolto bug di ripristino del volume su nuovi dispositivi.
-- Passaggio a Google Contact Picker; permesso contatti non più richiesto.
-- Risolto crash premendo invio nelle sorgenti di notifica.
-- Aggiunte "App Sostitutive" per app importanti orfane.
-- Risolto problema del volume massimo hard-coded.
-- Risolti problemi con le impostazioni delle app di messaggistica.
-- Schermata autorizzazioni notifiche aggiunta per un controllo graduale.
+- Risolti gli annunci di chiamate e SMS in arrivo.
+- Aggiunto il supporto al servizio di filtraggio chiamate.
+- Aggiunta visualizzazione permessi per i permessi telefonici mancanti.
+- Rimosse "Richieste di messaggi" dalle impostazioni di Messenger.
+- Rimossi i non contatti dal completamento automatico di Messenger.

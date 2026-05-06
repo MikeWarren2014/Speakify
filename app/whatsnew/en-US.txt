@@ -1,7 +1,5 @@
-- Fixed volume restoration bug on new devices.
-- Switched to Google Contact Picker; contact permission no longer required.
-- Fixed crash when pressing enter in notification sources.
-- Added "Substitute Apps" for orphaned important apps.
-- Fixed hard-coded max volume issue.
-- Fixed message app settings issues.
-- Added Notification Permissions screen for gradual permission granting.
+- Fixed incoming call and SMS announcements.
+- Added support for Call Screening service.
+- Added Permissions view to show missing phone permissions.
+- Removed "Message Requests" from Messenger settings.
+- Filtered non-contacts from Messenger autocomplete suggestions.
