@@ -214,6 +214,8 @@
     <string name="settings_min_volume_description">O nível de volume mais baixo que o app usará ao falar as notificações.</string>
     <string name="settings_maximize_volume_title">Maximizar volume com tela desligada</string>
     <string name="settings_maximize_volume_description">Aumenta o volume da notificação ao máximo quando a tela está bloqueada.\n\nAviso: Isso pode afetar outros áudios, como música ou podcasts. Desative isso se você ouvir outras mídias.</string>
+    <string name="settings_stop_speech_on_screen_off_title">Descartar com botão liga/desliga</string>
+    <string name="settings_stop_speech_on_screen_off_description">Interrompe imediatamente a leitura da notificação em andamento quando a tela é desligada.</string>
     <string name="settings_section_privacy">Privacidade</string>
     <string name="settings_crashlytics_title">Compartilhar Dados de Uso</string>
     <string name="settings_crashlytics_description">Ajude a melhorar o Speakify compartilhando relatórios de falhas anônimos e estatísticas de uso via Firebase.</string>

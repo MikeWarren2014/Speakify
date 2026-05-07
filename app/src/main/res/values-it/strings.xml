@@ -214,6 +214,8 @@
     <string name="settings_min_volume_description">Il livello di volume più basso che l\'app utilizzerà quando pronuncia le notifiche.</string>
     <string name="settings_maximize_volume_title">Massimizza volume a schermo spento</string>
     <string name="settings_maximize_volume_description">Aumenta al massimo il volume delle notifiche quando lo schermo è bloccato.\n\nAVVISO: Questo potrebbe influire su altri audio come musica o podcast. Disattiva questa opzione se ascolti altri media.</string>
+    <string name="settings_stop_speech_on_screen_off_title">Chiudi con tasto accensione</string>
+    <string name="settings_stop_speech_on_screen_off_description">Interrompe immediatamente la lettura della notifica in corso quando lo schermo viene spento.</string>
     <string name="settings_section_privacy">Privacy</string>
     <string name="settings_crashlytics_title">Condividi Dati di Utilizzo</string>
     <string name="settings_crashlytics_description">Aiuta a migliorare Speakify condividendo segnalazioni di arresto anomalo anonime e statistiche di utilizzo tramite Firebase.</string>

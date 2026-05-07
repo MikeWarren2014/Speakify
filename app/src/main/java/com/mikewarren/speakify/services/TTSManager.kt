@@ -182,6 +182,10 @@ class TTSManager @Inject constructor(
         TTSUtils.SetTTSVoice(tts!!, voiceName)
     }
 
+    fun isSpeakificationInProgress(): Boolean {
+        return tts?.isSpeaking ?: false
+    }
+
     suspend fun stop() {
         Log.d(TAG, "Force stopping TTS engine.")
         // Force flush the queue with an empty string to clear any hardware buffers

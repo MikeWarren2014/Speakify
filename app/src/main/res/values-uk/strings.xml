@@ -214,6 +214,8 @@
     <string name="settings_min_volume_description">Найнижчий рівень гучності, який програма використовуватиме під час озвучення сповіщень.</string>
     <string name="settings_maximize_volume_title">Максимальна гучність при вимкненому екрані</string>
     <string name="settings_maximize_volume_description">Збільшує гучність сповіщень до максимуму, коли екран заблоковано.\n\nПОПЕРЕДЖЕННЯ: Це може вплинути на інший звук, наприклад музику чи подкасти. Вимкніть це, якщо ви слухаєте інші медіа.</string>
+    <string name="settings_stop_speech_on_screen_off_title">Скасувати кнопкою живлення</string>
+    <string name="settings_stop_speech_on_screen_off_description">Негайно припиняє поточне озвучення сповіщення, коли екран вимикається.</string>
     <string name="settings_section_privacy">Конфіденційність</string>
     <string name="settings_crashlytics_title">Ділитися даними про використання</string>
     <string name="settings_crashlytics_description">Допоможіть покращити Speakify, ділячись анонімними звітами про збої та статистикою використання через Firebase.</string>

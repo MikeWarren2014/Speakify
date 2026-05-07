@@ -214,6 +214,8 @@
     <string name="settings_min_volume_description">सूचनाएं बोलते समय ऐप द्वारा उपयोग किया जाने वाला सबसे कम वॉल्यूम स्तर।</string>
     <string name="settings_maximize_volume_title">स्क्रीन बंद होने पर वॉल्यूम अधिकतम करें</string>
     <string name="settings_maximize_volume_description">स्क्रीन लॉक होने पर सूचना वॉल्यूम को अधिकतम तक बढ़ाता है।\n\nचेतावनी: यह संगीत या पॉडकास्ट जैसे अन्य ऑडियो को प्रभावित कर सकता है। यदि आप अन्य मीडिया सुनते हैं तो इसे बंद कर दें।</string>
+    <string name="settings_stop_speech_on_screen_off_title">पावर बटन से बंद करें</string>
+    <string name="settings_stop_speech_on_screen_off_description">स्क्रीन बंद होने पर वर्तमान में चल रही सूचना के वाचन को तुरंत रोकें।</string>
     <string name="settings_section_privacy">गोपनीयता</string>
     <string name="settings_crashlytics_title">उपयोग डेटा साझा करें</string>
     <string name="settings_crashlytics_description">Firebase के माध्यम से अनाम क्रैश रिपोर्ट और उपयोग के आँकड़े साझा करके Speakify को बेहतर बनाने में सहायता करें।</string>

@@ -214,6 +214,8 @@
     <string name="settings_min_volume_description">Die niedrigste Lautstärkestufe, die die App beim Vorlesen von Benachrichtigungen verwendet.</string>
     <string name="settings_maximize_volume_title">Lautstärke bei ausgeschaltetem Bildschirm maximieren</string>
     <string name="settings_maximize_volume_description">Erhöht die Benachrichtigungslautstärke auf das Maximum, wenn der Bildschirm gesperrt ist.\n\nWARNUNG: Dies kann andere Audioquellen wie Musik oder Podcasts beeinflussen. Schalten Sie dies aus, wenn Sie andere Medien hören.</string>
+    <string name="settings_stop_speech_on_screen_off_title">Mit Ein/Aus-Taste beenden</string>
+    <string name="settings_stop_speech_on_screen_off_description">Beendet die laufende Sprachausgabe sofort, wenn der Bildschirm ausgeschaltet wird.</string>
     <string name="settings_section_privacy">Datenschutz</string>
     <string name="settings_crashlytics_title">Nutzungsdaten teilen</string>
     <string name="settings_crashlytics_description">Helfen Sie mit, Speakify zu verbessern, indem Sie anonyme Absturzberichte und Nutzungsstatistiken über Firebase teilen.</string>

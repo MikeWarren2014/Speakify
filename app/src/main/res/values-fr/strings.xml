@@ -214,6 +214,8 @@
     <string name="settings_min_volume_description">Le niveau de volume le plus bas utilisé par l\'application.</string>
     <string name="settings_maximize_volume_title">Maximiser le volume écran éteint</string>
     <string name="settings_maximize_volume_description">Augmente le volume au maximum lorsque l\'écran est verrouillé.\n\nATTENTION : Cela peut affecter d\'autres sons comme la musique. Désactivez cette option si vous écoutez d\'autres médias.</string>
+    <string name="settings_stop_speech_on_screen_off_title">Ignorer avec le bouton d\'alimentation</string>
+    <string name="settings_stop_speech_on_screen_off_description">Arrête immédiatement la lecture de la notification en cours lorsque l\'écran est éteint.</string>
     <string name="settings_section_privacy">Confidentialité</string>
     <string name="settings_crashlytics_title">Partager les données d\'utilisation</string>
     <string name="settings_crashlytics_description">Aidez à améliorer Speakify en partageant des rapports de crash anonymes et des statistiques via Firebase.</string>

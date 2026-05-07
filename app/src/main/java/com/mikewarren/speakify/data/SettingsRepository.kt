@@ -13,6 +13,8 @@ interface SettingsRepository {
 
     val maximizeVolumeOnScreenOff: Flow<Boolean>
 
+    val stopSpeechOnScreenOff: Flow<Boolean>
+
     val minVolume: Flow<Int>
 
     val isCrashlyticsEnabled: Flow<Boolean>
@@ -23,6 +25,8 @@ interface SettingsRepository {
     suspend fun saveAppSettings(appSettingsModel: AppSettingsModel)
 
     suspend fun setMaximizeVolumeOnScreenOff(shouldMaximize: Boolean)
+
+    suspend fun setStopSpeechOnScreenOff(shouldStop: Boolean)
 
     suspend fun setMinVolume(volume: Int)
 
