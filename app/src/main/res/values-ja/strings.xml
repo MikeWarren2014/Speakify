@@ -214,6 +214,8 @@
     <string name="settings_min_volume_description">通知を読み上げる際にアプリが使用する最小音量レベル。</string>
     <string name="settings_maximize_volume_title">画面オフ時に音量を最大化</string>
     <string name="settings_maximize_volume_description">画面ロック時に通知音量を最大にします。\n\n警告: 音楽やポッドキャストなどの他のオーディオに影響する場合があります。他のメディアを聴く場合はオフにしてください。</string>
+    <string name="settings_stop_speech_on_screen_off_title">電源ボタンで終了</string>
+    <string name="settings_stop_speech_on_screen_off_description">画面がオフになったときに、進行中の読み上げをすぐに停止します。</string>
     <string name="settings_section_privacy">プライバシー</string>
     <string name="settings_crashlytics_title">利用データの共有</string>
     <string name="settings_crashlytics_description">Firebase を通じて匿名のクラッシュレポートや利用統計を共有し、Speakify の改善にご協力ください。</string>

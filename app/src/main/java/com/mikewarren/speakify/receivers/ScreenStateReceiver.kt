@@ -7,6 +7,7 @@ import android.util.Log
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.services.SpeakifyAudioManager
+import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.log.LogUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ScreenStateReceiver: BroadcastReceiver() {
+class ScreenStateReceiver @Inject constructor(): BroadcastReceiver() {
 
     @Inject
     lateinit var settingsRepository: SettingsRepository
@@ -27,24 +28,26 @@ class ScreenStateReceiver: BroadcastReceiver() {
     @Inject
     lateinit var audioManager: SpeakifyAudioManager
 
+    @Inject
+    lateinit var ttsManager: TTSManager
+
     override fun onReceive(context: Context, intent: Intent) {
         val pendingResult = goAsync()
 
         applicationScope.launch {
             try {
-                // Use .first() to get the current value and continue. 
-                // .collect() would hang indefinitely, preventing pendingResult.finish().
-                val isEnabled = settingsRepository.maximizeVolumeOnScreenOff.first()
-                
-                if (!isEnabled) {
-                    Log.d("ScreenStateReceiver", "Maximize volume is disabled.")
-                    return@launch
-                }
-                
-
                 if (intent.action == Intent.ACTION_SCREEN_OFF) {
-                    Log.d("ScreenStateReceiver", "Screen OFF. Maximizing notification volume.")
-                    audioManager.maximizeVolume()
+                    val stopSpeechOnScreenOff = settingsRepository.stopSpeechOnScreenOff.first()
+                    if (stopSpeechOnScreenOff) {
+                        stopSpeakificationIfNeeded()
+                        return@launch
+                    }
+
+                    val maximizeVolumeOnScreenOff = settingsRepository.maximizeVolumeOnScreenOff.first()
+                    if (maximizeVolumeOnScreenOff) {
+                        Log.d("ScreenStateReceiver", "Screen OFF. Maximizing notification volume.")
+                        audioManager.maximizeVolume()
+                    }
                     return@launch
                 }
 
@@ -76,5 +79,13 @@ class ScreenStateReceiver: BroadcastReceiver() {
                 pendingResult.finish()
             }
         }
+    }
+
+    suspend fun stopSpeakificationIfNeeded() {
+        if (ttsManager.isSpeakificationInProgress()) {
+            Log.d("ScreenStateReceiver", "Screen OFF. Stopping TTS.")
+            ttsManager.stop()
+        }
+
     }
 }

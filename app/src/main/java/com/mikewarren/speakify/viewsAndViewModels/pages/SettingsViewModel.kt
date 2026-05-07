@@ -52,6 +52,13 @@ class SettingsViewModel @Inject constructor(
             initialValue = false // Default to false
         )
 
+    val stopSpeechOnScreenOff: StateFlow<Boolean> = settingsRepository.stopSpeechOnScreenOff
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = true // Default to true
+        )
+
     val minVolume: StateFlow<Int> = settingsRepository.minVolume
         .stateIn(
             scope = viewModelScope,
@@ -116,6 +123,18 @@ class SettingsViewModel @Inject constructor(
     fun setMaximizeVolumeOnScreenOff(shouldMaximize: Boolean) {
         viewModelScope.launch {
             settingsRepository.setMaximizeVolumeOnScreenOff(shouldMaximize)
+            // these are mutually exclusive settings
+            if (shouldMaximize)
+                settingsRepository.setStopSpeechOnScreenOff(false)
+        }
+    }
+
+    fun setStopSpeechOnScreenOff(shouldStop: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.setStopSpeechOnScreenOff(shouldStop)
+            // these are mutually exclusive settings
+            if (shouldStop)
+                settingsRepository.setMaximizeVolumeOnScreenOff(false)
         }
     }
 

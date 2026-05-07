@@ -14,6 +14,7 @@ data class UserSettingsModel(
     val useDarkTheme: Boolean,
     val selectedTTSVoice: String,
     val maximizeVolumeOnScreenOff: Boolean = false,
+    val stopSpeechOnScreenOff: Boolean = true,
     val minVolume: Int = 0,
 
     val isCrashlyticsEnabled: Boolean = false,

@@ -50,7 +50,6 @@ import kotlin.math.roundToInt
 fun SettingsView(onNavigateToDeleteAccount: () -> Unit) {
     val viewModel: SettingsViewModel = hiltViewModel()
     val isDarkThemePreferred by viewModel.useDarkTheme.collectAsState(initial = isSystemInDarkTheme())
-    val shouldMaximizeVolumeOnScreenOff by viewModel.maximizeVolumeOnScreenOff.collectAsState()
     val isCrashlyticsEnabled by viewModel.isCrashlyticsEnabled.collectAsStateWithLifecycle()
 
     val minVolume by viewModel.minVolume.collectAsStateWithLifecycle()
@@ -124,12 +123,8 @@ fun SettingsView(onNavigateToDeleteAccount: () -> Unit) {
                     maxVolume = viewModel.maxVolume,
                     onValueChange = { viewModel.setMinVolume(it) }
                 )
-                SettingsToggleCard(
-                    title = stringResource(R.string.settings_maximize_volume_title),
-                    description = stringResource(R.string.settings_maximize_volume_description),
-                    isChecked = shouldMaximizeVolumeOnScreenOff,
-                    onCheckedChange = { viewModel.setMaximizeVolumeOnScreenOff(it) },
-                )
+                MutuallyExclusiveScreenOffSettings(viewModel)
+
             }
 
             SettingsSection(stringResource(R.string.settings_section_privacy)) {
@@ -250,6 +245,29 @@ fun SettingsSection(
             modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
         )
         content()
+    }
+}
+
+@Composable
+fun MutuallyExclusiveScreenOffSettings(viewModel: SettingsViewModel) {
+    val shouldMaximizeVolumeOnScreenOff by viewModel.maximizeVolumeOnScreenOff.collectAsState()
+    val shouldStopSpeechOnScreenOff by viewModel.stopSpeechOnScreenOff.collectAsState()
+
+    if (!shouldStopSpeechOnScreenOff) {
+        SettingsToggleCard(
+            title = stringResource(R.string.settings_maximize_volume_title),
+            description = stringResource(R.string.settings_maximize_volume_description),
+            isChecked = shouldMaximizeVolumeOnScreenOff,
+            onCheckedChange = { viewModel.setMaximizeVolumeOnScreenOff(it) },
+        )
+    }
+    if (!shouldMaximizeVolumeOnScreenOff) {
+        SettingsToggleCard(
+            title = stringResource(R.string.settings_stop_speech_on_screen_off_title),
+            description = stringResource(R.string.settings_stop_speech_on_screen_off_description),
+            isChecked = shouldStopSpeechOnScreenOff,
+            onCheckedChange = { viewModel.setStopSpeechOnScreenOff(it) },
+        )
     }
 }
 

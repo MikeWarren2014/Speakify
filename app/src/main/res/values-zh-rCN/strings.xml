@@ -214,7 +214,8 @@
     <string name="settings_min_volume_title">最小音量</string>
     <string name="settings_min_volume_description">应用播报通知时使用的最低音量。</string>
     <string name="settings_maximize_volume_title">熄屏时最大化音量</string>
-    <string name="settings_maximize_volume_description">在屏幕锁定时将通知音量调至最大。\n\n警告：这可能会影响音乐或播客等其他音频。如果您正在收听其他媒体，请关闭此选项。</string>
+    <string name="settings_stop_speech_on_screen_off_title">使用电源键关闭</string>
+    <string name="settings_stop_speech_on_screen_off_description">当屏幕关闭时，立即停止正在进行的语音播报。</string>
     <string name="settings_section_privacy">隐私</string>
     <string name="settings_crashlytics_title">共享使用数据</string>
     <string name="settings_crashlytics_description">通过 Firebase 共享匿名崩溃报告和使用统计信息，帮助改进 Speakify。</string>

@@ -59,6 +59,11 @@ class SettingsRepositoryImpl @Inject constructor(
             model.maximizeVolumeOnScreenOff
         }
 
+    override val stopSpeechOnScreenOff: Flow<Boolean> = userSettingsDataStore.data
+        .map { model: UserSettingsModel ->
+            model.stopSpeechOnScreenOff
+        }
+
     override val minVolume: Flow<Int> = userSettingsDataStore
         .data
         .map { model: UserSettingsModel ->
@@ -90,6 +95,12 @@ class SettingsRepositoryImpl @Inject constructor(
     override suspend fun setMaximizeVolumeOnScreenOff(shouldMaximize: Boolean) {
         userSettingsDataStore.updateData { model: UserSettingsModel ->
             model.copy(maximizeVolumeOnScreenOff = shouldMaximize)
+        }
+    }
+
+    override suspend fun setStopSpeechOnScreenOff(shouldStop: Boolean) {
+        userSettingsDataStore.updateData { model: UserSettingsModel ->
+            model.copy(stopSpeechOnScreenOff = shouldStop)
         }
     }
 

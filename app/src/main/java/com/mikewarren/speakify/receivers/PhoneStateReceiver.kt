@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PhoneStateReceiver : BroadcastReceiver(), ITaggable {
+class PhoneStateReceiver @Inject constructor() : BroadcastReceiver(), ITaggable {
     @Inject
     lateinit var gatekeeper: SpeakifyEngineGatekeeper
 

@@ -60,12 +60,15 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
     @Inject
     lateinit var ttsManager: TTSManager
 
+    @Inject
+    lateinit var phoneStateReceiver: PhoneStateReceiver
+
+    @Inject
+    lateinit var screenStateReceiver: ScreenStateReceiver
+
     private lateinit var defaultVoice: String;
 
     private val recentlySpokenCache = LruCache<String, Long>(20)
-
-    private val phoneStateReceiver = PhoneStateReceiver()
-    private val screenStateReceiver = ScreenStateReceiver()
 
     override fun onCreate() {
         super.onCreate()

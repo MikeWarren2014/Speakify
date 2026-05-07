@@ -214,6 +214,8 @@
     <string name="settings_min_volume_description">El nivel de volumen más bajo que la aplicación usará al hablar las notificaciones.</string>
     <string name="settings_maximize_volume_title">Maximizar volumen con pantalla apagada</string>
     <string name="settings_maximize_volume_description">Aumenta el volumen de las notificaciones al máximo cuando la pantalla está bloqueada.\n\nADVERTENCIA: Esto puede afectar a otros audios como música o podcasts. Desactiva esto si escuchas otros medios.</string>
+    <string name="settings_stop_speech_on_screen_off_title">Descartar con botón de encendido</string>
+    <string name="settings_stop_speech_on_screen_off_description">Detiene inmediatamente la lectura de notificaciones en curso cuando se apaga la pantalla.</string>
 
     <string name="settings_section_privacy">Privacidad</string>
     <string name="settings_crashlytics_title">Compartir datos de uso</string>

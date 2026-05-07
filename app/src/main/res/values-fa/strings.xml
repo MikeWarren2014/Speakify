@@ -215,6 +215,8 @@
     <string name="settings_min_volume_description">کمترین سطح صدا که برنامه هنگام خواندن اعلان‌ها استفاده خواهد کرد. </string>
     <string name="settings_maximize_volume_title">حداکثر کردن صدا هنگام خاموش بودن صفحه</string>
     <string name="settings_maximize_volume_description">صدای اعلان را هنگام قفل بودن صفحه به حداکثر می‌رساند.\n\nهشدار: این ممکن است بر سایر صداها مانند موسیقی یا پادکست تاثیر بگذارد. اگر به رسانه‌های دیگر گوش می‌دهید، این را خاموش کنید.</string>
+    <string name="settings_stop_speech_on_screen_off_title">رد کردن با دکمه پاور</string>
+    <string name="settings_stop_speech_on_screen_off_description">هنگامی که صفحه نمایش خاموش می شود، بلافاصله خواندن اعلان در حال اجرا را متوقف می کند.</string>
     <string name="settings_section_privacy">حریم خصوصی</string>
     <string name="settings_crashlytics_title">اشتراک‌گذاری داده‌های استفاده</string>
     <string name="settings_crashlytics_description">با اشتراک‌گذاری گزارش‌های خرابی ناشناس و آمارهای استفاده از طریق فایربیس، به بهبود Speakify کمک کنید.</string>
