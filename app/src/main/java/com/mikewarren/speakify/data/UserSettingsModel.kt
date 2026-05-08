@@ -13,11 +13,11 @@ import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 data class UserSettingsModel(
     val useDarkTheme: Boolean,
     val selectedTTSVoice: String,
-    val maximizeVolumeOnScreenOff: Boolean = false,
-    val stopSpeechOnScreenOff: Boolean = true,
+    val maximizeVolumeOnScreenOff: Boolean = Constants.DefaultBooleanSetting,
+    val stopSpeechOnScreenOff: Boolean = Constants.DefaultBooleanSetting,
     val minVolume: Int = 0,
 
-    val isCrashlyticsEnabled: Boolean = false,
+    val isCrashlyticsEnabled: Boolean = Constants.DefaultBooleanSetting,
     val originalVolume: Int = -1,
 
     val scheduling: SchedulingModel = SchedulingModel(),
@@ -29,6 +29,6 @@ data class UserSettingsModel(
     constructor() : this(
         useDarkTheme = true,
         selectedTTSVoice = Constants.DefaultTTSVoice,
-        maximizeVolumeOnScreenOff = false,
+        maximizeVolumeOnScreenOff = Constants.DefaultBooleanSetting,
     )
 }
