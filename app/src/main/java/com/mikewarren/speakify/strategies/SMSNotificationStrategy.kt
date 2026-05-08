@@ -122,7 +122,7 @@ ITaggable {
         }
 
         // Now you can work with the 'allMessages' list
-        val latestMessage = allMessages.last()
+        val latestMessage = allMessages.maxBy { it.timestamp }
         val senderPerson = latestMessage.person
 
         // Now you can use senderPerson.name, senderPerson.uri etc.
