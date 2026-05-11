@@ -5,6 +5,7 @@ import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.util.Log
+import com.mikewarren.speakify.data.PhoneStateStore
 import com.mikewarren.speakify.data.SettingsRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
@@ -14,7 +15,8 @@ import javax.inject.Singleton
 @Singleton
 class SpeakifyAudioManager @Inject constructor(
     @ApplicationContext context: Context,
-    private val settingsRepository: SettingsRepository
+    private val settingsRepository: SettingsRepository,
+    private val phoneStateStore: PhoneStateStore
 ) {
     private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     private var focusRequest: AudioFocusRequest? = null
@@ -40,7 +42,7 @@ class SpeakifyAudioManager @Inject constructor(
         }
 
         val originalVolume = settingsRepository.originalVolume.first()
-        val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        val currentVolume = getVolume()
         if ((originalVolume == -1) || (originalVolume != currentVolume)) {
             settingsRepository.setOriginalVolume(currentVolume)
             Log.d("SpeakifyAudioManager", "Saved original music volume: $currentVolume")
@@ -92,9 +94,13 @@ class SpeakifyAudioManager @Inject constructor(
      * Restores the music stream volume to its original state if it was saved.
      */
     suspend fun restoreVolume() {
+        if (phoneStateStore.isRinging()) {
+            Log.d("SpeakifyAudioManager", "Phone is ringing. Skipping volume restoration to prevent race condition.")
+            return
+        }
+
         val originalVolume = settingsRepository.originalVolume.first()
-        val currentVolume = getVolume()
-        if (originalVolume != -1 && currentVolume < originalVolume) {
+        if (originalVolume != -1) {
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, originalVolume, 0)
             Log.d("SpeakifyAudioManager", "Restored music volume to: $originalVolume")
         }
@@ -108,10 +114,4 @@ class SpeakifyAudioManager @Inject constructor(
         settingsRepository.setOriginalVolume(-1)
     }
 
-    /**
-     * Checks if the phone's ringer is currently active.
-     */
-    fun isRingerModeNormal(): Boolean {
-        return audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL
-    }
 }

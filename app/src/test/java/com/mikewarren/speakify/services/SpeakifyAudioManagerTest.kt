@@ -2,6 +2,7 @@ package com.mikewarren.speakify.services
 
 import android.content.Context
 import android.media.AudioManager
+import com.mikewarren.speakify.data.PhoneStateStore
 import com.mikewarren.speakify.data.SettingsRepository
 import io.mockk.coVerify
 import io.mockk.every
@@ -22,6 +23,8 @@ class SpeakifyAudioManagerTest {
     private lateinit var audioManager: AudioManager
     private lateinit var settingsRepository: SettingsRepository
     private lateinit var context: Context
+    private lateinit var phoneStateStore: PhoneStateStore
+
     private lateinit var speakifyAudioManager: SpeakifyAudioManager
 
     @Before
@@ -29,6 +32,7 @@ class SpeakifyAudioManagerTest {
         context = mockk()
         audioManager = mockk(relaxed = true)
         settingsRepository = mockk(relaxed = true)
+        phoneStateStore = PhoneStateStore()
 
         every { context.getSystemService(Context.AUDIO_SERVICE) } returns audioManager
         
@@ -36,7 +40,7 @@ class SpeakifyAudioManagerTest {
         every { audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) } returns 15
         every { audioManager.isMusicActive } returns false
 
-        speakifyAudioManager = SpeakifyAudioManager(context, settingsRepository)
+        speakifyAudioManager = SpeakifyAudioManager(context, settingsRepository, phoneStateStore)
     }
 
     @Test
