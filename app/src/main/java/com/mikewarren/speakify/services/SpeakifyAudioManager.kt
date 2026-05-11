@@ -11,6 +11,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.round
 
 @Singleton
 class SpeakifyAudioManager @Inject constructor(
@@ -36,13 +39,16 @@ class SpeakifyAudioManager @Inject constructor(
     }
 
     suspend fun setVolume(volume: Int, force: Boolean = false) {
+        val currentVolume = getVolume()
+        if (volume == currentVolume)
+            return
+
         if (!force && isMusicActive()) {
             Log.d("SpeakifyAudioManager", "Aborted setting volume because other audio is playing.")
             return
         }
 
         val originalVolume = settingsRepository.originalVolume.first()
-        val currentVolume = getVolume()
         if ((originalVolume == -1) || (originalVolume != currentVolume)) {
             settingsRepository.setOriginalVolume(currentVolume)
             Log.d("SpeakifyAudioManager", "Saved original music volume: $currentVolume")
@@ -114,4 +120,20 @@ class SpeakifyAudioManager @Inject constructor(
         settingsRepository.setOriginalVolume(-1)
     }
 
+    suspend fun getDesiredVolume(): Int {
+        val ringerVolume = round(audioManager.getStreamVolume(AudioManager.STREAM_RING)
+            .toFloat() *
+                maxVolume / audioManager.getStreamMaxVolume(AudioManager.STREAM_RING))
+            .toInt()
+        val currentVolume = getVolume()
+        val minVolume = settingsRepository.minVolume.first()
+
+        if (currentVolume > max(minVolume, ringerVolume))
+            return currentVolume
+
+        if (minVolume > max(currentVolume, ringerVolume))
+            return minVolume
+
+        return min(ringerVolume + 1, maxVolume)
+    }
 }
