@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
 import androidx.annotation.OptIn
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
@@ -20,7 +19,6 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
@@ -107,12 +105,8 @@ class TTSManager @Inject constructor(
             }
         }
 
-        val minVolume = settingsRepository.minVolume.first()
-        val currentVolume = audioManager.getVolume()
-        if (currentVolume < minVolume) {
-            audioManager.setVolume(minVolume, force = true)
-        }
-        
+        audioManager.setVolume(audioManager.getDesiredVolume(), force = true)
+
         audioManager.requestAudioFocus()
 
         return try {
