@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.mikewarren.speakify.data.PhoneStateStore
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.services.SpeakifyAudioManager
@@ -29,6 +30,9 @@ class ScreenStateReceiver @Inject constructor(): BroadcastReceiver() {
     lateinit var audioManager: SpeakifyAudioManager
 
     @Inject
+    lateinit var phoneStateStore: PhoneStateStore
+
+    @Inject
     lateinit var ttsManager: TTSManager
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -40,7 +44,6 @@ class ScreenStateReceiver @Inject constructor(): BroadcastReceiver() {
                     val stopSpeechOnScreenOff = settingsRepository.stopSpeechOnScreenOff.first()
                     if (stopSpeechOnScreenOff) {
                         stopSpeakificationIfNeeded()
-                        return@launch
                     }
 
                     val maximizeVolumeOnScreenOff = settingsRepository.maximizeVolumeOnScreenOff.first()
@@ -55,7 +58,7 @@ class ScreenStateReceiver @Inject constructor(): BroadcastReceiver() {
                     Log.d("ScreenStateReceiver", "Screen ON. Checking for call before restoring volume.")
 
                     // Check if the phone is currently ringing
-                    if (!audioManager.isRingerModeNormal()) {
+                    if (!phoneStateStore.isRinging()) {
                         // If not ringing, it's safe to restore volume to prevent media race condition
                         Log.d("ScreenStateReceiver", "Not ringing. Restoring volume immediately.")
                         audioManager.restoreVolume()
