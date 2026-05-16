@@ -64,7 +64,7 @@ interface IMessageNotificationHandler<EnumType>: IMessageSettingsParser, ITaggab
     }
 
     fun isFromSentMessage(): Boolean {
-        return getLastSenderPerson() == null
+        return getLatestSenderPerson() == null
     }
 
     fun getOutgoingMessageType(): EnumType
@@ -73,9 +73,9 @@ interface IMessageNotificationHandler<EnumType>: IMessageSettingsParser, ITaggab
 
     fun getLatestMessageText(): String {
         // 1. Try to get the latest message from MessagingStyle
-        val messages = getMessages()
-        if (messages.isNotEmpty()) {
-            return messages.last()
+        val latestMessage = getLatestMessage()
+        if (latestMessage != null) {
+            return latestMessage
                 .text
                 ?.trim()
                 ?.toString() ?: ""
@@ -85,10 +85,10 @@ interface IMessageNotificationHandler<EnumType>: IMessageSettingsParser, ITaggab
         return NotificationExtractionUtils.ExtractText(notification)
     }
 
-    fun getLastSenderPerson(): Person? {
-        val messages = getMessages()
-        if (messages.isNotEmpty()) {
-            return messages.last().person
+    fun getLatestSenderPerson(): Person? {
+        val latestMessage = getLatestMessage()
+        if (latestMessage != null) {
+            return latestMessage.person
         }
 
         // If messages are empty (e.g., hidden content), check for the participant extra
@@ -103,6 +103,15 @@ interface IMessageNotificationHandler<EnumType>: IMessageSettingsParser, ITaggab
         }
 
         return null
+    }
+
+    fun getLatestMessage(): NotificationCompat.MessagingStyle.Message? {
+        val messages = getMessages()
+
+        if (messages.isEmpty())
+            return null
+
+        return messages.maxBy { it.timestamp }
     }
 
     fun getMessages(): List<NotificationCompat.MessagingStyle.Message> {

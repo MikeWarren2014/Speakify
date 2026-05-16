@@ -5,11 +5,8 @@ import android.content.Context
 import android.os.Build
 import android.service.notification.StatusBarNotification
 import android.util.Log
-import androidx.compose.ui.semantics.text
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
-import com.mikewarren.speakify.data.Constants
-import com.mikewarren.speakify.data.constants.appSettingsKeys.MessagingAppKeys
 import com.mikewarren.speakify.data.db.DbProvider
 import com.mikewarren.speakify.data.db.RecentMessengerContactModel
 import com.mikewarren.speakify.services.TTSManager
@@ -17,7 +14,6 @@ import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import com.mikewarren.speakify.utils.SearchUtils
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
-import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.MessengerAdditionalSettingsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -184,7 +180,7 @@ class MessengerNotificationStrategy(
                 }
                 
                 // Otherwise get the sender of the last message
-                val person = getLastSenderPerson()
+                val person = getLatestSenderPerson()
                 if (person != null) {
                     return person.name?.toString()
                 }
