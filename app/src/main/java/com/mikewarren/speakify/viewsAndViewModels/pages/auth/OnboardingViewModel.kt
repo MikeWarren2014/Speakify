@@ -52,10 +52,6 @@ class OnboardingViewModel @Inject constructor(
         sessionRepository.saveImportantAppCategories(categories)
     }
 
-    fun saveVeryImportantApps(vias: List<UserAppModel>) {
-        sessionRepository.saveVeryImportantApps(vias)
-    }
-
     fun startTrialConversion() {
         sessionRepository.startTrialConversion()
     }

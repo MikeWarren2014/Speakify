@@ -9,15 +9,14 @@ import com.clerk.api.session.GetTokenOptions
 import com.clerk.api.session.fetchToken
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
-import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.db.firestore.AccountDeletionFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FeedbackFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FirestoreSyncRepository
 import com.mikewarren.speakify.data.models.TrialModel
-import com.mikewarren.speakify.utils.AnalyticsHelper
 import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
+import com.mikewarren.speakify.utils.AnalyticsHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -262,13 +261,6 @@ class SessionRepository @Inject constructor(
     fun saveImportantAppCategories(categories: List<String>) {
         scope.launch {
             onboardingRepository.saveImportantAppCategories(categories)
-        }
-    }
-
-    fun saveVeryImportantApps(vias: List<UserAppModel>) {
-        scope.launch {
-            onboardingRepository.saveVeryImportantApps(vias)
-            analyticsHelper.logVIAs(vias)
         }
     }
 
