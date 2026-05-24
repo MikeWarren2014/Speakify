@@ -411,13 +411,32 @@
     <string name="what_is_your_primary_goal">What\'s your primary goal?</string>
 
     <string name="preference_gathering_option_accessibility">Accessibility</string>
+    <string name="preference_gathering_option_accessibility_desc">Hear important notifications that I cannot find or when I cannot get to or find my phone</string>
     <string name="preference_gathering_option_productivity">Productivity</string>
+    <string name="preference_gathering_option_productivity_desc">Stay on top of important calls, messages, appointments, leads, updates, … without being glued to my phone</string>
     <string name="preference_gathering_option_hands_free_use">Hands-free Use</string>
+    <string name="preference_gathering_option_hands_free_use_desc">Hear important calls/messages while I\'m busy driving/working/exercising</string>
     <string name="preference_gathering_option_other">Other</string>
 
     <!-- App Usage Insight (VIA) -->
-    <string name="via_header">Very Important Apps (VIA)</string>
-    <string name="via_description">What are the **most** important apps to you?</string>
+    <string name="via_category_header">Which type(s) of apps are most important to you?</string>
+    <string name="via_category_subtitle">(Click all that apply)</string>
+    <string name="via_category_communication">Communication</string>
+    <string name="via_category_communication_desc">Calling and messaging apps</string>
+    <string name="via_category_business">Business/Productivity</string>
+    <string name="via_category_business_desc">Email, organization, inbound lead, calendar, job/gig apps, general tools</string>
+    <string name="via_category_shopping">Shopping</string>
+    <string name="via_category_shopping_desc">Amazon Shopping, UberEats, …</string>
+    <string name="via_category_footer">We\'ll add these on the Important Apps page !</string>
+
+    <!-- Value Discovery -->
+    <string name="value_discovery_header">Hear Speakify in Action</string>
+    <string name="value_discovery_description">Listen to how Speakify will announce your notifications. You can change this voice anytime in Settings.</string>
+    <string name="value_discovery_button_speak">Hear Sample Notification</string>
+    <string name="value_discovery_sample_text">"Speakify is active. I will now read your important notifications aloud."</string>
+    <string name="value_discovery_sample_text_accessibility">"Notification from WhatsApp: Hey, are you coming to the meeting?"</string>
+    <string name="value_discovery_sample_text_productivity">"Calendar alert: Team sync starts in 10 minutes in Room 4B."</string>
+    <string name="value_discovery_sample_text_hands_free">"Text message from Mom: Call me when you get a chance."</string>
 
     <!-- Conversion Ready -->
     <string name="conversion_ready_header">Ready to unlock the full experience?</string>

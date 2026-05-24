@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 
 interface TrialRepository {
     val trialModelFlow: Flow<TrialModel>
+    val isNewDirectSignUp: Flow<Boolean>
     suspend fun updateTrialModel(trialModel: TrialModel)
     suspend fun startTrial(): Result<Unit>
     suspend fun refreshTrialStatus()
@@ -14,6 +15,7 @@ interface TrialRepository {
     suspend fun convertToFullVersion(): Result<Unit>
     suspend fun recordDirectSignUp(): Result<Unit>
     suspend fun endTrial(): Result<Unit>
+    fun resetNewDirectSignUp()
 }
 
 @Serializable

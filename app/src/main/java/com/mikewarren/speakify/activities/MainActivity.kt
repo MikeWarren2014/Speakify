@@ -30,6 +30,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.mikewarren.speakify.R
+import com.mikewarren.speakify.data.AppCategoryRepository
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.ActionConstants
@@ -51,6 +52,9 @@ class MainActivity : ComponentActivity()  {
 
     @Inject
     lateinit var settingsRepository: SettingsRepository
+
+    @Inject
+    lateinit var appCategoryRepository: AppCategoryRepository
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -160,6 +164,8 @@ class MainActivity : ComponentActivity()  {
         }
 
         lifecycleScope.launch {
+            appCategoryRepository.initializeCategories()
+
             val selectedTTSVoice = settingsRepository.selectedTTSVoice.first()
             if (selectedTTSVoice.isNullOrEmpty()) {
                 settingsRepository.saveSelectedVoice(Constants.DefaultTTSVoice)

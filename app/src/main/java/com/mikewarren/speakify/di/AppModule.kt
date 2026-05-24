@@ -2,6 +2,8 @@ package com.mikewarren.speakify.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import com.mikewarren.speakify.data.AppCategoryRepository
+import com.mikewarren.speakify.data.AppCategoryRepositoryImpl
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.AppsRepositoryImpl
 import com.mikewarren.speakify.data.MessengerContactsRepository
@@ -13,6 +15,7 @@ import com.mikewarren.speakify.data.SettingsRepositoryImpl
 import com.mikewarren.speakify.data.TrialRepository
 import com.mikewarren.speakify.data.TrialRepositoryImpl
 import com.mikewarren.speakify.data.UserSettingsModel
+import com.mikewarren.speakify.data.db.AppCategoryDao
 import com.mikewarren.speakify.data.db.AppDatabase
 import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.DbProvider
@@ -62,6 +65,12 @@ abstract class AppModule {
         onboardingRepositoryImpl: OnboardingRepositoryImpl
     ): OnboardingRepository
 
+    @Binds
+    @Singleton
+    abstract fun bindAppCategoryRepository(
+        appCategoryRepositoryImpl: AppCategoryRepositoryImpl
+    ): AppCategoryRepository
+
     companion object {
         @Provides
         @Singleton
@@ -69,12 +78,6 @@ abstract class AppModule {
             @ApplicationContext context: Context,
             userSettingsDataStore: DataStore<UserSettingsModel>,
         ): SettingsRepositoryImpl = SettingsRepositoryImpl(context, userSettingsDataStore)
-
-        @Provides
-        @Singleton
-        fun provideAppsRepository(
-            @ApplicationContext context: Context,
-        ): AppsRepositoryImpl = AppsRepositoryImpl(context)
 
         @Provides
         @Singleton
@@ -110,6 +113,12 @@ abstract class AppModule {
         @Singleton
         fun provideRecentMessengerContactDao(database: AppDatabase): RecentMessengerContactDao {
             return database.recentMessengerContactDao()
+        }
+
+        @Provides
+        @Singleton
+        fun provideAppCategoryDao(database: AppDatabase): AppCategoryDao {
+            return database.appCategoryDao()
         }
 
         @Provides

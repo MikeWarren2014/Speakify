@@ -7,6 +7,8 @@ import com.mikewarren.speakify.data.db.firestore.BaseFirestoreRepository
 import com.mikewarren.speakify.data.models.TrialModel
 import com.mikewarren.speakify.utils.DeviceIdProvider
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
@@ -23,6 +25,9 @@ class TrialRepositoryImpl @Inject constructor(
 
     private val trialCollection = firestore.collection("trials")
     private val directSignUpCollection = firestore.collection("directSignUps")
+
+    private val _isNewDirectSignUp = MutableStateFlow(false)
+    override val isNewDirectSignUp: Flow<Boolean> = _isNewDirectSignUp.asStateFlow()
 
     override val trialModelFlow: Flow<TrialModel> = userSettingsDataStore.data
         .map { model: UserSettingsModel ->
@@ -148,6 +153,7 @@ class TrialRepositoryImpl @Inject constructor(
             }
             
             updateTrialModel(TrialModel(status = TrialStatus.NotNeeded))
+            _isNewDirectSignUp.value = true
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
@@ -167,6 +173,10 @@ class TrialRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    override fun resetNewDirectSignUp() {
+        _isNewDirectSignUp.value = false
     }
 
     private suspend fun recordTrialModel(trialModel: TrialModel): Result<Unit> {

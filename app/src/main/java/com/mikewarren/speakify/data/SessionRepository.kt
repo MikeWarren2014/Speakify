@@ -13,6 +13,7 @@ import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.db.firestore.AccountDeletionFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FeedbackFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FirestoreSyncRepository
+import com.mikewarren.speakify.data.models.TrialModel
 import com.mikewarren.speakify.utils.AnalyticsHelper
 import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
@@ -59,24 +60,34 @@ class SessionRepository @Inject constructor(
             Clerk.isInitialized,
             Clerk.userFlow,
             trialRepository.trialModelFlow,
+            trialRepository.isNewDirectSignUp,
             onboardingRepository.appOpenCount,
             onboardingRepository.onboardingStep
-        ) { isInitialized, user, trialModel, openCount, onboardingStep ->
-            DataBundle(isInitialized, user, trialModel.status, openCount, onboardingStep)
+        ) { args ->
+            DataBundle(
+                isInitialized = args[0] as Boolean,
+                user = args[1] as com.clerk.api.user.User?,
+                trialModel = args[2] as TrialModel,
+                isNewDirectSignUp = args[3] as Boolean,
+                openCount = args[4] as Int,
+                onboardingStep = args[5] as OnboardingUiState
+            )
         }
             .distinctUntilChanged()
-            .onEach { (isInitialized, user, trialStatus, openCount, onboardingStep) ->
+            .onEach { (isInitialized, user, trialModel, isNewDirectSignUp, openCount, onboardingStep) ->
                 if (!isInitialized) {
                     _uiState.value = MainUiState.Loading
                     return@onEach
                 }
+
+                val trialStatus = trialModel.status
 
                 if (user == null) {
                     // If we are currently in the TrialEnded state (showing thank you message), 
                     // we don't want the automated logic to jump immediately to SignedOut.
                     if (_uiState.value == MainUiState.TrialEnded) return@onEach
 
-                    if (isHandlingSpecialTrialStatus(trialStatus, openCount, onboardingStep)) {
+                    if (isHandlingSpecialTrialStatus(trialStatus, onboardingStep)) {
                         return@onEach
                     }
                     
@@ -135,6 +146,18 @@ class SessionRepository @Inject constructor(
                         Log.e("SessionRepo", "Failed to bridge Clerk to Firebase", e)
                     }
                 }
+                // Check the state of the trialModel here to determine if this is a new direct sign up, or just a returning user
+                if (trialModel.startTimestamp == 0L) {
+                    if (isNewDirectSignUp) {
+                        if (onboardingStep == OnboardingUiState.Completed) {
+                            trialRepository.resetNewDirectSignUp()
+                            return@onEach
+                        }
+                        setOnboardingState(OnboardingUiState.NotStarted)
+                        return@onEach
+                    }
+                }
+
                 _uiState.value = MainUiState.SignedIn
                 return@onEach
 
@@ -144,14 +167,12 @@ class SessionRepository @Inject constructor(
 
     private fun isHandlingSpecialTrialStatus(
         trialStatus: TrialStatus,
-        openCount: Int,
         onboardingStep: OnboardingUiState
     ): Boolean {
         if (trialStatus is TrialStatus.Active) {
-            // Trigger onboarding after 2 opens if not already completed
-            if (openCount >= 2 && onboardingStep != OnboardingUiState.Completed) {
-                _uiState.value = MainUiState.Onboarding(onboardingStep)
-                analyticsHelper.logOnboardingStep(onboardingStep.toString())
+            // Trigger onboarding immediately if not already completed
+            if (onboardingStep != OnboardingUiState.Completed) {
+                setOnboardingState(onboardingStep)
                 return true
             }
 
@@ -175,6 +196,11 @@ class SessionRepository @Inject constructor(
             return true
         }
         return false
+    }
+
+    private fun setOnboardingState(onboardingStep: OnboardingUiState) {
+        _uiState.value = MainUiState.Onboarding(onboardingStep)
+        analyticsHelper.logOnboardingStep(onboardingStep.toString())
     }
 
     fun proceedToTrialSession() {
@@ -230,6 +256,12 @@ class SessionRepository @Inject constructor(
         scope.launch {
             onboardingRepository.savePrimaryGoal(goal)
             analyticsHelper.logPrimaryGoal(goal)
+        }
+    }
+
+    fun saveImportantAppCategories(categories: List<String>) {
+        scope.launch {
+            onboardingRepository.saveImportantAppCategories(categories)
         }
     }
 
@@ -295,7 +327,8 @@ class SessionRepository @Inject constructor(
     private data class DataBundle(
         val isInitialized: Boolean,
         val user: com.clerk.api.user.User?,
-        val trialStatus: TrialStatus,
+        val trialModel: TrialModel,
+        val isNewDirectSignUp: Boolean,
         val openCount: Int,
         val onboardingStep: OnboardingUiState
     )

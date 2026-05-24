@@ -19,7 +19,7 @@ abstract class BaseSearchableViewModel constructor(
     private val _searchText = MutableStateFlow("")
     open var searchText: StateFlow<String> = _searchText.asStateFlow()
 
-    private val _filteredApps = MutableStateFlow<List<AppListItemViewModel>>(emptyList())
+    protected val _filteredApps = MutableStateFlow<List<AppListItemViewModel>>(emptyList())
     open val filteredApps: StateFlow<List<AppListItemViewModel>> = _filteredApps.asStateFlow()
 
     protected open fun onInit() {
@@ -41,7 +41,7 @@ abstract class BaseSearchableViewModel constructor(
         applySearchFilter()
     }
 
-    fun applySearchFilter() {
+    open fun applySearchFilter() {
         val text = _searchText.value
         val appViewModels = getMainMutableStateFlow().value
         if (text.isBlank()) {

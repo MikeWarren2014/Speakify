@@ -13,6 +13,8 @@ import javax.inject.Inject
 
 class AppsRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val onboardingRepository: OnboardingRepository,
+    private val appCategoryRepository: AppCategoryRepository
 ): AppsRepository {
     private val userAppsDao : UserAppsDao = DbProvider.GetDb(context).userAppsDao()
 
@@ -21,6 +23,9 @@ class AppsRepositoryImpl @Inject constructor(
 
     override suspend fun addImportantApp(appModel: UserAppModel) {
         userAppsDao.insert(appModel)
+        appCategoryRepository.getCategoryForPackage(appModel.packageName)?.let { category ->
+            onboardingRepository.satisfyCategory(category)
+        }
     }
 
     override suspend fun removeImportantApps(appsToRemove: List<UserAppModel>) {

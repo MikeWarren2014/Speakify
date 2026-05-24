@@ -2,6 +2,8 @@ package com.mikewarren.speakify.data
 
 import androidx.datastore.core.DataStore
 import com.mikewarren.speakify.data.db.UserAppModel
+import com.mikewarren.speakify.data.models.AppCategory
+import com.mikewarren.speakify.data.models.OnboardingCategorySelection
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -21,6 +23,9 @@ class OnboardingRepositoryImpl @Inject constructor(
 
     override val primaryGoal: Flow<String?> = userSettingsDataStore.data
         .map { model -> model.onboardingModel.primaryGoal }
+
+    override val importantAppCategories: Flow<List<OnboardingCategorySelection>> = userSettingsDataStore.data
+        .map { model -> model.onboardingModel.importantAppCategories }
 
     override val veryImportantApps: Flow<List<UserAppModel>> = userSettingsDataStore.data
         .map { model -> model.onboardingModel.veryImportantApps }
@@ -60,6 +65,32 @@ class OnboardingRepositoryImpl @Inject constructor(
             model.copy(
                 onboardingModel = model.onboardingModel.copy(
                     primaryGoal = goal
+                )
+            )
+        }
+    }
+
+    override suspend fun saveImportantAppCategories(categories: List<String>) {
+        userSettingsDataStore.updateData { model ->
+            model.copy(
+                onboardingModel = model.onboardingModel.copy(
+                    importantAppCategories = categories.mapNotNull { categoryName ->
+                        AppCategory.entries.find { it.categoryName == categoryName }?.let {
+                            OnboardingCategorySelection(it)
+                        }
+                    }
+                )
+            )
+        }
+    }
+
+    override suspend fun satisfyCategory(category: AppCategory) {
+        userSettingsDataStore.updateData { model ->
+            model.copy(
+                onboardingModel = model.onboardingModel.copy(
+                    importantAppCategories = model.onboardingModel.importantAppCategories.map {
+                        if (it.category == category) it.copy(isSatisfied = true) else it
+                    }
                 )
             )
         }
