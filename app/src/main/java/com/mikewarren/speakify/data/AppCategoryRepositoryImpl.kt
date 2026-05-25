@@ -101,7 +101,7 @@ class AppCategoryRepositoryImpl @Inject constructor(
         return@withContext results
     }
 
-    override suspend fun initializeCategories() {
+    override suspend fun initializeCategories() = withContext(Dispatchers.IO) {
         val categories = mutableListOf<AppCategoryModel>()
         
         // Add hardcoded defaults
@@ -128,7 +128,7 @@ class AppCategoryRepositoryImpl @Inject constructor(
         appCategoryDao.insertAll(categories)
     }
 
-    override suspend fun addCategory(packageName: String, category: AppCategory) {
+    override suspend fun addCategory(packageName: String, category: AppCategory) = withContext(Dispatchers.IO) {
         val model = AppCategoryModel(packageName = packageName, appCategory = category)
         appCategoryDao.insertAll(listOf(model))
         firestoreRepository.uploadCategory(model)

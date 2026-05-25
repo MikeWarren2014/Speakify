@@ -1,5 +1,6 @@
 package com.mikewarren.speakify.data.db.firestore
 
+import android.util.Log
 import com.mikewarren.speakify.data.models.AppCategory
 import com.mikewarren.speakify.data.models.AppCategoryModel
 import kotlinx.coroutines.tasks.await
@@ -27,6 +28,7 @@ class AppCategoryFirestoreRepository @Inject constructor() : BaseFirestoreReposi
                 }
             }
         } catch (e: Exception) {
+            Log.e(TAG, "Failed to fetch all categories", e)
             emptyList()
         }
     }
@@ -38,11 +40,15 @@ class AppCategoryFirestoreRepository @Inject constructor() : BaseFirestoreReposi
                     "packageName" to categoryModel.packageName,
                     "category" to categoryModel.appCategory.name
                 )
-                // Use packageName as document ID to avoid duplicates
-                categoriesCollection.document(categoryModel.packageName).set(data).await()
+                val appCategoryDocument = categoriesCollection.document(categoryModel.packageName)
+                if (appCategoryDocument.get().await().exists())
+                    return@safeFirestoreCall
+
+                appCategoryDocument.set(data)
+                    .await()
             }
         } catch (e: Exception) {
-            // Log error
+            Log.e(TAG, "Failed to upload category: ${categoryModel.packageName}", e)
         }
     }
 }

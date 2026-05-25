@@ -1,6 +1,7 @@
 package com.mikewarren.speakify.data.db.firestore
 
 import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.mikewarren.speakify.utils.log.ITaggable
@@ -10,6 +11,7 @@ import kotlinx.coroutines.tasks.await
 abstract class BaseFirestoreRepository : ITaggable {
 
     protected val firestore = FirebaseFirestore.getInstance()
+    protected val firebaseAuth = FirebaseAuth.getInstance()
 
     /**
      * Executes a Firestore call with retries if the client is offline, unavailable,
@@ -28,7 +30,11 @@ abstract class BaseFirestoreRepository : ITaggable {
                 val isOffline = message.contains("offline", ignoreCase = true)
                 val isPermissionDenied = code == FirebaseFirestoreException.Code.PERMISSION_DENIED
                 val isUnavailable = code == FirebaseFirestoreException.Code.UNAVAILABLE
-                val isAuthMissing = e is IllegalStateException && message.contains("User not logged in")
+                
+                // If it's a permission denied error and there's no current user, it's likely an auth issue.
+                // Also check for our custom "User not logged in" IllegalStateException.
+                val isAuthMissing = (e is IllegalStateException && message.contains("User not logged in")) ||
+                                     (isPermissionDenied && firebaseAuth.currentUser == null)
 
                 val isRetryable = isPermissionDenied || isUnavailable || isOffline || isAuthMissing
 
