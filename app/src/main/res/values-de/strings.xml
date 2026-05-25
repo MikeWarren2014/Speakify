@@ -407,13 +407,32 @@
     <string name="what_is_your_primary_goal">Was ist Ihr Hauptziel?</string>
 
     <string name="preference_gathering_option_accessibility">Barrierefreiheit</string>
+    <string name="preference_gathering_option_accessibility_desc">Wichtige Benachrichtigungen hören, die ich nicht finde oder wenn ich mein Handy nicht erreichen oder finden kann</string>
     <string name="preference_gathering_option_productivity">Produktivität</string>
+    <string name="preference_gathering_option_productivity_desc">Bleiben Sie über wichtige Anrufe, Nachrichten, Termine, Leads, Updates, ... auf dem Laufenden, ohne an Ihr Telefon gefesselt zu sein</string>
     <string name="preference_gathering_option_hands_free_use">Freihändige Nutzung</string>
+    <string name="preference_gathering_option_hands_free_use_desc">Wichtige Anrufe/Nachrichten hören, während ich mit Fahren/Arbeiten/Sport beschäftigt bin</string>
     <string name="preference_gathering_option_other">Sonstiges</string>
 
     <!-- App Usage Insight (VIA) -->
-    <string name="via_header">Sehr wichtige Apps (VIA)</string>
-    <string name="via_description">Welche sind die **wichtigsten** Apps für dich?</string>
+    <string name="via_category_header">Welche Art(en) von Apps sind für Sie am wichtigsten?</string>
+    <string name="via_category_subtitle">(Klicken Sie auf alle zutreffenden)</string>
+    <string name="via_category_communication">Kommunikation</string>
+    <string name="via_category_communication_desc">Anruf- und Messaging-Apps</string>
+    <string name="via_category_business">Business/Produktivität</string>
+    <string name="via_category_business_desc">E-Mail, Organisation, Inbound-Leads, Kalender, Job/Gig-Apps, allgemeine Tools</string>
+    <string name="via_category_shopping">Shopping</string>
+    <string name="via_category_shopping_desc">Amazon Shopping, UberEats, …</string>
+    <string name="via_category_footer">Wir werden diese auf der Seite \'Wichtige Apps\' hinzufügen!</string>
+
+    <!-- Value Discovery -->
+    <string name="value_discovery_header">Speakify in Aktion hören</string>
+    <string name="value_discovery_description">Hören Sie, wie Speakify Ihre Benachrichtigungen ankündigt. Sie können diese Stimme jederzeit in den Einstellungen ändern.</string>
+    <string name="value_discovery_button_speak">Beispiel-Benachrichtigung hören</string>
+    <string name="value_discovery_sample_text">"Speakify ist aktiv. Ich werde nun Ihre wichtigen Benachrichtigungen laut vorlesen."</string>
+    <string name="value_discovery_sample_text_accessibility">"Benachrichtigung von WhatsApp: Hey, kommst du zum Meeting?"</string>
+    <string name="value_discovery_sample_text_productivity">"Kalender-Alarm: Team-Sync beginnt in 10 Minuten in Raum 4B."</string>
+    <string name="value_discovery_sample_text_hands_free">"Textnachricht von Mama: Ruf mich an, wenn du Zeit hast."</string>
 
     <!-- Conversion Ready -->
     <string name="conversion_ready_header">Bereit für das volle Erlebnis?</string>

@@ -404,13 +404,32 @@
     <string name="what_is_your_primary_goal">主な目的は何ですか？</string>
 
     <string name="preference_gathering_option_accessibility">アクセシビリティ</string>
+    <string name="preference_gathering_option_accessibility_desc">携帯電話が見つからない時や、手に取れない場所にある時に、重要な通知を音声で聞く</string>
     <string name="preference_gathering_option_productivity">生産性向上</string>
+    <string name="preference_gathering_option_productivity_desc">電話に張り付くことなく、重要な着信、メッセージ、予定、リード、更新などを常に把握する</string>
     <string name="preference_gathering_option_hands_free_use">ハンズフリーでの使用</string>
+    <string name="preference_gathering_option_hands_free_use_desc">運転、仕事、運動などで手が離せない時に、重要な着信やメッセージを音声で聞く</string>
     <string name="preference_gathering_option_other">その他</string>
 
     <!-- App Usage Insight (VIA) -->
-    <string name="via_header">非常に重要なアプリ (VIA)</string>
-    <string name="via_description">あなたにとって**最も**重要なアプリは何ですか？</string>
+    <string name="via_category_header">どのタイプのアプリがあなたにとって最も重要ですか？</string>
+    <string name="via_category_subtitle">（当てはまるものをすべて選択してください）</string>
+    <string name="via_category_communication">コミュニケーション</string>
+    <string name="via_category_communication_desc">通話およびメッセージングアプリ</string>
+    <string name="via_category_business">ビジネス・生産性</string>
+    <string name="via_category_business_desc">メール、タスク管理、インバウンドリード、カレンダー、仕事用アプリ、汎用ツール</string>
+    <string name="via_category_shopping">ショッピング</string>
+    <string name="via_category_shopping_desc">Amazonショッピング、UberEats、…</string>
+    <string name="via_category_footer">これらは「重要なアプリ」ページに追加されます！</string>
+
+    <!-- Value Discovery -->
+    <string name="value_discovery_header">Speakify を実際に聞いてみる</string>
+    <string name="value_discovery_description">Speakify が通知をどのように読み上げるか聴いてみましょう。この音声は設定でいつでも変更できます。</string>
+    <string name="value_discovery_button_speak">サンプル通知を聴く</string>
+    <string name="value_discovery_sample_text">"Speakify が有効になりました。重要な通知を音声で読み上げます。"</string>
+    <string name="value_discovery_sample_text_accessibility">"WhatsApp からの通知：ねえ、会議に来る？"</string>
+    <string name="value_discovery_sample_text_productivity">"カレンダーのアラート：チームの同期が10分後にルーム4Bで始まります。"</string>
+    <string name="value_discovery_sample_text_hands_free">"お母さんからのメッセージ：時間がある時に電話して。"</string>
 
     <!-- Conversion Ready -->
     <string name="conversion_ready_header">フル機能を体験する準備はできましたか？</string>

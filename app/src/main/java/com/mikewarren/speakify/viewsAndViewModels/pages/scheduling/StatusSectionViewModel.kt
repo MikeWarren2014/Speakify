@@ -1,4 +1,4 @@
-package com.mikewarren.speakify.data.models.scheduling
+package com.mikewarren.speakify.viewsAndViewModels.pages.scheduling
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.data.models.scheduling.StatusModel
 import com.mikewarren.speakify.viewsAndViewModels.widgets.UiText
 
 class StatusSectionViewModel(

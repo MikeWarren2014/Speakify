@@ -1,6 +1,8 @@
-package com.mikewarren.speakify.data.models.scheduling
+package com.mikewarren.speakify.viewsAndViewModels.pages.scheduling
 
 import androidx.lifecycle.ViewModel
+import com.mikewarren.speakify.data.models.scheduling.DayScheduleModel
+import com.mikewarren.speakify.data.models.scheduling.DayScheduleType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

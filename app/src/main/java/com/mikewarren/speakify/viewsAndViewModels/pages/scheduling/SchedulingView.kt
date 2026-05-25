@@ -52,8 +52,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.models.scheduling.DayScheduleModel
 import com.mikewarren.speakify.data.models.scheduling.DayScheduleType
-import com.mikewarren.speakify.data.models.scheduling.StatusSectionViewModel
-import com.mikewarren.speakify.data.models.scheduling.WeeklyScheduleViewModel
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 

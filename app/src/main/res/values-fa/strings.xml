@@ -407,13 +407,32 @@
     <string name="what_is_your_primary_goal">هدف اصلی شما چیست؟</string>
 
     <string name="preference_gathering_option_accessibility">قابلیت دسترسی</string>
+    <string name="preference_gathering_option_accessibility_desc">شنیدن اعلان‌های مهمی که نمی‌توانم پیدا کنم یا زمانی که نمی‌توانم به گوشی‌ام برسم یا آن را پیدا کنم</string>
     <string name="preference_gathering_option_productivity">بهره‌وری</string>
+    <string name="preference_gathering_option_productivity_desc">در جریان تماس‌ها، پیام‌ها، قرارها، سرنخ‌ها و به‌روزرسانی‌های مهم باشید… بدون اینکه به گوشی خود چسبیده باشید</string>
     <string name="preference_gathering_option_hands_free_use">استفاده بدون دست</string>
+    <string name="preference_gathering_option_hands_free_use_desc">شنیدن تماس‌ها/پیام‌های مهم در حالی که مشغول رانندگی، کار یا ورزش هستم</string>
     <string name="preference_gathering_option_other">سایر موارد</string>
 
     <!-- App Usage Insight (VIA) -->
-    <string name="via_header">برنامه‌های بسیار مهم (VIA)</string>
-    <string name="via_description">چه برنامه‌هایی برای شما **بیشترین** اهمیت را دارند؟</string>
+    <string name="via_category_header">کدام نوع برنامه(ها) برای شما مهم‌تر هستند؟</string>
+    <string name="via_category_subtitle">(روی همه موارد مرتبط کلیک کنید)</string>
+    <string name="via_category_communication">ارتباطات</string>
+    <string name="via_category_communication_desc">برنامه‌های تماس و پیام‌رسان</string>
+    <string name="via_category_business">کسب‌وکار/بهره‌وری</string>
+    <string name="via_category_business_desc">ایمیل، سازمان‌دهی، سرنخ‌های ورودی، تقویم، برنامه‌های کاری، ابزارهای عمومی</string>
+    <string name="via_category_shopping">خرید</string>
+    <string name="via_category_shopping_desc">آمازون، اوبر ایتس، …</string>
+    <string name="via_category_footer">ما این‌ها را در صفحه برنامه‌های مهم اضافه خواهیم کرد!</string>
+
+    <!-- Value Discovery -->
+    <string name="value_discovery_header">Speakify را در عمل بشنوید</string>
+    <string name="value_discovery_description">بشنوید که Speakify چگونه اعلان‌های شما را اعلام می‌کند. می‌توانید این صدا را در هر زمان در تنظیمات تغییر دهید.</string>
+    <string name="value_discovery_button_speak">شنیدن اعلان نمونه</string>
+    <string name="value_discovery_sample_text">"Speakify فعال است. من اکنون اعلان‌های مهم شما را با صدای بلند می‌خوانم."</string>
+    <string name="value_discovery_sample_text_accessibility">"اعلان از طرف واتس‌اپ: هی، به جلسه می‌آیی؟"</string>
+    <string name="value_discovery_sample_text_productivity">"هشدار تقویم: همگام‌سازی تیم تا ۱۰ دقیقه دیگر در اتاق 4B شروع می‌شود."</string>
+    <string name="value_discovery_sample_text_hands_free">"پیام متنی از طرف مامان: هر وقت فرصت کردی با من تماس بگیر."</string>
 
     <!-- Conversion Ready -->
     <string name="conversion_ready_header">آماده باز کردن تجربه کامل هستید؟</string>

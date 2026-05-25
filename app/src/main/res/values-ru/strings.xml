@@ -405,13 +405,32 @@
     <string name="what_is_your_primary_goal">Какова ваша основная цель?</string>
 
     <string name="preference_gathering_option_accessibility">Доступность</string>
+    <string name="preference_gathering_option_accessibility_desc">Слышать важные уведомления, когда я не могу найти телефон или не могу до него добраться</string>
     <string name="preference_gathering_option_productivity">Продуктивность</string>
+    <string name="preference_gathering_option_productivity_desc">Будьте в курсе важных звонков, сообщений, встреч, лидов и обновлений… не привязываясь к телефону</string>
     <string name="preference_gathering_option_hands_free_use">Использование без рук</string>
+    <string name="preference_gathering_option_hands_free_use_desc">Слышать важные звонки/сообщения, пока я занят вождением, работой или тренировкой</string>
     <string name="preference_gathering_option_other">Другое</string>
 
     <!-- App Usage Insight (VIA) -->
-    <string name="via_header">Очень важные приложения (VIA)</string>
-    <string name="via_description">Какие приложения для вас **самые** важные?</string>
+    <string name="via_category_header">Какие типы приложений наиболее важны для вас?</string>
+    <string name="via_category_subtitle">(Выберите все подходящие варианты)</string>
+    <string name="via_category_communication">Общение</string>
+    <string name="via_category_communication_desc">Приложения для звонков и сообщений</string>
+    <string name="via_category_business">Бизнес/Продуктивность</string>
+    <string name="via_category_business_desc">Электронная почта, планировщики, лиды, календари, рабочие приложения, общие инструменты</string>
+    <string name="via_category_shopping">Покупки</string>
+    <string name="via_category_shopping_desc">Amazon Shopping, UberEats, …</string>
+    <string name="via_category_footer">Мы добавим их на страницу «Важные приложения»!</string>
+
+    <!-- Value Discovery -->
+    <string name="value_discovery_header">Послушайте Speakify в действии</string>
+    <string name="value_discovery_description">Послушайте, как Speakify будет озвучивать ваши уведомления. Вы можете изменить этот голос в любое время в настройках.</string>
+    <string name="value_discovery_button_speak">Прослушать образец уведомления</string>
+    <string name="value_discovery_sample_text">"Speakify активен. Теперь я буду зачитывать ваши важные уведомления вслух."</string>
+    <string name="value_discovery_sample_text_accessibility">"Уведомление от WhatsApp: Привет, ты придешь на встречу?"</string>
+    <string name="value_discovery_sample_text_productivity">"Оповещение календаря: Синхронизация команды начнется через 10 минут в кабинете 4B."</string>
+    <string name="value_discovery_sample_text_hands_free">"SMS от мамы: Позвони мне, когда будет возможность."</string>
 
     <!-- Conversion Ready -->
     <string name="conversion_ready_header">Готовы к полному доступу?</string>

@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
 import androidx.annotation.OptIn
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
@@ -20,7 +19,6 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
@@ -38,6 +36,7 @@ class TTSManager @Inject constructor(
 ) : ITaggable,
     TextToSpeech.OnInitListener {
 
+    @Volatile
     private var tts: TextToSpeech? = null
 
     @Volatile
@@ -52,6 +51,18 @@ class TTSManager @Inject constructor(
     }
 
     private fun initialize() {
+        // If the engine was initialized but we've lost the connection (e.g. the TTS service crashed),
+        // we need to reset our state to allow for a clean re-initialization.
+        if (isInitializationStarted && isInitialized && tts?.voices == null) {
+            synchronized(initializationLock) {
+                if (isInitializationStarted && isInitialized && tts?.voices == null) {
+                    Log.w(TAG, "TTS engine is no longer bound. Forcing re-initialization.")
+                    isInitialized = false
+                    isInitializationStarted = false
+                }
+            }
+        }
+
         if (isInitializationStarted) {
             return
         }
@@ -59,8 +70,13 @@ class TTSManager @Inject constructor(
             if (isInitializationStarted) {
                 return
             }
+            Log.d(TAG, "TTS engine initialization queued.")
+            isInitializationStarted = true
+
             Handler(Looper.getMainLooper()).post {
                 try {
+                    // Attempt to shutdown the old instance to release any potential lingering resources
+                    tts?.shutdown()
                     tts = TextToSpeech(context, this)
                 } catch (e: Exception) {
                     Log.e(TAG, "Failed to instantiate TextToSpeech", e)
@@ -68,8 +84,6 @@ class TTSManager @Inject constructor(
                     isInitializationStarted = false
                 }
             }
-            isInitializationStarted = true
-            Log.d(TAG, "TTS engine initialization queued.")
         }
     }
 
@@ -107,12 +121,8 @@ class TTSManager @Inject constructor(
             }
         }
 
-        val minVolume = settingsRepository.minVolume.first()
-        val currentVolume = audioManager.getVolume()
-        if (currentVolume < minVolume) {
-            audioManager.setVolume(minVolume, force = true)
-        }
-        
+        audioManager.setVolume(audioManager.getDesiredVolume(), force = true)
+
         audioManager.requestAudioFocus()
 
         return try {
@@ -155,6 +165,7 @@ class TTSManager @Inject constructor(
     }
 
     fun getRecommendedDefaultVoiceModels(): List<VoiceInfoModel> {
+        initialize()
         if (isInitialized)
             return TTSUtils.GetRecommendedDefaultVoiceModels(tts!!)
         return emptyList()
@@ -165,6 +176,7 @@ class TTSManager @Inject constructor(
      * @return A list of VoiceInfoModel objects, or an empty list if the TTS engine is not ready.
      */
     fun getVoiceInfoList(): List<VoiceInfoModel> {
+        initialize()
         if (!isInitialized || tts?.voices == null) {
             Log.w(TAG, "getVoiceInfoList called but TTS is not initialized or has no voices.")
             return emptyList()
@@ -176,6 +188,7 @@ class TTSManager @Inject constructor(
     }
 
     fun setVoice(voiceName: String? = Constants.DefaultTTSVoice) {
+        initialize()
         if (!isInitialized)
             return
 

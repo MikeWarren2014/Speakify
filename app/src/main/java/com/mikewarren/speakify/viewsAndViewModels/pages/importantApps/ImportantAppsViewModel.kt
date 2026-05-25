@@ -3,10 +3,13 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps
 import android.content.pm.ApplicationInfo
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.mikewarren.speakify.data.AppCategoryRepository
 import com.mikewarren.speakify.data.AppsRepository
+import com.mikewarren.speakify.data.OnboardingRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.UserAppModel
+import com.mikewarren.speakify.data.models.OnboardingCategorySelection
 import com.mikewarren.speakify.data.events.PackageListDataRequester
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.AppNameHelper
@@ -18,6 +21,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -32,6 +36,8 @@ data class SubstituteAppCandidate(
 class ImportantAppsViewModel @Inject constructor(
     override var repository: AppsRepository,
     private var settingsRepository: SettingsRepository,
+    private val onboardingRepository: OnboardingRepository,
+    private val appCategoryRepository: AppCategoryRepository,
     private val ttsManager: TTSManager,
     private val phonePermissionRequester: PhonePermissionRequester,
 ) : BaseSearchableViewModel(repository) {
@@ -41,6 +47,21 @@ class ImportantAppsViewModel @Inject constructor(
 
     private val _selectedCount = MutableStateFlow(0)
     val selectedCount: StateFlow<Int> = _selectedCount.asStateFlow()
+
+    val onboardingCategories: StateFlow<List<OnboardingCategorySelection>> = onboardingRepository.importantAppCategories
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+
+    val showOnboardingCard: StateFlow<Boolean> = onboardingCategories
+        .map { categories -> categories.isNotEmpty() && categories.any { !it.isSatisfied } }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = false
+        )
 
     val packageListDataSource = PackageListDataRequester.GetInstance(settingsRepository.getContext())
     private val _allAppsFlow : StateFlow<List<ApplicationInfo>> = packageListDataSource.observeData()
@@ -94,12 +115,23 @@ class ImportantAppsViewModel @Inject constructor(
 
     init {
         onInit()
+        viewModelScope.launch {
+            repository.importantApps.collect { apps ->
+                apps.forEach { app ->
+                    appCategoryRepository.getCategoryForPackage(app.packageName)?.let { category ->
+                        onboardingRepository.satisfyCategory(category)
+                    }
+                }
+            }
+        }
     }
 
     override fun onInit() {
         super.onInit()
 
         childAddAppMenuViewModel = AddAppMenuViewModel(repository,
+            onboardingRepository,
+            appCategoryRepository,
             combine(_allAppsFlow, repository.importantApps) { allApps, importantApps ->
                 val allAppsModels = allApps.map { appInfo ->
                     UserAppModel(

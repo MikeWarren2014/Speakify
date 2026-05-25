@@ -214,6 +214,7 @@
     <string name="settings_min_volume_title">最小音量</string>
     <string name="settings_min_volume_description">应用播报通知时使用的最低音量。</string>
     <string name="settings_maximize_volume_title">熄屏时最大化音量</string>
+    <string name="settings_maximize_volume_description">屏幕锁定后，将通知音量调至最大。\n\n警告：这可能会影响其他音频（如音乐或播客）。如果您正在收听其他媒体，请关闭此功能。</string>
     <string name="settings_stop_speech_on_screen_off_title">使用电源键关闭</string>
     <string name="settings_stop_speech_on_screen_off_description">当屏幕关闭时，立即停止正在进行的语音播报。</string>
     <string name="settings_section_privacy">隐私</string>
@@ -405,13 +406,32 @@
     <string name="what_is_your_primary_goal">您的主要目标是什么？</string>
 
     <string name="preference_gathering_option_accessibility">辅助功能</string>
+    <string name="preference_gathering_option_accessibility_desc">听取我找不到的，或当我无法拿到或找到手机时的重要通知</string>
     <string name="preference_gathering_option_productivity">生产力</string>
+    <string name="preference_gathering_option_productivity_desc">随时掌握重要的电话、消息、预约、线索、更新等，而无需一直盯着手机</string>
     <string name="preference_gathering_option_hands_free_use">免提使用</string>
+    <string name="preference_gathering_option_hands_free_use_desc">在我忙于驾驶、工作或运动时听取重要的电话/消息</string>
     <string name="preference_gathering_option_other">其他</string>
 
     <!-- App Usage Insight (VIA) -->
-    <string name="via_header">非常重要的应用 (VIA)</string>
-    <string name="via_description">哪些是对您**最**重要的应用？</string>
+    <string name="via_category_header">哪种类型的应用对您最重要？</string>
+    <string name="via_category_subtitle">（点击所有适用的项）</string>
+    <string name="via_category_communication">沟通</string>
+    <string name="via_category_communication_desc">电话和即时通讯应用</string>
+    <string name="via_category_business">商务/生产力</string>
+    <string name="via_category_business_desc">电子邮件、组织、入站线索、日历、兼职/零工应用、通用工具</string>
+    <string name="via_category_shopping">购物</string>
+    <string name="via_category_shopping_desc">亚马逊购物、UberEats、…</string>
+    <string name="via_category_footer">我们会将这些添加到“重要应用”页面！</string>
+
+    <!-- Value Discovery -->
+    <string name="value_discovery_header">听听 Speakify 的实际效果</string>
+    <string name="value_discovery_description">听听 Speakify 如何播报您的通知。您可以随时在设置中更改此语音。</string>
+    <string name="value_discovery_button_speak">听取示例通知</string>
+    <string name="value_discovery_sample_text">"Speakify 已激活。我现在将大声朗读您的重要通知。"</string>
+    <string name="value_discovery_sample_text_accessibility">"来自 WhatsApp 的通知：嘿，你要来参加会议吗？"</string>
+    <string name="value_discovery_sample_text_productivity">"日历提醒：团队同步将在 10 分钟后在 4B 会议室开始。"</string>
+    <string name="value_discovery_sample_text_hands_free">"来自妈妈的短信：有空给我回个电话。"</string>
 
     <!-- Conversion Ready -->
     <string name="conversion_ready_header">准备好解锁完整体验了吗？</string>

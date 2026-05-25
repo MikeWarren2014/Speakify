@@ -2,10 +2,10 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.SessionRepository
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
+import com.mikewarren.speakify.services.TTSManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
     private val sessionRepository: SessionRepository,
-    private val appsRepository: AppsRepository
+    private val ttsManager: TTSManager
 ) : ViewModel() {
 
     private val _importantApps = MutableStateFlow<List<UserAppModel>>(emptyList())
@@ -27,12 +27,12 @@ class OnboardingViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    val selectedAppsInsight: StateFlow<List<UserAppModel>> = sessionRepository.onboardingRepository
-        .veryImportantApps
+    val primaryGoal: StateFlow<String?> = sessionRepository.onboardingRepository
+        .primaryGoal
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
+            initialValue = null
         )
 
 
@@ -48,8 +48,8 @@ class OnboardingViewModel @Inject constructor(
         sessionRepository.savePrimaryGoal(goal)
     }
 
-    fun saveVeryImportantApps(vias: List<UserAppModel>) {
-        sessionRepository.saveVeryImportantApps(vias)
+    fun saveImportantAppCategories(categories: List<String>) {
+        sessionRepository.saveImportantAppCategories(categories)
     }
 
     fun startTrialConversion() {
@@ -60,13 +60,9 @@ class OnboardingViewModel @Inject constructor(
         sessionRepository.proceedToTrialSession()
     }
 
-    fun fetchApps() {
+    fun speakSample(text: String) {
         viewModelScope.launch {
-            _isLoading.value = true
-            appsRepository.importantApps.collect { apps ->
-                _importantApps.value = apps
-                _isLoading.value = false
-            }
+            ttsManager.speak(text)
         }
     }
 }

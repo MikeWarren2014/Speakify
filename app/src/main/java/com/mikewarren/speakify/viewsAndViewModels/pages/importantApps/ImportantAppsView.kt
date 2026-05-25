@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -31,11 +33,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.db.UserAppModel
+import com.mikewarren.speakify.data.models.OnboardingCategorySelection
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AddAppMenuView
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.DeleteConfirmationDialog
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.SubstituteAppsDialog
@@ -70,6 +77,15 @@ fun ImportantAppsView() {
             placeholder = { Text(stringResource(R.string.search_apps)) }
         )
         Spacer(Modifier.height(16.dp))
+
+        // Onboarding Card
+        val showOnboardingCard by viewModel.showOnboardingCard.collectAsState()
+        val onboardingCategories by viewModel.onboardingCategories.collectAsState()
+        
+        if (showOnboardingCard) {
+            OnboardingSetupCard(categories = onboardingCategories)
+            Spacer(Modifier.height(16.dp))
+        }
 
         // App List Content
         Column(modifier = Modifier.weight(1f)) {
@@ -183,6 +199,46 @@ fun ImportantAppsView() {
                     viewModel.ignoreSubstituteCandidate(candidate)
                 }
             )
+        }
+    }
+}
+
+@Composable
+fun OnboardingSetupCard(categories: List<OnboardingCategorySelection>) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "Let's set up your apps",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            categories.forEach { selection ->
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    val color = if (selection.isSatisfied) Color(0xFF2E7D32) else MaterialTheme.colorScheme.onSurfaceVariant
+                    val textDecoration = if (selection.isSatisfied) TextDecoration.LineThrough else null
+                    
+                    Text(
+                        text = "• ${selection.category.categoryName}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = color,
+                        textDecoration = textDecoration
+                    )
+                    if (selection.isSatisfied) {
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = null,
+                            tint = Color(0xFF2E7D32),
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                }
+            }
         }
     }
 }

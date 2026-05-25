@@ -22,7 +22,7 @@ abstract class  BaseNotificationStrategy(
 
     open val debounceTimeMillis: Long = 5 * Constants.OneSecond
 
-    fun logNotification() {
+    open fun logNotification() {
 
         doLog("================================================");
         doLog("Notification POSTED from : ${notification.getPackageName()}")

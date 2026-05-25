@@ -8,8 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.data.SchedulingRepository
 import com.mikewarren.speakify.data.models.scheduling.DayScheduleModel
 import com.mikewarren.speakify.data.models.scheduling.StatusModel
-import com.mikewarren.speakify.data.models.scheduling.StatusSectionViewModel
-import com.mikewarren.speakify.data.models.scheduling.WeeklyScheduleViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch

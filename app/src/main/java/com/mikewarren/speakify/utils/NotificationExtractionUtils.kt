@@ -6,6 +6,7 @@ import android.app.Person
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.provider.ContactsContract
@@ -77,8 +78,10 @@ object NotificationExtractionUtils: ITaggable {
     fun extractContactFromPeopleList(context: Context, sbn: StatusBarNotification): ContactModel {
         // TODO: seems we make mistake here in assuming this ArrayList will contain Bundles . It contains Person objects here....
         val personList: ArrayList<Parcelable>? =
-            sbn.notification.extras.getParcelableArrayList(Notification.EXTRA_PEOPLE_LIST)
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                sbn.notification.extras.getParcelable(Notification.EXTRA_PEOPLE_LIST, ArrayList::class.java) as ArrayList<Parcelable>?
+            else
+                sbn.notification.extras.getParcelableArrayList(Notification.EXTRA_PEOPLE_LIST)
         val person = personList
             ?.firstOrNull() as Person?
 

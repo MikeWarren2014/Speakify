@@ -91,23 +91,12 @@ ITaggable {
     }
 
     override fun extractContactModel(): ContactModel {
-        val simplyExtractedContactModel = NotificationExtractionUtils.ExtractContactModel(context,
-            notification,
-            this.getPossiblePersonExtras(),
-            { sbn: StatusBarNotification, extrasKey: String ->
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    if ((extrasKey == Notification.EXTRA_CONVERSATION_TITLE) &&
-                        (sbn.notification.extras.getBoolean(Notification.EXTRA_IS_GROUP_CONVERSATION)))
-                        return@ExtractContactModel false
-                }
-
-                return@ExtractContactModel true
-            },
-        )
-
-        if ((simplyExtractedContactModel.name.isNotEmpty()) ||
-            (simplyExtractedContactModel.phoneNumber.isNotEmpty()))
-            return simplyExtractedContactModel
+        // there may be SMS notifications from which we CANNOT extract messages
+        if (getMessages().size <= 1) {
+            val simplyExtractedContactModel = extractSimpleContactModel()
+            if (simplyExtractedContactModel != null)
+                return simplyExtractedContactModel
+        }
 
         val notificationExtras = notification.notification.extras
 
@@ -115,35 +104,54 @@ ITaggable {
         if ((notificationTitleExtra.isNullOrEmpty()) || (!notificationTitleExtra.contains("MessagingStyle")))
             return ContactModel()
 
-        val allMessages = getMessages()
+        val latestMessage = getLatestMessage()
 
-        if (allMessages.isEmpty()) {
+        if (latestMessage == null) {
             return ContactModel()
         }
 
-        // Now you can work with the 'allMessages' list
-        val latestMessage = allMessages.maxBy { it.timestamp }
         val senderPerson = latestMessage.person
 
-        // Now you can use senderPerson.name, senderPerson.uri etc.
-        // to populate your ContactModel
-        if (senderPerson != null) {
-            var name = senderPerson.name?.toString() ?: ""
-            if ((!senderPerson.uri.isNullOrEmpty()) && (getMessagingStyle()!!.user.uri == senderPerson.uri))
-                name = IMessageNotificationHandler.SelfName
-
-            var phoneNumber = ""
-            senderPerson.uri?.let { uriString ->
-                if (uriString.startsWith("tel:")) {
-                    phoneNumber = uriString.substringAfter("tel:")
-                }
-                // You could also check for "mailto:" if relevant
-            }
-
-            return ContactModel(name, phoneNumber)
+        if (senderPerson == null) {
+            logNotification()
+            throw IllegalStateException("Somehow we got the notification, and messages, but no person was found.")
         }
-        logNotification()
-        throw IllegalStateException("Somehow we got the notification, and messages, but no person was found.")
+
+        var name = senderPerson.name?.toString() ?: ""
+        if ((!senderPerson.uri.isNullOrEmpty()) && (getMessagingStyle()!!.user.uri == senderPerson.uri))
+            name = IMessageNotificationHandler.SelfName
+
+        var phoneNumber = ""
+        senderPerson.uri?.let { uriString ->
+            if (uriString.startsWith("tel:")) {
+                phoneNumber = uriString.substringAfter("tel:")
+            }
+        }
+
+        return ContactModel(name, phoneNumber)
+    }
+
+    private fun extractSimpleContactModel(): ContactModel? {
+        val simplyExtractedContactModel = NotificationExtractionUtils.ExtractContactModel(
+            context,
+            notification,
+            this.getPossiblePersonExtras(),
+            { sbn: StatusBarNotification, extrasKey: String ->
+                if ((extrasKey == Notification.EXTRA_CONVERSATION_TITLE) &&
+                    (sbn.notification.extras.getBoolean(Notification.EXTRA_IS_GROUP_CONVERSATION))
+                )
+                    return@ExtractContactModel false
+
+                return@ExtractContactModel true
+            },
+        )
+
+        if ((simplyExtractedContactModel.name.isNotEmpty()) ||
+            (simplyExtractedContactModel.phoneNumber.isNotEmpty())
+        )
+            return simplyExtractedContactModel
+
+        return null
     }
 
     override fun getOutgoingMessageType(): SMSNotificationType {
@@ -173,6 +181,26 @@ ITaggable {
         return notificationText.substring(firstEmojiPosition)
             .contains(context.getString(R.string.emoji_to_your_message,
                 firstEmoji))
+    }
+
+    override fun logNotification() {
+        super.logNotification()
+        val messages = getMessages()
+        if (messages.isNotEmpty()) {
+            doLog("--- MessagingStyle Messages ---")
+            messages.forEachIndexed { index, message ->
+                doLog("  Message [$index]:")
+                doLog("    Timestamp: ${message.timestamp}")
+                doLog("    Text: ${message.text}")
+                val person = message.person
+                if (person != null) {
+                    doLog("    Person Name: ${person.name}")
+                    doLog("    Person URI: ${person.uri}")
+                } else {
+                    doLog("    Person: null")
+                }
+            }
+        }
     }
 
 
