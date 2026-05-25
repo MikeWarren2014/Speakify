@@ -7,12 +7,15 @@ import com.mikewarren.speakify.data.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,6 +29,8 @@ class FirestoreSyncRepository @Inject constructor(
     private val downloadRepository: DownloadRepository
 ) {
     private val scope = CoroutineScope(Dispatchers.IO)
+    private val syncMutex = Mutex()
+    private var observerJob: Job? = null
 
     init {
         startObservingChanges()
@@ -33,7 +38,8 @@ class FirestoreSyncRepository @Inject constructor(
 
     @OptIn(FlowPreview::class)
     private fun startObservingChanges() {
-        scope.launch {
+        observerJob?.cancel()
+        observerJob = scope.launch {
 
             // Combine all settings into a single flow and debounce to avoid rapid-fire uploads
             combine(
@@ -45,7 +51,7 @@ class FirestoreSyncRepository @Inject constructor(
                 settingsRepository.appSettings,
                 appsRepository.importantApps,
                 messengerContactsRepository.recentContacts,
-            ) { args -> args }
+            ) { args -> args.toList() } // Convert to list to ensure distinctUntilChanged works on content
                 .drop(1)
                 .debounce(2000)
                 .distinctUntilChanged()
@@ -59,14 +65,23 @@ class FirestoreSyncRepository @Inject constructor(
     /**
      * Uploads all local settings and app configurations to Firestore.
      */
-    suspend fun uploadAllData(): Result<Unit> {
+    suspend fun uploadAllData(): Result<Unit> = syncMutex.withLock {
         return uploadRepository.doAllFirestoreTransactions()
     }
 
     /**
      * Downloads data from Firestore and restores it to local Room DB and DataStore.
      */
-    suspend fun downloadAndRestoreData(): Result<Unit> {
-        return downloadRepository.doAllFirestoreTransactions()
+    suspend fun downloadAndRestoreData(): Result<Unit> = syncMutex.withLock {
+        // Cancel the observer to prevent it from triggering an upload during the download/restore process
+        observerJob?.cancel()
+
+        return try {
+            downloadRepository.doAllFirestoreTransactions()
+        } finally {
+            // Restart the observer after restore is complete.
+            // The initial state (post-restore) will be dropped by .drop(1)
+            startObservingChanges()
+        }
     }
 }
