@@ -45,6 +45,7 @@ class SessionRepositoryTest {
     private val isInitializedFlow = MutableStateFlow(false)
     private val userFlow = MutableStateFlow<User?>(null)
     private val trialModelFlow = MutableStateFlow(TrialModel())
+    private val isNewDirectSignUpFlow = MutableStateFlow(false)
     private val appOpenCountFlow = MutableStateFlow(1)
     private val onboardingStepFlow = MutableStateFlow(OnboardingUiState.Completed)
 
@@ -73,6 +74,7 @@ class SessionRepositoryTest {
         every { FirebaseAuth.getInstance() } returns firebaseAuth
 
         every { trialRepository.trialModelFlow } returns trialModelFlow
+        every { trialRepository.isNewDirectSignUp } returns isNewDirectSignUpFlow
         every { onboardingRepository.appOpenCount } returns appOpenCountFlow
         every { onboardingRepository.onboardingStep } returns onboardingStepFlow
     }
