@@ -14,6 +14,9 @@ class OnboardingRepositoryImpl @Inject constructor(
     override val appOpenCount: Flow<Int> = userSettingsDataStore.data
         .map { model -> model.onboardingModel.appOpenCount }
 
+    override val speakificationCount: Flow<Int> = userSettingsDataStore.data
+        .map { model -> model.onboardingModel.speakificationCount }
+
     override val onboardingStep: Flow<OnboardingUiState> = userSettingsDataStore.data
         .map { model -> model.onboardingModel.onboardingStep }
 
@@ -26,12 +29,28 @@ class OnboardingRepositoryImpl @Inject constructor(
     override val importantAppCategories: Flow<List<OnboardingCategorySelection>> = userSettingsDataStore.data
         .map { model -> model.onboardingModel.importantAppCategories }
 
+    override val hasShownRatingsPrompt: Flow<Boolean> = userSettingsDataStore.data
+        .map { model -> model.onboardingModel.hasShownRatingsPrompt }
+
+    override val hasShownTrialConversionPrompt: Flow<Boolean> = userSettingsDataStore.data
+        .map { model -> model.onboardingModel.hasShownTrialConversionPrompt }
+
 
     override suspend fun incrementAppOpenCount() {
         userSettingsDataStore.updateData { model ->
             model.copy(
                 onboardingModel = model.onboardingModel.copy(
                     appOpenCount = model.onboardingModel.appOpenCount + 1
+                )
+            )
+        }
+    }
+
+    override suspend fun incrementSpeakificationCount() {
+        userSettingsDataStore.updateData { model ->
+            model.copy(
+                onboardingModel = model.onboardingModel.copy(
+                    speakificationCount = model.onboardingModel.speakificationCount + 1
                 )
             )
         }
@@ -88,6 +107,26 @@ class OnboardingRepositoryImpl @Inject constructor(
                     importantAppCategories = model.onboardingModel.importantAppCategories.map {
                         if (it.category == category) it.copy(isSatisfied = true) else it
                     }
+                )
+            )
+        }
+    }
+
+    override suspend fun setHasShownRatingsPrompt(shown: Boolean) {
+        userSettingsDataStore.updateData { model ->
+            model.copy(
+                onboardingModel = model.onboardingModel.copy(
+                    hasShownRatingsPrompt = shown
+                )
+            )
+        }
+    }
+
+    override suspend fun setHasShownTrialConversionPrompt(shown: Boolean) {
+        userSettingsDataStore.updateData { model ->
+            model.copy(
+                onboardingModel = model.onboardingModel.copy(
+                    hasShownTrialConversionPrompt = shown
                 )
             )
         }

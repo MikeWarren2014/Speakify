@@ -77,17 +77,6 @@ fun OnboardingView(
                     viewModel.updateOnboardingStep(OnboardingUiState.Completed)
                 }
             )
-            // TODO: Should the ConversionReady and SatisfactionSurvey go some place else ?
-            OnboardingUiState.ConversionReady -> ConversionReady(
-                onSignUp = { viewModel.startTrialConversion() },
-                onLater = { viewModel.proceedToTrialSession() }
-            )
-            OnboardingUiState.SatisfactionSurvey -> SatisfactionSurvey(
-                onResult = { result ->
-                    viewModel.saveSurveyResult(result)
-                    viewModel.updateOnboardingStep(OnboardingUiState.Completed)
-                }
-            )
             OnboardingUiState.Completed -> { /* Should not be reached */ }
         }
     }

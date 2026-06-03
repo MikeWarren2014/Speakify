@@ -61,7 +61,10 @@ class SessionRepository @Inject constructor(
             trialRepository.trialModelFlow,
             trialRepository.isNewDirectSignUp,
             onboardingRepository.appOpenCount,
-            onboardingRepository.onboardingStep
+            onboardingRepository.onboardingStep,
+            onboardingRepository.speakificationCount,
+            onboardingRepository.hasShownRatingsPrompt,
+            onboardingRepository.hasShownTrialConversionPrompt
         ) { args ->
             DataBundle(
                 isInitialized = args[0] as Boolean,
@@ -69,11 +72,14 @@ class SessionRepository @Inject constructor(
                 trialModel = args[2] as TrialModel,
                 isNewDirectSignUp = args[3] as Boolean,
                 openCount = args[4] as Int,
-                onboardingStep = args[5] as OnboardingUiState
+                onboardingStep = args[5] as OnboardingUiState,
+                speakificationCount = args[6] as Int,
+                hasShownRatingsPrompt = args[7] as Boolean,
+                hasShownTrialConversionPrompt = args[8] as Boolean
             )
         }
             .distinctUntilChanged()
-            .onEach { (isInitialized, user, trialModel, isNewDirectSignUp, openCount, onboardingStep) ->
+            .onEach { (isInitialized, user, trialModel, isNewDirectSignUp, openCount, onboardingStep, speakificationCount, hasShownRatingsPrompt, hasShownTrialConversionPrompt) ->
                 if (!isInitialized) {
                     _uiState.value = MainUiState.Loading
                     return@onEach
@@ -86,7 +92,16 @@ class SessionRepository @Inject constructor(
                     // we don't want the automated logic to jump immediately to SignedOut.
                     if (_uiState.value == MainUiState.TrialEnded) return@onEach
 
-                    if (isHandlingSpecialTrialStatus(trialStatus, onboardingStep)) {
+                    val engagementContext = TrialEngagementContext.from(
+                        trialModel,
+                        onboardingStep,
+                        speakificationCount,
+                        openCount,
+                        hasShownRatingsPrompt,
+                        hasShownTrialConversionPrompt
+                    )
+
+                    if (isHandlingTrialEngagement(engagementContext)) {
                         return@onEach
                     }
                     
@@ -164,37 +179,50 @@ class SessionRepository @Inject constructor(
             .launchIn(scope)
     }
 
-    private fun isHandlingSpecialTrialStatus(
-        trialStatus: TrialStatus,
-        onboardingStep: OnboardingUiState
-    ): Boolean {
-        if (trialStatus is TrialStatus.Active) {
-            // Trigger onboarding immediately if not already completed
-            if (onboardingStep != OnboardingUiState.Completed) {
-                setOnboardingState(onboardingStep)
-                return true
+    private fun isHandlingTrialEngagement(context: TrialEngagementContext): Boolean {
+        return when (context) {
+            is TrialEngagementContext.TrialBypass,
+            is TrialEngagementContext.Active -> {
+                // Trigger onboarding immediately if not already completed
+                if (context.shouldShowOnboarding()) {
+                    setOnboardingState(context.onboardingStep)
+                    return true
+                }
+
+                // If onboarding is completed, check for delayed prompts
+                if (!isTrialAuthorized) {
+                    if (context.shouldShowTrialConversionPrompt()) {
+                        _uiState.value = MainUiState.TrialConversionPrompt
+                        return true
+                    }
+                    if (context.shouldShowRatingsPrompt()) {
+                        _uiState.value = MainUiState.RatingsPrompt
+                        return true
+                    }
+                }
+
+                _uiState.value = if (isTrialAuthorized) MainUiState.TrialUsage else MainUiState.TrialActive
+                true
             }
 
-            _uiState.value = if (isTrialAuthorized) MainUiState.TrialUsage else MainUiState.TrialActive
-            return true
-        }
-        // TODO: are we *ever* using this status anywhere?
-        if (trialStatus is TrialStatus.Loading) {
-            // Check current state to avoid infinite loop if it's already MainUiState.Loading
-            if (_uiState.value != MainUiState.Loading) {
-                _uiState.value = MainUiState.Loading
-            }
-            // Launch on IO to avoid blocking main thread
-            scope.launch(Dispatchers.IO) {
-                try {
-                    trialRepository.refreshTrialStatus()
-                } catch (e: Exception) {
-                    Log.e("SessionRepository", "Failed to refresh trial status", e)
+            is TrialEngagementContext.Loading -> {
+                // Check current state to avoid infinite loop if it's already MainUiState.Loading
+                if (_uiState.value != MainUiState.Loading) {
+                    _uiState.value = MainUiState.Loading
                 }
+                // Launch on IO to avoid blocking main thread
+                scope.launch(Dispatchers.IO) {
+                    try {
+                        trialRepository.refreshTrialStatus()
+                    } catch (e: Exception) {
+                        Log.e("SessionRepository", "Failed to refresh trial status", e)
+                    }
+                }
+                true
             }
-            return true
+
+            is TrialEngagementContext.Other -> false
         }
-        return false
     }
 
     private fun setOnboardingState(onboardingStep: OnboardingUiState) {
@@ -203,14 +231,30 @@ class SessionRepository @Inject constructor(
     }
 
     fun proceedToTrialSession() {
+        if (_uiState.value == MainUiState.TrialConversionPrompt) {
+            markTrialConversionShown()
+        }
         isTrialAuthorized = true
         _uiState.value = MainUiState.TrialUsage
         analyticsHelper.logTrialContinued()
     }
 
     fun startTrialConversion() {
+        markTrialConversionShown()
         _uiState.value = MainUiState.TrialConversion
         analyticsHelper.logTrialConversionStarted()
+    }
+
+    fun markTrialConversionShown() {
+        scope.launch {
+            onboardingRepository.setHasShownTrialConversionPrompt(true)
+        }
+    }
+
+    fun markRatingsPromptShown() {
+        scope.launch {
+            onboardingRepository.setHasShownRatingsPrompt(true)
+        }
     }
 
     fun resetTrialAuthorized() {
@@ -322,6 +366,10 @@ class SessionRepository @Inject constructor(
         val trialModel: TrialModel,
         val isNewDirectSignUp: Boolean,
         val openCount: Int,
-        val onboardingStep: OnboardingUiState
+        val onboardingStep: OnboardingUiState,
+        val speakificationCount: Int,
+        val hasShownRatingsPrompt: Boolean,
+        val hasShownTrialConversionPrompt: Boolean
     )
+
 }

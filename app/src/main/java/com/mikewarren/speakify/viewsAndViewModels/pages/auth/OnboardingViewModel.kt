@@ -40,24 +40,12 @@ class OnboardingViewModel @Inject constructor(
         sessionRepository.updateOnboardingStep(step)
     }
 
-    fun saveSurveyResult(result: String) {
-        sessionRepository.saveSurveyResult(result)
-    }
-
     fun savePrimaryGoal(goal: String) {
         sessionRepository.savePrimaryGoal(goal)
     }
 
     fun saveImportantAppCategories(categories: List<String>) {
         sessionRepository.saveImportantAppCategories(categories)
-    }
-
-    fun startTrialConversion() {
-        sessionRepository.startTrialConversion()
-    }
-
-    fun proceedToTrialSession() {
-        sessionRepository.proceedToTrialSession()
     }
 
     fun speakSample(text: String) {

@@ -16,6 +16,7 @@ import androidx.core.app.NotificationCompat
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.data.OnboardingRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.AppSettingsDao
@@ -65,6 +66,9 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
 
     @Inject
     lateinit var screenStateReceiver: ScreenStateReceiver
+
+    @Inject
+    lateinit var onboardingRepository: OnboardingRepository
 
     private lateinit var defaultVoice: String;
 
@@ -243,6 +247,9 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         if (notificationStrategy.shouldSpeakify()) {
             recentlySpokenCache.put(sbn.key, currentTime)
             notificationStrategy.speakify()
+            applicationScope.launch {
+                onboardingRepository.incrementSpeakificationCount()
+            }
         }
 
     }

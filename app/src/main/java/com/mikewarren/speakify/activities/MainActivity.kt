@@ -1,6 +1,5 @@
 package com.mikewarren.speakify.activities
 
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -97,7 +96,8 @@ class MainActivity : ComponentActivity()  {
                 }
             }
 
-            if (state is MainUiState.TrialActive || state is MainUiState.TrialConversion) {
+            if (state is MainUiState.TrialActive || state is MainUiState.TrialConversion ||
+                state is MainUiState.TrialConversionPrompt || state is MainUiState.RatingsPrompt) {
                 LaunchedEffect(state) {
                     startActivity(Intent(this@MainActivity, LoginActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -127,7 +127,11 @@ class MainActivity : ComponentActivity()  {
                             AppView()
                         }
 
-                        MainUiState.TrialActive -> {
+                        MainUiState.TrialActive,
+                        MainUiState.TrialConversion,
+                        MainUiState.TrialConversionPrompt,
+                        MainUiState.RatingsPrompt,
+                        is MainUiState.Onboarding -> {
                             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                                 CircularProgressIndicator()
                             }
@@ -144,18 +148,6 @@ class MainActivity : ComponentActivity()  {
                                     textAlign = TextAlign.Center,
                                     style = MaterialTheme.typography.bodyLarge
                                 )
-                            }
-                        }
-
-                        MainUiState.TrialConversion -> {
-                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                CircularProgressIndicator()
-                            }
-                        }
-
-                        is MainUiState.Onboarding -> {
-                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                CircularProgressIndicator()
                             }
                         }
                     }
