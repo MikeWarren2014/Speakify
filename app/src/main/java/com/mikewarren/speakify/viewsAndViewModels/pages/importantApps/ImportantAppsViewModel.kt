@@ -16,6 +16,7 @@ import com.mikewarren.speakify.utils.AppNameHelper
 import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AddAppMenuViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -117,9 +118,12 @@ class ImportantAppsViewModel @Inject constructor(
         onInit()
         viewModelScope.launch {
             repository.importantApps.collect { apps ->
-                apps.forEach { app ->
-                    appCategoryRepository.getCategoryForPackage(app.packageName)?.let { category ->
-                        onboardingRepository.satisfyCategory(category)
+                // Fetch categories in parallel to avoid blocking or long sequential waits
+                apps.map { app ->
+                    launch(Dispatchers.IO) {
+                        appCategoryRepository.getCategoryForPackage(app.packageName)?.let { category ->
+                            onboardingRepository.satisfyCategory(category)
+                        }
                     }
                 }
             }

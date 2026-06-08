@@ -33,23 +33,8 @@ class UploadRepository @Inject constructor(
             super.allFirestoreTransactions()
     }
 
-    suspend fun writeClerkUserData(): Result<Unit> {
-        val clerkUserId = Clerk.user?.id
-
-        if (clerkUserId == null)
-            return Result.failure(IllegalStateException("Clerk user ID is null. Is user even logged in?"))
-
-        return transaction(userDoc,
-            hashMapOf(
-                "clerkUserId" to clerkUserId,
-                "userEmail" to Clerk.user?.emailAddresses!!.first().emailAddress,
-            ))
-
-
-    }
-
     override suspend fun settingsTransaction(): Result<Unit> {
-        return transaction(userDoc.collection("config")
+        return writeTransaction(userDoc.collection("config")
             .document("settings"),
             hashMapOf(
                 "useDarkTheme" to settingsRepository.useDarkTheme.first(),
@@ -89,7 +74,7 @@ class UploadRepository @Inject constructor(
                 "notificationSources" to model.notificationSources,
                 "additionalSettings" to model.additionalSettings,
             )
-            return@map suspend { transaction(appSettingsCollection.document(docId), appData) }
+            return@map suspend { writeTransaction(appSettingsCollection.document(docId), appData) }
         } + listOf(clearStaleRecordsTask)
 
     }
@@ -112,7 +97,7 @@ class UploadRepository @Inject constructor(
 
         val uploadTasks = importantAppsList.map { app ->
             val docId = app.packageName.replace("/", "|")
-            suspend { transaction(importantAppsCollection.document(docId), app) }
+            suspend { writeTransaction(importantAppsCollection.document(docId), app) }
         }
 
         return listOf(clearStaleRecordsTask) + uploadTasks
@@ -136,26 +121,13 @@ class UploadRepository @Inject constructor(
 
         val uploadTasks = recentMessengerContactsList.map { contact ->
             val docId = contact.name.replace("/", "|")
-            suspend { transaction(recentMessengerContactsCollection.document(docId), contact) }
+            suspend { writeTransaction(recentMessengerContactsCollection.document(docId), contact) }
         }
 
         return listOf(clearStaleRecordsTask) + uploadTasks
     }
 
-    private suspend fun transaction(document: DocumentReference, data: Any) : Result<Unit> {
-        return try {
-            safeFirestoreCall {
-                document
-                    .set(data)
-                    .await()
-            }
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    private suspend fun <T> clearStaleRecordsTransaction(
+        private suspend fun <T> clearStaleRecordsTransaction(
         documentCollection: CollectionReference,
         onCheckStaleRecord: suspend (DocumentSnapshot, T) -> Boolean,
         data: T
@@ -166,7 +138,7 @@ class UploadRepository @Inject constructor(
                     .await()
                     .documents
             }
-            
+
             documents
                 .filter { documentSnapshot ->
                     onCheckStaleRecord(documentSnapshot, data)

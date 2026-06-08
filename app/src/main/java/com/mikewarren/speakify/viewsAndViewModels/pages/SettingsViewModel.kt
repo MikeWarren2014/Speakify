@@ -14,7 +14,7 @@ import com.mikewarren.speakify.data.TrialStatus
 import com.mikewarren.speakify.services.SpeakifyAudioManager
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
-import com.mikewarren.speakify.viewsAndViewModels.pages.auth.TrialActiveViewModel
+import com.mikewarren.speakify.viewsAndViewModels.pages.trialOnboarding.TrialActiveViewModel
 import com.mikewarren.speakify.viewsAndViewModels.widgets.BaseTTSAutoCompletableViewModel
 import com.mikewarren.speakify.viewsAndViewModels.widgets.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel

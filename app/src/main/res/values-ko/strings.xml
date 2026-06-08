@@ -400,6 +400,19 @@
     <string name="satisfaction_survey_header">지금까지 Speakify를 어떻게 사용하고 계신가요?</string>
     <string name="next">다음</string>
 
+    <!-- Survey Follow Up shared -->
+    <string name="survey_follow_up_maybe_later">나중에 하기</string>
+
+    <!-- Survey Follow Up Step: Rating -->
+    <string name="survey_rate_invite_title">Speakify를 즐겁게 사용하고 계시다니 정말 기쁩니다!</string>
+    <string name="survey_rate_invite_desc">잠시 시간을 내어 Play 스토어에서 평점을 남겨주실 수 있나요? 큰 도움이 됩니다.</string>
+    <string name="survey_rate_invite_btn_text">Play 스토어에서 평점 남기기</string>
+
+    <!-- Survey Follow Up Step: Feedback -->
+    <string name="feedback_invite_title">안타까운 소식이네요.</string>
+    <string name="feedback_invite_desc">어떻게 하면 Speakify를 더 발전시킬 수 있을지 알고 싶습니다. 피드백을 보내주시겠어요? </string>
+    <string name="feedback_invite_btn_text">피드백 보내기</string>
+
     <!-- Preference Gathering -->
     <string name="what_is_your_primary_goal">주요 목표가 무엇인가요?</string>
 

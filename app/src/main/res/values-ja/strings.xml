@@ -400,6 +400,19 @@
     <string name="satisfaction_survey_header">これまでのところ、Speakifyはいかがですか？</string>
     <string name="next">次へ</string>
 
+    <!-- Survey Follow Up shared -->
+    <string name="survey_follow_up_maybe_later">また今度</string>
+
+    <!-- Survey Follow Up Step: Rating -->
+    <string name="survey_rate_invite_title">Speakifyを楽しんでいただけてとても嬉しいです！</string>
+    <string name="survey_rate_invite_desc">Playストアで評価していただけませんか？とても励みになります。</string>
+    <string name="survey_rate_invite_btn_text">Playストアで評価する</string>
+
+    <!-- Survey Follow Up Step: Feedback -->
+    <string name="feedback_invite_title">それは残念です。</string>
+    <string name="feedback_invite_desc">Speakifyをより良くするためのご意見をお聞かせください。フィードバックを送信していただけますか？</string>
+    <string name="feedback_invite_btn_text">フィードバックを送信</string>
+
     <!-- Preference Gathering -->
     <string name="what_is_your_primary_goal">主な目的は何ですか？</string>
 

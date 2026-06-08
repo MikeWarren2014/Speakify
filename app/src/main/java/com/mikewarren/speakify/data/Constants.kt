@@ -15,4 +15,6 @@ object Constants {
     const val DefaultBooleanSetting = false
 
     const val TrialNumberOfDays = 7
+
+    const val SupportEmail = "support@speakify.it"
 }

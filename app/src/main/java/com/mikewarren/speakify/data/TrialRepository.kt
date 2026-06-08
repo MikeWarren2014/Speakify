@@ -46,7 +46,6 @@ sealed class TrialStatus(val statusText: String) {
             return when (statusText.lowercase()) {
                 "active" -> Active(0)
                 "expired" -> Expired
-                "loading" -> Loading
                 "converted" -> NotNeeded
                 else -> NotStarted
             }

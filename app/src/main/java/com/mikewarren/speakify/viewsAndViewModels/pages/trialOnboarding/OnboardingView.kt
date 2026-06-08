@@ -1,4 +1,4 @@
-package com.mikewarren.speakify.viewsAndViewModels.pages.auth
+package com.mikewarren.speakify.viewsAndViewModels.pages.trialOnboarding
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.SentimentSatisfied
 import androidx.compose.material.icons.filled.SentimentVeryDissatisfied
 import androidx.compose.material.icons.filled.SentimentVerySatisfied
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -395,96 +396,10 @@ fun ConversionReady(onSignUp: () -> Unit, onLater: () -> Unit) {
         Button(
             onClick = onLater,
             modifier = Modifier.fillMaxWidth(),
-            colors = androidx.compose.material3.ButtonDefaults.filledTonalButtonColors()
+            colors = ButtonDefaults.filledTonalButtonColors()
         ) {
             Text(stringResource(R.string.conversion_ready_button_continue))
         }
     }
 }
 
-@Composable
-fun SatisfactionSurvey(onResult: (String) -> Unit) {
-    var selectedOption by remember { mutableStateOf<Int?>(null) }
-    val options = listOf(
-        Triple("Very Dissatisfied",
-            stringResource(R.string.satisfaction_survey_very_dissatisfied_header),
-            Icons.Default.SentimentVeryDissatisfied),
-        Triple("Dissatisfied",
-            stringResource(R.string.satisfaction_survey_dissatisfied_header),
-            Icons.Default.SentimentDissatisfied),
-        Triple("Neutral",
-            stringResource(R.string.satisfaction_survey_neutral_header),
-            Icons.Default.SentimentNeutral),
-        Triple("Satisfied",
-            stringResource(R.string.satisfaction_survey_satisfied_header),
-            Icons.Default.SentimentSatisfied),
-        Triple("Very Satisfied",
-            stringResource(R.string.satisfaction_survey_very_satisfied_header),
-            Icons.Default.SentimentVerySatisfied),
-    )
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = stringResource(R.string.satisfaction_survey_header),
-            style = MaterialTheme.typography.headlineMedium,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold
-        )
-        
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            options.forEachIndexed { index, (_, label, icon) ->
-                SurveyIcon(
-                    icon = icon,
-                    label = label,
-                    isSelected = selectedOption == index,
-                    onClick = { selectedOption = index }
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(48.dp))
-
-        Button(
-            onClick = { selectedOption?.let { onResult(options[it].first) } },
-            enabled = selectedOption != null,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(stringResource(R.string.next))
-        }
-    }
-}
-
-@Composable
-fun SurveyIcon(
-    icon: ImageVector,
-    label: String,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.selectable(
-            selected = isSelected,
-            onClick = onClick,
-            role = Role.RadioButton
-        )
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = label,
-            modifier = Modifier.size(48.dp),
-            tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}

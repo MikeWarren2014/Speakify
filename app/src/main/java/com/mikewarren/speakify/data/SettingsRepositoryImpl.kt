@@ -26,59 +26,60 @@ class SettingsRepositoryImpl @Inject constructor(
 ) : SettingsRepository {
     private val _db = DbProvider.GetDb(context)
 
-    override val appSettings: Flow<Map<String, AppSettingsModel>> = _db.appSettingsDao().getAllFlow()
-        .map { list ->
-            // Map the list from the DB into your Map<PackageName, Model> structure
-            list.mapNotNull { nestedModel ->
-                val model = AppSettingsModel.FromDbModel(nestedModel)
-                if (model != null) {
-                    return@mapNotNull model.packageName to model
-                }
-                return@mapNotNull null
-            }.toMap()
-        }
-        // We use stateIn to keep the latest value cached (hot flow), similar to your previous behavior
-        .stateIn(
-            scope = CoroutineScope(Dispatchers.IO), // Keep it alive as long as the Repo is alive (Singleton)
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyMap()
-        )
+    override val appSettings: Flow<Map<String, AppSettingsModel>> by lazy {
+        _db.appSettingsDao().getAllFlow()
+            .map { list ->
+                // Map the list from the DB into your Map<PackageName, Model> structure
+                list.mapNotNull { nestedModel ->
+                    val model = AppSettingsModel.FromDbModel(nestedModel)
+                    if (model != null) {
+                        return@mapNotNull model.packageName to model
+                    }
+                    return@mapNotNull null
+                }.toMap()
+            }
+            // We use stateIn to keep the latest value cached (hot flow), similar to your previous behavior
+            .stateIn(
+                scope = CoroutineScope(Dispatchers.IO), // Keep it alive as long as the Repo is alive (Singleton)
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyMap()
+            )
+    }
 
-    override val useDarkTheme: Flow<Boolean?> = userSettingsDataStore.data
-        .map { model: UserSettingsModel ->
-            model.useDarkTheme
-        }
+    override val useDarkTheme: Flow<Boolean?> by lazy {
+        userSettingsDataStore.data
+            .map { it.useDarkTheme }
+    }
 
-    override val selectedTTSVoice: Flow<String?> = userSettingsDataStore.data
-        .map { model: UserSettingsModel ->
-            model.selectedTTSVoice
-        }
+    override val selectedTTSVoice: Flow<String?> by lazy {
+        userSettingsDataStore.data
+            .map { it.selectedTTSVoice }
+    }
 
-    override val maximizeVolumeOnScreenOff: Flow<Boolean> = userSettingsDataStore.data
-        .map { model: UserSettingsModel ->
-            model.maximizeVolumeOnScreenOff
-        }
+    override val maximizeVolumeOnScreenOff: Flow<Boolean> by lazy {
+        userSettingsDataStore.data
+            .map { it.maximizeVolumeOnScreenOff }
+    }
 
-    override val stopSpeechOnScreenOff: Flow<Boolean> = userSettingsDataStore.data
-        .map { model: UserSettingsModel ->
-            model.stopSpeechOnScreenOff
-        }
+    override val stopSpeechOnScreenOff: Flow<Boolean> by lazy {
+        userSettingsDataStore.data
+            .map { it.stopSpeechOnScreenOff }
+    }
 
-    override val minVolume: Flow<Int> = userSettingsDataStore
-        .data
-        .map { model: UserSettingsModel ->
-            model.minVolume
-        }
+    override val minVolume: Flow<Int> by lazy {
+        userSettingsDataStore.data
+            .map { it.minVolume }
+    }
 
-    override val isCrashlyticsEnabled: Flow<Boolean> = userSettingsDataStore.data
-        .map { model: UserSettingsModel ->
-            model.isCrashlyticsEnabled
-        }
+    override val isCrashlyticsEnabled: Flow<Boolean> by lazy {
+        userSettingsDataStore.data
+            .map { it.isCrashlyticsEnabled }
+    }
 
-    override val originalVolume: Flow<Int> = userSettingsDataStore.data
-        .map { model: UserSettingsModel ->
-            model.originalVolume
-        }
+    override val originalVolume: Flow<Int> by lazy {
+        userSettingsDataStore.data
+            .map { it.originalVolume }
+    }
 
     override suspend fun updateUseDarkTheme(useDarkTheme: Boolean) {
         userSettingsDataStore.updateData { model: UserSettingsModel ->

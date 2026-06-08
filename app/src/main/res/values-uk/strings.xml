@@ -403,6 +403,19 @@
     <string name="satisfaction_survey_header">Як вам Speakify на даний момент?</string>
     <string name="next">Далі</string>
 
+    <!-- Survey Follow Up shared -->
+    <string name="survey_follow_up_maybe_later">Можливо, пізніше</string>
+
+    <!-- Survey Follow Up Step: Rating -->
+    <string name="survey_rate_invite_title">Ми дуже раді, що вам подобається Speakify!</string>
+    <string name="survey_rate_invite_desc">Чи не могли б ви приділити хвилинку, щоб оцінити нас у Play Store? Це дуже допоможе.</string>
+    <string name="survey_rate_invite_btn_text">Оцінити в Play Store</string>
+
+    <!-- Survey Follow Up Step: Feedback -->
+    <string name="feedback_invite_title">Нам прикро це чути!</string>
+    <string name="feedback_invite_desc">Ми хотіли б дізнатися, як ми можемо зробити Speakify кращим для вас. Хочете надіслати нам відгук?</string>
+    <string name="feedback_invite_btn_text">Надіслати відгук</string>
+
     <!-- Preference Gathering -->
     <string name="what_is_your_primary_goal">Яка ваша основна мета?</string>
 

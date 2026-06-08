@@ -20,6 +20,7 @@ import com.clerk.api.Clerk
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.viewsAndViewModels.widgets.card.ActionCard
 import androidx.core.net.toUri
+import com.mikewarren.speakify.data.Constants
 
 @Composable
 fun SupportView() {
@@ -62,7 +63,7 @@ fun SupportView() {
 
             val intent = Intent(Intent.ACTION_SENDTO).apply {
                 data = "mailto:".toUri()
-                putExtra(Intent.EXTRA_EMAIL, arrayOf("support@speakify.it"))
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(Constants.SupportEmail))
                 putExtra(Intent.EXTRA_SUBJECT, emailSubject)
                 putExtra(Intent.EXTRA_TEXT, emailBody)
             }

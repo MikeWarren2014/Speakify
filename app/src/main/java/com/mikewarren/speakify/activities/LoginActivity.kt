@@ -27,13 +27,13 @@ import com.mikewarren.speakify.data.uiStates.InitialScreenUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.ui.theme.MyApplicationTheme
 import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsViewModel
-import com.mikewarren.speakify.viewsAndViewModels.pages.auth.ConversionReady
+import com.mikewarren.speakify.viewsAndViewModels.pages.trialOnboarding.ConversionReady
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.InitialScreenView
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.MainViewModel
-import com.mikewarren.speakify.viewsAndViewModels.pages.auth.OnboardingView
-import com.mikewarren.speakify.viewsAndViewModels.pages.auth.SatisfactionSurvey
+import com.mikewarren.speakify.viewsAndViewModels.pages.trialOnboarding.OnboardingView
+import com.mikewarren.speakify.viewsAndViewModels.pages.trialOnboarding.SatisfactionSurvey
 import com.mikewarren.speakify.viewsAndViewModels.pages.auth.SignInOrUpView
-import com.mikewarren.speakify.viewsAndViewModels.pages.auth.TrialActiveView
+import com.mikewarren.speakify.viewsAndViewModels.pages.trialOnboarding.TrialActiveView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

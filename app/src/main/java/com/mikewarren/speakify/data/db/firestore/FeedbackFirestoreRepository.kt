@@ -1,8 +1,7 @@
 package com.mikewarren.speakify.data.db.firestore
 
-import com.mikewarren.speakify.data.BaseUserFirestoreRepository
 import com.mikewarren.speakify.data.OnboardingRepository
-import com.mikewarren.speakify.utils.log.IResultLoggable
+import com.mikewarren.speakify.utils.log.LogUtils
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -11,7 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class FeedbackFirestoreRepository @Inject constructor(
     private val onboardingRepository: OnboardingRepository,
-) : BaseUserFirestoreRepository(), IResultLoggable {
+) : BaseMultipleFirestoreTransactionsRepository() {
     override fun getSuccessLogMessage(): String = "Feedback synced successfully"
     override fun getFailureLogMessage(): String = "Failed to sync feedback"
 
@@ -26,18 +25,23 @@ class FeedbackFirestoreRepository @Inject constructor(
             "timestamp" to com.google.firebase.Timestamp.now()
         )
 
-        return try {
-            safeFirestoreCall {
-                userDoc.collection("feedback")
-                    .document("onboarding")
-                    .set(feedbackData)
-                    .await()
+        val syncTransaction = suspend {
+            val result = writeTransaction(userDoc.collection("feedback")
+                .document("onboarding"),
+                feedbackData)
+
+            if (result.isFailure) {
+                val exception = result.exceptionOrNull()
+                if ((exception != null) &&
+                    (exception is IllegalStateException && exception.message?.contains("User not logged in") == true)) {
+                    LogUtils.LogWarning(TAG, "Feedback sync skipped: User not logged in to Firebase.")
+                } else {
+                    logFailureResult(exception as Exception)
+                }
             }
-            logSuccessResult()
-            Result.success(Unit)
-        } catch (e: Exception) {
-            logFailureResult(e)
-            Result.failure(e)
+            result
         }
+
+        return doFirestoreTransactions(listOf(this::writeClerkUserData, syncTransaction))
     }
 }

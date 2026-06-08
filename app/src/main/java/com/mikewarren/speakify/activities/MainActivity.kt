@@ -97,7 +97,8 @@ class MainActivity : ComponentActivity()  {
             }
 
             if (state is MainUiState.TrialActive || state is MainUiState.TrialConversion ||
-                state is MainUiState.TrialConversionPrompt || state is MainUiState.RatingsPrompt) {
+                state is MainUiState.TrialConversionPrompt || state is MainUiState.RatingsPrompt ||
+                state is MainUiState.Onboarding) {
                 LaunchedEffect(state) {
                     startActivity(Intent(this@MainActivity, LoginActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
