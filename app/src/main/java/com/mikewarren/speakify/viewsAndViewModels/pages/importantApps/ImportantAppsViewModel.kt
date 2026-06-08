@@ -9,8 +9,8 @@ import com.mikewarren.speakify.data.OnboardingRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.UserAppModel
-import com.mikewarren.speakify.data.models.OnboardingCategorySelection
 import com.mikewarren.speakify.data.events.PackageListDataRequester
+import com.mikewarren.speakify.data.models.OnboardingCategorySelection
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.AppNameHelper
 import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
@@ -145,7 +145,7 @@ class ImportantAppsViewModel @Inject constructor(
                         enabled = false,
                     )
                 }
-                return@combine allAppsModels.filter {  model: UserAppModel ->
+                return@combine allAppsModels.filter { model: UserAppModel ->
                     importantApps.find { it.packageName == model.packageName } == null
                 }
             }.stateIn(

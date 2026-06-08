@@ -207,6 +207,8 @@ class SessionRepositoryTest {
     fun `Scenario 3 - User signs out results in SignedOut state`() = runTest {
         val repository = createRepository()
 
+        trialModelFlow.value = TrialModel(status = TrialStatus.NotNeeded)
+
         // Start in SignedIn state
         isInitializedFlow.value = true
         userFlow.value = mockk<User>(relaxed = true)
@@ -216,7 +218,6 @@ class SessionRepositoryTest {
 
         // Sign out
         userFlow.value = null
-        trialModelFlow.value = TrialModel(status = TrialStatus.NotNeeded)
         advanceUntilIdle()
 
         assertEquals(MainUiState.SignedOut, repository.uiState.value)

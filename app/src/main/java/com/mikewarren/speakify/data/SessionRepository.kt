@@ -129,11 +129,6 @@ class SessionRepository @Inject constructor(
                 return
             }
 
-            if ((trialStatus == TrialStatus.NotNeeded) || (trialStatus == TrialStatus.NotStarted)) {
-                _uiState.value = MainUiState.SignedOut
-                return
-            }
-
             onSuccessfulSessionEnd(trialStatus)
             return
         }

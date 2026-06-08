@@ -1,13 +1,12 @@
 package com.mikewarren.speakify.data.events
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.util.Log
-import com.mikewarren.speakify.utils.NotificationPermissionHelper
+import com.mikewarren.speakify.activities.PackageQueryFetcherActivity
 import com.mikewarren.speakify.utils.log.ITaggable
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class PackageListDataRequester protected constructor(context: Context) : BaseDataRequester<ApplicationInfo, PackageQueryEvent>(context), ITaggable {
     companion object {
@@ -53,13 +52,9 @@ class PackageListDataRequester protected constructor(context: Context) : BaseDat
     }
 
     override fun onRequestData() {
-        scope.launch {
-            try {
-                val data = NotificationPermissionHelper(context).getAppsWithNotificationPermission()
-                eventBus.post(PackageQueryEvent.DataFetched(data))
-            } catch (e: Exception) {
-                eventBus.post(PackageQueryEvent.FetchFailed(e.message ?: "Unknown error"))
-            }
-        }
+        context.startActivity(
+            Intent(context, PackageQueryFetcherActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+            null)
     }
 }

@@ -12,18 +12,16 @@ import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
 import androidx.core.content.ContextCompat
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 
 class NotificationPermissionHelper(private val context: Context) {
 
-    suspend fun getAppsWithNotificationPermission(): List<ApplicationInfo> = withContext(Dispatchers.IO) {
+    fun getAppsWithNotificationPermission(): List<ApplicationInfo> {
         val allApps = getAllApps()
-        return@withContext allApps.filter { applicationInfo: ApplicationInfo ->  hasNotificationPermission(applicationInfo) }
+        return allApps.filter { applicationInfo: ApplicationInfo ->  hasNotificationPermission(applicationInfo) }
     }
 
-    suspend fun getAllApps(): List<ApplicationInfo> = withContext(Dispatchers.IO) {
+    fun getAllApps(): List<ApplicationInfo> {
         val packageManager = context.packageManager
         val mainIntent = Intent(Intent.ACTION_MAIN, null)
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
@@ -37,7 +35,7 @@ class NotificationPermissionHelper(private val context: Context) {
             packageManager.queryIntentActivities(mainIntent, 0)
         }
 
-        return@withContext resolveInfoList.mapNotNull { resolveInfo ->
+        return resolveInfoList.mapNotNull { resolveInfo ->
             try {
                 packageManager.getApplicationInfo(resolveInfo.activityInfo.packageName, 0)
             } catch (e: PackageManager.NameNotFoundException) {
