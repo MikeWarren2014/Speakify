@@ -1,6 +1,5 @@
 package com.mikewarren.speakify.data.db.firestore
 
-import com.mikewarren.speakify.data.BaseUserFirestoreRepository
 import com.mikewarren.speakify.utils.log.IResultLoggable
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -9,12 +8,16 @@ import javax.inject.Singleton
 @Singleton
 class AccountDeletionFirestoreRepository @Inject constructor() : BaseUserFirestoreRepository(), IResultLoggable {
 
-    override fun getSuccessLogMessage(): String = "User data deleted successfully for user $userId"
+    override fun getSuccessLogMessage(): String = "User data deleted successfully"
 
     override fun getFailureLogMessage(): String = "Failed to delete user data"
 
     suspend fun deleteUserData(): Result<Unit> {
         return try {
+            if (firebaseAuth.currentUser == null) {
+                return Result.failure(IllegalStateException("User not logged in to Firebase"))
+            }
+
             // Delete sub-collections first if necessary, 
             // but for simplicity we delete the document.
             // Note: Firestore doesn't automatically delete sub-collections when a document is deleted.

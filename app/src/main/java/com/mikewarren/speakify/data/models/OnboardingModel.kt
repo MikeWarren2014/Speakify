@@ -13,9 +13,12 @@ data class OnboardingCategorySelection(
 @Serializable
 data class OnboardingModel(
     val appOpenCount: Int = 0,
+    val speakificationCount: Int = 0,
     val onboardingStep: OnboardingUiState = OnboardingUiState.NotStarted,
     val surveyResult: String? = null,
     val primaryGoal: String? = null,
     val importantAppCategories: List<OnboardingCategorySelection> = emptyList(),
     val veryImportantApps: List<UserAppModel> = emptyList(),
+    val hasShownRatingsPrompt: Boolean = false,
+    val hasShownTrialConversionPrompt: Boolean = false,
 )

@@ -46,6 +46,21 @@ class MainViewModel @Inject constructor(
         sessionRepository.incrementAppOpenCount()
     }
 
+    fun startTrialConversion() {
+        sessionRepository.startTrialConversion()
+    }
+
+    fun proceedToTrialSession() {
+        sessionRepository.proceedToTrialSession()
+    }
+
+    fun saveSurveyResult(result: String) {
+        sessionRepository.saveSurveyResult(result)
+    }
+
+    fun markRatingsPromptShown() {
+        sessionRepository.markRatingsPromptShown()
+    }
 }
 
 

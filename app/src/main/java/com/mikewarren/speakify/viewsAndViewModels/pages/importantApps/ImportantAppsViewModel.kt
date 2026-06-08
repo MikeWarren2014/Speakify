@@ -9,13 +9,14 @@ import com.mikewarren.speakify.data.OnboardingRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.UserAppModel
-import com.mikewarren.speakify.data.models.OnboardingCategorySelection
 import com.mikewarren.speakify.data.events.PackageListDataRequester
+import com.mikewarren.speakify.data.models.OnboardingCategorySelection
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.AppNameHelper
 import com.mikewarren.speakify.viewsAndViewModels.pages.BaseSearchableViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AddAppMenuViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -117,9 +118,12 @@ class ImportantAppsViewModel @Inject constructor(
         onInit()
         viewModelScope.launch {
             repository.importantApps.collect { apps ->
-                apps.forEach { app ->
-                    appCategoryRepository.getCategoryForPackage(app.packageName)?.let { category ->
-                        onboardingRepository.satisfyCategory(category)
+                // Fetch categories in parallel to avoid blocking or long sequential waits
+                apps.map { app ->
+                    launch(Dispatchers.IO) {
+                        appCategoryRepository.getCategoryForPackage(app.packageName)?.let { category ->
+                            onboardingRepository.satisfyCategory(category)
+                        }
                     }
                 }
             }
@@ -141,7 +145,7 @@ class ImportantAppsViewModel @Inject constructor(
                         enabled = false,
                     )
                 }
-                return@combine allAppsModels.filter {  model: UserAppModel ->
+                return@combine allAppsModels.filter { model: UserAppModel ->
                     importantApps.find { it.packageName == model.packageName } == null
                 }
             }.stateIn(

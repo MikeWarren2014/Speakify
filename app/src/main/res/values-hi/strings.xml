@@ -401,6 +401,19 @@
     <string name="satisfaction_survey_header">अब तक आप Speakify का आनंद कैसे ले रहे हैं?</string>
     <string name="next">अगला</string>
 
+    <!-- Survey Follow Up shared -->
+    <string name="survey_follow_up_maybe_later">शायद बाद में</string>
+
+    <!-- Survey Follow Up Step: Rating -->
+    <string name="survey_rate_invite_title">हमें बहुत खुशी है कि आप Speakify का आनंद ले रहे हैं!</string>
+    <string name="survey_rate_invite_desc">क्या आप Play Store पर हमें रेटिंग देने के लिए कुछ समय निकाल सकते हैं? यह वास्तव में बहुत मदद करता है।</string>
+    <string name="survey_rate_invite_btn_text">Play Store पर रेटिंग दें</string>
+
+    <!-- Survey Follow Up Step: Feedback -->
+    <string name="feedback_invite_title">यह सुनकर हमें खेद है!</string>
+    <string name="feedback_invite_desc">हम जानना चाहेंगे कि हम आपके लिए Speakify को बेहतर कैसे बना सकते हैं। क्या आप हमें फीडबैक भेजना चाहेंगे?</string>
+    <string name="feedback_invite_btn_text">फीडबैक भेजें</string>
+
     <!-- Preference Gathering -->
     <string name="what_is_your_primary_goal">आपका प्राथमिक लक्ष्य क्या है?</string>
 

@@ -2,6 +2,7 @@ package com.mikewarren.speakify.data.db.firestore
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.mikewarren.speakify.utils.log.ITaggable
@@ -51,6 +52,19 @@ abstract class BaseFirestoreRepository : ITaggable {
                 }
                 throw e
             }
+        }
+    }
+
+    protected suspend fun writeTransaction(document: DocumentReference, data: Any) : Result<Unit> {
+        return try {
+            safeFirestoreCall {
+                document
+                    .set(data)
+                    .await()
+            }
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 }

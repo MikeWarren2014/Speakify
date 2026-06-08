@@ -1,4 +1,4 @@
-package com.mikewarren.speakify.viewsAndViewModels.pages.auth
+package com.mikewarren.speakify.viewsAndViewModels.pages.trialOnboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

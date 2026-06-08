@@ -19,10 +19,10 @@ class SchedulingRepository @Inject constructor(
     // Inject your DataStore or DAO here
     private val userSettingsDataStore: DataStore<UserSettingsModel>,
 ) {
-    val scheduling: Flow<SchedulingModel> = userSettingsDataStore.data
-        .map { model: UserSettingsModel ->
-            model.scheduling
-        }
+    val scheduling: Flow<SchedulingModel> by lazy {
+        userSettingsDataStore.data
+            .map { it.scheduling }
+    }
 
     suspend fun updateScheduling(scheduling: SchedulingModel) {
         userSettingsDataStore.updateData { model: UserSettingsModel ->

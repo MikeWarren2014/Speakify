@@ -38,7 +38,10 @@ class PackageListDataRequester protected constructor(context: Context) : BaseDat
                         Log.e(TAG, "Permission denied for fetching the packages")
                         _isLoading.value = false
                     }
-                    PackageQueryEvent.RequestData -> onRequestData()
+                    PackageQueryEvent.RequestData -> {
+                        _isLoading.value = true
+                        onRequestData()
+                    }
                 }
             }
         }

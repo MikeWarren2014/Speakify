@@ -45,8 +45,12 @@ class SessionRepositoryTest {
     private val isInitializedFlow = MutableStateFlow(false)
     private val userFlow = MutableStateFlow<User?>(null)
     private val trialModelFlow = MutableStateFlow(TrialModel())
+    private val isNewDirectSignUpFlow = MutableStateFlow(false)
     private val appOpenCountFlow = MutableStateFlow(1)
-    private val onboardingStepFlow = MutableStateFlow(OnboardingUiState.Completed)
+    private val onboardingStepFlow = MutableStateFlow<OnboardingUiState>(OnboardingUiState.Completed)
+    private val speakificationCountFlow = MutableStateFlow(0)
+    private val hasShownRatingsPromptFlow = MutableStateFlow(false)
+    private val hasShownTrialConversionPromptFlow = MutableStateFlow(false)
 
     @Before
     fun setUp() {
@@ -73,8 +77,12 @@ class SessionRepositoryTest {
         every { FirebaseAuth.getInstance() } returns firebaseAuth
 
         every { trialRepository.trialModelFlow } returns trialModelFlow
+        every { trialRepository.isNewDirectSignUp } returns isNewDirectSignUpFlow
         every { onboardingRepository.appOpenCount } returns appOpenCountFlow
         every { onboardingRepository.onboardingStep } returns onboardingStepFlow
+        every { onboardingRepository.speakificationCount } returns speakificationCountFlow
+        every { onboardingRepository.hasShownRatingsPrompt } returns hasShownRatingsPromptFlow
+        every { onboardingRepository.hasShownTrialConversionPrompt } returns hasShownTrialConversionPromptFlow
     }
 
     @After
@@ -90,77 +98,144 @@ class SessionRepositoryTest {
     }
 
     @Test
-    fun `Scenario 1 - NotNeeded trial status results in SignedOut`() = runTest {
+    fun `Signed out state when trial is not needed and user is null`() = runTest {
         val repository = createRepository()
-        
+
         isInitializedFlow.value = true
         trialModelFlow.value = TrialModel(status = TrialStatus.NotNeeded)
         userFlow.value = null
-        
+
         advanceUntilIdle()
-        
+
         assertEquals(MainUiState.SignedOut, repository.uiState.value)
     }
 
     @Test
-    fun `Scenario 2 - NotStarted trial status results in SignedOut`() = runTest {
+    fun `Signed out state when trial is not started and user is null`() = runTest {
         val repository = createRepository()
-        
+
         isInitializedFlow.value = true
         trialModelFlow.value = TrialModel(status = TrialStatus.NotStarted)
         userFlow.value = null
-        
+
         advanceUntilIdle()
-        
+
         assertEquals(MainUiState.SignedOut, repository.uiState.value)
         assertEquals(TrialStatus.NotStarted, trialRepository.trialModelFlow.first().status)
     }
 
     @Test
-    fun `Scenario 3 - Active trial status results in TrialActive`() = runTest {
+    fun `TrialActive state when trial is active and user is null`() = runTest {
         val repository = createRepository()
-        
+
         isInitializedFlow.value = true
         trialModelFlow.value = TrialModel(status = TrialStatus.Active(7))
         userFlow.value = null
-        
+
         advanceUntilIdle()
-        
+
         assertEquals(MainUiState.TrialActive, repository.uiState.value)
     }
 
     @Test
-    fun `Scenario 4 - proceedToTrialSession changes state and resets on re-init`() = runTest {
+    fun `proceedToTrialSession updates state correctly`() = runTest {
         var repository = createRepository()
-        
+
         isInitializedFlow.value = true
         trialModelFlow.value = TrialModel(status = TrialStatus.Active(7))
         userFlow.value = null
         advanceUntilIdle()
-        
+
         assertEquals(MainUiState.TrialActive, repository.uiState.value)
-        
+
         repository.proceedToTrialSession()
         assertEquals(MainUiState.TrialUsage, repository.uiState.value)
-        
+
         // Simulate app re-open by creating a new repository instance
         repository = createRepository()
         advanceUntilIdle()
-        
+
         assertEquals(MainUiState.TrialActive, repository.uiState.value)
     }
 
     @Test
-    fun `Scenario 5 - Expired trial status results in TrialEnded`() = runTest {
+    fun `TrialEnded state when trial is expired and user is null`() = runTest {
         val repository = createRepository()
-        
+
         isInitializedFlow.value = true
         trialModelFlow.value = TrialModel(status = TrialStatus.Expired)
         userFlow.value = null
-        
+
         advanceUntilIdle()
-        
+
         assertEquals(MainUiState.TrialEnded, repository.uiState.value)
+    }
+
+    @Test
+    fun `Scenario 1 - New user signs up results in Onboarding state`() = runTest {
+        val repository = createRepository()
+
+        applyNewUserState()
+
+        advanceUntilIdle()
+
+        assertEquals(MainUiState.Onboarding(OnboardingUiState.NotStarted), repository.uiState.value)
+    }
+
+    @Test
+    fun `Scenario 2 - New user makes it through onboarding results in SignedIn state`() = runTest {
+        val repository = createRepository()
+
+        applyNewUserState()
+        advanceUntilIdle()
+
+        // Complete onboarding
+        onboardingStepFlow.value = OnboardingUiState.Completed
+        advanceUntilIdle()
+
+        // Verify resetNewDirectSignUp was called
+        io.mockk.verify { trialRepository.resetNewDirectSignUp() }
+
+        // Simulate the flow update from resetNewDirectSignUp
+        isNewDirectSignUpFlow.value = false
+        advanceUntilIdle()
+
+        assertEquals(MainUiState.SignedIn, repository.uiState.value)
+    }
+
+    @Test
+    fun `Scenario 3 - User signs out results in SignedOut state`() = runTest {
+        val repository = createRepository()
+
+        trialModelFlow.value = TrialModel(status = TrialStatus.NotNeeded)
+
+        // Start in SignedIn state
+        isInitializedFlow.value = true
+        userFlow.value = mockk<User>(relaxed = true)
+        isNewDirectSignUpFlow.value = false
+        advanceUntilIdle()
+        assertEquals(MainUiState.SignedIn, repository.uiState.value)
+
+        // Sign out
+        userFlow.value = null
+        advanceUntilIdle()
+
+        assertEquals(MainUiState.SignedOut, repository.uiState.value)
+        io.mockk.verify { firebaseAuth.signOut() }
+        io.mockk.coVerify { settingsRepository.clearAllData() }
+    }
+
+    @Test
+    fun `Scenario 4 - Existing user signs in results in SignedIn state`() = runTest {
+        val repository = createRepository()
+
+        isInitializedFlow.value = true
+        userFlow.value = mockk<User>(relaxed = true)
+        isNewDirectSignUpFlow.value = false
+
+        advanceUntilIdle()
+
+        assertEquals(MainUiState.SignedIn, repository.uiState.value)
     }
 
     private fun createRepository() = SessionRepository(
@@ -172,4 +247,12 @@ class SessionRepositoryTest {
         onboardingRepository,
         mockk(relaxed = true)
     )
+
+    private fun applyNewUserState() {
+        isInitializedFlow.value = true
+        userFlow.value = mockk<User>(relaxed = true)
+        isNewDirectSignUpFlow.value = true
+        trialModelFlow.value = TrialModel(status = TrialStatus.NotNeeded)
+        onboardingStepFlow.value = OnboardingUiState.NotStarted
+    }
 }

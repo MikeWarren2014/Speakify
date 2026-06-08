@@ -13,9 +13,5 @@ sealed interface OnboardingUiState {
     @Serializable
     data object ValueDiscovery : OnboardingUiState
     @Serializable
-    data object ConversionReady : OnboardingUiState
-    @Serializable
-    data object SatisfactionSurvey : OnboardingUiState
-    @Serializable
     data object Completed : OnboardingUiState
 }

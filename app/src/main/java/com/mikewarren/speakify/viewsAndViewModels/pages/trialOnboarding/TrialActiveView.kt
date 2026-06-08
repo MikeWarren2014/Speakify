@@ -1,4 +1,4 @@
-package com.mikewarren.speakify.viewsAndViewModels.pages.auth
+package com.mikewarren.speakify.viewsAndViewModels.pages.trialOnboarding
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

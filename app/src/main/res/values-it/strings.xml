@@ -402,6 +402,19 @@
     <string name="satisfaction_survey_header">Come ti stai trovando con Speakify finora?</string>
     <string name="next">Avanti</string>
 
+    <!-- Survey Follow Up shared -->
+    <string name="survey_follow_up_maybe_later">Forse più tardi</string>
+
+    <!-- Survey Follow Up Step: Rating -->
+    <string name="survey_rate_invite_title">Siamo così felici che ti piaccia Speakify!</string>
+    <string name="survey_rate_invite_desc">Ti dispiacerebbe dedicare un momento per valutarci sul Play Store? Aiuta davvero molto.</string>
+    <string name="survey_rate_invite_btn_text">Valuta sul Play Store</string>
+
+    <!-- Survey Follow Up Step: Feedback -->
+    <string name="feedback_invite_title">Ci dispiace sentirlo!</string>
+    <string name="feedback_invite_desc">Ci piacerebbe sapere come possiamo migliorare Speakify per te. Ti piacerebbe inviarci un feedback?</string>
+    <string name="feedback_invite_btn_text">Invia feedback</string>
+
     <!-- Preference Gathering -->
     <string name="what_is_your_primary_goal">Qual è il tuo obiettivo principale?</string>
 

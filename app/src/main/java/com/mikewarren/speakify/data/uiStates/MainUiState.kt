@@ -11,4 +11,6 @@ sealed interface MainUiState {
     data object TrialEnded: MainUiState
     data object SignedOut : MainUiState
     data object TrialConversion: MainUiState
+    data object TrialConversionPrompt: MainUiState
+    data object RatingsPrompt: MainUiState
 }
