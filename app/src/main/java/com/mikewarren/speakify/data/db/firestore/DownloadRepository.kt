@@ -5,9 +5,15 @@ import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.NotificationSource
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.MessengerContactsRepository
+import com.mikewarren.speakify.data.OnboardingRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.db.RecentMessengerContactModel
 import com.mikewarren.speakify.data.db.UserAppModel
+import com.mikewarren.speakify.data.models.AppCategory
+import com.mikewarren.speakify.data.models.FeedbackModel
+import com.mikewarren.speakify.data.models.OnboardingCategorySelection
+import com.mikewarren.speakify.data.models.OnboardingModel
+import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,6 +23,7 @@ class DownloadRepository @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val appsRepository: AppsRepository,
     private val messengerContactsRepository: MessengerContactsRepository,
+    private val onboardingRepository: OnboardingRepository,
 ): BaseChildFirestoreRepository() {
     override fun getSuccessLogMessage(): String {
         return "All data restored successfully for user $userId"
@@ -35,7 +42,7 @@ class DownloadRepository @Inject constructor(
         }
         
         if (!settingsSnapshot.exists()) {
-            return Result.failure(IllegalStateException("Settings document does not exist"))
+            return Result.success(Unit)
         }
 
         return transaction(settingsSnapshot) { documentSnapshot ->
@@ -55,6 +62,77 @@ class DownloadRepository @Inject constructor(
                 settingsRepository.setCrashlyticsEnabled(it)
             }
 
+        }
+    }
+
+    override suspend fun onboardingTransaction(): Result<Unit> {
+        val onboardingSnapshot = safeFirestoreCall {
+            userDoc
+                .collection("onboarding")
+                .document("onboarding")
+                .get()
+                .await()
+        }
+
+        if (!onboardingSnapshot.exists()) {
+            return Result.success(Unit)
+        }
+
+        return transaction(onboardingSnapshot) { doc ->
+            val onboardingStep = OnboardingUiState.fromString(doc.getString("onboardingStep"))
+            val appOpenCount = doc.getLong("appOpenCount")?.toInt() ?: 0
+            val speakificationCount = doc.getLong("speakificationCount")?.toInt() ?: 0
+            val surveyResultFallback = doc.getString("surveyResult")
+            val primaryGoal = doc.getString("primaryGoal")
+            val hasShownRatingsPrompt = doc.getBoolean("hasShownRatingsPrompt") ?: false
+            val hasShownTrialConversionPrompt = doc.getBoolean("hasShownTrialConversionPrompt") ?: false
+
+            @Suppress("UNCHECKED_CAST")
+            val importantAppCategories = (doc.get("importantAppCategories") as? List<Map<String, Any>>)?.mapNotNull { map ->
+                val categoryStr = map["category"] as? String ?: return@mapNotNull null
+                val isSatisfied = map["isSatisfied"] as? Boolean ?: false
+                try {
+                    OnboardingCategorySelection(AppCategory.valueOf(categoryStr), isSatisfied)
+                } catch (e: Exception) {
+                    null
+                }
+            } ?: emptyList()
+
+            onboardingRepository.restoreOnboardingModel(
+                OnboardingModel(
+                    appOpenCount = appOpenCount,
+                    speakificationCount = speakificationCount,
+                    onboardingStep = onboardingStep,
+                    feedback = surveyResultFallback?.let { FeedbackModel(surveyResult = it) },
+                    primaryGoal = primaryGoal,
+                    importantAppCategories = importantAppCategories,
+                    hasShownRatingsPrompt = hasShownRatingsPrompt,
+                    hasShownTrialConversionPrompt = hasShownTrialConversionPrompt
+                )
+            )
+        }
+    }
+
+    override suspend fun feedbackTransaction(): Result<Unit> {
+        val feedbackSnapshot = safeFirestoreCall {
+            userDoc.collection("onboarding")
+                .document("feedback")
+                .get()
+                .await()
+        }
+
+        if (!feedbackSnapshot.exists()) {
+            return Result.success(Unit)
+        }
+
+        return transaction(feedbackSnapshot) { doc ->
+            val surveyResult = doc.getString("surveyResult")
+            val action = doc.getString("action")
+            if (surveyResult != null || action != null) {
+                onboardingRepository.saveFeedback(
+                    FeedbackModel(surveyResult, action)
+                )
+            }
         }
     }
 

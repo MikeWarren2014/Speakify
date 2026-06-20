@@ -14,4 +14,16 @@ sealed interface OnboardingUiState {
     data object ValueDiscovery : OnboardingUiState
     @Serializable
     data object Completed : OnboardingUiState
+
+    companion object {
+        fun fromString(value: String?): OnboardingUiState {
+            return when (value) {
+                PreferenceGathering::class.simpleName -> PreferenceGathering
+                AppUsageInsight::class.simpleName -> AppUsageInsight
+                ValueDiscovery::class.simpleName -> ValueDiscovery
+                Completed::class.simpleName -> Completed
+                else -> NotStarted
+            }
+        }
+    }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.logEvent
 import com.mikewarren.speakify.data.db.UserAppModel
+import com.mikewarren.speakify.data.models.FeedbackModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,9 +27,10 @@ class AnalyticsHelper @Inject constructor(
         logEvent("onboarding_step_reached", bundle)
     }
 
-    fun logSurveyResult(result: String) {
+    fun logFeedback(feedback: FeedbackModel) {
         val bundle = Bundle().apply {
-            putString("survey_answer", result)
+            putString("survey_answer", feedback.surveyResult)
+            putString("action", feedback.action)
         }
         logEvent("onboarding_survey_completed", bundle)
     }

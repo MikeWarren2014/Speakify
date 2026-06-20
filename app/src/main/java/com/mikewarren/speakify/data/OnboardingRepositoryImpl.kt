@@ -2,7 +2,9 @@ package com.mikewarren.speakify.data
 
 import androidx.datastore.core.DataStore
 import com.mikewarren.speakify.data.models.AppCategory
+import com.mikewarren.speakify.data.models.FeedbackModel
 import com.mikewarren.speakify.data.models.OnboardingCategorySelection
+import com.mikewarren.speakify.data.models.OnboardingModel
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -11,29 +13,32 @@ import javax.inject.Inject
 class OnboardingRepositoryImpl @Inject constructor(
     private val userSettingsDataStore: DataStore<UserSettingsModel>,
 ) : OnboardingRepository {
-    override val appOpenCount: Flow<Int> = userSettingsDataStore.data
-        .map { model -> model.onboardingModel.appOpenCount }
+    override val onboardingModel: Flow<OnboardingModel> = userSettingsDataStore.data
+        .map { it.onboardingModel }
 
-    override val speakificationCount: Flow<Int> = userSettingsDataStore.data
-        .map { model -> model.onboardingModel.speakificationCount }
+    override val appOpenCount: Flow<Int> = onboardingModel
+        .map { model -> model.appOpenCount }
 
-    override val onboardingStep: Flow<OnboardingUiState> = userSettingsDataStore.data
-        .map { model -> model.onboardingModel.onboardingStep }
+    override val speakificationCount: Flow<Int> = onboardingModel
+        .map { model -> model.speakificationCount }
 
-    override val surveyResult: Flow<String?> = userSettingsDataStore.data
-        .map { model -> model.onboardingModel.surveyResult }
+    override val onboardingStep: Flow<OnboardingUiState> = onboardingModel
+        .map { model -> model.onboardingStep }
 
-    override val primaryGoal: Flow<String?> = userSettingsDataStore.data
-        .map { model -> model.onboardingModel.primaryGoal }
+    override val feedback: Flow<FeedbackModel?> = onboardingModel
+        .map { model -> model.feedback }
 
-    override val importantAppCategories: Flow<List<OnboardingCategorySelection>> = userSettingsDataStore.data
-        .map { model -> model.onboardingModel.importantAppCategories }
+    override val primaryGoal: Flow<String?> = onboardingModel
+        .map { model -> model.primaryGoal }
 
-    override val hasShownRatingsPrompt: Flow<Boolean> = userSettingsDataStore.data
-        .map { model -> model.onboardingModel.hasShownRatingsPrompt }
+    override val importantAppCategories: Flow<List<OnboardingCategorySelection>> = onboardingModel
+        .map { model -> model.importantAppCategories }
 
-    override val hasShownTrialConversionPrompt: Flow<Boolean> = userSettingsDataStore.data
-        .map { model -> model.onboardingModel.hasShownTrialConversionPrompt }
+    override val hasShownRatingsPrompt: Flow<Boolean> = onboardingModel
+        .map { model -> model.hasShownRatingsPrompt }
+
+    override val hasShownTrialConversionPrompt: Flow<Boolean> = onboardingModel
+        .map { model -> model.hasShownTrialConversionPrompt }
 
 
     override suspend fun incrementAppOpenCount() {
@@ -66,11 +71,11 @@ class OnboardingRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveSurveyResult(result: String) {
+    override suspend fun saveFeedback(feedback: FeedbackModel) {
         userSettingsDataStore.updateData { model ->
             model.copy(
                 onboardingModel = model.onboardingModel.copy(
-                    surveyResult = result
+                    feedback = feedback
                 )
             )
         }
@@ -130,5 +135,9 @@ class OnboardingRepositoryImpl @Inject constructor(
                 )
             )
         }
+    }
+
+    override suspend fun restoreOnboardingModel(model: OnboardingModel) {
+        userSettingsDataStore.updateData { it.copy(onboardingModel = model) }
     }
 }

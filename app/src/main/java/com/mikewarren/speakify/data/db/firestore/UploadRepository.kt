@@ -6,7 +6,9 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.MessengerContactsRepository
+import com.mikewarren.speakify.data.OnboardingRepository
 import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.data.models.FeedbackModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -17,6 +19,7 @@ class UploadRepository @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val appsRepository: AppsRepository,
     private val messengerContactsRepository: MessengerContactsRepository,
+    private val onboardingRepository: OnboardingRepository,
 ): BaseChildFirestoreRepository() {
 
 
@@ -43,6 +46,44 @@ class UploadRepository @Inject constructor(
                 "minVolume" to settingsRepository.minVolume.first(),
                 "isCrashlyticsEnabled" to settingsRepository.isCrashlyticsEnabled.first()
             ))
+    }
+
+    override suspend fun onboardingTransaction(): Result<Unit> {
+        val model = onboardingRepository.onboardingModel.first()
+        val onboardingData = hashMapOf(
+            "appOpenCount" to model.appOpenCount,
+            "speakificationCount" to model.speakificationCount,
+            "onboardingStep" to model.onboardingStep::class.simpleName,
+            "primaryGoal" to model.primaryGoal,
+            "hasShownRatingsPrompt" to model.hasShownRatingsPrompt,
+            "hasShownTrialConversionPrompt" to model.hasShownTrialConversionPrompt,
+            "importantAppCategories" to model.importantAppCategories.map {
+                hashMapOf(
+                    "category" to it.category.name,
+                    "isSatisfied" to it.isSatisfied
+                )
+            },
+            "timestamp" to com.google.firebase.Timestamp.now()
+        )
+
+        return writeTransaction(userDoc.collection("onboarding")
+            .document("onboarding"),
+            onboardingData
+        )
+    }
+
+    override suspend fun feedbackTransaction(): Result<Unit> {
+        val model = onboardingRepository.onboardingModel.first()
+        val feedback = model.feedback
+
+        feedback?.let {
+            return writeTransaction(userDoc.collection("onboarding")
+                .document("feedback"),
+                it
+            )
+        }
+
+        return Result.success(Unit)
     }
 
     override suspend fun appSettingsTransactionsList(): List<suspend () -> Result<Unit>> {
