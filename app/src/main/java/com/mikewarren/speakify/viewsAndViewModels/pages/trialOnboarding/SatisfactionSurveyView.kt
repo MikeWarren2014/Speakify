@@ -154,7 +154,7 @@ fun SatisfactionSurvey(onResult: (FeedbackModel) -> Unit) {
                                         "market://details?id=${context.packageName}".toUri())
                                     context.startActivity(intent)
                                     onResult(FeedbackModel(surveyResult = initialSentiment, action = "Rated (Fallback)"))
-
+                                    return@addOnCompleteListener
                                 }
 
                                 val reviewInfo = task.result
