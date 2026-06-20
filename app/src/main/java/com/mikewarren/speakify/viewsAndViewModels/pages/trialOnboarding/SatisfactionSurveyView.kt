@@ -1,5 +1,8 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.trialOnboarding
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mikewarren.speakify.R
 import androidx.core.net.toUri
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.models.FeedbackModel
 
@@ -54,6 +58,7 @@ fun SatisfactionSurvey(onResult: (FeedbackModel) -> Unit) {
     var initialSentiment by remember { mutableStateOf<String?>(null) }
     var currentStep by remember { mutableStateOf(SurveyStep.SENTIMENT) }
     val context = LocalContext.current
+    val reviewManager = remember { ReviewManagerFactory.create(context) }
 
     val options = listOf(
         Triple("Very Dissatisfied",
@@ -129,16 +134,43 @@ fun SatisfactionSurvey(onResult: (FeedbackModel) -> Unit) {
                 }
 
                 SurveyStep.RATE_INVITE -> {
-                    // TODO: This should change to show the In-App Rating prompt
                     SurveyFollowUp(
                         title = stringResource(R.string.survey_rate_invite_title),
                         description = stringResource(R.string.survey_rate_invite_desc),
                         primaryButtonText = stringResource(R.string.survey_rate_invite_btn_text),
                         onPrimaryClick = {
-                            val intent = Intent(Intent.ACTION_VIEW,
-                                "market://details?id=${context.packageName}".toUri())
-                            context.startActivity(intent)
-                            onResult(FeedbackModel(surveyResult = initialSentiment, action = "Rated"))
+                            val activity = context.findActivity()
+                            if (activity == null) {
+                                onResult(FeedbackModel(surveyResult = initialSentiment, action = "Rate Error (No Activity)"))
+                                return@SurveyFollowUp
+                            }
+
+                            val request = reviewManager.requestReviewFlow()
+                            request.addOnCompleteListener { task ->
+                                if (!task.isSuccessful) {
+                                    // There was some problem, log or handle error, then continue.
+                                    // Fallback to market intent if needed
+                                    val intent = Intent(Intent.ACTION_VIEW,
+                                        "market://details?id=${context.packageName}".toUri())
+                                    context.startActivity(intent)
+                                    onResult(FeedbackModel(surveyResult = initialSentiment, action = "Rated (Fallback)"))
+
+                                }
+
+                                val reviewInfo = task.result
+                                val flow = reviewManager.launchReviewFlow(activity, reviewInfo)
+                                flow.addOnCompleteListener { _ ->
+                                    // The flow has finished. The API does not indicate whether the user
+                                    // reviewed or not, or even whether the review dialog was shown. Thus, no
+                                    // matter the result, we continue our app flow.
+                                    onResult(
+                                        FeedbackModel(
+                                            surveyResult = initialSentiment,
+                                            action = "Rated"
+                                        )
+                                    )
+                                }
+                            }
                         },
                         onSecondaryClick = { onResult(FeedbackModel(surveyResult = initialSentiment, action = "Rate Later")) }
                     )
@@ -165,6 +197,12 @@ fun SatisfactionSurvey(onResult: (FeedbackModel) -> Unit) {
             }
         }
     }
+}
+
+fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }
 
 @Composable

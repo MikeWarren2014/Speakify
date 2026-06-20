@@ -23,6 +23,7 @@ composeBom = "2026.03.01"
 navigationRuntimeKtx = "2.9.7"
 playServicesBase = "18.10.0"
 playServicesBasement = "18.10.0"
+playReview = "2.0.2"
 roomRuntime = "2.8.4"
 runner = "1.7.0"
 storage = "1.6.0"
@@ -93,6 +94,8 @@ libphonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", vers
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 play-services-base = { module = "com.google.android.gms:play-services-base", version.ref = "playServicesBase" }
 play-services-basement = { module = "com.google.android.gms:play-services-basement", version.ref = "playServicesBasement" }
+play-review = { group = "com.google.android.play", name = "review", version.ref = "playReview" }
+play-review-ktx = { group = "com.google.android.play", name = "review-ktx", version.ref = "playReview" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
 ui = { group = "androidx.compose.ui", name = "ui", version.ref = "uiVersion" }
