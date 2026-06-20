@@ -184,6 +184,7 @@ dependencies {
     implementation libs.firebase.firestore
     implementation libs.firebase.auth
 
+    implementation libs.play.review.ktx
     // Source: https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation(libs.jsoup)
 }
