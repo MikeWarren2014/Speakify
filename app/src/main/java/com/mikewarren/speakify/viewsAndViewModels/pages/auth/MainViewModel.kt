@@ -3,6 +3,7 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.auth
 
 import androidx.lifecycle.ViewModel
 import com.mikewarren.speakify.data.SessionRepository
+import com.mikewarren.speakify.data.models.FeedbackModel
 import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
@@ -54,8 +55,8 @@ class MainViewModel @Inject constructor(
         sessionRepository.proceedToTrialSession()
     }
 
-    fun saveSurveyResult(result: String) {
-        sessionRepository.saveSurveyResult(result)
+    fun saveFeedback(feedback: FeedbackModel) {
+        sessionRepository.saveFeedback(feedback)
     }
 
     fun markRatingsPromptShown() {

@@ -2,25 +2,30 @@ package com.mikewarren.speakify.data
 
 import android.util.Log
 import com.clerk.api.Clerk
+import com.clerk.api.network.serialization.fold
 import com.clerk.api.network.serialization.longErrorMessageOrNull
 import com.clerk.api.network.serialization.onFailure
 import com.clerk.api.network.serialization.onSuccess
 import com.clerk.api.session.GetTokenOptions
 import com.clerk.api.session.fetchToken
+import com.clerk.api.user.delete
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
 import com.mikewarren.speakify.data.db.firestore.AccountDeletionFirestoreRepository
-import com.mikewarren.speakify.data.db.firestore.FeedbackFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FirestoreSyncRepository
+import com.mikewarren.speakify.data.models.FeedbackModel
 import com.mikewarren.speakify.data.models.TrialModel
 import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
+import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.utils.AnalyticsHelper
+import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -30,21 +35,18 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class SessionRepository @Inject constructor(
     private val firestoreSyncRepository: FirestoreSyncRepository,
-    private val feedbackFirestoreRepository: FeedbackFirestoreRepository,
     private val accountDeletionFirestoreRepository: AccountDeletionFirestoreRepository,
     private val settingsRepository: SettingsRepository,
     val trialRepository: TrialRepository,
     val onboardingRepository: OnboardingRepository,
     private val analyticsHelper: AnalyticsHelper
-) {
+): ITaggable {
     private val _accountDeletionUiState = MutableStateFlow<AccountDeletionUiState>(
         AccountDeletionUiState.NotRequested)
     val accountDeletionUiState = _accountDeletionUiState.asStateFlow()
@@ -52,11 +54,14 @@ class SessionRepository @Inject constructor(
     private val _uiState = MutableStateFlow<MainUiState>(MainUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private val scope = CoroutineScope(Dispatchers.Main)
+    private val scope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
     private val firebaseAuth = FirebaseAuth.getInstance()
 
     // Flags to track background operations and avoid redundant/looping calls
     private var isTrialAuthorized = false
+    internal var lastDataBundle: DataBundle? = null
+    private var isSyncing = false
+    private var syncedUserId: String? = null
 
     init {
         Log.d("SessionRepository", "Initializing SessionRepository")
@@ -84,11 +89,33 @@ class SessionRepository @Inject constructor(
             )
         }
             .distinctUntilChanged()
-            .onEach { dataBundle: DataBundle ->
-                Log.d("SessionRepository", "New DataBundle: init=${dataBundle.isInitialized}, user=${dataBundle.user?.id}, trialStatus=${dataBundle.trialModel.status}")
-                reactToSessionState(dataBundle)
+            .onEach { incomingBundle: DataBundle ->
+                val mergedBundle = lastDataBundle?.let { last ->
+                    mergeDataBundles(last, incomingBundle)
+                } ?: incomingBundle
+
+                lastDataBundle = mergedBundle
+
+                Log.d("SessionRepository", "Reacting to DataBundle: init=${mergedBundle.isInitialized}, user=${mergedBundle.user?.id}, trialStatus=${mergedBundle.trialModel.status}, openCount=${mergedBundle.openCount}, step=${mergedBundle.onboardingStep}")
+                reactToSessionState(mergedBundle)
             }
             .launchIn(scope)
+    }
+
+    private fun mergeDataBundles(old: DataBundle, new: DataBundle): DataBundle {
+        // If we are in the same identity (both guest or same user), prevent regressions in progress
+        return if (old.user?.id == new.user?.id) {
+            new.copy(
+                openCount = maxOf(old.openCount, new.openCount),
+                speakificationCount = maxOf(old.speakificationCount, new.speakificationCount),
+                onboardingStep = if (old.onboardingStep == OnboardingUiState.Completed) OnboardingUiState.Completed else new.onboardingStep,
+                hasShownRatingsPrompt = old.hasShownRatingsPrompt || new.hasShownRatingsPrompt,
+                hasShownTrialConversionPrompt = old.hasShownTrialConversionPrompt || new.hasShownTrialConversionPrompt
+            )
+        } else {
+            // Transition between guest/signed-in or between different users.
+            new
+        }
     }
 
     private suspend fun reactToSessionState(dataBundle: DataBundle) {
@@ -109,18 +136,7 @@ class SessionRepository @Inject constructor(
 
         val trialStatus = trialModel.status
 
-        val engagementContext = if ((trialStatus == TrialStatus.NotNeeded) && (!isNewDirectSignUp)) {
-            null
-        } else {
-            TrialEngagementContext.from(
-                trialModel,
-                onboardingStep,
-                speakificationCount,
-                openCount,
-                hasShownRatingsPrompt,
-                hasShownTrialConversionPrompt
-            )
-        }
+        val engagementContext = createTrialEngagementContext(dataBundle)
 
         if (user == null) {
             if (_uiState.value == MainUiState.TrialEnded) return
@@ -138,10 +154,15 @@ class SessionRepository @Inject constructor(
 
         signIntoAndSyncWithFirebase(user)
 
-        if (isNewDirectSignUp) {
-            if (isHandlingTrialEngagement(engagementContext))
-                return
+        if (isSyncing) {
+            _uiState.value = MainUiState.Loading
+            return
+        }
 
+        if (isHandlingTrialEngagement(engagementContext))
+            return
+
+        if (isNewDirectSignUp) {
             if (onboardingStep == OnboardingUiState.Completed) {
                 trialRepository.resetNewDirectSignUp()
                 return
@@ -151,6 +172,39 @@ class SessionRepository @Inject constructor(
         }
 
         _uiState.value = MainUiState.SignedIn
+    }
+
+    private fun createTrialEngagementContext(dataBundle: DataBundle): TrialEngagementContext {
+        val (isInitialized,
+            user,
+            trialModel,
+            isNewDirectSignUp,
+            openCount,
+            onboardingStep,
+            speakificationCount,
+            hasShownRatingsPrompt,
+            hasShownTrialConversionPrompt) = dataBundle
+
+        if ((trialModel.status in listOf(TrialStatus.NotStarted, TrialStatus.NotNeeded)) &&
+            (user == null)) {
+            return TrialEngagementContext.Other(
+                trialModel,
+                onboardingStep,
+                speakificationCount,
+                openCount,
+                hasShownRatingsPrompt,
+                hasShownTrialConversionPrompt,
+            )
+        }
+
+        return TrialEngagementContext.from(
+            trialModel,
+            onboardingStep,
+            speakificationCount,
+            openCount,
+            hasShownRatingsPrompt,
+            hasShownTrialConversionPrompt
+        )
     }
 
     private fun isHandlingTrialEngagement(context: TrialEngagementContext?): Boolean {
@@ -200,23 +254,34 @@ class SessionRepository @Inject constructor(
     }
 
     private fun signIntoAndSyncWithFirebase(user: com.clerk.api.user.User) {
-        signInToFirebase(user, { result ->
+        if (isSyncing || syncedUserId == user.id) return
+
+        isSyncing = true
+        signInToFirebase(user) { result ->
             if (result.isSuccess) {
                 Log.d("SessionRepo", "Successfully signed into Firebase")
 
-                assert(firebaseAuth.currentUser != null)
-
                 scope.launch(Dispatchers.IO) {
-                    firestoreSyncRepository.downloadAndRestoreData()
-                    feedbackFirestoreRepository.syncFeedback()
+                    try {
+                        firestoreSyncRepository.downloadAndRestoreData()
+                        syncedUserId = user.id
+                    } catch (e: Exception) {
+                        Log.e("SessionRepo", "Failed to sync data", e)
+                    } finally {
+                        isSyncing = false
+                        scope.launch {
+                            lastDataBundle?.let { reactToSessionState(it) }
+                        }
+                    }
                 }
 
                 return@signInToFirebase
             }
 
             Log.e("SessionRepo", "Failed to sign into Firebase", result.exceptionOrNull())
+            isSyncing = false
             signOut()
-        })
+        }
     }
 
     private fun signInToFirebase(user: com.clerk.api.user.User, onDone: (result: Result<Unit>) -> Unit) {
@@ -289,12 +354,16 @@ class SessionRepository @Inject constructor(
     fun markTrialConversionShown() {
         scope.launch {
             onboardingRepository.setHasShownTrialConversionPrompt(true)
+            lastDataBundle = lastDataBundle?.copy(hasShownTrialConversionPrompt = true)
+            lastDataBundle?.let { reactToSessionState(it) }
         }
     }
 
     fun markRatingsPromptShown() {
         scope.launch {
             onboardingRepository.setHasShownRatingsPrompt(true)
+            lastDataBundle = lastDataBundle?.copy(hasShownRatingsPrompt = true)
+            lastDataBundle?.let { reactToSessionState(it) }
         }
     }
 
@@ -308,6 +377,8 @@ class SessionRepository @Inject constructor(
     fun incrementAppOpenCount() {
         scope.launch {
             onboardingRepository.incrementAppOpenCount()
+            lastDataBundle = lastDataBundle?.copy(openCount = (lastDataBundle?.openCount ?: 0) + 1)
+            lastDataBundle?.let { reactToSessionState(it) }
         }
     }
 
@@ -319,19 +390,15 @@ class SessionRepository @Inject constructor(
         scope.launch {
             onboardingRepository.updateOnboardingStep(step)
             analyticsHelper.logOnboardingStep(step.toString())
-            if (Clerk.user != null) {
-                feedbackFirestoreRepository.syncFeedback()
-            }
+            lastDataBundle = lastDataBundle?.copy(onboardingStep = step)
+            lastDataBundle?.let { reactToSessionState(it) }
         }
     }
 
-    fun saveSurveyResult(result: String) {
+    fun saveFeedback(feedback: FeedbackModel) {
         scope.launch {
-            onboardingRepository.saveSurveyResult(result)
-            analyticsHelper.logSurveyResult(result)
-            if (Clerk.user != null) {
-                feedbackFirestoreRepository.syncFeedback()
-            }
+            onboardingRepository.saveFeedback(feedback)
+            analyticsHelper.logFeedback(feedback)
         }
     }
 
@@ -387,7 +454,7 @@ class SessionRepository @Inject constructor(
     }
 
     private suspend fun onSuccessfulSessionEnd(trialStatus: TrialStatus){
-        if (_uiState.value == MainUiState.SignedOut || _uiState.value == MainUiState.TrialEnded) {
+        if (_uiState.value in listOf(MainUiState.SignedOut, MainUiState.TrialEnded)) {
             return
         }
 
@@ -400,11 +467,29 @@ class SessionRepository @Inject constructor(
         _uiState.value = MainUiState.SignedOut
     }
 
-    suspend fun deleteUserData(): Result<Unit> {
-        return accountDeletionFirestoreRepository.deleteUserData()
+    suspend fun deleteUser(): Result<Unit> {
+        val result = accountDeletionFirestoreRepository.deleteUserData()
+
+        if (result.isFailure) {
+            LogUtils.LogWarning(TAG, "Failed to delete Firestore data: ${result.exceptionOrNull()?.message}")
+            // We might want to show an error to the user here, 
+            // but proceeding with account deletion is often safer to ensure the account is gone.
+        }
+
+        return Clerk.user!!.delete().fold(
+            onSuccess = {
+                firebaseAuth.currentUser?.delete()
+                setAccountDeletionUiState(AccountDeletionUiState.Deleted)
+                Result.success(Unit)
+            },
+            onFailure = { failure ->
+                LogUtils.LogWarning(TAG, "Error deleting user: ${failure.longErrorMessageOrNull}")
+                Result.failure(failure.throwable ?: Exception("Unknown error"))
+            }
+        )
     }
 
-    private data class DataBundle(
+    internal data class DataBundle(
         val isInitialized: Boolean,
         val user: com.clerk.api.user.User?,
         val trialModel: TrialModel,

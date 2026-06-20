@@ -13,6 +13,8 @@ abstract class BaseChildFirestoreRepository: BaseMultipleFirestoreTransactionsRe
     open suspend fun allFirestoreTransactions(): List<suspend () -> Result<Unit>> {
         return listOf(
             this::settingsTransaction,
+            this::onboardingTransaction,
+            this::feedbackTransaction,
             { doFirestoreTransactions(importantAppsTransactionList()) },
             { doFirestoreTransactions(appSettingsTransactionsList()) },
             { doFirestoreTransactions(recentMessengerContactsTransactionList()) },
@@ -20,6 +22,8 @@ abstract class BaseChildFirestoreRepository: BaseMultipleFirestoreTransactionsRe
     }
 
     abstract suspend fun settingsTransaction() : Result<Unit>
+    abstract suspend fun onboardingTransaction() : Result<Unit>
+    abstract suspend fun feedbackTransaction() : Result<Unit>
     abstract suspend fun importantAppsTransactionList() : List<suspend () -> Result<Unit>>
     abstract suspend fun appSettingsTransactionsList() : List<suspend () -> Result<Unit>>
 

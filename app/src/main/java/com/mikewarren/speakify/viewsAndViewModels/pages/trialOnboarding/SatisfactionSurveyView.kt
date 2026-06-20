@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.mikewarren.speakify.R
 import androidx.core.net.toUri
 import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.data.models.FeedbackModel
 
 private enum class SurveyStep {
     SENTIMENT,
@@ -48,8 +49,9 @@ private enum class SurveyStep {
 }
 
 @Composable
-fun SatisfactionSurvey(onResult: (String) -> Unit) {
+fun SatisfactionSurvey(onResult: (FeedbackModel) -> Unit) {
     var selectedOption by remember { mutableStateOf<Int?>(null) }
+    var initialSentiment by remember { mutableStateOf<String?>(null) }
     var currentStep by remember { mutableStateOf(SurveyStep.SENTIMENT) }
     val context = LocalContext.current
 
@@ -110,11 +112,12 @@ fun SatisfactionSurvey(onResult: (String) -> Unit) {
                         onClick = {
                             selectedOption?.let {
                                 val result = options[it].first
+                                initialSentiment = result
                                 // Branch based on sentiment index
                                 when (it) {
                                     0, 1 -> currentStep = SurveyStep.FEEDBACK_INVITE
                                     3, 4 -> currentStep = SurveyStep.RATE_INVITE
-                                    else -> onResult(result) // Neutral just proceeds
+                                    else -> onResult(FeedbackModel(surveyResult = result)) // Neutral just proceeds
                                 }
                             }
                         },
@@ -126,6 +129,7 @@ fun SatisfactionSurvey(onResult: (String) -> Unit) {
                 }
 
                 SurveyStep.RATE_INVITE -> {
+                    // TODO: This should change to show the In-App Rating prompt
                     SurveyFollowUp(
                         title = stringResource(R.string.survey_rate_invite_title),
                         description = stringResource(R.string.survey_rate_invite_desc),
@@ -134,9 +138,9 @@ fun SatisfactionSurvey(onResult: (String) -> Unit) {
                             val intent = Intent(Intent.ACTION_VIEW,
                                 "market://details?id=${context.packageName}".toUri())
                             context.startActivity(intent)
-                            onResult("Rated")
+                            onResult(FeedbackModel(surveyResult = initialSentiment, action = "Rated"))
                         },
-                        onSecondaryClick = { onResult("Rate Later") }
+                        onSecondaryClick = { onResult(FeedbackModel(surveyResult = initialSentiment, action = "Rate Later")) }
                     )
                 }
 
@@ -153,9 +157,9 @@ fun SatisfactionSurvey(onResult: (String) -> Unit) {
                                 putExtra(Intent.EXTRA_SUBJECT, feedbackSubject)
                             }
                             context.startActivity(intent)
-                            onResult("Feedback Sent")
+                            onResult(FeedbackModel(surveyResult = initialSentiment, action = "Feedback Sent"))
                         },
-                        onSecondaryClick = { onResult("Feedback Declined") }
+                        onSecondaryClick = { onResult(FeedbackModel(surveyResult = initialSentiment, action = "Feedback Declined")) }
                     )
                 }
             }

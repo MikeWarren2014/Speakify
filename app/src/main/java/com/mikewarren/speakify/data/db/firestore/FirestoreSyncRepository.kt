@@ -3,6 +3,7 @@ package com.mikewarren.speakify.data.db.firestore
 import com.clerk.api.Clerk
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.MessengerContactsRepository
+import com.mikewarren.speakify.data.OnboardingRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +25,7 @@ class FirestoreSyncRepository @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val appsRepository: AppsRepository,
     private val messengerContactsRepository: MessengerContactsRepository,
+    private val onboardingRepository: OnboardingRepository,
 
     private val uploadRepository: UploadRepository,
     private val downloadRepository: DownloadRepository
@@ -31,6 +33,7 @@ class FirestoreSyncRepository @Inject constructor(
     private val scope = CoroutineScope(Dispatchers.IO)
     private val syncMutex = Mutex()
     private var observerJob: Job? = null
+    private var isReadyToUpload = false
 
     init {
         startObservingChanges()
@@ -51,13 +54,15 @@ class FirestoreSyncRepository @Inject constructor(
                 settingsRepository.appSettings,
                 appsRepository.importantApps,
                 messengerContactsRepository.recentContacts,
+                onboardingRepository.onboardingModel,
             ) { args -> args.toList() } // Convert to list to ensure distinctUntilChanged works on content
                 .drop(1)
                 .debounce(2000)
                 .distinctUntilChanged()
                 .collectLatest {
-                    if (Clerk.user != null)
+                    if (Clerk.user != null && isReadyToUpload) {
                         uploadAllData()
+                    }
                 }
         }
     }
@@ -73,11 +78,18 @@ class FirestoreSyncRepository @Inject constructor(
      * Downloads data from Firestore and restores it to local Room DB and DataStore.
      */
     suspend fun downloadAndRestoreData(): Result<Unit> = syncMutex.withLock {
+        // Block uploads until we have successfully restored data at least once in this session.
+        isReadyToUpload = false
+        
         // Cancel the observer to prevent it from triggering an upload during the download/restore process
         observerJob?.cancel()
 
         return try {
-            downloadRepository.doAllFirestoreTransactions()
+            val result = downloadRepository.doAllFirestoreTransactions()
+            if (result.isSuccess) {
+                isReadyToUpload = true
+            }
+            result
         } finally {
             // Restart the observer after restore is complete.
             // The initial state (post-restore) will be dropped by .drop(1)
