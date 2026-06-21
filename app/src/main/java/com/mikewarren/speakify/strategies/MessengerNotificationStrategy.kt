@@ -166,13 +166,7 @@ class MessengerNotificationStrategy(
                 return specialCaseStringRes.let { context.getString(it, notificationSource) }
             }
 
-            if (isReadMessagesEnabled) {
-                if (notificationType == MessengerNotificationTypes.IncomingMessage)
-                    return context.getString(R.string.messenger_text_out_loud,
-                    notificationSource,
-                    text,
-                )
-
+            if ((notificationType == MessengerNotificationTypes.IncomingMessage) && (isReadMessagesEnabled)) {
                 return context.getString(R.string.messenger_text_out_loud, notificationSource, text)
             }
 
