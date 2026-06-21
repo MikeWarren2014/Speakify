@@ -74,6 +74,10 @@
     <string name="sms_text_out_loud">%1$s برای شما یک پیامک فرستاد: %2$s</string>
     <string name="messenger_notification_text">پیام فیسبوک ورودی از %1$s</string>
     <string name="messenger_text_out_loud">%1$s برای شما یک پیام فیسبوک فرستاد: %2$s</string>
+    <string name="messenger_notification_photo">عکس فیس‌بوک ورودی از %1$s</string>
+    <string name="messenger_notification_video">ویدیو فیس‌بوک ورودی از %1$s</string>
+    <string name="messenger_notification_link">لینک فیس‌بوک ورودی از %1$s</string>
+    <string name="messenger_notification_reel">ریل فیس‌بوک ورودی از %1$s</string>
     <string name="messenger_notification_audio_call">تماس فیسبوک ورودی از %1$s</string>
     <string name="messenger_notification_video_call">تماس تصویری فیسبوک ورودی از %1$s</string>
     <string name="messenger_notification_strategy_unknown">اعلان فیسبوک مسنجر ناشناخته</string>
@@ -141,7 +145,7 @@
         <item>عکس‌العمل نشان داد</item>
         <item>واکنش نشان داد</item>
     </string-array>
-    <string name="facebook_reaction_suffix">به پیام شما</string>
+    <string name="facebook_reaction_suffix">به شما</string>
     <string name="emoji_to_your_message">%1$s به "</string>
 
     <!-- Fallback/Text Reactions (e.g. from iOS via SMS) -->

@@ -29,6 +29,9 @@ class MessengerNotificationStrategy(
 
     enum class MessengerNotificationTypes {
         IncomingMessage,
+        IncomingLink,
+        IncomingPhoto,
+        IncomingReel,
         OutgoingMessage,
         IncomingAudioCall,
         OutgoingCall,
@@ -64,6 +67,10 @@ class MessengerNotificationStrategy(
     val title = NotificationExtractionUtils.ExtractTitle(notification)
 
     override fun isReaction(): Boolean {
+        if (isSingleWordMessage()) {
+            return SearchUtils.GetEmojiPosition(text) != -1
+        }
+
         val prefixes = context.resources.getStringArray(R.array.facebook_reaction_prefixes)
         val suffix = context.getString(R.string.facebook_reaction_suffix)
 
@@ -75,13 +82,19 @@ class MessengerNotificationStrategy(
         return hasPrefix && hasSuffix && textToCheck.length > (suffix.length + 5)
     }
 
-    private val senderName: String? by lazy {
-        extractSenderName()
-    }
+    private val senderName: String? = extractSenderName()
 
     override fun getNotificationType(): MessengerNotificationTypes {
         val baseNotificationType = super.getNotificationType()
-        if ((baseNotificationType == getIncomingMessageType()) || (baseNotificationType == getOutgoingMessageType())) {
+        if (baseNotificationType in listOf(getIncomingMessageType(), getOutgoingMessageType())) {
+            if (baseNotificationType == getOutgoingMessageType())
+                return baseNotificationType
+
+            val specialIncomingMessageType = parseSpecialIncomingMessage()
+            if (specialIncomingMessageType != getOtherType()) {
+                return specialIncomingMessageType
+            }
+
             return baseNotificationType
         }
 
@@ -106,6 +119,24 @@ class MessengerNotificationStrategy(
         return getOtherType()
     }
 
+    fun parseSpecialIncomingMessage(): MessengerNotificationTypes {
+        if (text.isNotEmpty()) {
+            val emojiPos = SearchUtils.GetEmojiPosition(text)
+            if (emojiPos == 0) {
+                // Meta uses specific emojis at the start of system-generated strings for media
+                val firstEmoji = String(Character.toChars(text.codePointAt(0)))
+                return when (firstEmoji) {
+                    "\uD83D\uDCF7", "📷", "🖼️" -> MessengerNotificationTypes.IncomingPhoto
+                    "\uD83C\uDF9E", "🎞️", "🎬", "📽️", "📹", "📺" -> MessengerNotificationTypes.IncomingReel
+                    "\uD83D\uDD17", "🔗", "🌐" -> MessengerNotificationTypes.IncomingLink
+                    else -> getOtherType()
+                }
+            }
+        }
+
+        return getOtherType()
+    }
+
     private fun isAudioCall() : Boolean {
         return text
             .contains(context.getString(R.string.messenger_incoming_audio_call_text), ignoreCase = true)
@@ -124,14 +155,28 @@ class MessengerNotificationStrategy(
 
         val notificationSource = senderName ?: context.getString(R.string.contact_unknown)
 
-        if (notificationType == MessengerNotificationTypes.IncomingMessage) {
-            if (isReadMessagesEnabled)
-                return context.getString(R.string.messenger_text_out_loud,
+        if (isIncomingMessage()) {
+            val specialCaseStringRes = when (notificationType) {
+                MessengerNotificationTypes.IncomingPhoto -> R.string.messenger_notification_photo
+                MessengerNotificationTypes.IncomingLink -> R.string.messenger_notification_link
+                MessengerNotificationTypes.IncomingReel -> R.string.messenger_notification_reel
+                else -> null
+            }
+            if (specialCaseStringRes != null) {
+                return specialCaseStringRes.let { context.getString(it, notificationSource) }
+            }
+
+            if (isReadMessagesEnabled) {
+                if (notificationType == MessengerNotificationTypes.IncomingMessage)
+                    return context.getString(R.string.messenger_text_out_loud,
                     notificationSource,
                     text,
                 )
-            return context.getString(R.string.messenger_notification_text,
-                notificationSource)
+
+                return context.getString(R.string.messenger_text_out_loud, notificationSource, text)
+            }
+
+            return context.getString(R.string.messenger_notification_text, notificationSource)
         }
         if (notificationType == MessengerNotificationTypes.IncomingAudioCall)
             return context.getString(R.string.messenger_notification_audio_call,
@@ -141,6 +186,15 @@ class MessengerNotificationStrategy(
                 notificationSource)
 
         return context.getString(R.string.messenger_notification_strategy_unknown)
+    }
+
+    fun isIncomingMessage(): Boolean {
+        return getNotificationType() in listOf(
+            MessengerNotificationTypes.IncomingMessage,
+            MessengerNotificationTypes.IncomingLink,
+            MessengerNotificationTypes.IncomingPhoto,
+            MessengerNotificationTypes.IncomingReel,
+        )
     }
 
     override fun shouldSpeakify(): Boolean {
@@ -195,7 +249,7 @@ class MessengerNotificationStrategy(
         if (name.isBlank())
             return false
 
-        if (name == "Messenger")
+        if (name in listOf("Messenger", "Facebook"))
             return false
 
         if (SearchUtils.ContainsKeywords(context.resources.getStringArray(R.array.messenger_non_contact_titles),

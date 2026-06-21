@@ -75,6 +75,10 @@
     <string name="sms_text_out_loud">%1$s 向您发送了一条短信：%2$s</string>
     <string name="messenger_notification_text">收到来自 %1$s 的 Facebook 消息</string>
     <string name="messenger_text_out_loud">%1$s 向您发送了一条 Facebook 消息：%2$s</string>
+    <string name="messenger_notification_photo">收到来自 %1$s 的 Facebook 照片</string>
+    <string name="messenger_notification_video">收到来自 %1$s 的 Facebook 视频</string>
+    <string name="messenger_notification_link">收到来自 %1$s 的 Facebook 链接</string>
+    <string name="messenger_notification_reel">收到来自 %1$s 的 Facebook Reel</string>
     <string name="messenger_notification_audio_call">收到来自 %1$s 的 Facebook 电话</string>
     <string name="messenger_notification_video_call">收到来自 %1$s 的 Facebook 视频电话</string>
     <string name="messenger_notification_strategy_unknown">未知的 Facebook Messenger 通知</string>
@@ -141,7 +145,7 @@
     <string-array name="facebook_reaction_prefixes">
         <item>已对</item>
     </string-array>
-    <string name="facebook_reaction_suffix">你的消息做出回应</string>
+    <string name="facebook_reaction_suffix">你的</string>
     <string name="emoji_to_your_message">%1$s 到 \"</string>
 
     <!-- Fallback/Text Reactions (e.g. from iOS via SMS) -->
