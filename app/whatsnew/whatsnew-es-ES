@@ -1,0 +1,11 @@
+Errores corregidos:
+- Visualización del remitente en hilos de grupo
+- Restauración de volumen con "Volumen máximo con pantalla apagada"
+- Estabilidad del motor TTS
+- Corrección de errores de conexión a la base de datos
+
+Mejoras:
+- Notificaciones anunciadas sobre el tono de llamada
+- Sistema de incorporación renovado con categorías de aplicaciones
+- Se agregó calificación en la aplicación
+- Soporte para nuevos tipos de notificaciones de Messenger

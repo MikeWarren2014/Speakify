@@ -1,5 +1,0 @@
-- Fixed incoming call and SMS announcements.
-- Added support for Call Screening service.
-- Added Permissions view to show missing phone permissions.
-- Removed "Message Requests" from Messenger settings.
-- Filtered non-contacts from Messenger autocomplete suggestions.

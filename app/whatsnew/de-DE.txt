@@ -1,5 +1,0 @@
-- Fehler bei Ankündigungen eingehender Anrufe und SMS behoben.
-- Unterstützung für Anruffilterungsdienst hinzugefügt.
-- Berechtigungsansicht für fehlende Telefonberechtigungen hinzugefügt.
-- „Nachrichtenanfragen“ aus den Messenger-Einstellungen entfernt.
-- Nicht-Kontakte aus der Messenger-Autovervollständigung entfernt.

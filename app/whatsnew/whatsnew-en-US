@@ -1,0 +1,11 @@
+Bugs fixed:
+- Group thread sender display
+- Volume restoration with "Max Volume on Screen Off"
+- TTS engine stability
+- Database connection permission fixes
+
+Enhancements:
+- Notifications announced over the ringer
+- Overhauled onboarding system with app categories
+- Added in-app rating
+- Support for new Messenger notification types
