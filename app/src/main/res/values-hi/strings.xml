@@ -74,6 +74,10 @@
     <string name="sms_text_out_loud">%1$s ने आपको एक टेक्स्ट संदेश भेजा है: %2$s</string>
     <string name="messenger_notification_text">%1$s से इनकमिंग फेसबुक संदेश</string>
     <string name="messenger_text_out_loud">%1$s ने आपको एक फेसबुक संदेश भेजा है: %2$s</string>
+    <string name="messenger_notification_photo">%1$s से इनकमिंग फेसबुक फोटो</string>
+    <string name="messenger_notification_video">%1$s से इनकमिंग फेसबुक वीडियो</string>
+    <string name="messenger_notification_link">%1$s से इनकमिंग फेसबुक लिंक</string>
+    <string name="messenger_notification_reel">%1$s से इनकमिंग फेसबुक रील</string>
     <string name="messenger_notification_audio_call">%1$s से इनकमिंग फेसबुक कॉल</string>
     <string name="messenger_notification_video_call">%1$s से इनकमिंग फेसबुक वीडियो कॉल</string>
     <string name="messenger_notification_strategy_unknown">अज्ञात फेसबुक मैसेंजर सूचना</string>
@@ -140,7 +144,7 @@
     <string-array name="facebook_reaction_prefixes">
         <item>प्रतिक्रिया दी</item>
     </string-array>
-    <string name="facebook_reaction_suffix">आपके संदेश पर</string>
+    <string name="facebook_reaction_suffix">आपके</string>
     <string name="emoji_to_your_message">%1$s को \"</string>
 
     <!-- Fallback/Text Reactions (e.g. from iOS via SMS) -->

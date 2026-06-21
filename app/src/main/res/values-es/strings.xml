@@ -74,6 +74,10 @@
     <string name="sms_text_out_loud">%1$s te envió un mensaje de texto: %2$s</string>
     <string name="messenger_notification_text">Mensaje de Facebook entrante de %1$s</string>
     <string name="messenger_text_out_loud">%1$s te envió un mensaje de Facebook: %2$s</string>
+    <string name="messenger_notification_photo">Foto de Facebook entrante de %1$s</string>
+    <string name="messenger_notification_video">Video de Facebook entrante de %1$s</string>
+    <string name="messenger_notification_link">Enlace de Facebook entrante de %1$s</string>
+    <string name="messenger_notification_reel">Reel de Facebook entrante de %1$s</string>
     <string name="messenger_notification_audio_call">Llamada de Facebook entrante de %1$s</string>
     <string name="messenger_notification_video_call">Videollamada de Facebook entrante de %1$s</string>
     <string name="messenger_notification_strategy_unknown">Notificación de Facebook Messenger desconocida</string>
@@ -140,7 +144,7 @@
     <string-array name="facebook_reaction_prefixes">
         <item>Reaccionó</item>
     </string-array>
-    <string name="facebook_reaction_suffix">a tu mensaje</string>
+    <string name="facebook_reaction_suffix">a tu</string>
     <string name="emoji_to_your_message">%1$s a \"</string>
 
     <!-- Fallback/Text Reactions (e.g. from iOS via SMS) -->

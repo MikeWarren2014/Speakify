@@ -74,6 +74,10 @@
     <string name="sms_text_out_loud">%1$s からメッセージが届きました: %2$s</string>
     <string name="messenger_notification_text">%1$s からの Facebook メッセージ</string>
     <string name="messenger_text_out_loud">%1$s から Facebook メッセージが届きました: %2$s</string>
+    <string name="messenger_notification_photo">%1$s からの Facebook 写真の着信</string>
+    <string name="messenger_notification_video">%1$s からの Facebook 動画の着信</string>
+    <string name="messenger_notification_link">%1$s からの Facebook リンクの着信</string>
+    <string name="messenger_notification_reel">%1$s からの Facebook リールの着信</string>
     <string name="messenger_notification_audio_call">%1$s からの Facebook 着信</string>
     <string name="messenger_notification_video_call">%1$s からの Facebook 映像通話着信</string>
     <string name="messenger_notification_strategy_unknown">不明な Facebook メッセンジャーの通知</string>
@@ -140,7 +144,7 @@
     <string-array name="facebook_reaction_prefixes">
         <item>リアクションしました</item>
     </string-array>
-    <string name="facebook_reaction_suffix">あなたのメッセージに</string>
+    <string name="facebook_reaction_suffix">あなたの</string>
     <string name="emoji_to_your_message">%1$s を「</string>
 
     <!-- Fallback/Text Reactions (e.g. from iOS via SMS) -->

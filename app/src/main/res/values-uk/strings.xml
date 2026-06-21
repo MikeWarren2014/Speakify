@@ -74,6 +74,10 @@
     <string name="sms_text_out_loud">%1$s надіслав(-ла) вам текстове повідомлення: %2$s</string>
     <string name="messenger_notification_text">Вхідне повідомлення Facebook від %1$s</string>
     <string name="messenger_text_out_loud">%1$s надіслав(-ла) вам повідомлення у Facebook: %2$s</string>
+    <string name="messenger_notification_photo">Вхідне фото Facebook від %1$s</string>
+    <string name="messenger_notification_video">Вхідне відео Facebook від %1$s</string>
+    <string name="messenger_notification_link">Вхідне посилання Facebook від %1$s</string>
+    <string name="messenger_notification_reel">Вхідний Reel Facebook від %1$s</string>
     <string name="messenger_notification_audio_call">Вхідний дзвінок Facebook від %1$s</string>
     <string name="messenger_notification_video_call">Вхідний відеодзвінок Facebook від %1$s</string>
     <string name="messenger_notification_strategy_unknown">Невідоме сповіщення Facebook Messenger</string>
@@ -140,7 +144,7 @@
     <string-array name="facebook_reaction_prefixes">
         <item>Відреагував</item>
     </string-array>
-    <string name="facebook_reaction_suffix">на ваше повідомлення</string>
+    <string name="facebook_reaction_suffix">на ваше</string>
     <string name="emoji_to_your_message">%1$s на \"</string>
 
     <!-- Fallback/Text Reactions (e.g. from iOS via SMS) -->
