@@ -1,5 +1,0 @@
-- Risolti gli annunci di chiamate e SMS in arrivo.
-- Aggiunto il supporto al servizio di filtraggio chiamate.
-- Aggiunta visualizzazione permessi per i permessi telefonici mancanti.
-- Rimosse "Richieste di messaggi" dalle impostazioni di Messenger.
-- Rimossi i non contatti dal completamento automatico di Messenger.

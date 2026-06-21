@@ -1,0 +1,11 @@
+Bug corretti:
+- Visualizzazione del mittente nelle chat di gruppo
+- Ripristino del volume con "Volume massimo a schermo spento"
+- Stabilità del motore TTS
+- Correzione degli errori di connessione al database
+
+Miglioramenti:
+- Notifiche annunciate sopra la suoneria
+- Sistema di configurazione rinnovato con categorie di app
+- Aggiunta valutazione in-app
+- Supporto per nuovi tipi di notifiche Messenger

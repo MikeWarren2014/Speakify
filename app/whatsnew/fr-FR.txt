@@ -1,5 +1,0 @@
-- Correction des annonces d'appels et de SMS entrants.
-- Ajout de la prise en charge du service de filtrage d'appels.
-- Ajout d'une vue des permissions pour les accès téléphoniques manquants.
-- Suppression des « Demandes de messages » des paramètres Messenger.
-- Filtrage des non-contacts des suggestions d'autocomplétion Messenger.

@@ -1,0 +1,11 @@
+Bugs corrigidos:
+- Exibição do remetente em conversas de grupo
+- Restauração de volume com "Volume máximo com a tela desligada"
+- Estabilidade do mecanismo TTS
+- Correções de erros de conexão com o banco de dados
+
+Melhorias:
+- Notificações anunciadas sobre o toque
+- Sistema de integração reformulado com categorias de apps
+- Adicionada avaliação no aplicativo
+- Suporte para novos tipos de notificações do Messenger
