@@ -152,7 +152,12 @@ class SessionRepository @Inject constructor(
         // User is logged in
         isTrialAuthorized = false
 
-        signIntoAndSyncWithFirebase(user)
+        val oidcBridgeResult = signIntoAndSyncWithFirebase(user)
+        if (oidcBridgeResult.isFailure) {
+            Log.e("SessionRepository", "Failed to bridge Clerk to Firebase", oidcBridgeResult.exceptionOrNull())
+            signOut()
+            return
+        }
 
         if (isSyncing) {
             _uiState.value = MainUiState.Loading
@@ -253,35 +258,40 @@ class SessionRepository @Inject constructor(
         }
     }
 
-    private fun signIntoAndSyncWithFirebase(user: com.clerk.api.user.User) {
-        if (isSyncing || syncedUserId == user.id) return
+    private fun signIntoAndSyncWithFirebase(user: com.clerk.api.user.User): Result<Unit> {
+        if (isSyncing || syncedUserId == user.id) return Result.success(Unit)
 
         isSyncing = true
+        var returnedResult = Result.success(Unit)
+
         signInToFirebase(user) { result ->
-            if (result.isSuccess) {
-                Log.d("SessionRepo", "Successfully signed into Firebase")
+            if (result.isFailure) {
+                Log.e("SessionRepo", "Failed to sign into Firebase", result.exceptionOrNull())
+                isSyncing = false
 
-                scope.launch(Dispatchers.IO) {
-                    try {
-                        firestoreSyncRepository.downloadAndRestoreData()
-                        syncedUserId = user.id
-                    } catch (e: Exception) {
-                        Log.e("SessionRepo", "Failed to sync data", e)
-                    } finally {
-                        isSyncing = false
-                        scope.launch {
-                            lastDataBundle?.let { reactToSessionState(it) }
-                        }
-                    }
-                }
-
+                returnedResult = result
                 return@signInToFirebase
             }
 
-            Log.e("SessionRepo", "Failed to sign into Firebase", result.exceptionOrNull())
-            isSyncing = false
-            signOut()
+            Log.d("SessionRepo", "Successfully signed into Firebase")
+
+            scope.launch(Dispatchers.IO) {
+                try {
+                    firestoreSyncRepository.downloadAndRestoreData()
+                    syncedUserId = user.id
+                } catch (e: Exception) {
+                    Log.e("SessionRepo", "Failed to sync data", e)
+                    returnedResult = Result.failure(e)
+                } finally {
+                    isSyncing = false
+                    scope.launch {
+                        lastDataBundle?.let { reactToSessionState(it) }
+                    }
+                }
+            }
         }
+
+        return returnedResult
     }
 
     private fun signInToFirebase(user: com.clerk.api.user.User, onDone: (result: Result<Unit>) -> Unit) {

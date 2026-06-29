@@ -321,19 +321,6 @@ class SessionRepositoryTest {
         assertEquals(true, repository.lastDataBundle?.hasShownRatingsPrompt)
     }
 
-//    @Test
-//    fun `Scenario 7 - lastDataBundle doesn\'t reset after signing back in`() = runTest {
-//        val repository = createRepository(this)
-//
-//        // simulate the last data bundle state of someone who last signed in and completed all onboarding steps including ratings screen
-//        isInitializedFlow.value = true
-//        userFlow.value = createMockUser("user_123")
-//        isNewDirectSignUpFlow.value = false
-//        onboardingStepFlow.value = OnboardingUiState.Completed
-//        hasShownRatingsPromptFlow.value = true
-//
-//    }
-
     private fun createRepository() = SessionRepository(
         firestoreSyncRepository,
         accountDeletionFirestoreRepository,
