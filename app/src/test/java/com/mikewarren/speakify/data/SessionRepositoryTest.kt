@@ -6,6 +6,7 @@ import com.clerk.api.emailaddress.EmailAddress
 import com.clerk.api.network.model.token.TokenResource
 import com.clerk.api.network.serialization.ClerkResult
 import com.clerk.api.session.GetTokenOptions
+import com.clerk.api.session.Session
 import com.clerk.api.session.fetchToken
 import com.clerk.api.user.User
 import com.google.android.gms.tasks.OnCompleteListener
@@ -21,6 +22,7 @@ import com.mikewarren.speakify.data.models.TrialModel
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import io.mockk.clearMocks
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -63,7 +65,7 @@ class SessionRepositoryTest {
 
     private val isInitializedFlow = MutableStateFlow(false)
     private val userFlow = MutableStateFlow<User?>(null)
-    private val sessionFlow = MutableStateFlow<com.clerk.api.session.Session?>(mockk(relaxed = true))
+    private val sessionFlow = MutableStateFlow<Session?>(mockk(relaxed = true))
     private val trialModelFlow = MutableStateFlow(TrialModel())
     private val isNewDirectSignUpFlow = MutableStateFlow(false)
     private val appOpenCountFlow = MutableStateFlow(1)
@@ -213,7 +215,7 @@ class SessionRepositoryTest {
         advanceUntilIdle()
 
         // Verify resetNewDirectSignUp was called
-        io.mockk.verify { trialRepository.resetNewDirectSignUp() }
+        verify { trialRepository.resetNewDirectSignUp() }
 
         // Simulate the flow update from resetNewDirectSignUp
         isNewDirectSignUpFlow.value = false
@@ -240,8 +242,8 @@ class SessionRepositoryTest {
         advanceUntilIdle()
 
         assertEquals(MainUiState.SignedOut, repository.uiState.value)
-        io.mockk.verify { firebaseAuth.signOut() }
-        io.mockk.coVerify { settingsRepository.clearAllData() }
+        verify { firebaseAuth.signOut() }
+        coVerify { settingsRepository.clearAllData() }
     }
 
     @Test
@@ -274,7 +276,7 @@ class SessionRepositoryTest {
 
         // At this point, since speakificationCount is 0, isHandlingTrialEngagement(TrialBypass)
         // returns false. Then it should have called trialRepository.resetNewDirectSignUp().
-        io.mockk.verify { trialRepository.resetNewDirectSignUp() }
+        verify { trialRepository.resetNewDirectSignUp() }
 
         // Simulate the flow update from resetNewDirectSignUp
         isNewDirectSignUpFlow.value = false
@@ -321,26 +323,14 @@ class SessionRepositoryTest {
         assertEquals(true, repository.lastDataBundle?.hasShownRatingsPrompt)
     }
 
-//    @Test
-//    fun `Scenario 7 - lastDataBundle doesn\'t reset after signing back in`() = runTest {
-//        val repository = createRepository(this)
-//
-//        // simulate the last data bundle state of someone who last signed in and completed all onboarding steps including ratings screen
-//        isInitializedFlow.value = true
-//        userFlow.value = createMockUser("user_123")
-//        isNewDirectSignUpFlow.value = false
-//        onboardingStepFlow.value = OnboardingUiState.Completed
-//        hasShownRatingsPromptFlow.value = true
-//
-//    }
-
     private fun createRepository() = SessionRepository(
         firestoreSyncRepository,
         accountDeletionFirestoreRepository,
         settingsRepository,
         trialRepository,
         onboardingRepository,
-        mockk(relaxed = true)
+        mockk(relaxed = true),
+        authMessageRepository = mockk(relaxed = true),
     )
 
     private fun applyNewUserState() {

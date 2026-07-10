@@ -35,8 +35,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.coroutines.resume
 
 @Singleton
 class SessionRepository @Inject constructor(
@@ -45,7 +48,8 @@ class SessionRepository @Inject constructor(
     private val settingsRepository: SettingsRepository,
     val trialRepository: TrialRepository,
     val onboardingRepository: OnboardingRepository,
-    private val analyticsHelper: AnalyticsHelper
+    private val analyticsHelper: AnalyticsHelper,
+    private val authMessageRepository: AuthMessageRepository
 ): ITaggable {
     private val _accountDeletionUiState = MutableStateFlow<AccountDeletionUiState>(
         AccountDeletionUiState.NotRequested)
@@ -97,7 +101,9 @@ class SessionRepository @Inject constructor(
                 lastDataBundle = mergedBundle
 
                 Log.d("SessionRepository", "Reacting to DataBundle: init=${mergedBundle.isInitialized}, user=${mergedBundle.user?.id}, trialStatus=${mergedBundle.trialModel.status}, openCount=${mergedBundle.openCount}, step=${mergedBundle.onboardingStep}")
-                reactToSessionState(mergedBundle)
+                scope.launch {
+                    reactToSessionState(mergedBundle)
+                }
             }
             .launchIn(scope)
     }
@@ -152,13 +158,25 @@ class SessionRepository @Inject constructor(
         // User is logged in
         isTrialAuthorized = false
 
-        signIntoAndSyncWithFirebase(user)
-
         if (isSyncing) {
             _uiState.value = MainUiState.Loading
             return
         }
 
+        val syncResult = signIntoAndSyncWithFirebase(user)
+        if (syncResult.isFailure) {
+            Log.e("SessionRepository", "Failed to bridge Clerk to Firebase", syncResult.exceptionOrNull())
+            signOut()
+            authMessageRepository.postMessage("Failed to synchronize account data. Please try again.")
+            return
+        }
+
+        // If a sync actually occurred, the 'finally' block in signIntoAndSyncWithFirebase
+        // has already triggered a fresh reactToSessionState call with the latest data.
+        // We MUST return here to avoid proceeding with stale dataBundle/engagementContext.
+        if (syncResult.getOrDefault(false)) return
+
+        Log.d("SessionRepository", "engagementContext == $engagementContext")
         if (isHandlingTrialEngagement(engagementContext))
             return
 
@@ -253,50 +271,46 @@ class SessionRepository @Inject constructor(
         }
     }
 
-    private fun signIntoAndSyncWithFirebase(user: com.clerk.api.user.User) {
-        if (isSyncing || syncedUserId == user.id) return
+    private suspend fun signIntoAndSyncWithFirebase(user: com.clerk.api.user.User): Result<Boolean> {
+        if (isSyncing || syncedUserId == user.id) return Result.success(false)
 
         isSyncing = true
-        signInToFirebase(user) { result ->
-            if (result.isSuccess) {
-                Log.d("SessionRepo", "Successfully signed into Firebase")
-
-                scope.launch(Dispatchers.IO) {
-                    try {
-                        firestoreSyncRepository.downloadAndRestoreData()
-                        syncedUserId = user.id
-                    } catch (e: Exception) {
-                        Log.e("SessionRepo", "Failed to sync data", e)
-                    } finally {
-                        isSyncing = false
-                        scope.launch {
-                            lastDataBundle?.let { reactToSessionState(it) }
-                        }
-                    }
-                }
-
-                return@signInToFirebase
+        return try {
+            val signInResult = signInToFirebase(user)
+            if (signInResult.isFailure) {
+                return Result.failure(signInResult.exceptionOrNull() ?: Exception("Unknown sign-in error"))
             }
 
-            Log.e("SessionRepo", "Failed to sign into Firebase", result.exceptionOrNull())
+            withContext(Dispatchers.IO) {
+                Log.d("SessionRepo", "Downloading the user data from Firebase")
+                firestoreSyncRepository.downloadAndRestoreData()
+            }
+            syncedUserId = user.id
+            Log.d("SessionRepo", "Successfully synced data for user ${user.id}")
+            Result.success(true)
+        } catch (e: Exception) {
+            Log.e("SessionRepo", "Failed to sync data", e)
+            Result.failure(e)
+        } finally {
             isSyncing = false
-            signOut()
+            // Now that we're done (success or fail), we trigger a re-evaluation
+            // without being blocked by the 'isSyncing' flag.
+            lastDataBundle?.let { reactToSessionState(it) }
         }
     }
 
-    private fun signInToFirebase(user: com.clerk.api.user.User, onDone: (result: Result<Unit>) -> Unit) {
-        scope.launch(Dispatchers.IO) {
-            try {
-                val currentUser = firebaseAuth.currentUser
-                val clerkEmail = user.emailAddresses.firstOrNull()?.emailAddress
+    private suspend fun signInToFirebase(user: com.clerk.api.user.User): Result<Unit> = suspendCancellableCoroutine { continuation ->
+        try {
+            val currentUser = firebaseAuth.currentUser
+            val clerkEmail = user.emailAddresses.firstOrNull()?.emailAddress
 
-                // If we are already signed in with the correct user, skip.
-                if (currentUser != null && clerkEmail != null && currentUser.email == clerkEmail) {
-                    Log.d("SessionRepo", "Firebase already signed in as $clerkEmail")
-                    onDone(Result.success(Unit))
-                    return@launch
-                }
+            if (currentUser != null && clerkEmail != null && currentUser.email == clerkEmail) {
+                Log.d("SessionRepo", "Firebase already signed in as $clerkEmail")
+                continuation.resume(Result.success(Unit))
+                return@suspendCancellableCoroutine
+            }
 
+            scope.launch {
                 val activeSession = Clerk.sessionFlow
                     .filterNotNull()
                     .first()
@@ -309,25 +323,27 @@ class SessionRepository @Inject constructor(
                             .build()
                         firebaseAuth.signInWithCredential(credential)
                             .addOnCompleteListener { task ->
+                                Log.d("SessionRepo", "Firebase auth result: ${task.isSuccessful}")
+
                                 var result = Result.success(Unit)
                                 if (!task.isSuccessful) {
+                                    Log.d("SessionRepo", "Firebase auth failed with message: ${task.exception?.message}")
+
                                     val exception = task.exception
                                     if (exception?.message?.contains("PROVIDER_ALREADY_LINKED") != true)
                                         result = Result.failure(exception ?: Exception("Unknown error"))
                                 }
-
-                                onDone(result)
+                                continuation.resume(result)
                             }
                     }
                     .onFailure { failure ->
                         Log.e("SessionRepo", "Failed to fetch Clerk token for Firebase: ${failure.longErrorMessageOrNull}")
-                        failure.throwable?.let { onDone(Result.failure(it)) }
+                        continuation.resume(Result.failure(failure.throwable ?: Exception(failure.longErrorMessageOrNull)))
                     }
-
-            } catch (e: Exception) {
-                Log.e("SessionRepo", "Failed to bridge Clerk to Firebase", e)
-                onDone(Result.failure(e))
             }
+        } catch (e: Exception) {
+            Log.e("SessionRepo", "Failed to bridge Clerk to Firebase", e)
+            continuation.resume(Result.failure(e))
         }
     }
 
@@ -464,6 +480,8 @@ class SessionRepository @Inject constructor(
             return
         }
         firebaseAuth.signOut()
+
+        syncedUserId = null
         _uiState.value = MainUiState.SignedOut
     }
 
