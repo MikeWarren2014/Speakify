@@ -132,7 +132,8 @@ class SignInHistoryWipeTest {
             settingsRepository,
             trialRepository,
             onboardingRepository,
-            analyticsHelper
+            analyticsHelper,
+            mockk(relaxed = true),
         )
     }
 
