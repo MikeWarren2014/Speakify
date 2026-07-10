@@ -10,6 +10,10 @@ import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.db.DbProvider
 import com.mikewarren.speakify.data.db.RecentMessengerContactModel
 import com.mikewarren.speakify.services.TTSManager
+import com.mikewarren.speakify.strategies.fbMessenger.IncomingLinkRule
+import com.mikewarren.speakify.strategies.fbMessenger.IncomingPhotoRule
+import com.mikewarren.speakify.strategies.fbMessenger.IncomingPostRule
+import com.mikewarren.speakify.strategies.fbMessenger.IncomingReelRule
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import com.mikewarren.speakify.utils.SearchUtils
 import com.mikewarren.speakify.utils.log.ITaggable
@@ -32,6 +36,7 @@ class MessengerNotificationStrategy(
         IncomingLink,
         IncomingPhoto,
         IncomingReel,
+        IncomingPost,
         OutgoingMessage,
         IncomingAudioCall,
         OutgoingCall,
@@ -119,19 +124,21 @@ class MessengerNotificationStrategy(
         return getOtherType()
     }
 
+    val incomingRuleTypesDict = mapOf(
+        IncomingPostRule() to MessengerNotificationTypes.IncomingPost,
+        IncomingPhotoRule() to MessengerNotificationTypes.IncomingPhoto,
+        IncomingLinkRule() to MessengerNotificationTypes.IncomingLink,
+        IncomingReelRule() to MessengerNotificationTypes.IncomingReel,
+    )
+
     fun parseSpecialIncomingMessage(): MessengerNotificationTypes {
         if (text.isNotEmpty()) {
-            val emojiPos = SearchUtils.GetEmojiPosition(text)
-            if (emojiPos == 0) {
-                // Meta uses specific emojis at the start of system-generated strings for media
-                val firstEmoji = String(Character.toChars(text.codePointAt(0)))
-                return when (firstEmoji) {
-                    "\uD83D\uDCF7", "📷", "🖼️" -> MessengerNotificationTypes.IncomingPhoto
-                    "\uD83C\uDF9E", "🎞️", "🎬", "📽️", "📹", "📺" -> MessengerNotificationTypes.IncomingReel
-                    "\uD83D\uDD17", "🔗", "🌐" -> MessengerNotificationTypes.IncomingLink
-                    else -> getOtherType()
-                }
-            }
+            val foundIncomingType = incomingRuleTypesDict.entries
+                .find { entry -> entry.key.checkMessageText(context, text) }
+                ?.value
+
+            if (foundIncomingType != null)
+                return foundIncomingType
         }
 
         return getOtherType()
@@ -160,6 +167,7 @@ class MessengerNotificationStrategy(
                 MessengerNotificationTypes.IncomingPhoto -> R.string.messenger_notification_photo
                 MessengerNotificationTypes.IncomingLink -> R.string.messenger_notification_link
                 MessengerNotificationTypes.IncomingReel -> R.string.messenger_notification_reel
+                MessengerNotificationTypes.IncomingPost -> R.string.messenger_notification_post
                 else -> null
             }
             if (specialCaseStringRes != null) {
@@ -185,9 +193,7 @@ class MessengerNotificationStrategy(
     fun isIncomingMessage(): Boolean {
         return getNotificationType() in listOf(
             MessengerNotificationTypes.IncomingMessage,
-            MessengerNotificationTypes.IncomingLink,
-            MessengerNotificationTypes.IncomingPhoto,
-            MessengerNotificationTypes.IncomingReel,
+            *incomingRuleTypesDict.keys.toTypedArray(),
         )
     }
 

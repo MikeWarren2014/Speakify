@@ -78,9 +78,16 @@
     <string name="messenger_notification_video">Вхідне відео Facebook від %1$s</string>
     <string name="messenger_notification_link">Вхідне посилання Facebook від %1$s</string>
     <string name="messenger_notification_reel">Вхідний Reel Facebook від %1$s</string>
+    <string name="messenger_notification_post">Вхідний допис Facebook від %1$s</string>
     <string name="messenger_notification_audio_call">Вхідний дзвінок Facebook від %1$s</string>
     <string name="messenger_notification_video_call">Вхідний відеодзвінок Facebook від %1$s</string>
     <string name="messenger_notification_strategy_unknown">Невідоме сповіщення Facebook Messenger</string>
+
+    <!-- strings that Meta may send, that we can listen for to determine message notification type -->
+    <string name="messenger_incoming_photo_id_text">надіслав(-ла) вам фото</string>
+    <string name="messenger_incoming_reel_id_text">надіслав(-ла) вам відеоселфі</string>
+    <string name="messenger_incoming_link_id_text">надіслав(-ла) вам посилання</string>
+    <string name="messenger_incoming_post_id_text">надіслав(-ла) вам допис</string>
 
     <string name="contact_unknown">Хтось</string>
 

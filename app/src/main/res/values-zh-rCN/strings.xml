@@ -79,9 +79,16 @@
     <string name="messenger_notification_video">收到来自 %1$s 的 Facebook 视频</string>
     <string name="messenger_notification_link">收到来自 %1$s 的 Facebook 链接</string>
     <string name="messenger_notification_reel">收到来自 %1$s 的 Facebook Reel</string>
+    <string name="messenger_notification_post">收到来自 %1$s 的 Facebook 帖子</string>
     <string name="messenger_notification_audio_call">收到来自 %1$s 的 Facebook 电话</string>
     <string name="messenger_notification_video_call">收到来自 %1$s 的 Facebook 视频电话</string>
     <string name="messenger_notification_strategy_unknown">未知的 Facebook Messenger 通知</string>
+
+    <!-- strings that Meta may send, that we can listen for to determine message notification type -->
+    <string name="messenger_incoming_photo_id_text">发送了一张照片</string>
+    <string name="messenger_incoming_reel_id_text">发送了一个 Reels 视频</string>
+    <string name="messenger_incoming_link_id_text">发送了一个链接</string>
+    <string name="messenger_incoming_post_id_text">发送了一个帖子</string>
 
     <string name="contact_unknown">某人</string>
 

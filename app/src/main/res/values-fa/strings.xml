@@ -78,9 +78,16 @@
     <string name="messenger_notification_video">ویدیو فیس‌بوک ورودی از %1$s</string>
     <string name="messenger_notification_link">لینک فیس‌بوک ورودی از %1$s</string>
     <string name="messenger_notification_reel">ریل فیس‌بوک ورودی از %1$s</string>
+    <string name="messenger_notification_post">پست فیسبوک ورودی از %1$s</string>
     <string name="messenger_notification_audio_call">تماس فیسبوک ورودی از %1$s</string>
     <string name="messenger_notification_video_call">تماس تصویری فیسبوک ورودی از %1$s</string>
     <string name="messenger_notification_strategy_unknown">اعلان فیسبوک مسنجر ناشناخته</string>
+
+    <!-- strings that Meta may send, that we can listen for to determine message notification type -->
+    <string name="messenger_incoming_photo_id_text">یک عکس برای شما فرستاد</string>
+    <string name="messenger_incoming_reel_id_text">یک ریل برای شما فرستاد</string>
+    <string name="messenger_incoming_link_id_text">یک لینک برای شما فرستاد</string>
+    <string name="messenger_incoming_post_id_text">یک پست برای شما فرستاد</string>
 
     <string name="contact_unknown">یک نفر</string>
 

@@ -78,9 +78,16 @@
     <string name="messenger_notification_video">Vídeo do Facebook recebido de %1$s</string>
     <string name="messenger_notification_link">Link do Facebook recebido de %1$s</string>
     <string name="messenger_notification_reel">Reel do Facebook recebido de %1$s</string>
+    <string name="messenger_notification_post">Publicação do Facebook recebida de %1$s</string>
     <string name="messenger_notification_audio_call">Chamada do Facebook recebida de %1$s</string>
     <string name="messenger_notification_video_call">Chamada de vídeo do Facebook recebida de %1$s</string>
     <string name="messenger_notification_strategy_unknown">Notificação do Facebook Messenger desconhecida</string>
+
+    <!-- strings that Meta may send, that we can listen for to determine message notification type -->
+    <string name="messenger_incoming_photo_id_text">enviou uma foto para você</string>
+    <string name="messenger_incoming_reel_id_text">enviou um reel para você</string>
+    <string name="messenger_incoming_link_id_text">enviou um link para você</string>
+    <string name="messenger_incoming_post_id_text">enviou uma publicação para você</string>
 
     <string name="contact_unknown">Alguém</string>
 
