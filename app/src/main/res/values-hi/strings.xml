@@ -78,9 +78,16 @@
     <string name="messenger_notification_video">%1$s से इनकमिंग फेसबुक वीडियो</string>
     <string name="messenger_notification_link">%1$s से इनकमिंग फेसबुक लिंक</string>
     <string name="messenger_notification_reel">%1$s से इनकमिंग फेसबुक रील</string>
+    <string name="messenger_notification_post">%1$s से इनकमिंग फेसबुक पोस्ट</string>
     <string name="messenger_notification_audio_call">%1$s से इनकमिंग फेसबुक कॉल</string>
     <string name="messenger_notification_video_call">%1$s से इनकमिंग फेसबुक वीडियो कॉल</string>
     <string name="messenger_notification_strategy_unknown">अज्ञात फेसबुक मैसेंजर सूचना</string>
+
+    <!-- strings that Meta may send, that we can listen for to determine message notification type -->
+    <string name="messenger_incoming_photo_id_text">एक फ़ोटो भेजी है</string>
+    <string name="messenger_incoming_reel_id_text">एक रील भेजी है</string>
+    <string name="messenger_incoming_link_id_text">एक लिंक भेजा है</string>
+    <string name="messenger_incoming_post_id_text">एक पोस्ट भेजी है</string>
 
     <string name="contact_unknown">कोई</string>
 
