@@ -10,10 +10,10 @@ import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.db.DbProvider
 import com.mikewarren.speakify.data.db.RecentMessengerContactModel
 import com.mikewarren.speakify.services.TTSManager
-import com.mikewarren.speakify.strategies.fbMessenger.IncomingLinkRule
-import com.mikewarren.speakify.strategies.fbMessenger.IncomingPhotoRule
-import com.mikewarren.speakify.strategies.fbMessenger.IncomingPostRule
-import com.mikewarren.speakify.strategies.fbMessenger.IncomingReelRule
+import com.mikewarren.speakify.strategies.fbMessenger.IncomingLinkMatcher
+import com.mikewarren.speakify.strategies.fbMessenger.IncomingPhotoMatcher
+import com.mikewarren.speakify.strategies.fbMessenger.IncomingPostMatcher
+import com.mikewarren.speakify.strategies.fbMessenger.IncomingReelMatcher
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import com.mikewarren.speakify.utils.SearchUtils
 import com.mikewarren.speakify.utils.log.ITaggable
@@ -125,10 +125,10 @@ class MessengerNotificationStrategy(
     }
 
     val incomingRuleTypesDict = mapOf(
-        IncomingPostRule() to MessengerNotificationTypes.IncomingPost,
-        IncomingPhotoRule() to MessengerNotificationTypes.IncomingPhoto,
-        IncomingLinkRule() to MessengerNotificationTypes.IncomingLink,
-        IncomingReelRule() to MessengerNotificationTypes.IncomingReel,
+        IncomingPostMatcher to MessengerNotificationTypes.IncomingPost,
+        IncomingPhotoMatcher to MessengerNotificationTypes.IncomingPhoto,
+        IncomingLinkMatcher to MessengerNotificationTypes.IncomingLink,
+        IncomingReelMatcher to MessengerNotificationTypes.IncomingReel,
     )
 
     fun parseSpecialIncomingMessage(): MessengerNotificationTypes {
@@ -193,7 +193,7 @@ class MessengerNotificationStrategy(
     fun isIncomingMessage(): Boolean {
         return getNotificationType() in listOf(
             MessengerNotificationTypes.IncomingMessage,
-            *incomingRuleTypesDict.keys.toTypedArray(),
+            *incomingRuleTypesDict.values.toTypedArray(),
         )
     }
 
