@@ -14,6 +14,7 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -98,5 +99,47 @@ class MessengerNotificationStrategyTest {
         // Verify notification type is OutgoingMessage
         assertEquals(MessengerNotificationStrategy.MessengerNotificationTypes.OutgoingMessage, strategy.getNotificationType())
         assertEquals(false, strategy.shouldSpeakify())
+    }
+
+    @Test
+    fun testParseSpecialIncomingMessage_Reel() {
+        val sbn = mockk<StatusBarNotification>(relaxed = true)
+        val notification = Notification()
+
+        val extras = Bundle()
+        extras.putCharSequence(Notification.EXTRA_TITLE, "Mike")
+        extras.putCharSequence(Notification.EXTRA_TEXT, "📺 Sent a reel to you")
+        notification.extras = extras
+
+        every { sbn.notification } returns notification
+
+        val context = mockk<Context>(relaxed = true)
+        val resources = mockk<Resources>(relaxed = true)
+        every { context.resources } returns resources
+
+        every { context.getString(R.string.messenger_incoming_reel_id_text, *anyVararg()) } returns "Sent a reel to you"
+        every { context.getString(R.string.messenger_incoming_photo_id_text, *anyVararg()) } returns "Sent a photo to you"
+        every { context.getString(R.string.messenger_incoming_link_id_text, *anyVararg()) } returns "Sent a link to you"
+        every { context.getString(R.string.messenger_incoming_post_id_text, *anyVararg()) } returns "Sent a post to you"
+        
+        every { context.getString(R.string.action_reply) } returns "reply"
+        every { resources.getStringArray(R.array.action_mark_read) } returns arrayOf("mark as read", "mark read")
+        every { resources.getStringArray(R.array.message_sent_titles) } returns arrayOf("is sending", "was sent")
+        every { resources.getStringArray(R.array.facebook_reaction_prefixes) } returns arrayOf("Reacted")
+        every { context.getString(R.string.facebook_reaction_suffix) } returns "to your"
+
+        // Mock actions on the real notification object to make it look like an incoming message
+        val markReadAction = Notification.Action.Builder(0, "mark read", null).build()
+        notification.actions = arrayOf(markReadAction)
+
+        val ttsManager = mockk<TTSManager>(relaxed = true)
+
+        val strategy = MessengerNotificationStrategy(sbn, null, context, ttsManager)
+
+        // Verify the special type is identified correctly
+        assertEquals(MessengerNotificationStrategy.MessengerNotificationTypes.IncomingReel, strategy.getNotificationType())
+        
+        // Verify it's recognized as an incoming message (this is where the previous bug was)
+        assertTrue("isIncomingMessage should be true for Reel", strategy.isIncomingMessage())
     }
 }
