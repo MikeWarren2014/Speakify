@@ -53,12 +53,13 @@ private enum class SurveyStep {
 }
 
 @Composable
-fun SatisfactionSurvey(onResult: (FeedbackModel) -> Unit) {
+fun SatisfactionSurvey(
+    initialFeedback: FeedbackModel? = null,
+    onResult: (FeedbackModel) -> Unit,
+    onReviewAsk: () -> Unit = {}
+) {
     var selectedOption by remember { mutableStateOf<Int?>(null) }
-    var initialSentiment by remember { mutableStateOf<String?>(null) }
-    var currentStep by remember { mutableStateOf(SurveyStep.SENTIMENT) }
-    val context = LocalContext.current
-    val reviewManager = remember { ReviewManagerFactory.create(context) }
+    var initialSentiment by remember { mutableStateOf(initialFeedback?.surveyResult) }
 
     val options = listOf(
         Triple("Very Dissatisfied",
@@ -77,6 +78,20 @@ fun SatisfactionSurvey(onResult: (FeedbackModel) -> Unit) {
             stringResource(R.string.satisfaction_survey_very_satisfied_header),
             Icons.Default.SentimentVerySatisfied),
     )
+
+    var currentStep by remember {
+        mutableStateOf(
+            if (initialFeedback?.surveyResult != null &&
+                initialFeedback.action == "Rate Later") {
+                SurveyStep.RATE_INVITE
+            } else {
+                SurveyStep.SENTIMENT
+            }
+        )
+    }
+
+    val context = LocalContext.current
+    val reviewManager = remember { ReviewManagerFactory.create(context) }
 
     Crossfade(targetState = currentStep, label = "SurveyStepAnimation") { step ->
         Column(
@@ -121,7 +136,10 @@ fun SatisfactionSurvey(onResult: (FeedbackModel) -> Unit) {
                                 // Branch based on sentiment index
                                 when (it) {
                                     0, 1 -> currentStep = SurveyStep.FEEDBACK_INVITE
-                                    3, 4 -> currentStep = SurveyStep.RATE_INVITE
+                                    3, 4 -> {
+                                        currentStep = SurveyStep.RATE_INVITE
+                                        onReviewAsk()
+                                    }
                                     else -> onResult(FeedbackModel(surveyResult = result)) // Neutral just proceeds
                                 }
                             }

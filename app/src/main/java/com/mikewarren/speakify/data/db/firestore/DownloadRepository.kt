@@ -136,6 +136,28 @@ class DownloadRepository @Inject constructor(
         }
     }
 
+    override suspend fun ratingsPromptTransaction(): Result<Unit> {
+        val ratingsPromptSnapshot = safeFirestoreCall {
+            userDoc.collection("onboarding")
+                .document("ratingsPrompt")
+                .get()
+                .await()
+        }
+
+        if (!ratingsPromptSnapshot.exists()) {
+            return Result.success(Unit)
+        }
+
+        return transaction(ratingsPromptSnapshot) { doc ->
+            val lastAskedForReview = doc.getLong("lastAskedForReview")
+            val numberOfReviewAsks = doc.getLong("numberOfReviewAsks")?.toInt() ?: 0
+
+            if (lastAskedForReview != null) {
+                onboardingRepository.updateRatingsPrompt(lastAskedForReview, numberOfReviewAsks)
+            }
+        }
+    }
+
     override suspend fun importantAppsTransactionList(): List<suspend () -> Result<Unit>> {
         val documents = safeFirestoreCall {
             userDoc.collection("important_apps")

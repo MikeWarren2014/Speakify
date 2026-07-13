@@ -137,6 +137,19 @@ class OnboardingRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun updateRatingsPrompt(lastAsked: Long, asksCount: Int) {
+        userSettingsDataStore.updateData { model ->
+            model.copy(
+                onboardingModel = model.onboardingModel.copy(
+                    ratingsPrompt = model.onboardingModel.ratingsPrompt.copy(
+                        lastAskedForReview = lastAsked,
+                        numberOfReviewAsks = asksCount
+                    )
+                )
+            )
+        }
+    }
+
     override suspend fun restoreOnboardingModel(model: OnboardingModel) {
         userSettingsDataStore.updateData { it.copy(onboardingModel = model) }
     }

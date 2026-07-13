@@ -62,6 +62,10 @@ class MainViewModel @Inject constructor(
     fun markRatingsPromptShown() {
         sessionRepository.markRatingsPromptShown()
     }
+
+    fun recordRatingsPromptAsk() {
+        sessionRepository.recordRatingsPromptAsk()
+    }
 }
 
 

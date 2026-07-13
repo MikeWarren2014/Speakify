@@ -86,6 +86,21 @@ class UploadRepository @Inject constructor(
         return Result.success(Unit)
     }
 
+    override suspend fun ratingsPromptTransaction(): Result<Unit> {
+        val model = onboardingRepository.onboardingModel.first()
+        val ratingsPrompt = model.ratingsPrompt
+
+        val data = hashMapOf(
+            "lastAskedForReview" to ratingsPrompt.lastAskedForReview,
+            "numberOfReviewAsks" to ratingsPrompt.numberOfReviewAsks
+        )
+
+        return writeTransaction(userDoc.collection("onboarding")
+            .document("ratingsPrompt"),
+            data
+        )
+    }
+
     override suspend fun appSettingsTransactionsList(): List<suspend () -> Result<Unit>> {
         val appSettingsCollection = userDoc.collection("app_settings")
         val appSettingsMap = settingsRepository.appSettings.first()
@@ -168,7 +183,7 @@ class UploadRepository @Inject constructor(
         return listOf(clearStaleRecordsTask) + uploadTasks
     }
 
-        private suspend fun <T> clearStaleRecordsTransaction(
+    private suspend fun <T> clearStaleRecordsTransaction(
         documentCollection: CollectionReference,
         onCheckStaleRecord: suspend (DocumentSnapshot, T) -> Boolean,
         data: T

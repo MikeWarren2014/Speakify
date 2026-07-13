@@ -14,6 +14,7 @@ import com.google.firebase.auth.OAuthProvider
 import com.mikewarren.speakify.data.db.firestore.AccountDeletionFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FirestoreSyncRepository
 import com.mikewarren.speakify.data.models.FeedbackModel
+import com.mikewarren.speakify.data.models.RatingsPromptModel
 import com.mikewarren.speakify.data.models.TrialModel
 import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
@@ -33,6 +34,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -78,7 +80,9 @@ class SessionRepository @Inject constructor(
             onboardingRepository.onboardingStep,
             onboardingRepository.speakificationCount,
             onboardingRepository.hasShownRatingsPrompt,
-            onboardingRepository.hasShownTrialConversionPrompt
+            onboardingRepository.hasShownTrialConversionPrompt,
+            onboardingRepository.onboardingModel.map { it.ratingsPrompt },
+            onboardingRepository.feedback
         ) { args ->
             DataBundle(
                 isInitialized = args[0] as Boolean,
@@ -89,7 +93,9 @@ class SessionRepository @Inject constructor(
                 onboardingStep = args[5] as OnboardingUiState,
                 speakificationCount = args[6] as Int,
                 hasShownRatingsPrompt = args[7] as Boolean,
-                hasShownTrialConversionPrompt = args[8] as Boolean
+                hasShownTrialConversionPrompt = args[8] as Boolean,
+                ratingsPrompt = args[9] as RatingsPromptModel,
+                feedback = args[10] as FeedbackModel?
             )
         }
             .distinctUntilChanged()
@@ -116,7 +122,9 @@ class SessionRepository @Inject constructor(
                 speakificationCount = maxOf(old.speakificationCount, new.speakificationCount),
                 onboardingStep = if (old.onboardingStep == OnboardingUiState.Completed) OnboardingUiState.Completed else new.onboardingStep,
                 hasShownRatingsPrompt = old.hasShownRatingsPrompt || new.hasShownRatingsPrompt,
-                hasShownTrialConversionPrompt = old.hasShownTrialConversionPrompt || new.hasShownTrialConversionPrompt
+                hasShownTrialConversionPrompt = old.hasShownTrialConversionPrompt || new.hasShownTrialConversionPrompt,
+                ratingsPrompt = if (new.ratingsPrompt.numberOfReviewAsks >= old.ratingsPrompt.numberOfReviewAsks) new.ratingsPrompt else old.ratingsPrompt,
+                feedback = new.feedback ?: old.feedback
             )
         } else {
             // Transition between guest/signed-in or between different users.
@@ -133,7 +141,9 @@ class SessionRepository @Inject constructor(
             onboardingStep,
             speakificationCount,
             hasShownRatingsPrompt,
-            hasShownTrialConversionPrompt) = dataBundle
+            hasShownTrialConversionPrompt,
+            ratingsPrompt,
+            feedback) = dataBundle
 
         if (!isInitialized) {
             _uiState.value = MainUiState.Loading
@@ -201,7 +211,10 @@ class SessionRepository @Inject constructor(
             onboardingStep,
             speakificationCount,
             hasShownRatingsPrompt,
-            hasShownTrialConversionPrompt) = dataBundle
+            hasShownTrialConversionPrompt,
+            ratingsPrompt,
+            feedback,
+            ) = dataBundle
 
         if ((trialModel.status in listOf(TrialStatus.NotStarted, TrialStatus.NotNeeded)) &&
             (user == null)) {
@@ -212,6 +225,8 @@ class SessionRepository @Inject constructor(
                 openCount,
                 hasShownRatingsPrompt,
                 hasShownTrialConversionPrompt,
+                ratingsPrompt,
+                feedback
             )
         }
 
@@ -221,7 +236,9 @@ class SessionRepository @Inject constructor(
             speakificationCount,
             openCount,
             hasShownRatingsPrompt,
-            hasShownTrialConversionPrompt
+            hasShownTrialConversionPrompt,
+            ratingsPrompt,
+            feedback
         )
     }
 
@@ -242,7 +259,7 @@ class SessionRepository @Inject constructor(
                         return true
                     }
                     if (context.shouldShowRatingsPrompt()) {
-                        _uiState.value = MainUiState.RatingsPrompt
+                        _uiState.value = MainUiState.RatingsPrompt(context.feedback)
                         return true
                     }
                 }
@@ -383,6 +400,20 @@ class SessionRepository @Inject constructor(
         }
     }
 
+    fun recordRatingsPromptAsk() {
+        scope.launch {
+            val currentModel = onboardingRepository.onboardingModel.first()
+            val newCount = currentModel.ratingsPrompt.numberOfReviewAsks + 1
+            val currentTime = System.currentTimeMillis()
+            onboardingRepository.updateRatingsPrompt(currentTime, newCount)
+
+            lastDataBundle = lastDataBundle?.copy(
+                ratingsPrompt = RatingsPromptModel(currentTime, newCount)
+            )
+            lastDataBundle?.let { reactToSessionState(it) }
+        }
+    }
+
     fun resetTrialAuthorized() {
         isTrialAuthorized = false
         if (_uiState.value is MainUiState.TrialUsage) {
@@ -516,7 +547,9 @@ class SessionRepository @Inject constructor(
         val onboardingStep: OnboardingUiState,
         val speakificationCount: Int,
         val hasShownRatingsPrompt: Boolean,
-        val hasShownTrialConversionPrompt: Boolean
+        val hasShownTrialConversionPrompt: Boolean,
+        val ratingsPrompt: RatingsPromptModel,
+        val feedback: FeedbackModel?
     )
 
 }

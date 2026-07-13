@@ -27,5 +27,6 @@ interface OnboardingRepository {
     suspend fun satisfyCategory(category: AppCategory)
     suspend fun setHasShownRatingsPrompt(shown: Boolean)
     suspend fun setHasShownTrialConversionPrompt(shown: Boolean)
+    suspend fun updateRatingsPrompt(lastAsked: Long, asksCount: Int)
     suspend fun restoreOnboardingModel(model: OnboardingModel)
 }

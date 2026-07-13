@@ -11,11 +11,18 @@ data class OnboardingCategorySelection(
 )
 
 @Serializable
+data class RatingsPromptModel(
+    val lastAskedForReview: Long? = null,
+    val numberOfReviewAsks: Int = 0
+)
+
+@Serializable
 data class OnboardingModel(
     val appOpenCount: Int = 0,
     val speakificationCount: Int = 0,
     val onboardingStep: OnboardingUiState = OnboardingUiState.NotStarted,
     val feedback: FeedbackModel? = null,
+    val ratingsPrompt: RatingsPromptModel = RatingsPromptModel(),
     val primaryGoal: String? = null,
     val importantAppCategories: List<OnboardingCategorySelection> = emptyList(),
     val veryImportantApps: List<UserAppModel> = emptyList(),
