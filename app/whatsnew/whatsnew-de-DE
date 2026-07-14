@@ -1,11 +1,7 @@
-Bugs behoben:
-- Anzeige des Absenders in Gruppenthreads
-- Lautstärkewiederherstellung bei "Max. Lautstärke bei ausgeschaltetem Bildschirm"
-- Stabilität des TTS-Moduls
-- Fehler bei Datenbankverbindungen behoben
+Behobene Fehler:
+- Endlosschleife beim Onboarding für wiederkehrende Benutzer behoben
+- Verhalten von "Später bewerten" verbessert
 
-Erweiterungen:
-- Benachrichtigungen werden über den Klingelton angesagt
-- Überarbeitetes Onboarding-System mit App-Kategorien
-- In-App-Bewertung hinzugefügt
-- Unterstützung für neue Messenger-Benachrichtigungstypen
+Verbesserungen:
+- Messenger-Unterstützung an aktuelle Benachrichtigungsänderungen angepasst
+- Schalter-Design an die neuesten Google-Richtlinien angepasst

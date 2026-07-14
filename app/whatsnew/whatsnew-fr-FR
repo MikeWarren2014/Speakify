@@ -1,11 +1,7 @@
 Bugs corrigés :
-- Affichage de l'expéditeur dans les fils de groupe
-- Restauration du volume avec "Volume max écran éteint"
-- Stabilité du moteur TTS
-- Corrections de connexion à la base de données
+- Correction de la boucle d'intégration pour les utilisateurs qui reviennent
+- Amélioration du comportement « Noter plus tard »
 
 Améliorations :
-- Notifications annoncées par-dessus la sonnerie
-- Système de configuration revu avec catégories d'applications
-- Ajout de l'évaluation dans l'application
-- Prise en charge des nouveaux types de notifications Messenger
+- Mise à jour du support Messenger pour les récents changements de notifications
+- Modernisation du design des commutateurs selon les dernières directives de Google
