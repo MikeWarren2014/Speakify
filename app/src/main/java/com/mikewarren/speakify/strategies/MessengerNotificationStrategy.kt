@@ -223,14 +223,21 @@ class MessengerNotificationStrategy(
 
     private fun extractSenderName(): String? {
         val extras = notification.notification.extras
-        
+
+        var processedTitle = title
+        val unwantedPrefix = "Messenger: "
+        val unwantedPrefixIdx = title.indexOf(unwantedPrefix)
+        if (unwantedPrefixIdx != -1) {
+            processedTitle = title.substring(unwantedPrefixIdx + unwantedPrefix.length)
+        }
+
         // 1. Try MessagingStyle (Modern Android)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val messagingStyle = getMessagingStyle()
             if (messagingStyle != null) {
                 // For non-group chats, the conversation title might be the name
                 if (title.isNotEmpty() && !extras.getBoolean(Notification.EXTRA_IS_GROUP_CONVERSATION)) {
-                    return title
+                    return processedTitle
                 }
                 
                 // Otherwise get the sender of the last message
@@ -242,7 +249,7 @@ class MessengerNotificationStrategy(
         }
 
         // 2. Fallback to EXTRA_TITLE
-        return title
+        return processedTitle
     }
 
     private fun isPotentialContact(name: String): Boolean {
