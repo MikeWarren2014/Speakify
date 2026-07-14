@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mikewarren.speakify.R
+import com.mikewarren.speakify.viewsAndViewModels.widgets.CustomSwitch
 
 @Composable
 fun MessagingAppAdditionalSettingsView(viewModel: BaseMessagingAppAdditionalSettingsViewModel,
@@ -29,7 +30,7 @@ fun MessagingAppAdditionalSettingsView(viewModel: BaseMessagingAppAdditionalSett
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(16.dp))
-            Switch(
+            CustomSwitch(
                 checked = viewModel.readMessages,
                 onCheckedChange = { viewModel.readMessages = it }
             )
@@ -46,7 +47,7 @@ fun MessagingAppAdditionalSettingsView(viewModel: BaseMessagingAppAdditionalSett
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(16.dp))
-            Switch(
+            CustomSwitch(
                 checked = viewModel.ignoreSingleWordMessages,
                 onCheckedChange = { viewModel.ignoreSingleWordMessages = it }
             )
@@ -62,7 +63,7 @@ fun MessagingAppAdditionalSettingsView(viewModel: BaseMessagingAppAdditionalSett
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(16.dp))
-            Switch(
+            CustomSwitch(
                 checked = viewModel.ignoreReactions,
                 onCheckedChange = { viewModel.ignoreReactions = it }
             )

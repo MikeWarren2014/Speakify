@@ -5,6 +5,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mikewarren.speakify.viewsAndViewModels.widgets.CustomSwitch
 
 @Composable
 fun ToggleCard(title: String,
@@ -13,7 +14,7 @@ fun ToggleCard(title: String,
                isDisabled: Boolean = false,
                onCheckedChange: (Boolean) -> Unit) {
     ItemCard(title, description) {
-        Switch(
+        CustomSwitch(
             checked = isChecked,
             onCheckedChange = onCheckedChange,
             enabled = !isDisabled,
