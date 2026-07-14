@@ -54,8 +54,8 @@ interface IMessageNotificationHandler<EnumType>: IMessageSettingsParser, ITaggab
     }
 
     fun isReplyAction(action: Notification.Action): Boolean {
-        return context.getString(R.string.action_reply)
-            .contains(action.title.toString(), true)
+        return action.title.toString()
+            .contains(context.getString(R.string.action_reply), true)
     }
 
     fun isMarkAsReadAction(action: Notification.Action): Boolean {

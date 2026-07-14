@@ -288,7 +288,7 @@ class SessionRepositoryTest {
         advanceUntilIdle()
 
         // THEN:
-        assertEquals(MainUiState.RatingsPrompt, repository.uiState.value)
+        assert(repository.uiState.value is MainUiState.RatingsPrompt)
     }
 
     @Test

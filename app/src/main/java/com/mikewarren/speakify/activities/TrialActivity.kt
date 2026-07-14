@@ -94,9 +94,7 @@ class TrialActivity : ComponentActivity() {
                                     initialFeedback = ratingsState.feedback,
                                     onResult = { result ->
                                         viewModel.saveFeedback(result)
-                                        if (result.action != "Rate Later") {
-                                            viewModel.markRatingsPromptShown()
-                                        }
+                                        viewModel.markRatingsPromptShown()
                                         viewModel.proceedToTrialSession()
                                     },
                                     onReviewAsk = { viewModel.recordRatingsPromptAsk() }
