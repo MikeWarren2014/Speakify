@@ -28,4 +28,5 @@ data class OnboardingModel(
     val veryImportantApps: List<UserAppModel> = emptyList(),
     val hasShownRatingsPrompt: Boolean = false,
     val hasShownTrialConversionPrompt: Boolean = false,
+    val timestamp: Long? = null
 )

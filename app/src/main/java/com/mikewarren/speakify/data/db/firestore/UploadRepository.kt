@@ -1,6 +1,7 @@
 package com.mikewarren.speakify.data.db.firestore
 
 import com.clerk.api.Clerk
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -11,6 +12,7 @@ import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.models.FeedbackModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
+import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -63,7 +65,7 @@ class UploadRepository @Inject constructor(
                     "isSatisfied" to it.isSatisfied
                 )
             },
-            "timestamp" to com.google.firebase.Timestamp.now()
+            "timestamp" to Timestamp.now()
         )
 
         return writeTransaction(userDoc.collection("onboarding")
@@ -91,7 +93,7 @@ class UploadRepository @Inject constructor(
         val ratingsPrompt = model.ratingsPrompt
 
         val data = hashMapOf(
-            "lastAskedForReview" to ratingsPrompt.lastAskedForReview,
+            "lastAskedForReview" to ratingsPrompt.lastAskedForReview?.let { Timestamp(Date(it)) },
             "numberOfReviewAsks" to ratingsPrompt.numberOfReviewAsks
         )
 

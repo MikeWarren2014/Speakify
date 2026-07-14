@@ -129,14 +129,14 @@ interface PromptController {
     val speakificationCount: Int
 
     fun shouldShowRatingsPrompt(): Boolean {
-        if (hasShownRatingsPrompt) return false
         if (speakificationCount < 1) return false
+        if (!hasShownRatingsPrompt) return true
 
         val lastAsked = ratingsPrompt.lastAskedForReview ?: return true
         val asksCount = ratingsPrompt.numberOfReviewAsks
 
-        val oneWeekMillis = 7 * 24 * 60 * 60 * 1000L
-        val enoughTimePassed = System.currentTimeMillis() - lastAsked > oneWeekMillis
+        val oneMonthMillis = 30 * 24 * 60 * 60 * 1000L
+        val enoughTimePassed = System.currentTimeMillis() - lastAsked > oneMonthMillis
 
         return enoughTimePassed && asksCount < 3
     }
