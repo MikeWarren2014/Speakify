@@ -88,13 +88,20 @@ class TrialActivity : ComponentActivity() {
                                 onLater = { viewModel.proceedToTrialSession() }
                             )
 
-                            MainUiState.RatingsPrompt -> SatisfactionSurvey(
-                                onResult = { result ->
-                                    viewModel.saveFeedback(result)
-                                    viewModel.markRatingsPromptShown()
-                                    viewModel.proceedToTrialSession()
-                                }
-                            )
+                            is MainUiState.RatingsPrompt -> {
+                                val ratingsState = state as MainUiState.RatingsPrompt
+                                SatisfactionSurvey(
+                                    initialFeedback = ratingsState.feedback,
+                                    onResult = { result ->
+                                        viewModel.saveFeedback(result)
+                                        if (result.action != "Rate Later") {
+                                            viewModel.markRatingsPromptShown()
+                                        }
+                                        viewModel.proceedToTrialSession()
+                                    },
+                                    onReviewAsk = { viewModel.recordRatingsPromptAsk() }
+                                )
+                            }
 
                             MainUiState.TrialEnded -> InitialScreenView()
                             

@@ -86,6 +86,7 @@ class DownloadRepository @Inject constructor(
             val primaryGoal = doc.getString("primaryGoal")
             val hasShownRatingsPrompt = doc.getBoolean("hasShownRatingsPrompt") ?: false
             val hasShownTrialConversionPrompt = doc.getBoolean("hasShownTrialConversionPrompt") ?: false
+            val timestamp = doc.getTimestamp("timestamp")?.toDate()?.time
 
             @Suppress("UNCHECKED_CAST")
             val importantAppCategories = (doc.get("importantAppCategories") as? List<Map<String, Any>>)?.mapNotNull { map ->
@@ -107,7 +108,8 @@ class DownloadRepository @Inject constructor(
                     primaryGoal = primaryGoal,
                     importantAppCategories = importantAppCategories,
                     hasShownRatingsPrompt = hasShownRatingsPrompt,
-                    hasShownTrialConversionPrompt = hasShownTrialConversionPrompt
+                    hasShownTrialConversionPrompt = hasShownTrialConversionPrompt,
+                    timestamp = timestamp
                 )
             )
         }
@@ -132,6 +134,28 @@ class DownloadRepository @Inject constructor(
                 onboardingRepository.saveFeedback(
                     FeedbackModel(surveyResult, action)
                 )
+            }
+        }
+    }
+
+    override suspend fun ratingsPromptTransaction(): Result<Unit> {
+        val ratingsPromptSnapshot = safeFirestoreCall {
+            userDoc.collection("onboarding")
+                .document("ratingsPrompt")
+                .get()
+                .await()
+        }
+
+        if (!ratingsPromptSnapshot.exists()) {
+            return Result.success(Unit)
+        }
+
+        return transaction(ratingsPromptSnapshot) { doc ->
+            val lastAskedForReview = doc.getTimestamp("lastAskedForReview")?.toDate()?.time
+            val numberOfReviewAsks = doc.getLong("numberOfReviewAsks")?.toInt() ?: 0
+
+            if (lastAskedForReview != null) {
+                onboardingRepository.updateRatingsPrompt(lastAskedForReview, numberOfReviewAsks)
             }
         }
     }

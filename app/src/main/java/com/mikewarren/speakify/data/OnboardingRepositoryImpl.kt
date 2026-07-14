@@ -137,7 +137,30 @@ class OnboardingRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun updateRatingsPrompt(lastAsked: Long, asksCount: Int) {
+        userSettingsDataStore.updateData { model ->
+            model.copy(
+                onboardingModel = model.onboardingModel.copy(
+                    ratingsPrompt = model.onboardingModel.ratingsPrompt.copy(
+                        lastAskedForReview = lastAsked,
+                        numberOfReviewAsks = asksCount
+                    )
+                )
+            )
+        }
+    }
+
     override suspend fun restoreOnboardingModel(model: OnboardingModel) {
-        userSettingsDataStore.updateData { it.copy(onboardingModel = model) }
+        val migratedModel = if (model.hasShownRatingsPrompt && model.ratingsPrompt.numberOfReviewAsks == 0) {
+            model.copy(
+                ratingsPrompt = model.ratingsPrompt.copy(
+                    lastAskedForReview = model.timestamp,
+                    numberOfReviewAsks = 1
+                )
+            )
+        } else {
+            model
+        }
+        userSettingsDataStore.updateData { it.copy(onboardingModel = migratedModel) }
     }
 }

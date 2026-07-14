@@ -131,7 +131,7 @@ class MainActivity : ComponentActivity()  {
                         MainUiState.TrialActive,
                         MainUiState.TrialConversion,
                         MainUiState.TrialConversionPrompt,
-                        MainUiState.RatingsPrompt,
+                        is MainUiState.RatingsPrompt,
                         is MainUiState.Onboarding -> {
                             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                                 CircularProgressIndicator()

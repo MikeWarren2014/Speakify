@@ -1,6 +1,7 @@
 package com.mikewarren.speakify.data.db.firestore
 
 import com.clerk.api.Clerk
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -11,6 +12,7 @@ import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.models.FeedbackModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
+import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -63,7 +65,7 @@ class UploadRepository @Inject constructor(
                     "isSatisfied" to it.isSatisfied
                 )
             },
-            "timestamp" to com.google.firebase.Timestamp.now()
+            "timestamp" to Timestamp.now()
         )
 
         return writeTransaction(userDoc.collection("onboarding")
@@ -84,6 +86,21 @@ class UploadRepository @Inject constructor(
         }
 
         return Result.success(Unit)
+    }
+
+    override suspend fun ratingsPromptTransaction(): Result<Unit> {
+        val model = onboardingRepository.onboardingModel.first()
+        val ratingsPrompt = model.ratingsPrompt
+
+        val data = hashMapOf(
+            "lastAskedForReview" to ratingsPrompt.lastAskedForReview?.let { Timestamp(Date(it)) },
+            "numberOfReviewAsks" to ratingsPrompt.numberOfReviewAsks
+        )
+
+        return writeTransaction(userDoc.collection("onboarding")
+            .document("ratingsPrompt"),
+            data
+        )
     }
 
     override suspend fun appSettingsTransactionsList(): List<suspend () -> Result<Unit>> {
@@ -168,7 +185,7 @@ class UploadRepository @Inject constructor(
         return listOf(clearStaleRecordsTask) + uploadTasks
     }
 
-        private suspend fun <T> clearStaleRecordsTransaction(
+    private suspend fun <T> clearStaleRecordsTransaction(
         documentCollection: CollectionReference,
         onCheckStaleRecord: suspend (DocumentSnapshot, T) -> Boolean,
         data: T
