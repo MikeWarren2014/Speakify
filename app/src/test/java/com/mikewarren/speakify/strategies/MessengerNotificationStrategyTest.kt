@@ -47,15 +47,7 @@ class MessengerNotificationStrategyTest {
 
         assertEquals("", NotificationExtractionUtils.ExtractText(sbn))
 
-        val context = mockk<Context>(relaxed = true)
-        val resources = mockk<Resources>(relaxed = true)
-        every { context.resources } returns resources
-        every { context.getString(R.string.action_reply) } returns "reply"
-        every { resources.getStringArray(R.array.message_sent_titles) } returns arrayOf("is sending", "was sent")
-        every { resources.getStringArray(R.array.action_mark_read) } returns arrayOf("mark as read", "mark read")
-        every { resources.getStringArray(R.array.action_outgoing_call) } returns arrayOf("end call", "hang up", "speaker")
-        every { resources.getStringArray(R.array.action_incoming_call_list) } returns arrayOf("answer", "decline")
-        every { resources.getStringArray(R.array.messenger_non_contact_titles) } returns arrayOf("Your photo is sending", "Your photo was sent", "Your video is sending", "Your video was sent", "Messenger Audio call")
+        val context = createStubContext()
 
         val ttsManager = mockk<TTSManager>(relaxed = true)
 
@@ -82,15 +74,7 @@ class MessengerNotificationStrategyTest {
 
         assertEquals("", NotificationExtractionUtils.ExtractText(sbn))
 
-        val context = mockk<Context>(relaxed = true)
-        val resources = mockk<Resources>(relaxed = true)
-        every { context.resources } returns resources
-        every { context.getString(R.string.action_reply) } returns "reply"
-        every { resources.getStringArray(R.array.message_sent_titles) } returns arrayOf("is sending", "was sent")
-        every { resources.getStringArray(R.array.action_mark_read) } returns arrayOf("mark as read", "mark read")
-        every { resources.getStringArray(R.array.action_outgoing_call) } returns arrayOf("end call", "hang up", "speaker")
-        every { resources.getStringArray(R.array.action_incoming_call_list) } returns arrayOf("answer", "decline")
-        every { resources.getStringArray(R.array.messenger_non_contact_titles) } returns arrayOf("Your photo is sending", "Your photo was sent", "Your video is sending", "Your video was sent", "Messenger Audio call")
+        val context = createStubContext()
 
         val ttsManager = mockk<TTSManager>(relaxed = true)
 
@@ -113,20 +97,7 @@ class MessengerNotificationStrategyTest {
 
         every { sbn.notification } returns notification
 
-        val context = mockk<Context>(relaxed = true)
-        val resources = mockk<Resources>(relaxed = true)
-        every { context.resources } returns resources
-
-        every { context.getString(R.string.messenger_incoming_reel_id_text, *anyVararg()) } returns "Sent a reel to you"
-        every { context.getString(R.string.messenger_incoming_photo_id_text, *anyVararg()) } returns "Sent a photo to you"
-        every { context.getString(R.string.messenger_incoming_link_id_text, *anyVararg()) } returns "Sent a link to you"
-        every { context.getString(R.string.messenger_incoming_post_id_text, *anyVararg()) } returns "Sent a post to you"
-        
-        every { context.getString(R.string.action_reply) } returns "reply"
-        every { resources.getStringArray(R.array.action_mark_read) } returns arrayOf("mark as read", "mark read")
-        every { resources.getStringArray(R.array.message_sent_titles) } returns arrayOf("is sending", "was sent")
-        every { resources.getStringArray(R.array.facebook_reaction_prefixes) } returns arrayOf("Reacted")
-        every { context.getString(R.string.facebook_reaction_suffix) } returns "to your"
+        val context = createStubContext()
 
         // Mock actions on the real notification object to make it look like an incoming message
         val markReadAction = Notification.Action.Builder(0, "mark read", null).build()
@@ -141,5 +112,26 @@ class MessengerNotificationStrategyTest {
         
         // Verify it's recognized as an incoming message (this is where the previous bug was)
         assertTrue("isIncomingMessage should be true for Reel", strategy.isIncomingMessage())
+    }
+
+    fun createStubContext(): Context {
+        val context = mockk<Context>(relaxed = true)
+        val resources = mockk<Resources>(relaxed = true)
+        every { context.resources } returns resources
+
+        every { context.getString(R.string.messenger_incoming_reel_id_text, *anyVararg()) } returns "Sent a reel to you"
+        every { context.getString(R.string.messenger_incoming_photo_id_text, *anyVararg()) } returns "Sent a photo to you"
+        every { context.getString(R.string.messenger_incoming_link_id_text, *anyVararg()) } returns "Sent a link to you"
+        every { context.getString(R.string.messenger_incoming_post_id_text, *anyVararg()) } returns "Sent a post to you"
+
+        every { context.getString(R.string.action_reply) } returns "reply"
+        every { resources.getStringArray(R.array.message_sent_titles) } returns arrayOf("is sending", "was sent")
+        every { resources.getStringArray(R.array.action_mark_read) } returns arrayOf("mark as read", "mark read")
+        every { resources.getStringArray(R.array.action_outgoing_call) } returns arrayOf("end call", "hang up", "speaker")
+        every { resources.getStringArray(R.array.action_incoming_call_list) } returns arrayOf("answer", "decline")
+        every { resources.getStringArray(R.array.messenger_non_contact_titles) } returns arrayOf("Your photo is sending", "Your photo was sent", "Your video is sending", "Your video was sent", "Messenger Audio call")
+
+
+        return context
     }
 }
