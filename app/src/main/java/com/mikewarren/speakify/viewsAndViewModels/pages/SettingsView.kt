@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mikewarren.speakify.R
+import com.mikewarren.speakify.viewsAndViewModels.widgets.CustomSwitch
 import com.mikewarren.speakify.viewsAndViewModels.widgets.EndTrialAlertDialog
 import com.mikewarren.speakify.viewsAndViewModels.widgets.TTSAutoCompletableView
 import kotlin.math.roundToInt
@@ -313,7 +314,7 @@ fun SettingsToggleCard(title: String,
    SettingsItemCard(title,
        description,
        {
-           Switch(
+           CustomSwitch(
                checked = isChecked,
                onCheckedChange = onCheckedChange,
                modifier = Modifier.padding(start = 16.dp)
