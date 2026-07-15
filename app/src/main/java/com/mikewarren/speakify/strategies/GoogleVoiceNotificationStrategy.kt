@@ -92,7 +92,7 @@ class GoogleVoiceNotificationStrategy(notification: StatusBarNotification,
             if (isReadMessagesEnabled)
                 return context.getString(R.string.google_voice_incoming_text_out_loud,
                     contactModel.name,
-                    NotificationExtractionUtils.ExtractText(notification),
+                    notificationText,
                 )
             return context.getString(
                 R.string.google_voice_incoming_sms_notification_strategy_text,

@@ -78,7 +78,7 @@ ITaggable {
 
             return context.getString(R.string.sms_text_out_loud,
                 contactName,
-                NotificationExtractionUtils.ExtractText(notification),
+                notificationText,
             )
         }
 
@@ -170,7 +170,6 @@ ITaggable {
         if (super.isReaction())
             return true
 
-        val notificationText = NotificationExtractionUtils.ExtractText(notification)
         val firstEmojiPosition = SearchUtils.GetEmojiPosition(notificationText)
 
         if (firstEmojiPosition == -1)
