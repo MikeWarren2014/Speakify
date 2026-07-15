@@ -20,6 +20,9 @@ interface IMessageNotificationHandler<EnumType>: IMessageSettingsParser, ITaggab
     }
 
     val notification: StatusBarNotification
+    val notificationText : String
+        get() = NotificationExtractionUtils.ExtractText(notification)
+            .replace("""https?:\/\/\S+\b|www\.\S+\b""".toRegex(), "link")
 
     val context: Context
 

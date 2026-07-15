@@ -68,18 +68,17 @@ class MessengerNotificationStrategy(
         return MessengerNotificationTypes.Other
     }
 
-    val text = NotificationExtractionUtils.ExtractText(notification)
     val title = NotificationExtractionUtils.ExtractTitle(notification)
 
     override fun isReaction(): Boolean {
         if (isSingleWordMessage()) {
-            return SearchUtils.GetEmojiPosition(text) != -1
+            return SearchUtils.GetEmojiPosition(notificationText) != -1
         }
 
         val prefixes = context.resources.getStringArray(R.array.facebook_reaction_prefixes)
         val suffix = context.getString(R.string.facebook_reaction_suffix)
 
-        val textToCheck = if (text.contains(':')) text.substringBefore(':') else text
+        val textToCheck = if (notificationText.contains(':')) notificationText.substringBefore(':') else notificationText
 
         val hasPrefix = prefixes.any { textToCheck.contains(it, ignoreCase = true) }
         val hasSuffix = textToCheck.contains(suffix, ignoreCase = true)
@@ -132,9 +131,9 @@ class MessengerNotificationStrategy(
     )
 
     fun parseSpecialIncomingMessage(): MessengerNotificationTypes {
-        if (text.isNotEmpty()) {
+        if (notificationText.isNotEmpty()) {
             val foundIncomingType = incomingRuleTypesDict.entries
-                .find { entry -> entry.key.checkMessageText(context, text) }
+                .find { entry -> entry.key.checkMessageText(context, notificationText) }
                 ?.value
 
             if (foundIncomingType != null)
@@ -145,12 +144,12 @@ class MessengerNotificationStrategy(
     }
 
     private fun isAudioCall() : Boolean {
-        return text
+        return notificationText
             .contains(context.getString(R.string.messenger_incoming_audio_call_text), ignoreCase = true)
     }
 
     private fun isVideoCall() : Boolean {
-        return text
+        return notificationText
             .contains(
                 context.getString(R.string.messenger_incoming_video_call_text),
                 ignoreCase = true
@@ -175,7 +174,7 @@ class MessengerNotificationStrategy(
             }
 
             if ((notificationType == MessengerNotificationTypes.IncomingMessage) && (isReadMessagesEnabled)) {
-                return context.getString(R.string.messenger_text_out_loud, notificationSource, text)
+                return context.getString(R.string.messenger_text_out_loud, notificationSource, notificationText)
             }
 
             return context.getString(R.string.messenger_notification_text, notificationSource)

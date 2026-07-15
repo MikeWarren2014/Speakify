@@ -6,12 +6,16 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.service.notification.StatusBarNotification
 import com.mikewarren.speakify.R
+import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.services.TTSManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import io.mockk.mockkStatic
+import io.mockk.unmockkObject
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -30,6 +34,12 @@ class MessengerNotificationStrategyTest {
         mockkStatic(FirebaseCrashlytics::class)
         val mockCrashlytics = mockk<FirebaseCrashlytics>(relaxed = true)
         every { FirebaseCrashlytics.getInstance() } returns mockCrashlytics
+        mockkObject(NotificationExtractionUtils)
+    }
+
+    @After
+    fun tearDown() {
+        unmockkObject(NotificationExtractionUtils)
     }
 
     @Test
@@ -114,6 +124,38 @@ class MessengerNotificationStrategyTest {
         assertTrue("isIncomingMessage should be true for Reel", strategy.isIncomingMessage())
     }
 
+    @Test
+    fun testTextToSpeakify_ContainsUrl_ReplacesWithLink() {
+        val sbn = mockk<StatusBarNotification>(relaxed = true)
+        val notification = Notification()
+        val extras = Bundle()
+        extras.putCharSequence(Notification.EXTRA_TITLE, "Mike")
+        extras.putCharSequence(Notification.EXTRA_TEXT, "Check this out: https://www.google.com")
+        notification.extras = extras
+        
+        every { sbn.notification } returns notification
+        every { NotificationExtractionUtils.ExtractTitle(sbn) } returns "Mike"
+        every { NotificationExtractionUtils.ExtractText(sbn) } returns "Check this out: https://www.google.com"
+
+        val context = createStubContext()
+        val markReadAction = Notification.Action.Builder(0, "mark read", null).build()
+        notification.actions = arrayOf(markReadAction)
+
+        every { context.getString(R.string.messenger_text_out_loud, "Mike", "Check this out: link") } returns "Mike sent a message: Check this out: link"
+
+        // Mock settings to enable reading messages
+        val appSettingsModel = mockk<AppSettingsModel>(relaxed = true)
+        every { appSettingsModel.getBooleanSetting(any(), any()) } returns true
+
+        val ttsManager = mockk<TTSManager>(relaxed = true)
+        val strategy = MessengerNotificationStrategy(sbn, appSettingsModel, context, ttsManager)
+
+        val result = strategy.textToSpeakify()
+        assertTrue("Result should contain 'link' instead of URL: $result", result.contains("link"))
+        assertFalse("Result should not contain the actual URL: $result", result.contains("https://www.google.com"))
+        assertEquals("Mike sent a message: Check this out: link", result)
+    }
+
     fun createStubContext(): Context {
         val context = mockk<Context>(relaxed = true)
         val resources = mockk<Resources>(relaxed = true)
@@ -130,7 +172,8 @@ class MessengerNotificationStrategyTest {
         every { resources.getStringArray(R.array.action_outgoing_call) } returns arrayOf("end call", "hang up", "speaker")
         every { resources.getStringArray(R.array.action_incoming_call_list) } returns arrayOf("answer", "decline")
         every { resources.getStringArray(R.array.messenger_non_contact_titles) } returns arrayOf("Your photo is sending", "Your photo was sent", "Your video is sending", "Your video was sent", "Messenger Audio call")
-
+        every { resources.getStringArray(R.array.facebook_reaction_prefixes) } returns arrayOf("reacted")
+        every { context.getString(R.string.facebook_reaction_suffix) } returns "to your message"
 
         return context
     }
