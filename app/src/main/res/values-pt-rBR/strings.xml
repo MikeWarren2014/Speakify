@@ -52,6 +52,12 @@
     <string name="forgot_password_email_placeholder">Insira seu endereço de e-mail</string>
     <string name="forgot_password_send_code_button">Enviar Código de Redefinição</string>
 
+    <!-- 2FA / Second Factor -->
+    <string name="sign_in_2fa_header">Código de Verificação</string>
+    <string name="sign_in_2fa_subtext">Não vimos você fazer login com este dispositivo antes. Digite o código enviado para seu e-mail para confirmá-lo.</string>
+    <string name="sign_in_2fa_verify_button">Verificar Código</string>
+    <string name="sign_in_2fa_back">Voltar para o Login</string>
+
     <!-- Email Verification View -->
     <string name="email_verification_default_button_text">Verificar</string>
     <string name="email_verification_header">Verifique seu e-mail</string>

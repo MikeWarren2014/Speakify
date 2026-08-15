@@ -52,6 +52,12 @@
     <string name="forgot_password_email_placeholder">Ingresa tu correo electrónico</string>
     <string name="forgot_password_send_code_button">Enviar código de restablecimiento</string>
 
+    <!-- 2FA / Second Factor -->
+    <string name="sign_in_2fa_header">Código de verificación</string>
+    <string name="sign_in_2fa_subtext">No hemos visto que hayas iniciado sesión con este dispositivo antes. Por favor, introduce el código enviado a tu correo electrónico para confirmarlo.</string>
+    <string name="sign_in_2fa_verify_button">Verificar código</string>
+    <string name="sign_in_2fa_back">Volver a Iniciar sesión</string>
+
     <!-- Email Verification View -->
     <string name="email_verification_default_button_text">Verificar</string>
     <string name="email_verification_header">Verifica tu correo electrónico</string>

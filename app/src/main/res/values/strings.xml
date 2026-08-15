@@ -55,6 +55,12 @@
     <string name="forgot_password_email_placeholder">Enter your email address</string>
     <string name="forgot_password_send_code_button">Send Reset Code</string>
 
+    <!-- 2FA / Second Factor -->
+    <string name="sign_in_2fa_header">Verification Code</string>
+    <string name="sign_in_2fa_subtext">We haven\'t seen you sign in with this device before. Please enter the code sent to your email, to confirm it.</string>
+    <string name="sign_in_2fa_verify_button">Verify Code</string>
+    <string name="sign_in_2fa_back">Back to Sign In</string>
+
     <!-- Email Verification View -->
     <string name="email_verification_default_button_text">Verify</string>
     <string name="email_verification_header">Check Your Email</string>

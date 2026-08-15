@@ -1,6 +1,7 @@
 [versions]
 agp = "9.2.1"
 androidxJunit = "1.2.1"
+clerkAndroid = "0.1.24"
 coilCompose = "2.7.0"
 core = "1.7.0"
 gradle = "9.1.0"
@@ -55,6 +56,7 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomRuntime" }
 androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
 androidx-storage = { module = "androidx.test.services:storage", version.ref = "storage" }
+clerk-android = { module = "com.clerk:clerk-android", version.ref = "clerkAndroid" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastoreCoreAndroid" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidGradlePlugin" }

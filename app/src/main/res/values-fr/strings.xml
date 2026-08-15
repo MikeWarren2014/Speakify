@@ -52,6 +52,12 @@
     <string name="forgot_password_email_placeholder">Saisissez votre adresse email</string>
     <string name="forgot_password_send_code_button">Envoyer le code de réinitialisation</string>
 
+    <!-- 2FA / Second Factor -->
+    <string name="sign_in_2fa_header">Code de vérification</string>
+    <string name="sign_in_2fa_subtext">Nous n\'avons pas vu que vous vous étiez connecté avec cet appareil auparavant. Veuillez saisir le code envoyé à votre e-mail pour le confirmer.</string>
+    <string name="sign_in_2fa_verify_button">Vérifier le code</string>
+    <string name="sign_in_2fa_back">Retour à la connexion</string>
+
     <!-- Email Verification View -->
     <string name="email_verification_default_button_text">Vérifier</string>
     <string name="email_verification_header">Vérifiez votre e-mail</string>

@@ -52,6 +52,12 @@
     <string name="forgot_password_email_placeholder">Введіть вашу адресу електронної пошти</string>
     <string name="forgot_password_send_code_button">Надіслати код скидання</string>
 
+    <!-- 2FA / Second Factor -->
+    <string name="sign_in_2fa_header">Код підтвердження</string>
+    <string name="sign_in_2fa_subtext">Ми не бачили, щоб ви раніше входили в систему з цього пристрою. Будь ласка, введіть код, надісланий на вашу електронну пошту, щоб підтвердити його.</string>
+    <string name="sign_in_2fa_verify_button">Підтвердити код</string>
+    <string name="sign_in_2fa_back">Повернутися до входу</string>
+
     <!-- Email Verification View -->
     <string name="email_verification_default_button_text">Підтвердити</string>
     <string name="email_verification_header">Перевірте вашу електронну пошту</string>

@@ -52,6 +52,12 @@
     <string name="forgot_password_email_placeholder">メールアドレスを入力</string>
     <string name="forgot_password_send_code_button">リセットコードを送信</string>
 
+    <!-- 2FA / Second Factor -->
+    <string name="sign_in_2fa_header">認証コード</string>
+    <string name="sign_in_2fa_subtext">以前にこのデバイスでサインインした形跡がありません。確認のため、メールに送信されたコードを入力してください。</string>
+    <string name="sign_in_2fa_verify_button">コードを認証</string>
+    <string name="sign_in_2fa_back">サインインに戻る</string>
+
     <!-- Email Verification View -->
     <string name="email_verification_default_button_text">確認</string>
     <string name="email_verification_header">メールを確認してください</string>

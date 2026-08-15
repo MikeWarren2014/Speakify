@@ -16,7 +16,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +27,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.uiStates.SignInUiState
 import com.mikewarren.speakify.viewsAndViewModels.widgets.PasswordField
@@ -47,8 +47,25 @@ fun SignInView(viewModel: SignInViewModel = hiltViewModel()) {
         return
     }
 
+    if (uiState is SignInUiState.EmailCodeEntry) {
+        val verificationViewModel: EmailVerificationViewModel = viewModel()
+        val emailCodeEntryState = uiState as SignInUiState.EmailCodeEntry
+        
+        EmailVerificationView(
+            headerText = stringResource(R.string.sign_in_2fa_header),
+            mainText = stringResource(R.string.sign_in_2fa_subtext),
+            isLoading = emailCodeEntryState.isLoading,
+            onRequestCode = viewModel::resendSecondFactorCode,
+            onSubmitCode = { code ->
+                viewModel.submitDeviceTrustCode(code, verificationViewModel::onVerificationFailure)
+            },
+            onBack = viewModel::resetToIdle,
+            viewModel = verificationViewModel
+        )
+        return
+    }
+
     val shake = remember { Animatable(0f) }
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collectLatest { event ->
@@ -95,10 +112,11 @@ fun SignInView(viewModel: SignInViewModel = hiltViewModel()) {
         )
         TextButton(
             onClick = { viewModel.onClickForgotPassword() },
-            modifier = Modifier.align(Alignment.End) // Align to the right
+            modifier = Modifier.align(Alignment.End), // Align to the right
         ) {
             Text(stringResource(R.string.forgot_password))
         }
         Button(onClick = { onSignInAction() }) { Text(stringResource(R.string.sign_in)) }
     }
 }
+

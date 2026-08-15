@@ -7,7 +7,11 @@ sealed interface SignInUiState {
 
     data class Error(val message: String) : SignInUiState
 
+    data class UnexpectedStatus(val status: String): SignInUiState
+
     data object Success : SignInUiState
+
+    data class EmailCodeEntry(val isLoading: Boolean = false) : SignInUiState
 
     data class ResetPassword(val reason: String) : SignInUiState {
         companion object ResetPasswordReasons {

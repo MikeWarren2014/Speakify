@@ -52,6 +52,12 @@
     <string name="forgot_password_email_placeholder">Введите ваш адрес электронной почты</string>
     <string name="forgot_password_send_code_button">Отправить код сброса</string>
 
+    <!-- 2FA / Second Factor -->
+    <string name="sign_in_2fa_header">Код подтверждения</string>
+    <string name="sign_in_2fa_subtext">Мы не видели, чтобы вы раньше входили в систему с этого устройства. Пожалуйста, введите код, отправленный на вашу электронную почту, чтобы подтвердить его.</string>
+    <string name="sign_in_2fa_verify_button">Подтвердить код</string>
+    <string name="sign_in_2fa_back">Вернуться к входу</string>
+
     <!-- Email Verification View -->
     <string name="email_verification_default_button_text">Подтвердить</string>
     <string name="email_verification_header">Проверьте почту</string>

@@ -52,6 +52,12 @@
     <string name="forgot_password_email_placeholder">输入您的电子邮件地址</string>
     <string name="forgot_password_send_code_button">发送重置码</string>
 
+    <!-- 2FA / Second Factor -->
+    <string name="sign_in_2fa_header">验证码</string>
+    <string name="sign_in_2fa_subtext">我们以前没有见过您使用此设备登录。请输入发送到您电子邮箱的验证码以确认。</string>
+    <string name="sign_in_2fa_verify_button">验证验证码</string>
+    <string name="sign_in_2fa_back">返回登录</string>
+
     <!-- Email Verification View -->
     <string name="email_verification_default_button_text">验证</string>
     <string name="email_verification_header">查收邮件</string>

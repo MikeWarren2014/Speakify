@@ -52,6 +52,12 @@
     <string name="forgot_password_email_placeholder">آدرس ایمیل خود را وارد کنید</string>
     <string name="forgot_password_send_code_button">ارسال کد بازنشانی</string>
 
+    <!-- 2FA / Second Factor -->
+    <string name="sign_in_2fa_header">کد تأیید</string>
+    <string name="sign_in_2fa_subtext">ما قبلاً ورود شما با این دستگاه را ندیده‌ایم. لطفاً برای تأیید، کدی را که به ایمیل شما ارسال شده است وارد کنید.</string>
+    <string name="sign_in_2fa_verify_button">تأیید کد</string>
+    <string name="sign_in_2fa_back">بازگشت به ورود</string>
+
     <!-- Email Verification View -->
     <string name="email_verification_default_button_text">تایید</string>
     <string name="email_verification_header">ایمیل خود را بررسی کنید</string>
