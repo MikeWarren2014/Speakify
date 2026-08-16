@@ -12,8 +12,12 @@ import com.clerk.api.network.serialization.onSuccess
 import com.clerk.api.signin.SignIn
 import com.clerk.api.signin.attemptSecondFactor
 import com.clerk.api.signin.prepareSecondFactor
+import com.mikewarren.speakify.R
+import com.mikewarren.speakify.data.AuthMessageRepository
 import com.mikewarren.speakify.data.TrialRepository
+import com.mikewarren.speakify.data.uiStates.AuthUiState
 import com.mikewarren.speakify.data.uiStates.SignInUiState
+import com.mikewarren.speakify.viewsAndViewModels.widgets.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +29,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val trialRepository: TrialRepository
+    private val trialRepository: TrialRepository,
+    private val authMessageRepository: AuthMessageRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<SignInUiState>(SignInUiState.Idle)
@@ -41,18 +46,14 @@ class SignInViewModel @Inject constructor(
 
     private var pendingSignIn: SignIn? = null
 
-    fun signIn(email: String, password: String) {
+    fun signIn(email: String, password: String, onDone: (success: Boolean, authUiState: AuthUiState) -> Unit) {
         viewModelScope.launch {
             _uiState.update { SignInUiState.Loading }
             SignIn.create(SignIn.CreateParams.Strategy.Password(identifier = email, password = password))
                 .onSuccess { signIn ->
                     when (signIn.status) {
-                        SignIn.Status.COMPLETE -> activate(signIn)
-
-                        SignIn.Status.NEEDS_SECOND_FACTOR -> {
-                            prepareSecondFactor(signIn)
-                        }
-
+                        SignIn.Status.COMPLETE -> activate(signIn, onDone)
+                        SignIn.Status.NEEDS_SECOND_FACTOR -> prepareSecondFactor(signIn)
                         else -> handleUnexpectedStatus(signIn.status)
                     }
                 }
@@ -63,16 +64,23 @@ class SignInViewModel @Inject constructor(
                     }
 
                     handleFailure(failure)
+                    onDone(false, AuthUiState.SignedOut)
                 }
         }
     }
 
-    private suspend fun activate(signIn: SignIn) {
-        val sessionId = signIn.createdSessionId ?: return
+    private suspend fun activate(signIn: SignIn, onDone: (success: Boolean, authUiState: AuthUiState) -> Unit) {
+        val sessionId = signIn.createdSessionId
+        if (sessionId == null) {
+            onDone(false, AuthUiState.SignedOut)
+            return
+        }
+
         Clerk.setActive(sessionId)
 
         _uiState.value = SignInUiState.Success
         recordSignUp()
+        onDone(true, AuthUiState.Success)
     }
 
     private fun recordSignUp() {
@@ -98,12 +106,12 @@ class SignInViewModel @Inject constructor(
     }
 
     private suspend fun handleFailure(failure: ClerkResult.Failure<ClerkErrorResponse>) {
-        _uiState.value = SignInUiState.Error("Sign-in not complete. Details: ${failure.longErrorMessageOrNull}")
+        authMessageRepository.postMessage(UiText.DynamicString("Sign-in failed: ${failure.longErrorMessageOrNull}"))
         _eventFlow.emit(Event.Shake)
     }
 
     private suspend fun handleUnexpectedStatus(status: SignIn.Status) {
-        _uiState.value = SignInUiState.UnexpectedStatus(status.name)
+        authMessageRepository.postMessage(UiText.StringResource(R.string.sign_in_unexpected_status, status.name))
     }
 
     fun onClickForgotPassword() {
@@ -112,7 +120,7 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun submitDeviceTrustCode(code: String, onFailure: (() -> Unit)? = null) {
+    fun submitDeviceTrustCode(code: String, onDone: (success: Boolean, authUiState: AuthUiState) -> Unit) {
         viewModelScope.launch {
             val signIn = pendingSignIn ?: return@launch
             _uiState.update { SignInUiState.EmailCodeEntry(isLoading = true) }
@@ -125,12 +133,12 @@ class SignInViewModel @Inject constructor(
                     handleUnexpectedStatus(completedSignIn.status)
                     return@onSuccess
                 }
-                activate(completedSignIn)
+                activate(completedSignIn, onDone)
             }
             .onFailure { failure: ClerkResult.Failure<ClerkErrorResponse> ->
                 _uiState.update { SignInUiState.EmailCodeEntry(isLoading = false) }
                 handleFailure(failure)
-                onFailure?.invoke()
+                onDone(false, AuthUiState.NeedsVerification)
             }
         }
     }

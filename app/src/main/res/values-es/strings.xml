@@ -15,6 +15,7 @@
     <string name="trial_expired">Tu prueba ha caducado. Regístrate para continuar.</string>
     <string name="trial_ended_main_activity">¡Gracias por probar Speakify! Redirigiendo a la pantalla de título…</string>
     <string name="trial_conversion">¡Regístrate ahora para guardar tus ajustes y preferencias para siempre!</string>
+    <string name="sign_in_unexpected_status">Estado inesperado al intentar iniciar sesión: %1$s</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">¿Ya tienes una cuenta? Inicia sesión</string>

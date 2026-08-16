@@ -23,6 +23,7 @@ import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.utils.AnalyticsHelper
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
+import com.mikewarren.speakify.viewsAndViewModels.widgets.UiText
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -177,7 +178,7 @@ class SessionRepository @Inject constructor(
         if (syncResult.isFailure) {
             Log.e("SessionRepository", "Failed to bridge Clerk to Firebase", syncResult.exceptionOrNull())
             signOut()
-            authMessageRepository.postMessage("Failed to synchronize account data. Please try again.")
+            authMessageRepository.postMessage(UiText.DynamicString("Failed to synchronize account data. Please try again."))
             return
         }
 

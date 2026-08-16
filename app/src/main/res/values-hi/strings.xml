@@ -15,6 +15,7 @@
     <string name="trial_expired">आपका ट्रायल समाप्त हो गया है। कृपया जारी रखने के लिए साइन अप करें।</string>
     <string name="trial_ended_main_activity">Speakify को आज़माने के लिए धन्यवाद! वापस शीर्षक स्क्रीन पर रीडायरेक्ट किया जा रहा है…</string>
     <string name="trial_conversion">अपनी सेटिंग्स और प्राथमिकताओं को हमेशा के लिए सहेजने के लिए अभी साइन अप करें!</string>
+    <string name="sign_in_unexpected_status">साइन इन करने का प्रयास करते समय अप्रत्याशित स्थिति: %1$s</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">पहले से ही एक खाता है? साइन इन करें</string>

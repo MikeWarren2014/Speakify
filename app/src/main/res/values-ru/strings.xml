@@ -15,6 +15,7 @@
     <string name="trial_expired">Ваш пробный период истек. Пожалуйста, зарегистрируйтесь, чтобы продолжить.</string>
     <string name="trial_ended_main_activity">Спасибо, что попробовали Speakify! Перенаправление на главный экран…</string>
     <string name="trial_conversion">Зарегистрируйтесь сейчас, чтобы сохранить свои настройки и предпочтения навсегда!</string>
+    <string name="sign_in_unexpected_status">Непредвиденный статус при попытке входа: %1$s</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">Уже есть аккаунт? Войти</string>

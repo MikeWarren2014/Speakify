@@ -32,11 +32,11 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.constants.DocumentURLs
-import com.mikewarren.speakify.data.uiStates.SignUpUiState
+import com.mikewarren.speakify.data.uiStates.AuthUiState
 import com.mikewarren.speakify.viewsAndViewModels.widgets.PasswordField
 
 @Composable
-fun SignUpView(viewModel: SignUpViewModel = hiltViewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
+fun SignUpView(viewModel: SignUpViewModel = hiltViewModel(), onDone: (success: Boolean, authUiState: AuthUiState) -> Unit) {
 
     val state by viewModel.uiState.collectAsState()
 
@@ -52,8 +52,8 @@ fun SignUpView(viewModel: SignUpViewModel = hiltViewModel(), onDone: (success: B
 }
 
 @Composable
-fun SignUpScreenView(viewModel: SignUpViewModel = hiltViewModel(), state: SignUpUiState, onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
-    if (state is SignUpUiState.NeedsVerification) {
+fun SignUpScreenView(viewModel: SignUpViewModel = hiltViewModel(), state: AuthUiState, onDone: (success: Boolean, authUiState: AuthUiState) -> Unit) {
+    if (state is AuthUiState.NeedsVerification) {
         VerificationView(viewModel, onDone)
         return
     }
@@ -63,7 +63,7 @@ fun SignUpScreenView(viewModel: SignUpViewModel = hiltViewModel(), state: SignUp
 @Composable
 fun VerificationView(
     viewModel: SignUpViewModel = hiltViewModel(),
-    onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit
+    onDone: (success: Boolean, authUiState: AuthUiState) -> Unit
 ) {
     val verificationViewModel: EmailVerificationViewModel = viewModel()
 
@@ -83,7 +83,7 @@ fun VerificationView(
 }
 
 @Composable
-fun SignUpFormView(viewModel: SignUpViewModel = hiltViewModel(), onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
+fun SignUpFormView(viewModel: SignUpViewModel = hiltViewModel(), onDone: (success: Boolean, authUiState: AuthUiState) -> Unit) {
     val focusManager = LocalFocusManager.current
     val uriHandler = LocalUriHandler.current
 

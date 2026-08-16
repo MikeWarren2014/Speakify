@@ -15,6 +15,7 @@
     <string name="trial_expired">체험 기간이 만료되었습니다. 계속하려면 가입해 주세요.</string>
     <string name="trial_ended_main_activity">Speakify를 이용해 주셔서 감사합니다! 타이틀 화면으로 이동합니다…</string>
     <string name="trial_conversion">지금 회원가입하여 설정과 기본 설정을 영구적으로 저장하세요!</string>
+    <string name="sign_in_unexpected_status">로그인 시도 중 예기치 않은 상태가 발생했습니다: %1$s</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">이미 계정이 있으신가요? 로그인</string>

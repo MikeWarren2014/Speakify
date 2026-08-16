@@ -17,7 +17,7 @@
     <string name="trial_expired">Your trial has expired. Please sign up to continue.</string>
     <string name="trial_ended_main_activity">Thank you for trying out Speakify! Redirecting back to title screen…</string>
     <string name="trial_conversion">Sign up now to save your settings and preferences forever!</string>
-
+    <string name="sign_in_unexpected_status">Unexpected status when attempting to sign in: %1$s</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">Already have an account? Sign in</string>

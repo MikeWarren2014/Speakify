@@ -29,13 +29,16 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mikewarren.speakify.R
+import com.mikewarren.speakify.data.uiStates.AuthUiState
+import com.mikewarren.speakify.data.uiStates.EmailVerificationUiState
 import com.mikewarren.speakify.data.uiStates.SignInUiState
 import com.mikewarren.speakify.viewsAndViewModels.widgets.PasswordField
 import kotlinx.coroutines.flow.collectLatest
 
 
 @Composable
-fun SignInView(viewModel: SignInViewModel = hiltViewModel()) {
+fun SignInView(viewModel: SignInViewModel = hiltViewModel(),
+               onDone: (success: Boolean, authUiState: AuthUiState) -> Unit) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -57,7 +60,21 @@ fun SignInView(viewModel: SignInViewModel = hiltViewModel()) {
             isLoading = emailCodeEntryState.isLoading,
             onRequestCode = viewModel::resendSecondFactorCode,
             onSubmitCode = { code ->
-                viewModel.submitDeviceTrustCode(code, verificationViewModel::onVerificationFailure)
+                viewModel.submitDeviceTrustCode(code, { success, authUiState ->
+                    if (success) {
+                        onDone(true, authUiState)
+                        return@submitDeviceTrustCode
+                    }
+
+                    verificationViewModel.onVerificationFailure()
+                    if (verificationViewModel.uiState.value == EmailVerificationUiState.TooManyAttempts) {
+                        viewModel.resetToIdle()
+                        onDone(false, AuthUiState.SignedOut)
+                        return@submitDeviceTrustCode
+                    }
+
+                    onDone(false, authUiState)
+                })
             },
             onBack = viewModel::resetToIdle,
             viewModel = verificationViewModel
@@ -83,7 +100,7 @@ fun SignInView(viewModel: SignInViewModel = hiltViewModel()) {
     }
 
     val onSignInAction = {
-        viewModel.signIn(email, password)
+        viewModel.signIn(email, password, onDone)
     }
 
     Column(

@@ -15,6 +15,7 @@
     <string name="trial_expired">您的试用已过期。请注册以继续使用。</string>
     <string name="trial_ended_main_activity">感谢您试用 Speakify！正在返回标题界面…</string>
     <string name="trial_conversion">立即注册，永久保存您的设置和偏好！</string>
+    <string name="sign_in_unexpected_status">登录时出现意外状态：%1$s</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">已有账号？登录</string>

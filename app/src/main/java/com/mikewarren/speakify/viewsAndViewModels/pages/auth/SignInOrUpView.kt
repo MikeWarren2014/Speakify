@@ -4,7 +4,6 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.uiStates.InitialScreenUiState
-import com.mikewarren.speakify.data.uiStates.SignUpUiState
+import com.mikewarren.speakify.data.uiStates.AuthUiState
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -30,13 +29,14 @@ fun SignInOrUpView(
     viewModel: SignInOrUpViewModel = hiltViewModel()
 ) {
     var isSignUp by remember { mutableStateOf(initialScreenUiState is InitialScreenUiState.SignUp) }
-    var signUpUiState by remember { mutableStateOf<SignUpUiState>(SignUpUiState.SignedOut) }
+    var authUiState by remember { mutableStateOf<AuthUiState>(AuthUiState.SignedOut) }
 
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.authMessageRepository.events.collectLatest { event ->
-            Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, event.messageText.asString(context), Toast.LENGTH_LONG)
+                .show()
         }
     }
 
@@ -48,16 +48,20 @@ fun SignInOrUpView(
         if (isSignUp) {
             SignUpView(
                 onDone = { success, state ->
-                    signUpUiState = state
-                    if ((success) && (state is SignUpUiState.Success)) {
+                    authUiState = state
+                    if ((success) && (state is AuthUiState.Success)) {
                         isSignUp = false
                     }
                 })
         } else {
-            SignInView()
+            SignInView(
+                onDone = { _, state ->
+                    authUiState = state
+                }
+            )
         }
 
-        if (signUpUiState is SignUpUiState.SignedOut) {
+        if (authUiState is AuthUiState.SignedOut) {
             OutlinedButton(onClick = { isSignUp = !isSignUp }) {
                 if (isSignUp) {
                     Text(stringResource(R.string.sign_up_switch_to_sign_in))

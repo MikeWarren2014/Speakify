@@ -15,6 +15,7 @@
     <string name="trial_expired">دوره آزمایشی شما به پایان رسیده است. برای ادامه لطفا ثبت نام کنید.</string>
     <string name="trial_ended_main_activity">از اینکه Speakify را امتحان کردید متشکریم! در حال انتقال به صفحه اصلی…</string>
     <string name="trial_conversion">اکنون ثبت‌نام کنید تا تنظیمات و ترجیحات خود را برای همیشه ذخیره کنید!</string>
+    <string name="sign_in_unexpected_status">وضعیت غیرمنتظره هنگام تلاش برای ورود: %1$s</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">قبلاً حساب کاربری داشته‌اید؟ وارد شوید</string>

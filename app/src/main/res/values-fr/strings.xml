@@ -15,6 +15,7 @@
     <string name="trial_expired">Votre essai a expiré. Veuillez vous inscrire pour continuer.</string>
     <string name="trial_ended_main_activity">Merci d\'avoir essayé Speakify ! Redirection vers l\'écran titre…</string>
     <string name="trial_conversion">Inscrivez-vous maintenant pour enregistrer vos paramètres et préférences pour toujours !</string>
+    <string name="sign_in_unexpected_status">Statut inattendu lors de la tentative de connexion : %1$s</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">Vous avez déjà un compte ? Connectez-vous</string>
