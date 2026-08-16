@@ -16,7 +16,7 @@ import com.clerk.api.signup.attemptVerification
 import com.clerk.api.signup.prepareVerification
 import com.mikewarren.speakify.data.TrialRepository
 import com.mikewarren.speakify.data.UserModel
-import com.mikewarren.speakify.data.uiStates.SignUpUiState
+import com.mikewarren.speakify.data.uiStates.AuthUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,7 +27,7 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     private val trialRepository: TrialRepository
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow<SignUpUiState>(SignUpUiState.SignedOut)
+    private val _uiState = MutableStateFlow<AuthUiState>(AuthUiState.SignedOut)
     val uiState = _uiState.asStateFlow()
 
     var model by mutableStateOf(UserModel())
@@ -65,9 +65,9 @@ class SignUpViewModel @Inject constructor(
     }
 
 
-    fun signUp(onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
+    fun signUp(onDone: (success: Boolean, authUiState: AuthUiState) -> Unit) {
         if (!validate()) {
-            onDone(false, SignUpUiState.SignedOut)
+            onDone(false, AuthUiState.SignedOut)
             return
         }
         viewModelScope.launch {
@@ -78,14 +78,14 @@ class SignUpViewModel @Inject constructor(
                 legalAccepted = model.agreedToTerms,
                 ))
                 .onSuccess {
-                    if (it.status == SignUp.Status.COMPLETE) {
-                        _uiState.value = SignUpUiState.Success
-                        recordSignUp()
-                        onDone(true, SignUpUiState.Success)
+                    if (it.status != SignUp.Status.COMPLETE) {
+                        _uiState.value = AuthUiState.NeedsVerification
+                        sendVerificationCode(onDone)
                         return@onSuccess
                     }
-                    _uiState.value = SignUpUiState.NeedsVerification
-                    sendVerificationCode(onDone)
+                    _uiState.value = AuthUiState.Success
+                    recordSignUp()
+                    onDone(true, AuthUiState.Success)
                 }
                 .onFailure {
                     val newErrorsDict = errorsDict.toMutableMap()
@@ -105,35 +105,35 @@ class SignUpViewModel @Inject constructor(
                     errorsDict = newErrorsDict
 
                     Log.e("SignUpViewModel", it.longErrorMessageOrNull, it.throwable)
-                    onDone(false, SignUpUiState.SignedOut)
+                    onDone(false, AuthUiState.SignedOut)
                 }
         }
     }
 
     // TODO: we should create base class that has at least this method
-    fun sendVerificationCode(onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
+    fun sendVerificationCode(onDone: (success: Boolean, authUiState: AuthUiState) -> Unit) {
         val inProgressSignUp = Clerk.signUp ?: return
 
         viewModelScope.launch {
             inProgressSignUp.prepareVerification(SignUp.PrepareVerificationParams.Strategy.EmailCode())
-            onDone(true, SignUpUiState.NeedsVerification)
+            onDone(true, AuthUiState.NeedsVerification)
         }
     }
 
-    fun checkVerification(code: String, onDone: (success: Boolean, signUpUiState: SignUpUiState) -> Unit) {
+    fun checkVerification(code: String, onDone: (success: Boolean, authUiState: AuthUiState) -> Unit) {
         val inProgressSignUp = Clerk.signUp ?: return
         viewModelScope.launch {
             inProgressSignUp.attemptVerification(SignUp.AttemptVerificationParams.EmailCode(code))
                 .onSuccess {
-                    _uiState.value = SignUpUiState.Success
+                    _uiState.value = AuthUiState.Success
                     recordSignUp()
-                    onDone(true, SignUpUiState.Success)
+                    onDone(true, AuthUiState.Success)
                 }
                 .onFailure {
                     // See https://clerk.com/docs/guides/development/custom-flows/error-handling
                     // for more info on error handling
                     Log.e("SignUpViewModel", it.longErrorMessageOrNull, it.throwable)
-                    onDone(false, SignUpUiState.NeedsVerification)
+                    onDone(false, AuthUiState.NeedsVerification)
                 }
         }
     }

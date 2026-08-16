@@ -15,6 +15,7 @@
     <string name="trial_expired">Термін вашого пробного періоду закінчився. Будь ласка, зареєструйтеся, щоб продовжити.</string>
     <string name="trial_ended_main_activity">Дякуємо, що спробували Speakify! Перенаправлення на головний екран…</string>
     <string name="trial_conversion">Зареєструйтеся зараз, щоб зберегти свої налаштування та вподобання назавжди!</string>
+    <string name="sign_in_unexpected_status">Неочікуваний статус при спробі входу: %1$s</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">Вже маєте обліковий запис? Увійти</string>
@@ -51,6 +52,12 @@
     <string name="forgot_password_header">Забули пароль</string>
     <string name="forgot_password_email_placeholder">Введіть вашу адресу електронної пошти</string>
     <string name="forgot_password_send_code_button">Надіслати код скидання</string>
+
+    <!-- 2FA / Second Factor -->
+    <string name="sign_in_2fa_header">Код підтвердження</string>
+    <string name="sign_in_2fa_subtext">Ми не бачили, щоб ви раніше входили в систему з цього пристрою. Будь ласка, введіть код, надісланий на вашу електронну пошту, щоб підтвердити його.</string>
+    <string name="sign_in_2fa_verify_button">Підтвердити код</string>
+    <string name="sign_in_2fa_back">Повернутися до входу</string>
 
     <!-- Email Verification View -->
     <string name="email_verification_default_button_text">Підтвердити</string>

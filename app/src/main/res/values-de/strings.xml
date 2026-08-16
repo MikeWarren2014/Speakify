@@ -15,6 +15,7 @@
     <string name="trial_expired">Ihr Testzeitraum ist abgelaufen. Bitte registrieren Sie sich, um fortzufahren.</string>
     <string name="trial_ended_main_activity">Vielen Dank, dass Sie Speakify ausprobiert haben! Weiterleitung zum Startbildschirm…</string>
     <string name="trial_conversion">Registrieren Sie sich jetzt, um Ihre Einstellungen und Präferenzen dauerhaft zu speichern!</string>
+    <string name="sign_in_unexpected_status">Unerwarteter Status beim Anmeldeversuch: %1$s</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">Haben Sie bereits ein Konto? Anmelden</string>
@@ -51,6 +52,12 @@
     <string name="forgot_password_header">Passwort vergessen</string>
     <string name="forgot_password_email_placeholder">E-Mail-Adresse eingeben</string>
     <string name="forgot_password_send_code_button">Wiederherstellungscode senden</string>
+
+    <!-- 2FA / Second Factor -->
+    <string name="sign_in_2fa_header">Bestätigungscode</string>
+    <string name="sign_in_2fa_subtext">Wir haben noch nicht gesehen, dass Sie sich mit diesem Gerät angemeldet haben. Bitte geben Sie den Code ein, der an Ihre E-Mail-Adresse gesendet wurde, um dies zu bestätigen.</string>
+    <string name="sign_in_2fa_verify_button">Code verifizieren</string>
+    <string name="sign_in_2fa_back">Zurück zur Anmeldung</string>
 
     <!-- Email Verification View -->
     <string name="email_verification_default_button_text">Bestätigen</string>

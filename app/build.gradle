@@ -175,7 +175,7 @@ dependencies {
     implementation libs.libphonenumber
     implementation(libs.coil.compose)
 
-    implementation("com.clerk:clerk-android:0.1.24")
+    implementation(libs.clerk.android)
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0")
 
     implementation platform(libs.firebase.bom)

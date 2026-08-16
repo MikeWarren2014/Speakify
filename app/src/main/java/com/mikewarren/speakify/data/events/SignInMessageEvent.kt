@@ -1,3 +1,5 @@
 package com.mikewarren.speakify.data.events
 
-data class SignInMessageEvent(val message: String)
+import com.mikewarren.speakify.viewsAndViewModels.widgets.UiText
+
+data class SignInMessageEvent(val messageText: UiText)

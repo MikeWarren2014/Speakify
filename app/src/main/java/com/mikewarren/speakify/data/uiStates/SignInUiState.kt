@@ -9,6 +9,8 @@ sealed interface SignInUiState {
 
     data object Success : SignInUiState
 
+    data class EmailCodeEntry(val isLoading: Boolean = false) : SignInUiState
+
     data class ResetPassword(val reason: String) : SignInUiState {
         companion object ResetPasswordReasons {
             val ForgotPassword = "Forgot Password"

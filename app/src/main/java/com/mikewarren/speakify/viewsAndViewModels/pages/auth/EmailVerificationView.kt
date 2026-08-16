@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -40,6 +41,7 @@ fun EmailVerificationView(
     mainText: String,
     isLoading: Boolean = false,
     buttonText: String = stringResource(R.string.email_verification_default_button_text),
+    onBack: (() -> Unit)? = null,
     onRequestCode: () -> Unit,
     onSubmitCode: (str: String) -> Unit,
     viewModel: EmailVerificationViewModel = viewModel()
@@ -68,9 +70,14 @@ fun EmailVerificationView(
                 onSubmitCode)
 
             RequestCodeButtonSection(viewModel, onRequestCode)
+
+            if (onBack != null) {
+                TextButton(onClick = onBack) {
+                    Text(stringResource(R.string.sign_in_2fa_back))
+                }
+            }
         }
     }
-
 }
 
 @Composable

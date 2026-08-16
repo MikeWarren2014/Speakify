@@ -15,6 +15,7 @@
     <string name="trial_expired">دوره آزمایشی شما به پایان رسیده است. برای ادامه لطفا ثبت نام کنید.</string>
     <string name="trial_ended_main_activity">از اینکه Speakify را امتحان کردید متشکریم! در حال انتقال به صفحه اصلی…</string>
     <string name="trial_conversion">اکنون ثبت‌نام کنید تا تنظیمات و ترجیحات خود را برای همیشه ذخیره کنید!</string>
+    <string name="sign_in_unexpected_status">وضعیت غیرمنتظره هنگام تلاش برای ورود: %1$s</string>
 
     <!-- Sign In/Up View -->
     <string name="sign_up_switch_to_sign_in">قبلاً حساب کاربری داشته‌اید؟ وارد شوید</string>
@@ -51,6 +52,12 @@
     <string name="forgot_password_header">فراموشی رمز عبور</string>
     <string name="forgot_password_email_placeholder">آدرس ایمیل خود را وارد کنید</string>
     <string name="forgot_password_send_code_button">ارسال کد بازنشانی</string>
+
+    <!-- 2FA / Second Factor -->
+    <string name="sign_in_2fa_header">کد تأیید</string>
+    <string name="sign_in_2fa_subtext">ما قبلاً ورود شما با این دستگاه را ندیده‌ایم. لطفاً برای تأیید، کدی را که به ایمیل شما ارسال شده است وارد کنید.</string>
+    <string name="sign_in_2fa_verify_button">تأیید کد</string>
+    <string name="sign_in_2fa_back">بازگشت به ورود</string>
 
     <!-- Email Verification View -->
     <string name="email_verification_default_button_text">تایید</string>
