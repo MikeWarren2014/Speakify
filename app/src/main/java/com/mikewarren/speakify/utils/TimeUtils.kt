@@ -1,6 +1,8 @@
 package com.mikewarren.speakify.utils
 
+import android.content.Context
 import android.text.format.DateUtils
+import com.mikewarren.speakify.R
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -43,11 +45,11 @@ object TimeUtils {
         }
     }
 
-    fun ExtractRelativeTime(text: String, onGetDateTime: (String) -> LocalDateTime?): String? {
+    fun ExtractRelativeTime(context: Context, text: String, onGetDateTime: (String) -> LocalDateTime?): String? {
         val localDateTime = onGetDateTime(text) ?: return null
 
         return try {
-            DateUtils.getRelativeTimeSpanString(
+            val rawRelativeTimeSpanString = DateUtils.getRelativeTimeSpanString(
 
                 localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
                 System.currentTimeMillis(),
@@ -55,6 +57,12 @@ object TimeUtils {
                 DateUtils.FORMAT_ABBREV_RELATIVE,
             ).toString()
 
+            val tokens = rawRelativeTimeSpanString.split(" ")
+            if (tokens.contains("0"))
+                // return the string for "Right now"
+                return context.getString(R.string.relative_time_right_now)
+
+            return rawRelativeTimeSpanString
         } catch (e: Exception) {
             null
         }

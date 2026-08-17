@@ -105,6 +105,8 @@
     <string name="google_voice_strategy_unknown_notification_text">Невідоме сповіщення Google Voice</string>
 
     <string name="notification_calendar_upcoming">Найближча подія: %1$s. %2$s</string>
+    <string name="notification_calendar_in_progress">Подія триває: %1$s. %2$s</string>
+    <string name="relative_time_right_now">зараз</string>
 
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->

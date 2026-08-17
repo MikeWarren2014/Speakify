@@ -105,6 +105,8 @@
     <string name="google_voice_strategy_unknown_notification_text">اعلان ناشناخته گوگل ویس</string>
 
     <string name="notification_calendar_upcoming">رویداد آینده: %1$s. %2$s</string>
+    <string name="notification_calendar_in_progress">رویداد در حال اجرا: %1$s. %2$s</string>
+    <string name="relative_time_right_now">همین الان</string>
 
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->

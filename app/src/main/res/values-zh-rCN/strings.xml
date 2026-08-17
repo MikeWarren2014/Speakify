@@ -106,6 +106,8 @@
     <string name="google_voice_strategy_unknown_notification_text">未知的 Google Voice 通知</string>
 
     <string name="notification_calendar_upcoming">即将到来的活动：%1$s。%2$s</string>
+    <string name="notification_calendar_in_progress">活动进行中：%1$s。%2$s</string>
+    <string name="relative_time_right_now">现在</string>
 
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->

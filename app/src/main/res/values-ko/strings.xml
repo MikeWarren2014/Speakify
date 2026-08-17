@@ -105,6 +105,8 @@
     <string name="google_voice_strategy_unknown_notification_text">알 수 없는 Google Voice 알림</string>
 
     <string name="notification_calendar_upcoming">예정된 이벤트: %1$s. %2$s</string>
+    <string name="notification_calendar_in_progress">진행 중인 이벤트: %1$s. %2$s</string>
+    <string name="relative_time_right_now">지금</string>
 
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->

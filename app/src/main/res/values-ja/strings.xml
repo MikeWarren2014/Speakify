@@ -105,6 +105,8 @@
     <string name="google_voice_strategy_unknown_notification_text">不明な Google Voice 通知</string>
 
     <string name="notification_calendar_upcoming">予定されているイベント: %1$s。 %2$s</string>
+    <string name="notification_calendar_in_progress">進行中のイベント: %1$s。 %2$s</string>
+    <string name="relative_time_right_now">たった今</string>
 
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->
