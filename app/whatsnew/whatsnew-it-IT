@@ -1,7 +1,6 @@
-Bug corretti:
-- Risolto il loop di onboarding per gli utenti che tornano
-- Migliorato il comportamento "Valuta più tardi"
+Bug risolti:
+- Le notifiche di eventi ritardati ora vengono annunciate correttamente come "Evento in corso"
 
 Miglioramenti:
-- Supporto Messenger aggiornato per le recenti modifiche alle notifiche
-- Design degli interruttori modernizzato per seguire le ultime linee guida di Google
+- Filtrati i link nelle notifiche dei messaggi
+- Aggiunta la verifica via email per gli accessi da dispositivi non riconosciuti per proteggere da accessi non autorizzati

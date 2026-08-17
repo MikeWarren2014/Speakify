@@ -1,7 +1,6 @@
 Bugs corrigidos:
-- Corrigido o loop de integração para usuários que retornam
-- Comportamiento aprimorado de "Avaliar mais tarde"
+- Notificações de eventos atrasados agora são anunciadas corretamente como "Evento em andamento"
 
 Melhorias:
-- Suporte do Messenger atualizado para mudanças recentes nas notificações
-- Design de interruptores modernizado para seguir as diretrizes mais recentes do Google
+- Links filtrados em notificações de mensagens
+- Adicionada verificação por e-mail para logins de dispositivos não reconhecidos para proteger contra acesso não autorizado

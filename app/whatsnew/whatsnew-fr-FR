@@ -1,7 +1,6 @@
 Bugs corrigés :
-- Correction de la boucle d'intégration pour les utilisateurs qui reviennent
-- Amélioration du comportement « Noter plus tard »
+- Les notifications d'événements tardifs sont désormais annoncées comme « Événement en cours »
 
 Améliorations :
-- Mise à jour du support Messenger pour les récents changements de notifications
-- Modernisation du design des commutateurs selon les dernières directives de Google
+- Filtrage des liens dans les notifications de messages
+- Ajout de la vérification par e-mail pour les connexions depuis des appareils non reconnus afin de protéger contre les accès non autorisés
