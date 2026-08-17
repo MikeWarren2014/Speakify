@@ -66,7 +66,9 @@ ITaggable {
 
         val timeString = matchResult.groups["time"]?.value ?: return null
 
-        return TimeUtils.ExtractRelativeTime(timeString,
+        return TimeUtils.ExtractRelativeTime(
+            context,
+            timeString,
             onGetDateTime = { hhMM ->
                 val dayOfWeek: DayOfWeek = when (matchResult.groups["dayOfWeek"]?.value) {
                     "Mon" -> DayOfWeek.MONDAY

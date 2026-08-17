@@ -50,7 +50,9 @@ class GoogleCalendarNotificationStrategy(
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal fun extractRelativeTime(text: String): String? {
-        return TimeUtils.ExtractRelativeTime(text,
+        return TimeUtils.ExtractRelativeTime(
+            context,
+            text,
             onGetDateTime = this::parseNotificationText)
     }
 

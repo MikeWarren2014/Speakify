@@ -105,6 +105,7 @@
     <string name="google_voice_strategy_unknown_notification_text">Notification Google Voice inconnue</string>
 
     <string name="notification_calendar_upcoming">Événement à venir : %1$s. %2$s</string>
+    <string name="relative_time_right_now">maintenant</string>
 
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->
