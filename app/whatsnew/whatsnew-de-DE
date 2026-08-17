@@ -1,7 +1,6 @@
-Behobene Fehler:
-- Endlosschleife beim Onboarding für wiederkehrende Benutzer behoben
-- Verhalten von "Später bewerten" verbessert
+Fehlerbehebungen:
+- Verspätete Ereignisbenachrichtigungen werden nun korrekt als "Laufendes Ereignis" angekündigt
 
 Verbesserungen:
-- Messenger-Unterstützung an aktuelle Benachrichtigungsänderungen angepasst
-- Schalter-Design an die neuesten Google-Richtlinien angepasst
+- Links in Nachrichtenbenachrichtigungen werden nun herausgefiltert
+- E-Mail-Verifizierung für Anmeldungen von unbekannten Geräten hinzugefügt, um vor unbefugtem Zugriff zu schützen

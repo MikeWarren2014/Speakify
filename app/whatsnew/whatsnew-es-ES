@@ -1,7 +1,6 @@
-Errores corregidos:
-- Se corrigió el bucle de incorporación para los usuarios que regresan
-- Comportamiento mejorado de "Calificar más tarde"
+Corrección de errores:
+- Las notificaciones de eventos tardíos ahora se anuncian correctamente como "Evento en curso"
 
 Mejoras:
-- Soporte de Messenger actualizado para cambios recientes en las notificaciones
-- Diseños de interruptores modernizados para seguir las últimas pautas de Google
+- Se filtraron los enlaces en las notificaciones de mensajes
+- Se agregó la verificación por correo electrónico para inicios de sesión desde dispositivos no reconocidos para proteger contra accesos no autorizados

@@ -1,7 +1,6 @@
 Bugs fixed:
-- Fixed onboarding loop for returning users
-- Improved "Rate Later" behavior
+- Late event notifications now correctly announced as "Event in progress"
 
 Enhancements:
-- Updated Messenger support for recent notification changes
-- Modernized switch designs to follow latest Google guidelines
+- Filtered out links in message notifications
+- Added email verification for sign-ins from unrecognized devices to protect against unauthorized access
