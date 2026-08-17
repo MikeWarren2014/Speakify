@@ -4,6 +4,7 @@ import android.app.Notification
 import android.content.Context
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
@@ -43,9 +44,22 @@ class GoogleCalendarNotificationStrategy(
         val title = extras.getString(Notification.EXTRA_TITLE) ?: ""
         val text = extras.getString(Notification.EXTRA_TEXT) ?: ""
 
-        return context.getString(R.string.notification_calendar_upcoming,
+        return context.getString(getStringForNotificationText(text),
             title,
             extractRelativeTime(text) ?: text)
+    }
+
+    @StringRes
+    internal fun getStringForNotificationText(notificationText: String): Int {
+        return if (isEventInPast(notificationText))
+            R.string.notification_calendar_in_progress
+        else
+            R.string.notification_calendar_upcoming
+    }
+
+    internal fun isEventInPast(notificationText: String): Boolean {
+        val notificationDateTime = parseNotificationText(notificationText) ?: return false
+        return notificationDateTime.isBefore(LocalDateTime.now())
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)

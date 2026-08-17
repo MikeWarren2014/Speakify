@@ -105,6 +105,7 @@
     <string name="google_voice_strategy_unknown_notification_text">Notificación de Google Voice desconocida</string>
 
     <string name="notification_calendar_upcoming">Próximo evento: %1$s. %2$s</string>
+    <string name="notification_calendar_in_progress">Evento en curso: %1$s. %2$s</string>
     <string name="relative_time_right_now">ahora mismo</string>
 
     <!-- GEOH Notification -->

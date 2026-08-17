@@ -105,6 +105,7 @@
     <string name="google_voice_strategy_unknown_notification_text">अज्ञात Google Voice सूचना</string>
 
     <string name="notification_calendar_upcoming">आने वाला ईवेंट: %1$s। %2$s</string>
+    <string name="notification_calendar_in_progress">ईवेंट प्रगति पर है: %1$s। %2$s</string>
     <string name="relative_time_right_now">अभी</string>
 
     <!-- GEOH Notification -->

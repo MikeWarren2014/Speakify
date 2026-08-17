@@ -108,6 +108,7 @@
     <string name="google_voice_strategy_unknown_notification_text">Unknown Google Voice Notification</string>
 
     <string name="notification_calendar_upcoming">Upcoming event: %1$s. %2$s</string>
+    <string name="notification_calendar_in_progress">Event in progress: %1$s. %2$s</string>
 
     <string name="relative_time_right_now">right now</string>
 
@@ -221,7 +222,6 @@
     <string name="read_messages">Read Messages</string>
     <string name="ignore_single_word_messages">Ignore single word messages</string>
     <string name="ignore_reactions">Ignore reactions</string>
-
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">notification sources</string>
