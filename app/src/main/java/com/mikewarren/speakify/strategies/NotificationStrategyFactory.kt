@@ -5,6 +5,8 @@ import android.service.notification.StatusBarNotification
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.services.TTSManager
+import com.mikewarren.speakify.strategies.shippingApps.AmazonShoppingNotificationStrategy
+import com.mikewarren.speakify.strategies.shippingApps.FedExNotificationStrategy
 
 object NotificationStrategyFactory {
     fun CreateFrom(notification: StatusBarNotification,
@@ -26,6 +28,12 @@ object NotificationStrategyFactory {
 
         if (notification.packageName == PackageNames.GEOH)
             return GeohNotificationStrategy(notification, appSettingsModel, context, ttsManager)
+
+        if (notification.packageName == PackageNames.AmazonShopping)
+            return AmazonShoppingNotificationStrategy(notification, appSettingsModel, context, ttsManager)
+
+        if (notification.packageName == PackageNames.FedEx)
+            return FedExNotificationStrategy(notification, appSettingsModel, context, ttsManager)
 
         return SimpleNotificationStrategy(notification, appSettingsModel, context, ttsManager)
     }

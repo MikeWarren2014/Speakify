@@ -5,6 +5,10 @@ object PackageNames {
     const val GoogleCalendar = "com.google.android.calendar"
 
     const val GEOH = "com.gogeoh.geoh"
+
+    const val AmazonShopping = "com.amazon.mShop.android.shopping"
+
+    const val FedEx = "com.fedex.ida.android"
     val PhoneAppList = listOf(
         "com.google.android.dialer",
         "com.android.dialer",
@@ -47,7 +51,7 @@ object PackageNames {
     )
 
     val ShoppingAppList = listOf(
-        "com.amazon.mShop.android.shopping",
+        AmazonShopping,
         "com.ubercab.eats",
         "com.dd.doordash",
         "com.instacart.client",

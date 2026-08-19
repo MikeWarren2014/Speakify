@@ -109,6 +109,16 @@
     <string name="notification_calendar_in_progress">活动进行中：%1$s。%2$s</string>
     <string name="relative_time_right_now">现在</string>
 
+    <plurals name="minutes_quantity">
+        <item quantity="other">%1$d 分钟</item>
+    </plurals>
+    <plurals name="hours_quantity">
+        <item quantity="other">%1$d 小时</item>
+    </plurals>
+    <plurals name="days_quantity">
+        <item quantity="other">%1$d 天</item>
+    </plurals>
+
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->
     <string name="geoh_upcoming_keyword">即将到来</string>
@@ -117,6 +127,23 @@
 
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">即将到来的护理班次：%1$s</string>
+
+    <!-- Shipping App Notifications -->
+    <string name="amazon_shopping_out_for_delivery">正在派送</string>
+    <string name="amazon_shopping_see_where_your_delivery_is">在地图上查看您的派送位置</string>
+
+    <string name="amazon_arrival_today_prefix">今日送达</string>
+    <string name="amazon_delivery_between_and">预计送达：从现在起 %1$s 到 %2$s 之间</string>
+
+    <string name="package_delivered">已送达</string>
+
+    <string name="shipping_app_package_out_for_delivery">您的 %1$s 包裹正在派送中！</string>
+    <string name="shipping_app_package_delivered">您的 %1$s 包裹已送达！</string>
+
+    <!-- FedEx Notifications -->
+    <string name="fedEx_out_for_delivery">已安排送货</string>
+    <string name="fedEx_delivery_rescheduled">送货时间已更改</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">

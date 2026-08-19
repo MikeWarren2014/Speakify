@@ -40,7 +40,11 @@ class UserAppDaoTest {
     @Test
     @Throws(Exception::class)
     fun insertAndGetAllUserApps() = runTest {
-        val userApp = UserAppModel("com.example.app1", "App 1", true)
+        val userApp = UserAppModel(
+            packageName = "com.example.app1",
+            appName = "App 1",
+            enabled = true,
+        )
         userAppDao.insertAll(userApp)
         val allApps = userAppDao.getAll()
 

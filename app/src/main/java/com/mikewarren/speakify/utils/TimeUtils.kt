@@ -8,6 +8,8 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
+import java.time.temporal.ChronoField
 import java.util.Locale
 
 object TimeUtils {
@@ -66,5 +68,85 @@ object TimeUtils {
         } catch (e: Exception) {
             null
         }
+    }
+
+    fun GetQuantityString(context: Context, localDateTime: LocalDateTime): String {
+        val now = LocalDateTime.now()
+        val duration = java.time.Duration.between(now, localDateTime)
+        val absMinutes = Math.abs(duration.toMinutes())
+
+        val oneHour = 60
+        val oneDay = 24 * oneHour
+
+        return when {
+            absMinutes < oneHour -> {
+                context.resources.getQuantityString(R.plurals.minutes_quantity, absMinutes.toInt(), absMinutes)
+            }
+            absMinutes < oneDay -> {
+                val hours = absMinutes / oneHour
+                context.resources.getQuantityString(R.plurals.hours_quantity, hours.toInt(), hours)
+            }
+            else -> {
+                val days = absMinutes / oneDay
+                context.resources.getQuantityString(R.plurals.days_quantity, days.toInt(), days)
+            }
+        }
+    }
+
+    fun ExtractTimeRange(text: String): Array<String> {
+        // Matches HH:MM or H:MM, optionally followed by AM/PM (case insensitive)
+        val timeRegex = """(\d{1,2}:\d{2}(?:\s?[AaPp][Mm])?)""".toRegex()
+
+        val matches = timeRegex.findAll(text).map { it.value }.toList()
+        if (matches.size >= 2) {
+            return arrayOf(matches[0], matches[1])
+        }
+
+        return emptyArray()
+    }
+
+    fun GetLocalDateTimeFromTimeString(timeString: String): LocalDateTime? {
+        val ampmString = ToAMPMString(timeString)
+
+        // 3. Try parsing with multiple patterns
+        val patterns = listOf("MMM d, h:mm a",
+            "h:mm a",
+            "h a")
+        val locales = listOf(Locale.getDefault(), Locale.US)
+        val now = LocalDateTime.now()
+
+        return patterns.firstNotNullOfOrNull { pattern ->
+            locales.firstNotNullOfOrNull { locale ->
+                try {
+                    val formatter = DateTimeFormatterBuilder()
+                        .appendPattern(pattern)
+                        .parseDefaulting(ChronoField.YEAR, now.year.toLong())
+                        .parseDefaulting(ChronoField.MONTH_OF_YEAR, now.monthValue.toLong())
+                        .parseDefaulting(ChronoField.DAY_OF_MONTH, now.dayOfMonth.toLong())
+                        .toFormatter(locale)
+                    LocalDateTime.parse(ampmString, formatter)
+                } catch (e: Exception) {
+                    null
+                }
+            }
+        }
+    }
+
+    fun ToAMPMString(timeString: String): String {
+        if (':' !in timeString)
+            throw IllegalArgumentException("timePart must contain a colon")
+
+        if (SearchUtils.HasAnyMatches(listOf("am", "pm"), timeString.lowercase()))
+            return timeString
+
+        val currentHour = LocalDateTime.now()
+            .hour
+        val extractedHour = timeString.split(":")[0]
+                .toInt()
+
+        return if (extractedHour >= currentHour)
+            "$timeString AM"
+        else
+            "$timeString PM"
     }
 }

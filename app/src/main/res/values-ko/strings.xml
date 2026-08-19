@@ -108,6 +108,16 @@
     <string name="notification_calendar_in_progress">진행 중인 이벤트: %1$s. %2$s</string>
     <string name="relative_time_right_now">지금</string>
 
+    <plurals name="minutes_quantity">
+        <item quantity="other">%1$d분</item>
+    </plurals>
+    <plurals name="hours_quantity">
+        <item quantity="other">%1$d시간</item>
+    </plurals>
+    <plurals name="days_quantity">
+        <item quantity="other">%1$d일</item>
+    </plurals>
+
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->
     <string name="geoh_upcoming_keyword">예정된</string>
@@ -116,6 +126,23 @@
 
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">예정된 간병 교대 근무: %1$s</string>
+
+    <!-- Shipping App Notifications -->
+    <string name="amazon_shopping_out_for_delivery">배송 중</string>
+    <string name="amazon_shopping_see_where_your_delivery_is">지도에서 배송 위치 확인</string>
+
+    <string name="amazon_arrival_today_prefix">오늘 도착 예정</string>
+    <string name="amazon_delivery_between_and">도착 예정: 지금부터 %1$s에서 %2$s 사이</string>
+
+    <string name="package_delivered">배송 완료</string>
+
+    <string name="shipping_app_package_out_for_delivery">%1$s 택배가 배송 중입니다!</string>
+    <string name="shipping_app_package_delivered">%1$s 택배가 배송되었습니다!</string>
+
+    <!-- FedEx Notifications -->
+    <string name="fedEx_out_for_delivery">배송 예정</string>
+    <string name="fedEx_delivery_rescheduled">배송 일정이 변경되었습니다</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">

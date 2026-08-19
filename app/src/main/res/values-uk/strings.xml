@@ -108,6 +108,25 @@
     <string name="notification_calendar_in_progress">Подія триває: %1$s. %2$s</string>
     <string name="relative_time_right_now">зараз</string>
 
+    <plurals name="minutes_quantity">
+        <item quantity="one">%1$d хвилина</item>
+        <item quantity="few">%1$d хвилини</item>
+        <item quantity="many">%1$d хвилин</item>
+        <item quantity="other">%1$d хвилин</item>
+    </plurals>
+    <plurals name="hours_quantity">
+        <item quantity="one">%1$d година</item>
+        <item quantity="few">%1$d години</item>
+        <item quantity="many">%1$d годин</item>
+        <item quantity="other">%1$d годин</item>
+    </plurals>
+    <plurals name="days_quantity">
+        <item quantity="one">%1$d день</item>
+        <item quantity="few">%1$d дні</item>
+        <item quantity="many">%1$d днів</item>
+        <item quantity="other">%1$d днів</item>
+    </plurals>
+
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->
     <string name="geoh_upcoming_keyword">майбутній</string>
@@ -116,6 +135,23 @@
 
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">Майбутня зміна по догляду: %1$s</string>
+
+    <!-- Shipping App Notifications -->
+    <string name="amazon_shopping_out_for_delivery">Передано кур\'єру</string>
+    <string name="amazon_shopping_see_where_your_delivery_is">Подивіться на карті, де ваша доставка</string>
+
+    <string name="amazon_arrival_today_prefix">Прибуває сьогодні</string>
+    <string name="amazon_delivery_between_and">Прибуває між %1$s та %2$s з цього моменту</string>
+
+    <string name="package_delivered">Доставлено</string>
+
+    <string name="shipping_app_package_out_for_delivery">Ваша посилка від %1$s передана кур\'єру!</string>
+    <string name="shipping_app_package_delivered">Ваша посилка від %1$s доставлена!</string>
+
+    <!-- FedEx Notifications -->
+    <string name="fedEx_out_for_delivery">Заплановано до доставки</string>
+    <string name="fedEx_delivery_rescheduled">Доставка перенесена</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
