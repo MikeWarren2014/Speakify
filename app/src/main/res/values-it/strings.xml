@@ -108,6 +108,19 @@
     <string name="notification_calendar_in_progress">Evento in corso: %1$s. %2$s</string>
     <string name="relative_time_right_now">adesso</string>
 
+    <plurals name="minutes_quantity">
+        <item quantity="one">%1$d minuto</item>
+        <item quantity="other">%1$d minuti</item>
+    </plurals>
+    <plurals name="hours_quantity">
+        <item quantity="one">%1$d ora</item>
+        <item quantity="other">%1$d ore</item>
+    </plurals>
+    <plurals name="days_quantity">
+        <item quantity="one">%1$d giorno</item>
+        <item quantity="other">%1$d giorni</item>
+    </plurals>
+
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->
     <string name="geoh_upcoming_keyword">in arrivo</string>
@@ -116,6 +129,23 @@
 
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">Prossimo turno di assistenza: %1$s</string>
+
+    <!-- Shipping App Notifications -->
+    <string name="amazon_shopping_out_for_delivery">In consegna</string>
+    <string name="amazon_shopping_see_where_your_delivery_is">Visualizza la tua consegna su una mappa</string>
+
+    <string name="amazon_arrival_today_prefix">In consegna oggi</string>
+    <string name="amazon_delivery_between_and">In consegna tra %1$s e %2$s da ora</string>
+
+    <string name="package_delivered">Consegnato</string>
+
+    <string name="shipping_app_package_out_for_delivery">Il tuo pacco %1$s è in consegna!</string>
+    <string name="shipping_app_package_delivered">Il tuo pacco %1$s è stato consegnato!</string>
+
+    <!-- FedEx Notifications -->
+    <string name="fedEx_out_for_delivery">Programmata per la consegna</string>
+    <string name="fedEx_delivery_rescheduled">Consegna riprogrammata</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">

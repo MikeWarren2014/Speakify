@@ -108,6 +108,19 @@
     <string name="notification_calendar_in_progress">ईवेंट प्रगति पर है: %1$s। %2$s</string>
     <string name="relative_time_right_now">अभी</string>
 
+    <plurals name="minutes_quantity">
+        <item quantity="one">%1$d मिनट</item>
+        <item quantity="other">%1$d मिनट</item>
+    </plurals>
+    <plurals name="hours_quantity">
+        <item quantity="one">%1$d घंटा</item>
+        <item quantity="other">%1$d घंटे</item>
+    </plurals>
+    <plurals name="days_quantity">
+        <item quantity="one">%1$d दिन</item>
+        <item quantity="other">%1$d दिन</item>
+    </plurals>
+
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->
     <string name="geoh_upcoming_keyword">आगामी</string>
@@ -116,6 +129,23 @@
 
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">आगामी केयरगिविंग शिफ्ट: %1$s</string>
+
+    <!-- Shipping App Notifications -->
+    <string name="amazon_shopping_out_for_delivery">डिलीवरी के लिए निकला है</string>
+    <string name="amazon_shopping_see_where_your_delivery_is">मैप पर देखें आपकी डिलीवरी कहां है</string>
+
+    <string name="amazon_arrival_today_prefix">आज आ रहा है</string>
+    <string name="amazon_delivery_between_and">आगमन: अब से %1$s और %2$s के बीच</string>
+
+    <string name="package_delivered">डिलीवर हो गया</string>
+
+    <string name="shipping_app_package_out_for_delivery">आपका %1$s पैकेज डिलीवरी के लिए निकल गया है!</string>
+    <string name="shipping_app_package_delivered">आपका %1$s पैकेज डिलीवर हो गया है!</string>
+
+    <!-- FedEx Notifications -->
+    <string name="fedEx_out_for_delivery">डिलीवरी के लिए निर्धारित</string>
+    <string name="fedEx_delivery_rescheduled">डिलीवरी का समय बदला गया</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">

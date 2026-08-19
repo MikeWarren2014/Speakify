@@ -108,6 +108,25 @@
     <string name="notification_calendar_in_progress">Событие в процессе: %1$s. %2$s</string>
     <string name="relative_time_right_now">сейчас</string>
 
+    <plurals name="minutes_quantity">
+        <item quantity="one">%1$d минута</item>
+        <item quantity="few">%1$d минуты</item>
+        <item quantity="many">%1$d минут</item>
+        <item quantity="other">%1$d минут</item>
+    </plurals>
+    <plurals name="hours_quantity">
+        <item quantity="one">%1$d час</item>
+        <item quantity="few">%1$d часа</item>
+        <item quantity="many">%1$d часов</item>
+        <item quantity="other">%1$d часов</item>
+    </plurals>
+    <plurals name="days_quantity">
+        <item quantity="one">%1$d день</item>
+        <item quantity="few">%1$d дня</item>
+        <item quantity="many">%1$d дней</item>
+        <item quantity="other">%1$d дней</item>
+    </plurals>
+
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->
     <string name="geoh_upcoming_keyword">предстоящий</string>
@@ -116,6 +135,23 @@
 
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">Предстоящая смена по уходу: %1$s</string>
+
+    <!-- Shipping App Notifications -->
+    <string name="amazon_shopping_out_for_delivery">Передано курьеру</string>
+    <string name="amazon_shopping_see_where_your_delivery_is">Посмотрите на карте, где ваша доставка</string>
+
+    <string name="amazon_arrival_today_prefix">Прибывает сегодня</string>
+    <string name="amazon_delivery_between_and">Прибывает между %1$s и %2$s с этого момента</string>
+
+    <string name="package_delivered">Доставлено</string>
+
+    <string name="shipping_app_package_out_for_delivery">Ваша посылка от %1$s передана курьеру!</string>
+    <string name="shipping_app_package_delivered">Ваша посылка от %1$s доставлена!</string>
+
+    <!-- FedEx Notifications -->
+    <string name="fedEx_out_for_delivery">Запланировано к доставке</string>
+    <string name="fedEx_delivery_rescheduled">Доставка перенесена</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">

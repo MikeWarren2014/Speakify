@@ -108,6 +108,19 @@
     <string name="notification_calendar_in_progress">رویداد در حال اجرا: %1$s. %2$s</string>
     <string name="relative_time_right_now">همین الان</string>
 
+    <plurals name="minutes_quantity">
+        <item quantity="one">%1$d دقیقه</item>
+        <item quantity="other">%1$d دقیقه</item>
+    </plurals>
+    <plurals name="hours_quantity">
+        <item quantity="one">%1$d ساعت</item>
+        <item quantity="other">%1$d ساعت</item>
+    </plurals>
+    <plurals name="days_quantity">
+        <item quantity="one">%1$d روز</item>
+        <item quantity="other">%1$d روز</item>
+    </plurals>
+
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->
     <string name="geoh_upcoming_keyword">آینده</string>
@@ -116,6 +129,23 @@
 
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">شیفت مراقبتی آینده: %1$s</string>
+
+    <!-- Shipping App Notifications -->
+    <string name="amazon_shopping_out_for_delivery">در حال ارسال</string>
+    <string name="amazon_shopping_see_where_your_delivery_is">مشاهده محل تحویل روی نقشه</string>
+
+    <string name="amazon_arrival_today_prefix">امروز می‌رسد</string>
+    <string name="amazon_delivery_between_and">زمان رسیدن بین %1$s و %2$s از الان</string>
+
+    <string name="package_delivered">تحویل داده شد</string>
+
+    <string name="shipping_app_package_out_for_delivery">بسته %1$s شما در حال ارسال است!</string>
+    <string name="shipping_app_package_delivered">بسته %1$s شما تحویل داده شد!</string>
+
+    <!-- FedEx Notifications -->
+    <string name="fedEx_out_for_delivery">برای تحویل برنامه‌ریزی شده است</string>
+    <string name="fedEx_delivery_rescheduled">زمان تحویل تغییر کرد</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">

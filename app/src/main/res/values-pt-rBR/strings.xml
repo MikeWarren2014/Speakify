@@ -108,6 +108,19 @@
     <string name="notification_calendar_in_progress">Evento em andamento: %1$s. %2$s</string>
     <string name="relative_time_right_now">agora mesmo</string>
 
+    <plurals name="minutes_quantity">
+        <item quantity="one">%1$d minuto</item>
+        <item quantity="other">%1$d minutos</item>
+    </plurals>
+    <plurals name="hours_quantity">
+        <item quantity="one">%1$d hora</item>
+        <item quantity="other">%1$d horas</item>
+    </plurals>
+    <plurals name="days_quantity">
+        <item quantity="one">%1$d dia</item>
+        <item quantity="other">%1$d dias</item>
+    </plurals>
+
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->
     <string name="geoh_upcoming_keyword">próximo</string>
@@ -116,6 +129,23 @@
 
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">Próximo turno de cuidado: %1$s</string>
+
+    <!-- Shipping App Notifications -->
+    <string name="amazon_shopping_out_for_delivery">Saiu para entrega</string>
+    <string name="amazon_shopping_see_where_your_delivery_is">Veja onde sua entrega está no mapa</string>
+
+    <string name="amazon_arrival_today_prefix">Chegando hoje</string>
+    <string name="amazon_delivery_between_and">Chegando entre %1$s e %2$s a partir de agora</string>
+
+    <string name="package_delivered">Entregue</string>
+
+    <string name="shipping_app_package_out_for_delivery">Seu pacote de %1$s saiu para entrega!</string>
+    <string name="shipping_app_package_delivered">Seu pacote de %1$s foi entregue!</string>
+
+    <!-- FedEx Notifications -->
+    <string name="fedEx_out_for_delivery">Programado para entrega</string>
+    <string name="fedEx_delivery_rescheduled">Entrega reagendada</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">

@@ -108,6 +108,16 @@
     <string name="notification_calendar_in_progress">進行中のイベント: %1$s。 %2$s</string>
     <string name="relative_time_right_now">たった今</string>
 
+    <plurals name="minutes_quantity">
+        <item quantity="other">%1$d 分</item>
+    </plurals>
+    <plurals name="hours_quantity">
+        <item quantity="other">%1$d 時間</item>
+    </plurals>
+    <plurals name="days_quantity">
+        <item quantity="other">%1$d 日</item>
+    </plurals>
+
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->
     <string name="geoh_upcoming_keyword">予定</string>
@@ -116,6 +126,23 @@
 
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">次回のケアシフト: %1$s</string>
+
+    <!-- Shipping App Notifications -->
+    <string name="amazon_shopping_out_for_delivery">配達中</string>
+    <string name="amazon_shopping_see_where_your_delivery_is">マップで配達場所を確認</string>
+
+    <string name="amazon_arrival_today_prefix">本日到着予定</string>
+    <string name="amazon_delivery_between_and">到着予定: 今から %1$s から %2$s の間</string>
+
+    <string name="package_delivered">配達完了</string>
+
+    <string name="shipping_app_package_out_for_delivery">%1$s の荷物が配達中です！</string>
+    <string name="shipping_app_package_delivered">%1$s の荷物が配達されました！</string>
+
+    <!-- FedEx Notifications -->
+    <string name="fedEx_out_for_delivery">配達予定</string>
+    <string name="fedEx_delivery_rescheduled">配達日時が変更されました</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">

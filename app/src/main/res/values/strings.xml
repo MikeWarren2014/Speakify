@@ -112,6 +112,19 @@
 
     <string name="relative_time_right_now">right now</string>
 
+    <plurals name="minutes_quantity">
+        <item quantity="one">%1$d minute</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
+    <plurals name="hours_quantity">
+        <item quantity="one">%1$d hour</item>
+        <item quantity="other">%1$d hours</item>
+    </plurals>
+    <plurals name="days_quantity">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+
     <!-- GEOH Notification -->
     <!-- GEOH Keywords -->
     <string name="geoh_upcoming_keyword">upcoming</string>
@@ -120,6 +133,22 @@
 
     <!-- GEOH Announcement Text -->
     <string name="geoh_strategy_upcoming_shift">Upcoming Caregiving Shift: %1$s"</string>
+
+    <!-- Shipping App Notifications -->
+    <string name="amazon_shopping_out_for_delivery">Out for delivery</string>
+    <string name="amazon_shopping_see_where_your_delivery_is">See where your delivery is on a map</string>
+
+    <string name="amazon_arrival_today_prefix">Arriving today</string>
+    <string name="amazon_delivery_between_and">Arriving between %1$s and %2$s from now</string>
+
+    <string name="package_delivered">Delivered</string>
+
+    <string name="shipping_app_package_out_for_delivery">Your %1$s package is out for delivery!</string>
+    <string name="shipping_app_package_delivered">Your %1$s package is delivered!</string>
+
+    <!-- FedEx Notifications -->
+    <string name="fedEx_out_for_delivery">Scheduled for delivery</string>
+    <string name="fedEx_delivery_rescheduled">Delivery Re-scheduled</string>
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
