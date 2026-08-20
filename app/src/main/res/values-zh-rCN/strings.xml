@@ -97,6 +97,10 @@
     <string name="messenger_incoming_link_id_text">发送了一个链接</string>
     <string name="messenger_incoming_post_id_text">发送了一个帖子</string>
 
+    <string-array name="messenger_marketplace_keywords_blacklist">
+        <item>你们现在可以互相评价了</item>
+    </string-array>
+
     <string name="contact_unknown">某人</string>
 
     <string name="google_voice_notification_strategy_text_suffix"> 来自 %1$s</string>

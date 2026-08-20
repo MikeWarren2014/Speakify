@@ -99,6 +99,11 @@
     <string name="messenger_incoming_link_id_text">Sent a link to you</string>
     <string name="messenger_incoming_post_id_text">Sent a post to you</string>
 
+    <!-- Facebook Marketplace keywords that Meta may automatically send in Messenger notifications. We should NOT speakify them! -->
+    <string-array name="messenger_marketplace_keywords_blacklist">
+        <item>You can now rate each other</item>
+    </string-array>
+
     <string name="contact_unknown">Someone</string>
 
     <string name="google_voice_notification_strategy_text_suffix">" from %1$s"</string>

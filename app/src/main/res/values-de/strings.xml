@@ -96,6 +96,10 @@
     <string name="messenger_incoming_link_id_text">hat dir einen Link gesendet</string>
     <string name="messenger_incoming_post_id_text">hat dir einen Beitrag gesendet</string>
 
+    <string-array name="messenger_marketplace_keywords_blacklist">
+        <item>Ihr könnt euch jetzt gegenseitig bewerten</item>
+    </string-array>
+
     <string name="contact_unknown">Jemand</string>
 
     <string name="google_voice_notification_strategy_text_suffix"> von %1$s</string>

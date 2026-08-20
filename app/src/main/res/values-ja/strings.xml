@@ -96,6 +96,10 @@
     <string name="messenger_incoming_link_id_text">リンクを送信しました</string>
     <string name="messenger_incoming_post_id_text">投稿を送信しました</string>
 
+    <string-array name="messenger_marketplace_keywords_blacklist">
+        <item>お互いを評価できるようになりました</item>
+    </string-array>
+
     <string name="contact_unknown">誰か</string>
 
     <string name="google_voice_notification_strategy_text_suffix"> (%1$s より)</string>

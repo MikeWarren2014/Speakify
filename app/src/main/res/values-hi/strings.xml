@@ -96,6 +96,10 @@
     <string name="messenger_incoming_link_id_text">एक लिंक भेजा है</string>
     <string name="messenger_incoming_post_id_text">एक पोस्ट भेजी है</string>
 
+    <string-array name="messenger_marketplace_keywords_blacklist">
+        <item>अब आप एक-दूसरे को रेट कर सकते हैं</item>
+    </string-array>
+
     <string name="contact_unknown">कोई</string>
 
     <string name="google_voice_notification_strategy_text_suffix"> (%1$s की ओर से)</string>

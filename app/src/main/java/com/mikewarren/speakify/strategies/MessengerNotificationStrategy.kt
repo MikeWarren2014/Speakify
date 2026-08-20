@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Build
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import androidx.compose.ui.res.stringArrayResource
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.db.DbProvider
@@ -215,6 +216,9 @@ class MessengerNotificationStrategy(
             (notificationType == MessengerNotificationTypes.OutgoingCall)) {
             return false
         }
+
+        if (notificationText in context.resources.getStringArray(R.array.messenger_marketplace_keywords_blacklist))
+            return false
 
         return ((super.shouldSpeakify()) || (appSettingsModel!!.notificationSources.any { it.value == name })) &&
                 (super.shouldSpeakifyBasedOnSettings())
