@@ -96,6 +96,10 @@
     <string name="messenger_incoming_link_id_text">یک لینک برای شما فرستاد</string>
     <string name="messenger_incoming_post_id_text">یک پست برای شما فرستاد</string>
 
+    <string-array name="messenger_marketplace_keywords_blacklist">
+        <item>اکنون می‌توانید به یکدیگر امتیاز دهید</item>
+    </string-array>
+
     <string name="contact_unknown">یک نفر</string>
 
     <string name="google_voice_notification_strategy_text_suffix"> از طرف %1$s</string>

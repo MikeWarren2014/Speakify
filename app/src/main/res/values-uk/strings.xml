@@ -96,6 +96,10 @@
     <string name="messenger_incoming_link_id_text">надіслав(-ла) вам посилання</string>
     <string name="messenger_incoming_post_id_text">надіслав(-ла) вам допис</string>
 
+    <string-array name="messenger_marketplace_keywords_blacklist">
+        <item>Тепер ви можете оцінювати один одного</item>
+    </string-array>
+
     <string name="contact_unknown">Хтось</string>
 
     <string name="google_voice_notification_strategy_text_suffix"> від %1$s</string>

@@ -96,6 +96,10 @@
     <string name="messenger_incoming_link_id_text">enviou um link para você</string>
     <string name="messenger_incoming_post_id_text">enviou uma publicação para você</string>
 
+    <string-array name="messenger_marketplace_keywords_blacklist">
+        <item>Agora vocês podem se avaliar</item>
+    </string-array>
+
     <string name="contact_unknown">Alguém</string>
 
     <string name="google_voice_notification_strategy_text_suffix">" de %1$s"</string>

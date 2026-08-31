@@ -216,6 +216,9 @@ class MessengerNotificationStrategy(
             return false
         }
 
+        if (notificationText in context.resources.getStringArray(R.array.messenger_marketplace_keywords_blacklist))
+            return false
+
         return ((super.shouldSpeakify()) || (appSettingsModel!!.notificationSources.any { it.value == name })) &&
                 (super.shouldSpeakifyBasedOnSettings())
     }
