@@ -39,6 +39,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -149,6 +150,10 @@ class SessionRepository @Inject constructor(
         if (!isInitialized) {
             _uiState.value = MainUiState.Loading
             return
+        }
+
+        if (user == null) {
+            ensureFirebaseAuthenticated()
         }
 
         val trialStatus = trialModel.status
@@ -314,6 +319,17 @@ class SessionRepository @Inject constructor(
             // Now that we're done (success or fail), we trigger a re-evaluation
             // without being blocked by the 'isSyncing' flag.
             lastDataBundle?.let { reactToSessionState(it) }
+        }
+    }
+
+    private suspend fun ensureFirebaseAuthenticated() {
+        if (firebaseAuth.currentUser != null) return
+
+        try {
+            firebaseAuth.signInAnonymously().await()
+            Log.d("SessionRepo", "Signed in anonymously to Firebase")
+        } catch (e: Exception) {
+            Log.e("SessionRepo", "Failed to sign in anonymously", e)
         }
     }
 

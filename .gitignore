@@ -15,6 +15,9 @@ captures/
 *.apk
 output.json
 
+# Gemini generated artifact md files
+.artifacts/**/*.artifact.md
+
 # IntelliJ
 *.iml
 .idea/
