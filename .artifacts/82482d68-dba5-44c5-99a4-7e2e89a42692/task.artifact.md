@@ -1,5 +1,0 @@
-- `[x]` Add `uid` field to `TrialModel.kt`
-- `[x]` Implement `ensureFirebaseAuthenticated` in `SessionRepository.kt`
-- `[x]` Update `TrialRepositoryImpl.kt` to support `uid` and migration logic
-- `[x]` Create `firestore.rules` in project root
-- `[x]` Verify changes with unit tests and manual steps
