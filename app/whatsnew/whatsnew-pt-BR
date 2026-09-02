@@ -1,6 +1,5 @@
-Bugs corrigidos:
-- Notificações de eventos atrasados agora são anunciadas corretamente como "Evento em andamento"
-
 Melhorias:
-- Links filtrados em notificações de mensagens
-- Adicionada verificação por e-mail para logins de dispositivos não reconhecidos para proteger contra acesso não autorizado
+- Login opcional para ouvir notificações
+- Segurança do backend reforçada
+- Adicionada configuração para anunciar chamadas anônimas/privadas
+- Palavras-chave do Facebook Marketplace filtradas das notificações

@@ -1,6 +1,5 @@
-Corrección de errores:
-- Las notificaciones de eventos tardíos ahora se anuncian correctamente como "Evento en curso"
-
 Mejoras:
-- Se filtraron los enlaces en las notificaciones de mensajes
-- Se agregó la verificación por correo electrónico para inicios de sesión desde dispositivos no reconocidos para proteger contra accesos no autorizados
+- El inicio de sesión ahora es opcional para escuchar notificaciones
+- Se ha reforzado la seguridad del backend
+- Se ha añadido un ajuste para anunciar llamadas anónimas/privadas
+- Se han filtrado las palabras clave de Facebook Marketplace en las notificaciones

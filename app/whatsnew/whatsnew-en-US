@@ -1,6 +1,5 @@
-Bugs fixed:
-- Late event notifications now correctly announced as "Event in progress"
-
 Enhancements:
-- Filtered out links in message notifications
-- Added email verification for sign-ins from unrecognized devices to protect against unauthorized access
+- Made sign-in optional for hearing notifications
+- Tightened backend security
+- Added setting to announce anonymous/private calls
+- Filtered out Facebook Marketplace keywords from notifications

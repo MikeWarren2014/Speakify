@@ -1,6 +1,5 @@
-Bug risolti:
-- Le notifiche di eventi ritardati ora vengono annunciate correttamente come "Evento in corso"
-
 Miglioramenti:
-- Filtrati i link nelle notifiche dei messaggi
-- Aggiunta la verifica via email per gli accessi da dispositivi non riconosciuti per proteggere da accessi non autorizzati
+- Accesso facoltativo per l'ascolto delle notifiche
+- Sicurezza del backend rafforzata
+- Aggiunta impostazione per annunciare chiamate anonime/private
+- Filtrate le parole chiave di Facebook Marketplace dalle notifiche

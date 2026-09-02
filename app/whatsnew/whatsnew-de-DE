@@ -1,6 +1,5 @@
-Fehlerbehebungen:
-- Verspätete Ereignisbenachrichtigungen werden nun korrekt als "Laufendes Ereignis" angekündigt
-
 Verbesserungen:
-- Links in Nachrichtenbenachrichtigungen werden nun herausgefiltert
-- E-Mail-Verifizierung für Anmeldungen von unbekannten Geräten hinzugefügt, um vor unbefugtem Zugriff zu schützen
+- Anmeldung für Hörbenachrichtigungen jetzt optional
+- Backend-Sicherheit verschärft
+- Einstellung zur Ansage von anonymen/privaten Anrufen hinzugefügt
+- Facebook-Marketplace-Schlüsselwörter aus Benachrichtigungen gefiltert

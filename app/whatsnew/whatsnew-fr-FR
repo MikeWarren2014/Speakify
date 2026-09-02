@@ -1,6 +1,5 @@
-Bugs corrigés :
-- Les notifications d'événements tardifs sont désormais annoncées comme « Événement en cours »
-
 Améliorations :
-- Filtrage des liens dans les notifications de messages
-- Ajout de la vérification par e-mail pour les connexions depuis des appareils non reconnus afin de protéger contre les accès non autorisés
+- Connexion facultative pour l'audition des notifications
+- Sécurité du backend renforcée
+- Ajout d'un paramètre pour annoncer les appels anonymes/privés
+- Filtrage des mots-clés de Facebook Marketplace dans les notifications
