@@ -152,10 +152,6 @@ class SessionRepository @Inject constructor(
             return
         }
 
-        if (user == null) {
-            ensureFirebaseAuthenticated()
-        }
-
         val trialStatus = trialModel.status
 
         val engagementContext = createTrialEngagementContext(dataBundle)
@@ -164,6 +160,7 @@ class SessionRepository @Inject constructor(
             if (_uiState.value == MainUiState.TrialEnded) return
 
             if (isHandlingTrialEngagement(engagementContext)) {
+                ensureFirebaseAuthenticated()
                 return
             }
 
@@ -527,6 +524,7 @@ class SessionRepository @Inject constructor(
             _uiState.value = MainUiState.TrialEnded
             return
         }
+        // NOTE: this invalidates anonymous user, too.
         firebaseAuth.signOut()
 
         syncedUserId = null
