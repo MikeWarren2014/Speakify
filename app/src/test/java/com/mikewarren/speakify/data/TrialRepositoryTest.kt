@@ -28,9 +28,14 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [34])
 class TrialRepositoryTest {
 
     private val testDispatcher = StandardTestDispatcher()
@@ -71,7 +76,10 @@ class TrialRepositoryTest {
         every { firestore.collection("directSignUps") } returns directSignUpCollection
         every { directSignUpCollection.document(any()) } returns docRef
 
-
+        val emptySnapshot = mockk<com.google.firebase.firestore.DocumentSnapshot>(relaxed = true)
+        every { emptySnapshot.exists() } returns false
+        every { docRef.get() } returns Tasks.forResult(emptySnapshot)
+        every { docRef.set(any()) } returns Tasks.forResult(null)
     }
 
     @After
