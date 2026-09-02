@@ -1,39 +1,28 @@
 package com.mikewarren.speakify.data
 
-import android.util.Log
 import com.clerk.api.Clerk
 import com.clerk.api.emailaddress.EmailAddress
-import com.clerk.api.network.model.token.TokenResource
-import com.clerk.api.network.serialization.ClerkResult
-import com.clerk.api.session.GetTokenOptions
 import com.clerk.api.session.Session
-import com.clerk.api.session.fetchToken
 import com.clerk.api.user.User
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.AuthCredential
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.OAuthProvider
 import com.mikewarren.speakify.data.db.firestore.AccountDeletionFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FirestoreSyncRepository
+import com.mikewarren.speakify.data.models.FeedbackModel
+import com.mikewarren.speakify.data.models.OnboardingModel
 import com.mikewarren.speakify.data.models.TrialModel
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
-import io.mockk.clearMocks
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.mockkStatic
-import io.mockk.spyk
 import io.mockk.unmockkAll
 import io.mockk.verify
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -73,6 +62,8 @@ class SessionRepositoryTest {
     private val speakificationCountFlow = MutableStateFlow(0)
     private val hasShownRatingsPromptFlow = MutableStateFlow(false)
     private val hasShownTrialConversionPromptFlow = MutableStateFlow(false)
+    private val onboardingModelFlow = MutableStateFlow(OnboardingModel())
+    private val feedbackFlow = MutableStateFlow<FeedbackModel?>(null)
 
     @Before
     fun setUp() {
@@ -104,6 +95,10 @@ class SessionRepositoryTest {
         every { onboardingRepository.speakificationCount } returns speakificationCountFlow
         every { onboardingRepository.hasShownRatingsPrompt } returns hasShownRatingsPromptFlow
         every { onboardingRepository.hasShownTrialConversionPrompt } returns hasShownTrialConversionPromptFlow
+        every { onboardingRepository.onboardingModel } returns onboardingModelFlow
+        every { onboardingRepository.feedback } returns feedbackFlow
+
+        every { firebaseAuth.signInAnonymously() } returns Tasks.forResult(mockk())
     }
 
     @After
