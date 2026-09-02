@@ -275,6 +275,8 @@
     <string name="settings_section_privacy">隐私</string>
     <string name="settings_crashlytics_title">共享使用数据</string>
     <string name="settings_crashlytics_description">通过 Firebase 共享匿名崩溃报告和使用统计信息，帮助改进 Speakify。</string>
+    <string name="settings_require_auth_title">Speakification 需要登录</string>
+    <string name="settings_require_auth_description">如果启用，Speakify 仅在您登录帐户时播报通知。</string>
     <string name="settings_section_data">数据管理</string>
     <string name="settings_backup_title">备份数据</string>
     <string name="settings_backup_description">将您的设置和应用列表保存到文件中。</string>

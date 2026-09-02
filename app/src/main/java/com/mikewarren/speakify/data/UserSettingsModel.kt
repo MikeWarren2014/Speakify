@@ -18,6 +18,7 @@ data class UserSettingsModel(
     val minVolume: Int = 0,
 
     val isCrashlyticsEnabled: Boolean = Constants.DefaultBooleanSetting,
+    val requireAuthenticationForSpeakifications: Boolean = false,
     val originalVolume: Int = -1,
 
     val scheduling: SchedulingModel = SchedulingModel(),

@@ -129,11 +129,18 @@ fun SettingsView(onNavigateToDeleteAccount: () -> Unit) {
             }
 
             SettingsSection(stringResource(R.string.settings_section_privacy)) {
+                val requireAuth by viewModel.requireAuthenticationForSpeakifications.collectAsStateWithLifecycle()
                 SettingsToggleCard(
                     title = stringResource(R.string.settings_crashlytics_title),
                     description = stringResource(R.string.settings_crashlytics_description),
                     isChecked = isCrashlyticsEnabled,
                     onCheckedChange = { viewModel.setCrashlyticsEnabled(it) },
+                )
+                SettingsToggleCard(
+                    title = stringResource(R.string.settings_require_auth_title),
+                    description = stringResource(R.string.settings_require_auth_description),
+                    isChecked = requireAuth,
+                    onCheckedChange = { viewModel.setRequireAuthenticationForSpeakifications(it) },
                 )
             }
 

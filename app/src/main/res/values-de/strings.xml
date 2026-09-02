@@ -277,6 +277,8 @@
     <string name="settings_section_privacy">Datenschutz</string>
     <string name="settings_crashlytics_title">Nutzungsdaten teilen</string>
     <string name="settings_crashlytics_description">Helfen Sie mit, Speakify zu verbessern, indem Sie anonyme Absturzberichte und Nutzungsstatistiken über Firebase teilen.</string>
+    <string name="settings_require_auth_title">Anmeldung für Speakifications erforderlich</string>
+    <string name="settings_require_auth_description">Wenn aktiviert, wird Speakify Benachrichtigungen nur dann ansagen, wenn Sie in Ihrem Konto angemeldet sind.</string>
     <string name="settings_section_data">Datenverwaltung</string>
     <string name="settings_backup_title">Datensicherung</string>
     <string name="settings_backup_description">Speichern Sie Ihre Einstellungen und App-Liste in einer Datei.</string>

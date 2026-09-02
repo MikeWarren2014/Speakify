@@ -2,6 +2,7 @@ package com.mikewarren.speakify.services
 
 import com.clerk.api.Clerk
 import com.mikewarren.speakify.data.SchedulingRepository
+import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.TrialRepository
 import com.mikewarren.speakify.data.models.scheduling.StatusModel
 import kotlinx.coroutines.flow.first
@@ -11,7 +12,8 @@ import javax.inject.Singleton
 @Singleton
 class SpeakifyEngineGatekeeper @Inject constructor(
     private val schedulingRepository: SchedulingRepository,
-    private val trialRepository: TrialRepository
+    private val trialRepository: TrialRepository,
+    private val settingsRepository: SettingsRepository
 ) {
 
     /**
@@ -19,7 +21,8 @@ class SpeakifyEngineGatekeeper @Inject constructor(
      * Checks scheduling, manual pauses, and global status.
      */
     suspend fun canSpeakNow(): Boolean {
-        if ((!checkAuthentication()) && (!hasStartedTheApp())) {
+        val requireAuth = settingsRepository.requireAuthenticationForSpeakifications.first()
+        if (requireAuth && !checkAuthentication() && !hasStartedTheApp()) {
             return false
         }
 

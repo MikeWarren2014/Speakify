@@ -277,6 +277,8 @@
     <string name="settings_section_privacy">गोपनीयता</string>
     <string name="settings_crashlytics_title">उपयोग डेटा साझा करें</string>
     <string name="settings_crashlytics_description">Firebase के माध्यम से अनाम क्रैश रिपोर्ट और उपयोग के आँकड़े साझा करके Speakify को बेहतर बनाने में सहायता करें।</string>
+    <string name="settings_require_auth_title">स्पीकिफ़िकेशन के लिए साइन-इन आवश्यक है</string>
+    <string name="settings_require_auth_description">यदि सक्षम है, तो स्पीकिफ़ाई केवल तभी सूचनाओं की घोषणा करेगा जब आप अपने खाते में साइन इन होंगे।</string>
     <string name="settings_section_data">डेटा प्रबंधन</string>
     <string name="settings_backup_title">डेटा बैकअप</string>
     <string name="settings_backup_description">अपनी सेटिंग्स और ऐप सूची को एक फ़ाइल में सहेजें।</string>

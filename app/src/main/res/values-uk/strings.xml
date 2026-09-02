@@ -283,6 +283,8 @@
     <string name="settings_section_privacy">Конфіденційність</string>
     <string name="settings_crashlytics_title">Ділитися даними про використання</string>
     <string name="settings_crashlytics_description">Допоможіть покращити Speakify, ділячись анонімними звітами про збої та статистикою використання через Firebase.</string>
+    <string name="settings_require_auth_title">Вимагати вхід для speakifications</string>
+    <string name="settings_require_auth_description">Якщо ввімкнено, Speakify озвучуватиме сповіщення лише тоді, коли ви увійшли у свій обліковий запис.</string>
     <string name="settings_section_data">Керування даними</string>
     <string name="settings_backup_title">Резервне копіювання даних</string>
     <string name="settings_backup_description">Збережіть ваші налаштування та список програм у файл.</string>
