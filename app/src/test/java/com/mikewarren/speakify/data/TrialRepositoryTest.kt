@@ -28,9 +28,14 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [34])
 class TrialRepositoryTest {
 
     private val testDispatcher = StandardTestDispatcher()
@@ -71,7 +76,10 @@ class TrialRepositoryTest {
         every { firestore.collection("directSignUps") } returns directSignUpCollection
         every { directSignUpCollection.document(any()) } returns docRef
 
-
+        val emptySnapshot = mockk<com.google.firebase.firestore.DocumentSnapshot>(relaxed = true)
+        every { emptySnapshot.exists() } returns false
+        every { docRef.get() } returns Tasks.forResult(emptySnapshot)
+        every { docRef.set(any()) } returns Tasks.forResult(null)
     }
 
     @After
@@ -126,6 +134,52 @@ class TrialRepositoryTest {
         repository.refreshTrialStatus()
 
         io.mockk.coVerify { docRef.set(any()) }
+    }
+
+    @Test
+    fun `startTrial adds firebase uid to model`() = runTest {
+        val trialModel = TrialModel(status = TrialStatus.NotStarted, startTimestamp = 0L)
+        repository = createTrialRepository(trialModel)
+
+        val firebaseUser = mockk<com.google.firebase.auth.FirebaseUser>()
+        every { firebaseAuth.currentUser } returns firebaseUser
+        every { firebaseUser.uid } returns "firebase-uid"
+
+        val trialCollection = mockk<CollectionReference>(relaxed = true)
+        every { firestore.collection("trials") } returns trialCollection
+        val trialDocRef = mockk<DocumentReference>(relaxed = true)
+        every { trialCollection.document("test-device-id") } returns trialDocRef
+        every { trialDocRef.set(any()) } returns Tasks.forResult(null)
+
+        repository.startTrial()
+
+        io.mockk.coVerify { trialDocRef.set(match { (it as TrialModel).uid == "firebase-uid" }) }
+    }
+
+    @Test
+    fun `refreshTrialStatus claims existing trial doc with uid`() = runTest {
+        val trialModel = TrialModel(status = TrialStatus.NotStarted, startTimestamp = 0L)
+        repository = createTrialRepository(trialModel)
+
+        val firebaseUser = mockk<com.google.firebase.auth.FirebaseUser>()
+        every { firebaseAuth.currentUser } returns firebaseUser
+        every { firebaseUser.uid } returns "firebase-uid"
+
+        val trialCollection = mockk<CollectionReference>(relaxed = true)
+        every { firestore.collection("trials") } returns trialCollection
+        val trialDocRef = mockk<DocumentReference>(relaxed = true)
+        every { trialCollection.document("test-device-id") } returns trialDocRef
+
+        val snapshot = mockk<com.google.firebase.firestore.DocumentSnapshot>(relaxed = true)
+        every { snapshot.exists() } returns true
+        val firestoreTrial = TrialModel(startTimestamp = 1000L, uid = null)
+        every { snapshot.toObject(TrialModel::class.java) } returns firestoreTrial
+        every { trialDocRef.get() } returns Tasks.forResult(snapshot)
+        every { trialDocRef.set(any()) } returns Tasks.forResult(null)
+
+        repository.refreshTrialStatus()
+
+        io.mockk.coVerify { trialDocRef.set(match { (it as TrialModel).uid == "firebase-uid" }) }
     }
 
     private fun createTrialRepository(trialModel: TrialModel): TrialRepositoryImpl {

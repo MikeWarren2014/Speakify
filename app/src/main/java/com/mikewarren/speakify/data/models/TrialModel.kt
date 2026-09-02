@@ -12,6 +12,7 @@ import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 @JsonIgnoreUnknownKeys
 data class TrialModel(
     val startTimestamp: Long = 0L,
+    val uid: String? = null,
     @get:Exclude
     @set:Exclude
     var status: TrialStatus = TrialStatus.NotStarted,

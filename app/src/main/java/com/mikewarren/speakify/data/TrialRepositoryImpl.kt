@@ -86,6 +86,12 @@ class TrialRepositoryImpl @Inject constructor(
                 if (doc.exists()) {
                     currentTrialModel = doc.toObject(TrialModel::class.java) ?: TrialModel()
                     if (currentTrialModel.startTimestamp != 0L) {
+                        // Migration: If we found a trial doc but it has no UID, add it now
+                        val firebaseUid = firebaseAuth.currentUser?.uid
+                        if (currentTrialModel.uid == null && firebaseUid != null) {
+                            currentTrialModel = currentTrialModel.copy(uid = firebaseUid)
+                            recordTrialModel(currentTrialModel) // Save back with UID
+                        }
                         updateTrialModel(currentTrialModel)
                     }
                 }
@@ -159,7 +165,8 @@ class TrialRepositoryImpl @Inject constructor(
                 directSignUpCollection.document(deviceId)
                     .set(mapOf(
                         "userEmail" to user.emailAddresses.first().emailAddress,
-                        "timestamp" to System.currentTimeMillis()
+                        "timestamp" to System.currentTimeMillis(),
+                        "uid" to firebaseAuth.currentUser?.uid
                     ))
                     .await()
             }
@@ -195,14 +202,21 @@ class TrialRepositoryImpl @Inject constructor(
 
     private suspend fun recordTrialModel(trialModel: TrialModel): Result<Unit> {
         val deviceId = deviceIdProvider.deviceId
+        val firebaseUid = firebaseAuth.currentUser?.uid
+        val modelWithUid = if (trialModel.uid == null && firebaseUid != null) {
+            trialModel.copy(uid = firebaseUid)
+        } else {
+            trialModel
+        }
+
         return try {
             safeFirestoreCall {
                 trialCollection.document(deviceId)
-                    .set(trialModel)
+                    .set(modelWithUid)
                     .await()
             }
             
-            updateTrialModel(trialModel)
+            updateTrialModel(modelWithUid)
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
