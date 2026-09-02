@@ -72,6 +72,13 @@ class SettingsViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = false // Default to false
         )
+
+    val requireAuthenticationForSpeakifications: StateFlow<Boolean> = settingsRepository.requireAuthenticationForSpeakifications
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = false // Default to false
+        )
     
     val isTrialActive: StateFlow<Boolean> = trialRepository.trialModelFlow
         .map { it.status is TrialStatus.Active }
@@ -147,6 +154,12 @@ class SettingsViewModel @Inject constructor(
     fun setCrashlyticsEnabled(isEnabled: Boolean) {
         viewModelScope.launch {
             settingsRepository.setCrashlyticsEnabled(isEnabled)
+        }
+    }
+
+    fun setRequireAuthenticationForSpeakifications(required: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.setRequireAuthenticationForSpeakifications(required)
         }
     }
 

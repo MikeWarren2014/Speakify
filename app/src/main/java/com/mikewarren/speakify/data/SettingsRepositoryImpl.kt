@@ -76,6 +76,11 @@ class SettingsRepositoryImpl @Inject constructor(
             .map { it.isCrashlyticsEnabled }
     }
 
+    override val requireAuthenticationForSpeakifications: Flow<Boolean> by lazy {
+        userSettingsDataStore.data
+            .map { it.requireAuthenticationForSpeakifications }
+    }
+
     override val originalVolume: Flow<Int> by lazy {
         userSettingsDataStore.data
             .map { it.originalVolume }
@@ -119,6 +124,12 @@ class SettingsRepositoryImpl @Inject constructor(
             com.google.firebase.crashlytics.FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(isEnabled)
         } catch (e: Exception) {
             Log.e("SettingsRepo", "Failed to update Crashlytics status", e)
+        }
+    }
+
+    override suspend fun setRequireAuthenticationForSpeakifications(required: Boolean) {
+        userSettingsDataStore.updateData { model: UserSettingsModel ->
+            model.copy(requireAuthenticationForSpeakifications = required)
         }
     }
 

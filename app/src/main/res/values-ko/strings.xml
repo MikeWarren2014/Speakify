@@ -274,6 +274,8 @@
     <string name="settings_section_privacy">개인정보</string>
     <string name="settings_crashlytics_title">사용 데이터 공유</string>
     <string name="settings_crashlytics_description">Firebase를 통해 익명의 충돌 보고서 및 사용 통계를 공유하여 Speakify 개선을 도와주세요.</string>
+    <string name="settings_require_auth_title">Speakification을 위해 로그인 필요</string>
+    <string name="settings_require_auth_description">이 옵션을 활성화하면 계정에 로그인한 경우에만 Speakify가 알림을 읽어줍니다.</string>
     <string name="settings_section_data">데이터 관리</string>
     <string name="settings_backup_title">데이터 백업</string>
     <string name="settings_backup_description">설정 및 앱 목록을 파일로 저장합니다.</string>

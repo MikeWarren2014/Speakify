@@ -278,6 +278,8 @@
     <string name="settings_section_privacy">حریم خصوصی</string>
     <string name="settings_crashlytics_title">اشتراک‌گذاری داده‌های استفاده</string>
     <string name="settings_crashlytics_description">با اشتراک‌گذاری گزارش‌های خرابی ناشناس و آمارهای استفاده از طریق فایربیس، به بهبود Speakify کمک کنید.</string>
+    <string name="settings_require_auth_title">نیاز به ورود برای اسپیکیفیکیشن‌ها</string>
+    <string name="settings_require_auth_description">در صورت فعال بودن، Speakify تنها زمانی اعلان‌ها را پخش می‌کند که وارد حساب کاربری خود شده باشید.</string>
     <string name="settings_section_data">مدیریت داده‌ها</string>
     <string name="settings_backup_title">پشتیبان‌گیری از داده‌ها</string>
     <string name="settings_backup_description">تنظیمات و لیست برنامه‌های خود را در یک فایل ذخیره کنید.</string>
