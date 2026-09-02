@@ -245,6 +245,10 @@
     <string name="remove">削除</string>
     <string name="notification_sources">通知ソース</string>
 
+    <!-- Calling App Settings-->
+    <string name="announce_anonymous_calls">非通知設定の着信を通知する</string>
+    <string name="anonymous_caller">非通知設定</string>
+
     <!-- Messaging App Settings -->
     <string name="read_messages">メッセージを読み上げる</string>
     <string name="ignore_single_word_messages">単語1つのメッセージを無視する</string>

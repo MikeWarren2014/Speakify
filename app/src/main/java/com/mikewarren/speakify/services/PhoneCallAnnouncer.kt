@@ -20,6 +20,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 @Singleton
 class PhoneCallAnnouncer @Inject constructor(
@@ -34,17 +36,11 @@ class PhoneCallAnnouncer @Inject constructor(
         // Stop any previous announcement loops
         stopAnnouncing()
 
-        val contactName = NotificationExtractionUtils.GetDisplayNameForPhoneNumber(context, phoneNumber)
-
-        val announcement = if (contactName.isNotEmpty()) {
-            context.getString(R.string.incoming_call, contactName)
-        } else {
-            context.getString(R.string.incoming_call, phoneNumber.toCharArray().joinToString(" "))
-        }
+        val announcement = getAnnouncementText(phoneNumber)
 
         announcementJob = announcerScope.launch {
             try {
-                withTimeout(25 * Constants.OneSecond) {
+                withTimeout(25.seconds) {
                     while (isActive) {
                         Log.d("PhoneCallAnnouncer", "SPEAKING: $announcement")
                         val success = ttsManager.speak(announcement)
@@ -52,12 +48,26 @@ class PhoneCallAnnouncer @Inject constructor(
                             Log.e("PhoneCallAnnouncer", "TTS failed, stopping announcement loop.")
                             break
                         }
-                        delay(500) // Wait half a second after speech finishes
+                        delay(500.milliseconds)
                     }
                 }
             } catch (e: TimeoutCancellationException) {
                 LogUtils.LogNonFatalError("PhoneCallAnnouncer", "Phone call announcement exceeded 25 seconds limit!", e)
             }
+        }
+    }
+
+    internal fun getAnnouncementText(phoneNumber: String): String {
+        // if there are NO digits in the phone number, assume it's a name
+        if (phoneNumber.matches("""^[^\d]+$""".toRegex()))
+            return context.getString(R.string.incoming_call, phoneNumber)
+
+        val contactName = NotificationExtractionUtils.GetDisplayNameForPhoneNumber(context, phoneNumber)
+
+        return if (contactName.isNotEmpty()) {
+            context.getString(R.string.incoming_call, contactName)
+        } else {
+            context.getString(R.string.incoming_call, phoneNumber.toCharArray().joinToString(" "))
         }
     }
 

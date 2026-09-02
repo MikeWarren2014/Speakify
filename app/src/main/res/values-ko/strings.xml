@@ -245,6 +245,10 @@
     <string name="remove">제거</string>
     <string name="notification_sources">알림 소스</string>
 
+    <!-- Calling App Settings-->
+    <string name="announce_anonymous_calls">익명 전화 안내</string>
+    <string name="anonymous_caller">발신번호 표시제한</string>
+
     <!-- Messaging App Settings -->
     <string name="read_messages">메시지 읽기</string>
     <string name="ignore_single_word_messages">한 단어 메시지 무시</string>

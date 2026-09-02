@@ -25,14 +25,16 @@ import com.mikewarren.speakify.utils.SearchUtils
 import com.mikewarren.speakify.utils.log.ITaggable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PhoneStateReceiver @Inject constructor() : BroadcastReceiver(), ITaggable {
+class PhoneStateReceiver @Inject constructor() : BroadcastReceiver(), ITaggable, AnonymousCallHandler {
     @Inject
-    lateinit var gatekeeper: SpeakifyEngineGatekeeper
+    override lateinit var gatekeeper: SpeakifyEngineGatekeeper
 
     @Inject
     lateinit var settingsRepository: SettingsRepository
@@ -47,7 +49,20 @@ class PhoneStateReceiver @Inject constructor() : BroadcastReceiver(), ITaggable 
     lateinit var notificationSourcesDao: NotificationSourcesDao
 
     @Inject
-    lateinit var announcer: PhoneCallAnnouncer
+    override lateinit var announcer: PhoneCallAnnouncer
+
+    override val context: Context
+        get() = settingsRepository.getContext()
+
+    override val appSettingsModel: AppSettingsModel?
+        get() = runBlocking(Dispatchers.IO) {
+            val packageName = PackageHelper.GetDefaultDialerApp(context)
+            packageName?.let {
+                appSettingsDao.getByPackageName(it)?.let { dbModel ->
+                    AppSettingsModel.FromDbModel(dbModel)
+                }
+            }
+        }
 
     @Inject
     lateinit var phoneStateStore: PhoneStateStore
@@ -95,7 +110,15 @@ class PhoneStateReceiver @Inject constructor() : BroadcastReceiver(), ITaggable 
 
         val incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
         if (incomingNumber.isNullOrEmpty()) {
-            Log.d(TAG, "Incoming number is null or empty. Cannot announce.")
+            Log.d(TAG, "Incoming number is null or empty. Checking for anonymous call announcement.")
+            val pendingResult = goAsync()
+            applicationScope.launch {
+                try {
+                    handleAnonymousCall()
+                } finally {
+                    pendingResult.finish()
+                }
+            }
             return
         }
 
@@ -122,14 +145,9 @@ class PhoneStateReceiver @Inject constructor() : BroadcastReceiver(), ITaggable 
                     return@launch
                 }
 
-                val defaultVoice = settingsRepository.selectedTTSVoice.first() ?: Constants.DefaultTTSVoice
-                val packageName = PackageHelper.GetDefaultDialerApp(context)
-                var appSettingsModel = appSettingsDao.getByPackageName(packageName!!)?.let { AppSettingsModel.FromDbModel(it) }
-                if (appSettingsModel == null) {
-                    appSettingsModel = AppSettingsModel(packageName, defaultVoice)
-                }
-
-                if (appSettingsModel.notificationSources.isNotEmpty() && !SearchUtils.IsInPhoneNumberList(appSettingsModel.notificationSources.map { it.value }, incomingNumber)) {
+                if ((appSettingsModel != null) &&
+                    (appSettingsModel!!.notificationSources?.isNotEmpty() == true) &&
+                    (!SearchUtils.IsInPhoneNumberList(appSettingsModel!!.notificationSources.map { it.value }, incomingNumber))) {
                     Log.d(TAG, "Number $incomingNumber is not in the allowed list.")
                     return@launch
                 }

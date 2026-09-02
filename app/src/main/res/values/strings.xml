@@ -252,6 +252,10 @@
     <string name="remove">Remove</string>
     <string name="notification_sources">notification sources</string>
 
+    <!-- Calling App Settings-->
+    <string name="announce_anonymous_calls">Announce anonymous calls</string>
+    <string name="anonymous_caller">Private caller</string>
+
     <!-- Messaging App Settings -->
     <string name="read_messages">Read Messages</string>
     <string name="ignore_single_word_messages">Ignore single word messages</string>
