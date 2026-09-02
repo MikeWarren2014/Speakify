@@ -249,6 +249,10 @@
     <string name="remove">حذف</string>
     <string name="notification_sources">منابع اعلان</string>
 
+    <!-- Calling App Settings-->
+    <string name="announce_anonymous_calls">اعلام تماس‌های ناشناس</string>
+    <string name="anonymous_caller">شماره خصوصی</string>
+
     <!-- Messaging App Settings -->
     <string name="read_messages">خواندن پیام‌ها</string>
     <string name="ignore_single_word_messages">نادیده گرفتن پیام‌های تک‌کلمه‌ای</string>

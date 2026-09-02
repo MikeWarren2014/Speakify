@@ -1,5 +1,6 @@
 package com.mikewarren.speakify.services
 
+import android.content.Context
 import android.os.Build
 import android.telecom.Call
 import android.telecom.CallScreeningService
@@ -11,19 +12,31 @@ import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.UserAppsDao
 import com.mikewarren.speakify.di.ApplicationScope
+import com.mikewarren.speakify.receivers.AnonymousCallHandler
 import com.mikewarren.speakify.utils.PackageHelper
 import com.mikewarren.speakify.utils.SearchUtils
 import com.mikewarren.speakify.utils.log.ITaggable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SpeakifyCallScreeningService : CallScreeningService(), ITaggable {
+class SpeakifyCallScreeningService : CallScreeningService(), ITaggable, AnonymousCallHandler {
 
     @Inject
-    lateinit var gatekeeper: SpeakifyEngineGatekeeper
+    override lateinit var gatekeeper: SpeakifyEngineGatekeeper
+    override val appSettingsModel: AppSettingsModel?
+        get() = runBlocking(Dispatchers.IO) {
+            val packageName = PackageHelper.GetDefaultDialerApp(this@SpeakifyCallScreeningService)
+            packageName?.let {
+                appSettingsDao.getByPackageName(it)?.let { dbModel ->
+                    AppSettingsModel.FromDbModel(dbModel)
+                }
+            }
+        }
 
     @Inject
     lateinit var settingsRepository: SettingsRepository
@@ -34,8 +47,11 @@ class SpeakifyCallScreeningService : CallScreeningService(), ITaggable {
     @Inject
     lateinit var appSettingsDao: AppSettingsDao
 
+    override val context: Context
+        get() = this
+
     @Inject
-    lateinit var announcer: PhoneCallAnnouncer
+    override lateinit var announcer: PhoneCallAnnouncer
 
     @Inject
     @ApplicationScope
@@ -69,6 +85,9 @@ class SpeakifyCallScreeningService : CallScreeningService(), ITaggable {
 
         if (incomingNumber.isNullOrEmpty()) {
             Log.d(TAG, "Incoming number is null or empty in CallScreeningService.")
+            applicationScope.launch {
+                handleAnonymousCall()
+            }
             respondToCall(callDetails, response)
             return
         }
@@ -89,12 +108,8 @@ class SpeakifyCallScreeningService : CallScreeningService(), ITaggable {
 
                 val defaultDialerPackage = PackageHelper.GetDefaultDialerApp(this@SpeakifyCallScreeningService)
                 
-                val appSettingsModel = defaultDialerPackage?.let {
-                    appSettingsDao.getByPackageName(it)?.let { dbModel -> AppSettingsModel.FromDbModel(dbModel) } 
-                }
-                
-                if (appSettingsModel != null && appSettingsModel.notificationSources.isNotEmpty() &&
-                    !SearchUtils.IsInPhoneNumberList(appSettingsModel.notificationSources.map { it.value }, incomingNumber)) {
+                if (appSettingsModel != null && appSettingsModel!!.notificationSources.isNotEmpty() &&
+                    !SearchUtils.IsInPhoneNumberList(appSettingsModel!!.notificationSources.map { it.value }, incomingNumber)) {
                     Log.d(TAG, "Number $incomingNumber is not in the allowed list.")
                     return@launch
                 }

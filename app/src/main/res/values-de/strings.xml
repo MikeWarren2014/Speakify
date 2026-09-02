@@ -248,6 +248,10 @@
     <string name="remove">Entfernen</string>
     <string name="notification_sources">Benachrichtigungsquellen</string>
 
+    <!-- Calling App Settings-->
+    <string name="announce_anonymous_calls">Anonyme Anrufe ansagen</string>
+    <string name="anonymous_caller">Unbekannter Anrufer</string>
+
     <!-- Messaging App Settings -->
     <string name="read_messages">Nachrichten vorlesen</string>
     <string name="ignore_single_word_messages">Einwort-Nachrichten ignorieren</string>

@@ -248,6 +248,10 @@
     <string name="remove">हटाएं</string>
     <string name="notification_sources">सूचना स्रोत</string>
 
+    <!-- Calling App Settings-->
+    <string name="announce_anonymous_calls">अनाम कॉल की घोषणा करें</string>
+    <string name="anonymous_caller">निजी कॉलर</string>
+
     <!-- Messaging App Settings -->
     <string name="read_messages">संदेश पढ़ें</string>
     <string name="ignore_single_word_messages">एक शब्द वाले संदेशों को अनदेखा करें</string>

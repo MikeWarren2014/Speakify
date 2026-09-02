@@ -248,6 +248,10 @@
     <string name="remove">Supprimer</string>
     <string name="notification_sources">sources de notification</string>
 
+    <!-- Calling App Settings-->
+    <string name="announce_anonymous_calls">Annoncer les appels anonymes</string>
+    <string name="anonymous_caller">Appel masqué</string>
+
     <!-- Messaging App Settings -->
     <string name="read_messages">Lire les messages</string>
     <string name="ignore_single_word_messages">Ignorar les messages d\'un seul mot</string>

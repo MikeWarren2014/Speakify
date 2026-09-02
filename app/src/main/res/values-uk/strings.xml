@@ -254,6 +254,10 @@
     <string name="remove">Видалити</string>
     <string name="notification_sources">джерела сповіщень</string>
 
+    <!-- Calling App Settings-->
+    <string name="announce_anonymous_calls">Оголошувати про анонімні дзвінки</string>
+    <string name="anonymous_caller">Прихований номер</string>
+
     <!-- Messaging App Settings -->
     <string name="read_messages">Читати повідомлення</string>
     <string name="ignore_single_word_messages">Ігнорувати повідомлення з одного слова</string>
