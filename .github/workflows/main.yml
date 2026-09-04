@@ -24,6 +24,19 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           gradle-home-cache-cleanup: true
+
+      # Run unit tests before building the AAB
+      - name: Run Unit Tests
+        run: ./gradlew testReleaseUnitTest
+
+      # Upload test results so you can view failures in GitHub
+      - name: Upload Test Reports
+        if: always() # Ensures reports upload even if tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-reports
+          path: app/build/reports/tests/testReleaseUnitTest/
+
       - name: Extract versionCode and versionName
         id: get_versions
         run: |
@@ -60,7 +73,7 @@ jobs:
             app/build/outputs/mapping/release/mapping.txt
       - run: 'echo Build status report=${{ job.status }}'
   deploy:
-    name: Job_2 - Deploy aab to playstore
+    name: Job 2 - Deploy aab to playstore
     needs: build
     runs-on: ubuntu-latest
     steps:
