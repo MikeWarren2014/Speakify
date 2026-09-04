@@ -1,5 +1,5 @@
 [versions]
-agp = "9.2.1"
+agp = "9.3.2"
 androidxJunit = "1.2.1"
 clerkAndroid = "0.1.24"
 coilCompose = "2.7.0"
