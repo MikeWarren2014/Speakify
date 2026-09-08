@@ -7,6 +7,7 @@ import com.mikewarren.speakify.data.OnboardingRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.TrialRepository
 import com.mikewarren.speakify.data.TrialStatus
+import com.mikewarren.speakify.utils.SearchUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -69,7 +70,7 @@ class FirestoreSyncRepository @Inject constructor(
                     val firebaseUser = firebaseAuth.currentUser
                     if (firebaseUser != null) {
                         val trialStatus = trialRepository.trialModelFlow.first().status
-                        val isEligibleStatus = trialStatus in listOf(TrialStatus.Active, TrialStatus.NotNeeded)
+                        val isEligibleStatus = SearchUtils.IsAnyOf(trialStatus, listOf(TrialStatus.Active::class, TrialStatus.NotNeeded::class))
 
                         if (isEligibleStatus) {
                             if (firebaseUser.isAnonymous) {

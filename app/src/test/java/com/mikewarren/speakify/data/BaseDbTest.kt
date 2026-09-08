@@ -10,6 +10,8 @@ import com.mikewarren.speakify.data.fakes.FakeFirestore
 import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.mockkStatic
+import io.mockk.unmockkObject
+import io.mockk.unmockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -20,7 +22,7 @@ import org.junit.Before
 
 @OptIn(ExperimentalCoroutinesApi::class)
 open class BaseDbTest {
-    private val testDispatcher = StandardTestDispatcher()
+    protected val testDispatcher = StandardTestDispatcher()
 
     protected val context = ApplicationProvider.getApplicationContext<Context>()
 
@@ -33,6 +35,8 @@ open class BaseDbTest {
 
         mockkStatic(Dispatchers::class)
         every { Dispatchers.IO } returns testDispatcher
+        every { Dispatchers.Default } returns testDispatcher
+        every { Dispatchers.Unconfined } returns testDispatcher
 
         setUpDatabaseDoubles()
     }
@@ -54,7 +58,12 @@ open class BaseDbTest {
 
     @After
     open fun tearDown() {
-        db.close()
+        if (this::db.isInitialized) {
+            db.close()
+        }
         Dispatchers.resetMain()
+        unmockkStatic(Dispatchers::class)
+        unmockkObject(DbProvider)
+        unmockkStatic(FirebaseFirestore::class)
     }
 }
