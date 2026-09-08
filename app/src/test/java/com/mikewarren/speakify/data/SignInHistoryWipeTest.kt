@@ -1,20 +1,19 @@
 package com.mikewarren.speakify.data
 
-import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import com.clerk.api.Clerk
+import com.clerk.api.emailaddress.EmailAddress
 import com.clerk.api.user.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
-import com.mikewarren.speakify.data.db.AppDatabase
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.db.firestore.DownloadRepository
 import com.mikewarren.speakify.data.db.firestore.FirestoreSyncRepository
 import com.mikewarren.speakify.data.db.firestore.UploadRepository
-import com.mikewarren.speakify.data.fakes.FakeFirestore
+import com.mikewarren.speakify.data.delegates.IFirebaseAuth
+import com.mikewarren.speakify.data.delegates.ISettingsTest
+import com.mikewarren.speakify.data.delegates.SettingsTestDelegate
+import com.mikewarren.speakify.data.delegates.SignedOutFirebaseAuthDelegate
 import com.mikewarren.speakify.utils.AnalyticsHelper
 import com.mikewarren.speakify.utils.DeviceIdProvider
 import io.mockk.coEvery
@@ -23,16 +22,11 @@ import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -45,16 +39,10 @@ import org.robolectric.annotation.Config
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
-class SignInHistoryWipeTest {
+class SignInHistoryWipeTest: BaseDbTest(),
+    ISettingsTest by SettingsTestDelegate(),
+    IFirebaseAuth by SignedOutFirebaseAuthDelegate() {
 
-    private val testDispatcher = StandardTestDispatcher()
-    private val context = ApplicationProvider.getApplicationContext<Context>()
-
-    private lateinit var db: AppDatabase
-    private lateinit var fakeFirestore: FakeFirestore
-    private lateinit var userSettingsDataStore: DataStore<UserSettingsModel>
-
-    private lateinit var settingsRepository: SettingsRepository
     private lateinit var appsRepository: AppsRepository
     private lateinit var messengerContactsRepository: MessengerContactsRepository
     private lateinit var onboardingRepository: OnboardingRepository
@@ -67,24 +55,13 @@ class SignInHistoryWipeTest {
     private lateinit var sessionRepository: SessionRepository
 
     private val clerkUserFlow = MutableStateFlow<User?>(null)
-    private val firebaseAuth = mockk<FirebaseAuth>(relaxed = true)
-    private val firebaseUser = mockk<FirebaseUser>(relaxed = true)
+    override var firebaseUser: FirebaseUser? = mockk<FirebaseUser>(relaxed = true)
 
     @Before
-    fun setUp() {
-        Dispatchers.setMain(testDispatcher)
-
-        mockkStatic(Dispatchers::class)
-        every { Dispatchers.IO } returns testDispatcher
-
-        db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java)
-            .allowMainThreadQueries()
-            .build()
-
-        fakeFirestore = FakeFirestore()
-        
-        mockkStatic(FirebaseFirestore::class)
-        every { FirebaseFirestore.getInstance() } returns fakeFirestore.mock
+    override fun setUp() {
+        super.setUp()
+        setUpSettings(context)
+        setUpFirebaseAuth()
 
         mockkStatic(FirebaseAuth::class)
         every { FirebaseAuth.getInstance() } returns firebaseAuth
@@ -96,23 +73,10 @@ class SignInHistoryWipeTest {
         every { Clerk.user } answers { clerkUserFlow.value }
         every { Clerk.sessionFlow } returns MutableStateFlow(mockk(relaxed = true))
 
-        userSettingsDataStore = mockk(relaxed = true)
-        val userSettingsFlow = MutableStateFlow(UserSettingsModel())
-        every { userSettingsDataStore.data } returns userSettingsFlow
-        coEvery { userSettingsDataStore.updateData(any()) } answers {
-            val transform = firstArg<suspend (UserSettingsModel) -> UserSettingsModel>()
-            val newValue = kotlinx.coroutines.runBlocking { transform(userSettingsFlow.value) }
-            userSettingsFlow.value = newValue
-            newValue
-        }
-
-        mockkObject(com.mikewarren.speakify.data.db.DbProvider)
-        every { com.mikewarren.speakify.data.db.DbProvider.GetDb(any()) } returns db
 
         onboardingRepository = OnboardingRepositoryImpl(userSettingsDataStore)
         val appCategoryRepository = mockk<AppCategoryRepository>(relaxed = true)
         appsRepository = AppsRepositoryImpl(context, onboardingRepository, appCategoryRepository)
-        settingsRepository = SettingsRepositoryImpl(context, userSettingsDataStore)
         messengerContactsRepository = MessengerContactsRepositoryImpl(context)
         
         val deviceIdProvider = mockk<DeviceIdProvider>(relaxed = true)
@@ -122,9 +86,22 @@ class SignInHistoryWipeTest {
         analyticsHelper = mockk(relaxed = true)
 
         downloadRepository = DownloadRepository(settingsRepository, appsRepository, messengerContactsRepository, onboardingRepository)
-        uploadRepository = UploadRepository(settingsRepository, appsRepository, messengerContactsRepository, onboardingRepository)
+
+        uploadRepository = UploadRepository(
+            settingsRepository,
+            appsRepository,
+            messengerContactsRepository,
+            onboardingRepository,
+            appUsageStatsRepository = mockk(relaxed = true),
+        )
         
-        firestoreSyncRepository = FirestoreSyncRepository(settingsRepository, appsRepository, messengerContactsRepository, onboardingRepository, uploadRepository, downloadRepository)
+        firestoreSyncRepository = FirestoreSyncRepository(settingsRepository,
+            appsRepository,
+            messengerContactsRepository,
+            onboardingRepository,
+            trialRepository,
+            uploadRepository,
+            downloadRepository)
         
         sessionRepository = SessionRepository(
             firestoreSyncRepository,
@@ -138,9 +115,8 @@ class SignInHistoryWipeTest {
     }
 
     @After
-    fun tearDown() {
-        db.close()
-        Dispatchers.resetMain()
+    override fun tearDown() {
+        super.tearDown()
         unmockkAll()
     }
 
@@ -163,13 +139,13 @@ class SignInHistoryWipeTest {
         // 3. WHEN: User signs in
         val mockUser = mockk<User>(relaxed = true)
         every { mockUser.id } returns "clerk_user_123"
-        val emailAddress = mockk<com.clerk.api.emailaddress.EmailAddress>(relaxed = true)
+        val emailAddress = mockk<EmailAddress>(relaxed = true)
         every { emailAddress.emailAddress } returns testEmail
         every { mockUser.emailAddresses } returns listOf(emailAddress)
 
         every { firebaseAuth.currentUser } returns firebaseUser
-        every { firebaseUser.uid } returns testUserId
-        every { firebaseUser.email } returns testEmail
+        every { firebaseUser!!.uid } returns testUserId
+        every { firebaseUser!!.email } returns testEmail
 
         clerkUserFlow.value = mockUser
         

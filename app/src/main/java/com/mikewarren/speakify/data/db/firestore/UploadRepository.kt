@@ -1,5 +1,6 @@
 package com.mikewarren.speakify.data.db.firestore
 
+import android.util.Log
 import com.clerk.api.Clerk
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.CollectionReference
@@ -22,6 +23,7 @@ class UploadRepository @Inject constructor(
     private val appsRepository: AppsRepository,
     private val messengerContactsRepository: MessengerContactsRepository,
     private val onboardingRepository: OnboardingRepository,
+    private val appUsageStatsRepository: AppUsageStatsRepository
 ): BaseChildFirestoreRepository() {
 
 
@@ -34,6 +36,11 @@ class UploadRepository @Inject constructor(
     }
 
     override suspend fun allFirestoreTransactions(): List<suspend () -> Result<Unit>> {
+        if (isAnonymous) {
+            // Stats Only mode for anonymous users
+            return listOf { doFirestoreTransactions(importantAppsTransactionList()) }
+        }
+
         return listOf(this::writeClerkUserData) +
             super.allFirestoreTransactions()
     }
@@ -142,6 +149,17 @@ class UploadRepository @Inject constructor(
         val importantAppsList = appsRepository.importantApps.first()
             .filter { it.packageName.isNotBlank() }
 
+        // Fetch existing docs once to determine additions vs updates
+        val existingDocs = try {
+            safeFirestoreCall {
+                importantAppsCollection.get().await().documents
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to fetch existing important apps", e)
+            emptyList()
+        }
+        val existingDocIds = existingDocs.map { it.id }.toSet()
+
         val clearStaleRecordsTask: suspend () -> Result<Unit> = {
             clearStaleRecordsTransaction(
                 importantAppsCollection,
@@ -150,15 +168,39 @@ class UploadRepository @Inject constructor(
                     modelList.none { it.packageName.replace("/", "|") == docPackageName }
                 },
                 importantAppsList,
+                true, // Is important apps collection
+                existingDocs // Reuse fetched docs
             )
         }
 
         val uploadTasks = importantAppsList.map { app ->
             val docId = app.packageName.replace("/", "|")
-            suspend { writeTransaction(importantAppsCollection.document(docId), app) }
+            val isNew = !existingDocIds.contains(docId)
+            suspend { writeImportantAppTransaction(importantAppsCollection, app, isNew) }
         }
 
         return listOf(clearStaleRecordsTask) + uploadTasks
+    }
+
+    private suspend fun writeImportantAppTransaction(
+        collection: CollectionReference,
+        app: com.mikewarren.speakify.data.db.UserAppModel,
+        isNew: Boolean
+    ): Result<Unit> {
+        val docId = app.packageName.replace("/", "|")
+        val docRef = collection.document(docId)
+
+        return try {
+            if (isNew) {
+                appUsageStatsRepository.incrementAppCount(app)
+            }
+            if (isAnonymous) {
+                return Result.success(Unit)
+            }
+            writeTransaction(docRef, app)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun recentMessengerContactsTransactionList(): List<suspend () -> Result<Unit>> {
@@ -174,6 +216,7 @@ class UploadRepository @Inject constructor(
                     modelList.none { it.name.replace("/", "|") == docId }
                 },
                 recentMessengerContactsList,
+                false // Not important apps
             )
         }
 
@@ -188,10 +231,12 @@ class UploadRepository @Inject constructor(
     private suspend fun <T> clearStaleRecordsTransaction(
         documentCollection: CollectionReference,
         onCheckStaleRecord: suspend (DocumentSnapshot, T) -> Boolean,
-        data: T
+        data: T,
+        isImportantApps: Boolean = false,
+        preFetchedDocuments: List<DocumentSnapshot>? = null
     ) : Result<Unit> {
         return try {
-            val documents = safeFirestoreCall {
+            val documents = preFetchedDocuments ?: safeFirestoreCall {
                 documentCollection.get()
                     .await()
                     .documents
@@ -202,6 +247,10 @@ class UploadRepository @Inject constructor(
                     onCheckStaleRecord(documentSnapshot, data)
                 }
                 .forEach { documentSnapshot ->
+                    if (isImportantApps) {
+                        val packageName = documentSnapshot.id.replace("|", "/")
+                        appUsageStatsRepository.decrementAppCount(packageName)
+                    }
                     safeFirestoreCall {
                         documentSnapshot.reference.delete()
                             .await()

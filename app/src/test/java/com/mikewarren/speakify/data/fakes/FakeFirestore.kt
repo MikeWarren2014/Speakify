@@ -54,6 +54,11 @@ class FakeFirestore {
             Tasks.forResult(null)
         }
 
+        every { documentMock.set(any(), any()) } answers {
+            data[documentPath] = firstArg()
+            Tasks.forResult(null)
+        }
+
         every { documentMock.delete() } answers {
             deleteInternal(documentPath)
             Tasks.forResult(null)
