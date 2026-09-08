@@ -23,4 +23,10 @@ data class UserAppModel(
         "",
         true,
         2 * Constants.OneSecond)
+
+    constructor(packageName: String, appName: String): this(null,
+        packageName,
+        appName,
+        true,
+        2 * Constants.OneSecond)
 }

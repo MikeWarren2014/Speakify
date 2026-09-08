@@ -12,7 +12,12 @@ open class BaseUserFirestoreRepository: BaseFirestoreRepository() {
     protected val userId: String
         get() = firebaseAuth.currentUser?.uid ?: throw IllegalStateException("User not logged in")
 
+    protected val isAnonymous: Boolean
+        get() = firebaseAuth.currentUser?.isAnonymous ?: true
+
     suspend fun writeClerkUserData(): Result<Unit> {
+        if (isAnonymous) return Result.success(Unit)
+
         val clerkUserId = Clerk.user?.id
 
         if (clerkUserId == null)
