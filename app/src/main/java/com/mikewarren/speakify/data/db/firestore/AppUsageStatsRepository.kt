@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Singleton
 class AppUsageStatsRepository @Inject constructor() : BaseFirestoreRepository() {
 
-    private val statsCollection = firestore.collection("app_usage_stats")
+    private val statsCollection get() = firestore.collection("app_usage_stats")
 
     suspend fun incrementAppCount(app: UserAppModel) {
         val docId = app.packageName.replace("/", "|")

@@ -11,8 +11,8 @@ import kotlinx.coroutines.tasks.await
 
 abstract class BaseFirestoreRepository : ITaggable {
 
-    protected val firestore = FirebaseFirestore.getInstance()
-    protected val firebaseAuth = FirebaseAuth.getInstance()
+    protected val firestore: FirebaseFirestore get() = FirebaseFirestore.getInstance()
+    protected val firebaseAuth: FirebaseAuth get() = FirebaseAuth.getInstance()
 
     /**
      * Executes a Firestore call with retries if the client is offline, unavailable,
@@ -42,6 +42,15 @@ abstract class BaseFirestoreRepository : ITaggable {
                 if (isRetryable && retries > 0) {
                     retries--
                     Log.w(TAG, "Firestore call failed (code: $code, isAuthMissing: $isAuthMissing, isOffline: $isOffline), retrying in 2s... ($retries left)", e)
+
+                    if (isAuthMissing) {
+                        try {
+                            firebaseAuth.signInAnonymously().await()
+                            Log.d(TAG, "Successfully signed in anonymously after auth failure")
+                        } catch (signInEx: Exception) {
+                            Log.e(TAG, "Failed to sign in anonymously during retry", signInEx)
+                        }
+                    }
 
                     if (isUnavailable || isOffline) {
                         try { firestore.enableNetwork().await() } catch (_: Exception) {}

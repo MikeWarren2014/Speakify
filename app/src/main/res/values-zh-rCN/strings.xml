@@ -214,7 +214,7 @@
     <string name="title_settings">设置</string>
     <string name="title_support">支持与反馈</string>
     <string name="title_legal">法律信息</string>
-    <string name="title_scheduling">调度</string>
+    <string name="title_scheduling">状态与调度</string>
 
     <!-- Important Apps View -->
     <string name="filter_apps">筛选应用</string>
@@ -302,9 +302,10 @@
     <string name="scheduling_pause_duration_text">Speakify 应暂停多久？</string>
     <string name="scheduling_pause_duration_hours">小时</string>
     <string name="scheduling_pause_duration_minutes">分钟</string>
-    <string name="scheduling_pause_duration_error_both_fields">请输入时间。</string>
     <string name="scheduling_pause_duration_error_non_digit_characters">此字段只能包含数字。</string>
     <string name="scheduling_pause_duration_error_hours_too_long">此字段最多只能有 3 位数字。</string>
+    <string name="scheduling_confirm_indefinite_pause">确认无限期暂停</string>
+    <string name="scheduling_confirm_timed_pause">确认暂停 %1$s</string>
     <string name="confirm">确认</string>
 
     <string name="scheduling_schedule_loading">正在加载计划...</string>
@@ -315,6 +316,7 @@
     <string name="day_schedule_all_day">整天</string>
     <string name="day_schedule_select_times">选择时间</string>
     <string name="day_schedule_off">关闭</string>
+    <string name="day_schedule_copy_from_previous_day">从前一天复制</string>
 
     <!-- About View -->
     <string name="about_header_what">这是什么应用？</string>

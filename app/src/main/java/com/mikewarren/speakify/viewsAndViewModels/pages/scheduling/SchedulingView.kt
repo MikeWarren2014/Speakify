@@ -43,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -67,7 +68,7 @@ fun SchedulingView(viewModel: SchedulingViewModel = hiltViewModel()) {
     ) {
         StatusSectionView(viewModel.childStatusSectionViewModel)
 
-        WeeklyScheduleSection(viewModel.childWeeklyScheduleViewModel)
+        WeeklyScheduleSectionView(viewModel.childWeeklyScheduleViewModel)
     }
 }
 
@@ -213,16 +214,6 @@ fun PauseDurationDialog(
                     )
                 }
 
-                val globalError = viewModel.errorsDict[StatusSectionViewModel.BothFields]
-                if (globalError != null) {
-                    Text(
-                        text = globalError.joinToString("\n"),
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
-                }
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
@@ -231,8 +222,27 @@ fun PauseDurationDialog(
                         Text(stringResource(R.string.cancel))
                     }
                     Spacer(modifier = Modifier.size(8.dp))
+
+                    val pauseHours = viewModel.pauseHours.toIntOrNull() ?: 0
+                    val pauseMinutes = viewModel.pauseMinutes.toIntOrNull() ?: 0
+
+                    val confirmText = if (pauseHours == 0 && pauseMinutes == 0) {
+                        stringResource(R.string.scheduling_confirm_indefinite_pause)
+                    } else {
+                        val durationText = buildString {
+                            if (pauseHours > 0) {
+                                append(pluralStringResource(R.plurals.hours_quantity, pauseHours, pauseHours))
+                            }
+                            if (pauseMinutes > 0) {
+                                if (isNotEmpty()) append(", ")
+                                append(pluralStringResource(R.plurals.minutes_quantity, pauseMinutes, pauseMinutes))
+                            }
+                        }
+                        stringResource(R.string.scheduling_confirm_timed_pause, durationText)
+                    }
+
                     Button(onClick = onConfirm) {
-                        Text(stringResource(R.string.confirm))
+                        Text(confirmText)
                     }
                 }
             }
@@ -241,7 +251,7 @@ fun PauseDurationDialog(
 }
 
 @Composable
-fun WeeklyScheduleSection(viewModel: WeeklyScheduleViewModel?) {
+fun WeeklyScheduleSectionView(viewModel: WeeklyScheduleViewModel?) {
     if (viewModel == null) {
         Text(stringResource(R.string.scheduling_schedule_loading), style = MaterialTheme.typography.bodyMedium)
         return
@@ -261,7 +271,8 @@ fun WeeklyScheduleSection(viewModel: WeeklyScheduleViewModel?) {
             state = dayScheduleModel,
             onTypeChange = { newType -> viewModel.updateDayType(dayOfWeek, newType) },
             onFromTimeChange = { newTime -> viewModel.updateDayFromTime(dayOfWeek, newTime) },
-            onToTimeChange = { newTime -> viewModel.updateDayToTime(dayOfWeek, newTime) }
+            onToTimeChange = { newTime -> viewModel.updateDayToTime(dayOfWeek, newTime) },
+            { viewModel.copyFromPreviousDay(dayOfWeek) },
         )
     }
 }
@@ -272,7 +283,8 @@ fun DayScheduleRow(
     state: DayScheduleModel,
     onTypeChange: (DayScheduleType) -> Unit,
     onFromTimeChange: (String) -> Unit,
-    onToTimeChange: (String) -> Unit
+    onToTimeChange: (String) -> Unit,
+    onCopyFromPreviousDay: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var showFromTimePicker by remember { mutableStateOf(false) }
@@ -304,6 +316,13 @@ fun DayScheduleRow(
                         Icon(Icons.Default.ArrowDropDown, contentDescription = null)
                     }
                     DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.day_schedule_copy_from_previous_day)) },
+                            onClick = {
+                                onCopyFromPreviousDay()
+                                expanded = false
+                            }
+                        )
                         DayScheduleType.entries.forEach { type ->
                             DropdownMenuItem(
                                 text = { Text(type.labelUiText.asString()) },

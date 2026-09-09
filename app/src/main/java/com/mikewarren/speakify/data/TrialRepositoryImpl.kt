@@ -25,8 +25,8 @@ class TrialRepositoryImpl @Inject constructor(
     private val userSettingsDataStore: DataStore<UserSettingsModel>,
 ) : BaseFirestoreRepository(), TrialRepository {
 
-    private val trialCollection by lazy { firestore.collection("trials") }
-    private val directSignUpCollection by lazy { firestore.collection("directSignUps") }
+    private val trialCollection get() = firestore.collection("trials")
+    private val directSignUpCollection get() = firestore.collection("directSignUps")
 
     private val _isNewDirectSignUp = MutableStateFlow(false)
     override val isNewDirectSignUp: Flow<Boolean> = _isNewDirectSignUp.asStateFlow()

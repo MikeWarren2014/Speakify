@@ -75,10 +75,6 @@ class StatusSectionViewModel(
             newErrors[MinutesField] = minuteErrors
         }
 
-        if ((pauseHours.isEmpty()) && (pauseMinutes.isEmpty())) {
-            newErrors[BothFields] = listOf(UiText.StringResource(R.string.scheduling_pause_duration_error_both_fields))
-        }
-
         errorsDict = newErrors
         return newErrors.isEmpty()
     }
@@ -109,13 +105,17 @@ class StatusSectionViewModel(
         isOpen = false
     }
 
-    fun calculateTurnOnTime(): Long {
+    fun calculateTurnOnTime(): Long? {
         if (isAppOn) {
             return System.currentTimeMillis()
         }
 
         val pauseHoursInt = pauseHours.toIntOrNull() ?: 0
         val pauseMinutesInt = pauseMinutes.toIntOrNull() ?: 0
+
+        if (pauseHoursInt == 0 && pauseMinutesInt == 0) {
+            return null
+        }
 
         return System.currentTimeMillis() + (pauseHoursInt * Constants.OneHour + pauseMinutesInt * Constants.OneMinute)
     }

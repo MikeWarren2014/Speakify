@@ -213,7 +213,7 @@
     <string name="title_settings">設定</string>
     <string name="title_support">サポートとフィードバック</string>
     <string name="title_legal">法的情報</string>
-    <string name="title_scheduling">スケジュール</string>
+    <string name="title_scheduling">ステータスとスケジュール</string>
 
     <!-- Important Apps View -->
     <string name="filter_apps">アプリをフィルタ</string>
@@ -301,9 +301,10 @@
     <string name="scheduling_pause_duration_text">Speakify をどのくらい一時停止しますか？</string>
     <string name="scheduling_pause_duration_hours">時間</string>
     <string name="scheduling_pause_duration_minutes">分</string>
-    <string name="scheduling_pause_duration_error_both_fields">時間を入力してください。</string>
     <string name="scheduling_pause_duration_error_non_digit_characters">このフィールドには数字のみ入力できます。</string>
     <string name="scheduling_pause_duration_error_hours_too_long">このフィールドは 3 桁以内で入力してください。</string>
+    <string name="scheduling_confirm_indefinite_pause">無期限の停止を確認</string>
+    <string name="scheduling_confirm_timed_pause">%1$s間の停止を確認</string>
     <string name="confirm">確定</string>
 
     <string name="scheduling_schedule_loading">スケジュールを読み込み中...</string>
@@ -314,6 +315,7 @@
     <string name="day_schedule_all_day">終日</string>
     <string name="day_schedule_select_times">時刻を指定</string>
     <string name="day_schedule_off">オフ</string>
+    <string name="day_schedule_copy_from_previous_day">前日からコピー</string>
 
     <!-- About View -->
     <string name="about_header_what">このアプリについて</string>

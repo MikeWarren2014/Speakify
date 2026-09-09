@@ -222,7 +222,7 @@
     <string name="title_settings">Налаштування</string>
     <string name="title_support">Підтримка та відгуки</string>
     <string name="title_legal">Юридична інформація</string>
-    <string name="title_scheduling">Розклад</string>
+    <string name="title_scheduling">Статус і розклад</string>
 
     <!-- Important Apps View -->
     <string name="filter_apps">Фільтрувати програми</string>
@@ -310,9 +310,10 @@
     <string name="scheduling_pause_duration_text">На який час слід призупинити роботу Speakify?</string>
     <string name="scheduling_pause_duration_hours">Години</string>
     <string name="scheduling_pause_duration_minutes">Хвилини</string>
-    <string name="scheduling_pause_duration_error_both_fields">Будь ласка, введіть час.</string>
     <string name="scheduling_pause_duration_error_non_digit_characters">Це поле може містити лише цифри.</string>
     <string name="scheduling_pause_duration_error_hours_too_long">Це поле може містити не більше 3 цифр.</string>
+    <string name="scheduling_confirm_indefinite_pause">Підтвердити безстрокову паузу</string>
+    <string name="scheduling_confirm_timed_pause">Підтвердити паузу на %1$s</string>
     <string name="confirm">Підтвердити</string>
 
     <string name="scheduling_schedule_loading">Завантаження розкладу…</string>
@@ -323,6 +324,7 @@
     <string name="day_schedule_all_day">Весь день</string>
     <string name="day_schedule_select_times">Вибрати час</string>
     <string name="day_schedule_off">Вимк.</string>
+    <string name="day_schedule_copy_from_previous_day">Копіювати з попереднього дня</string>
 
     <!-- About View -->
     <string name="about_header_what">Що це за програма?</string>

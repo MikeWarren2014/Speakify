@@ -222,7 +222,7 @@
     <string name="title_settings">Настройки</string>
     <string name="title_support">Поддержка и отзывы</string>
     <string name="title_legal">Юридическая информация</string>
-    <string name="title_scheduling">Расписание</string>
+    <string name="title_scheduling">Статус и расписание</string>
 
     <!-- Important Apps View -->
     <string name="filter_apps">Фильтр приложений</string>
@@ -310,9 +310,10 @@
     <string name="scheduling_pause_duration_text">На какое время следует приостановить работу Speakify?</string>
     <string name="scheduling_pause_duration_hours">Часы</string>
     <string name="scheduling_pause_duration_minutes">Минуты</string>
-    <string name="scheduling_pause_duration_error_both_fields">Пожалуйста, введите время.</string>
     <string name="scheduling_pause_duration_error_non_digit_characters">Это поле может содержать только цифры.</string>
     <string name="scheduling_pause_duration_error_hours_too_long">Это поле может содержать не более 3 цифр.</string>
+    <string name="scheduling_confirm_indefinite_pause">Подтвердить бессрочную паузу</string>
+    <string name="scheduling_confirm_timed_pause">Подтвердить паузу на %1$s</string>
     <string name="confirm">Подтвердить</string>
 
     <string name="scheduling_schedule_loading">Загрузка расписания...</string>
@@ -323,6 +324,7 @@
     <string name="day_schedule_all_day">Весь день</string>
     <string name="day_schedule_select_times">Выбрать время</string>
     <string name="day_schedule_off">Выкл.</string>
+    <string name="day_schedule_copy_from_previous_day">Копировать с предыдущего дня</string>
 
     <!-- About View -->
     <string name="about_header_what">Что это за приложение?</string>

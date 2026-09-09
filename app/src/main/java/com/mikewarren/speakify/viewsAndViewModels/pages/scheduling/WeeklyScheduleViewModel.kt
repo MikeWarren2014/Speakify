@@ -32,6 +32,18 @@ class WeeklyScheduleViewModel(
             !!.copy(toTime = newToTime))
     }
 
+    fun copyFromPreviousDay(dayOfWeek: DayOfWeek) {
+        val previousDay = dayOfWeek.minus(1)
+        val previousDaySchedule = _weeklyScheduleFlow.value[previousDay]!!
+
+        updateDayScheduleModel(dayOfWeek, _weeklyScheduleFlow.value[dayOfWeek]
+            !!.copy(
+                type = previousDaySchedule.type,
+                fromTime = previousDaySchedule.fromTime,
+                toTime = previousDaySchedule.toTime,
+            ))
+    }
+
 
     fun updateDayScheduleModel(dayOfWeek: DayOfWeek, newScheduleModel: DayScheduleModel) {
         _weeklyScheduleFlow.update { schedule: Map<DayOfWeek, DayScheduleModel> ->
