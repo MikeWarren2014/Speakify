@@ -1,9 +1,9 @@
 Bugs corrigidos:
-- Corrigido problema crítico em que os usuários que faziam login ficavam bloqueados na integração e perdiam seus dados.
-- Corrigido problema em que os dados de status e agendamento não eram mantidos na nuvem.
+- Corrigido bloqueio na integração (evita perda de dados).
+- Corrigida a sincronização em nuvem de status e agendamento.
 
 Melhorias:
-- Renomeada a página "Agendamento" para "Status e Agendamento".
-- Removida a exigenza de especificar horas e minutos ao pausar o aplicativo.
-- Adicionada uma opção para copiar o cronograma de um dia anterior.
-- Agora relatando aplicativos importantes para nos ajudar a priorizar recursos!
+- Página "Agendamento" renomeada para "Status e Agendamento".
+- Pausa simplificada do app sem exigir horas e minutos.
+- Opção para copiar o cronograma de um dia anterior.
+- Relato de apps importantes para priorizar recursos.

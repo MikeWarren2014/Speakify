@@ -65,8 +65,8 @@ android {
 
     buildTypes {
         release {
-            // NOTE: Uncomment this line if doing release build locally
-//            signingConfig signingConfigs.release
+            if ((project.hasProperty("buildReleaseLocally")) && (buildReleaseLocally))
+                signingConfig signingConfigs.release
 
             minifyEnabled true
             shrinkResources true

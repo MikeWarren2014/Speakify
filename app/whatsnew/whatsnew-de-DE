@@ -1,9 +1,9 @@
 Fehlerbehebungen:
-- Kritisches Problem behoben, bei dem Benutzer beim Anmelden im Onboarding feststeckten und ihre Daten verloren.
-- Problem behoben, bei dem Status- und Zeitplandaten nicht in der Cloud gespeichert wurden.
+- Login-Softlock im Onboarding behoben (Datenverlust verhindert).
+- Cloud-Synchronisierung von Status- und Zeitplandaten repariert.
 
 Verbesserungen:
-- Seite „Zeitplanung“ in „Status & Zeitplanung“ umbenannt.
-- Angabe von Stunden und Minuten beim Pausieren der App ist nicht mehr erforderlich.
-- Option zum Kopieren des Zeitplans eines vorherigen Tages hinzugefügt.
-- Wichtige Apps werden jetzt gemeldet, damit wir Funktionen besser priorisieren können!
+- „Zeitplanung“ in „Status & Zeitplanung“ umbenannt.
+- Vereinfachtes Pausieren der App ohne Stunden-/Minutenangabe.
+- Option zum Kopieren eines früheren Tageszeitplans hinzugefügt.
+- Wichtige Apps werden gemeldet, um Funktionen besser zu priorisieren.

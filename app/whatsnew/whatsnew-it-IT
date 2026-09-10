@@ -1,9 +1,9 @@
 Bug risolti:
-- Risolto un problema critico per cui gli utenti che effettuavano l'accesso rimanevano bloccati nell'onboarding e perdevano i propri dati.
-- Risolto un problema per cui i dati di stato e programmazione non venivano salvati nel cloud.
+- Risolto il blocco nell'onboarding (evitata la perdita di dati).
+- Corretta la sincronizzazione cloud di stato e programmazione.
 
 Miglioramenti:
 - Pagina "Programmazione" rinominata in "Stato e programmazione".
-- Rimosso l'obbligo di specificare ore e minuti durante la sospensione dell'app.
-- Aggiunta un'opzione per copiare il programma di un giorno precedente.
-- Ora vengono segnalate le app importanti per aiutarci a dare priorità alle funzioni!
+- Sospensione dell'app semplificata senza obbligo di ore/minuti.
+- Opzione per copiare la programmazione del giorno precedente.
+- Segnalazione app importanti per dare priorità alle funzioni.

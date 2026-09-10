@@ -1,9 +1,9 @@
 Errores corregidos:
-- Se corrigió un problema crítico por el cual los usuarios que iniciaban sesión quedaban bloqueados en el proceso inicial y perdían sus datos.
-- Se corrigió un problema por el cual los datos de estado y programación no se conservaban en la nube.
+- Solucionado bloqueo en el onboarding (evita pérdida de datos).
+- Corregida la sincronización en la nube de datos y programación.
 
 Mejoras:
-- Se cambió el nombre de la página "Programación" a "Estado y programación".
-- Se eliminó el requisito de especificar horas y minutos al pausar la aplicación.
-- Se agregó una opción para copiar el horario de un día anterior.
-- ¡Ahora se informan las aplicaciones importantes para ayudarnos a priorizar las funciones!
+- Página "Programación" renombrada a "Estado y programación".
+- Pausa simplificada de la app sin obligar a definir horas/minutos.
+- Opción para copiar la programación de un día anterior.
+- Reporte de apps importantes para priorizar funciones.
