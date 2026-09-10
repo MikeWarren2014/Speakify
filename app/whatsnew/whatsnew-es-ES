@@ -1,5 +1,9 @@
+Errores corregidos:
+- Solucionado bloqueo en el onboarding (evita pérdida de datos).
+- Corregida la sincronización en la nube de datos y programación.
+
 Mejoras:
-- El inicio de sesión ahora es opcional para escuchar notificaciones
-- Se ha reforzado la seguridad del backend
-- Se ha añadido un ajuste para anunciar llamadas anónimas/privadas
-- Se han filtrado las palabras clave de Facebook Marketplace en las notificaciones
+- Página "Programación" renombrada a "Estado y programación".
+- Pausa simplificada de la app sin obligar a definir horas/minutos.
+- Opción para copiar la programación de un día anterior.
+- Reporte de apps importantes para priorizar funciones.

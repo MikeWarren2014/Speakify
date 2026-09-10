@@ -1,5 +1,9 @@
+Bug risolti:
+- Risolto il blocco nell'onboarding (evitata la perdita di dati).
+- Corretta la sincronizzazione cloud di stato e programmazione.
+
 Miglioramenti:
-- Accesso facoltativo per l'ascolto delle notifiche
-- Sicurezza del backend rafforzata
-- Aggiunta impostazione per annunciare chiamate anonime/private
-- Filtrate le parole chiave di Facebook Marketplace dalle notifiche
+- Pagina "Programmazione" rinominata in "Stato e programmazione".
+- Sospensione dell'app semplificata senza obbligo di ore/minuti.
+- Opzione per copiare la programmazione del giorno precedente.
+- Segnalazione app importanti per dare priorità alle funzioni.

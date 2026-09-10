@@ -1,5 +1,9 @@
+Fehlerbehebungen:
+- Login-Softlock im Onboarding behoben (Datenverlust verhindert).
+- Cloud-Synchronisierung von Status- und Zeitplandaten repariert.
+
 Verbesserungen:
-- Anmeldung für Hörbenachrichtigungen jetzt optional
-- Backend-Sicherheit verschärft
-- Einstellung zur Ansage von anonymen/privaten Anrufen hinzugefügt
-- Facebook-Marketplace-Schlüsselwörter aus Benachrichtigungen gefiltert
+- „Zeitplanung“ in „Status & Zeitplanung“ umbenannt.
+- Vereinfachtes Pausieren der App ohne Stunden-/Minutenangabe.
+- Option zum Kopieren eines früheren Tageszeitplans hinzugefügt.
+- Wichtige Apps werden gemeldet, um Funktionen besser zu priorisieren.
