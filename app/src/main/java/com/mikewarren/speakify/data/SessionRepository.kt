@@ -195,15 +195,11 @@ class SessionRepository @Inject constructor(
             return
 
         if (isNewDirectSignUp) {
-            if (onboardingStep == OnboardingUiState.Completed) {
-                trialRepository.resetNewDirectSignUp()
-                // Let it fall through to SignedIn
-            } else {
+            if (onboardingStep != OnboardingUiState.Completed) {
                 setOnboardingState(OnboardingUiState.NotStarted)
                 return
             }
-            setOnboardingState(OnboardingUiState.NotStarted)
-            return
+            trialRepository.resetNewDirectSignUp()
         }
 
         _uiState.value = MainUiState.SignedIn
