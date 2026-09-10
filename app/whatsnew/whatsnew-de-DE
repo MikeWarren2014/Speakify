@@ -1,5 +1,9 @@
+Fehlerbehebungen:
+- Kritisches Problem behoben, bei dem Benutzer beim Anmelden im Onboarding feststeckten und ihre Daten verloren.
+- Problem behoben, bei dem Status- und Zeitplandaten nicht in der Cloud gespeichert wurden.
+
 Verbesserungen:
-- Anmeldung für Hörbenachrichtigungen jetzt optional
-- Backend-Sicherheit verschärft
-- Einstellung zur Ansage von anonymen/privaten Anrufen hinzugefügt
-- Facebook-Marketplace-Schlüsselwörter aus Benachrichtigungen gefiltert
+- Seite „Zeitplanung“ in „Status & Zeitplanung“ umbenannt.
+- Angabe von Stunden und Minuten beim Pausieren der App ist nicht mehr erforderlich.
+- Option zum Kopieren des Zeitplans eines vorherigen Tages hinzugefügt.
+- Wichtige Apps werden jetzt gemeldet, damit wir Funktionen besser priorisieren können!

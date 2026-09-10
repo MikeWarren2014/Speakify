@@ -38,8 +38,8 @@ android {
         applicationId packageName
         minSdk 28
         targetSdk androidSdkVersion
-        versionCode 38
-        versionName "1.5.2"
+        versionCode 39
+        versionName "1.5.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -66,7 +66,7 @@ android {
     buildTypes {
         release {
             // NOTE: Uncomment this line if doing release build locally
-//            signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
 
             minifyEnabled true
             shrinkResources true

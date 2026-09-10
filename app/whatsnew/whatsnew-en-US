@@ -1,5 +1,9 @@
+Bugs fixed:
+- Fixed critical issue where users signing in were softlocked in to onboarding, and lost their data.
+- Fixed issue where status and scheduling data was not persisted to the cloud.
+
 Enhancements:
-- Made sign-in optional for hearing notifications
-- Tightened backend security
-- Added setting to announce anonymous/private calls
-- Filtered out Facebook Marketplace keywords from notifications
+- Renamed "Scheduling" page to "Status & Scheduling".
+- Removed the requirement of specifying hours and minutes when pausing the app.
+- Added an option to copy a previous day's schedule.
+- Now reporting important apps to help us prioritize features!

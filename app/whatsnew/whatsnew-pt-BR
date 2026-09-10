@@ -1,5 +1,9 @@
+Bugs corrigidos:
+- Corrigido problema crítico em que os usuários que faziam login ficavam bloqueados na integração e perdiam seus dados.
+- Corrigido problema em que os dados de status e agendamento não eram mantidos na nuvem.
+
 Melhorias:
-- Login opcional para ouvir notificações
-- Segurança do backend reforçada
-- Adicionada configuração para anunciar chamadas anônimas/privadas
-- Palavras-chave do Facebook Marketplace filtradas das notificações
+- Renomeada a página "Agendamento" para "Status e Agendamento".
+- Removida a exigenza de especificar horas e minutos ao pausar o aplicativo.
+- Adicionada uma opção para copiar o cronograma de um dia anterior.
+- Agora relatando aplicativos importantes para nos ajudar a priorizar recursos!

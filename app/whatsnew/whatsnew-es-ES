@@ -1,5 +1,9 @@
+Errores corregidos:
+- Se corrigió un problema crítico por el cual los usuarios que iniciaban sesión quedaban bloqueados en el proceso inicial y perdían sus datos.
+- Se corrigió un problema por el cual los datos de estado y programación no se conservaban en la nube.
+
 Mejoras:
-- El inicio de sesión ahora es opcional para escuchar notificaciones
-- Se ha reforzado la seguridad del backend
-- Se ha añadido un ajuste para anunciar llamadas anónimas/privadas
-- Se han filtrado las palabras clave de Facebook Marketplace en las notificaciones
+- Se cambió el nombre de la página "Programación" a "Estado y programación".
+- Se eliminó el requisito de especificar horas y minutos al pausar la aplicación.
+- Se agregó una opción para copiar el horario de un día anterior.
+- ¡Ahora se informan las aplicaciones importantes para ayudarnos a priorizar las funciones!

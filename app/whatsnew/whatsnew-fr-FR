@@ -1,5 +1,9 @@
-Améliorations :
-- Connexion facultative pour l'audition des notifications
-- Sécurité du backend renforcée
-- Ajout d'un paramètre pour annoncer les appels anonymes/privés
-- Filtrage des mots-clés de Facebook Marketplace dans les notifications
+Bugs corrigés:
+- Correction d'un problème critique où les utilisateurs se connectant étaient bloqués dans l'onboarding et perdaient leurs données.
+- Correction d'un problème où les données d'état et de planification n'étaient pas conservées dans le cloud.
+
+Améliorations:
+- Renommage de la page « Planification » en « État et planification ».
+- Suppression de l'obligation de spécifier les heures et les minutes lors de la mise en pause de l'application.
+- Ajout d'une option pour copier l'horaire d'un jour précédent.
+- Signalement des applications importantes pour nous aider à prioriser les fonctionnalités !
