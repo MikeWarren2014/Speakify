@@ -217,7 +217,7 @@
     <string name="title_settings">تنظیمات</string>
     <string name="title_support">پشتیبانی و بازخورد</string>
     <string name="title_legal">حقوقی</string>
-    <string name="title_scheduling">زمان‌بندی</string>
+    <string name="title_scheduling">وضعیت و زمان‌بندی</string>
 
     <!-- Important Apps View -->
     <string name="filter_apps">فیلتر برنامه‌ها</string>
@@ -305,9 +305,10 @@
     <string name="scheduling_pause_duration_text">Speakify برای چه مدت متوقف شود؟</string>
     <string name="scheduling_pause_duration_hours">ساعت</string>
     <string name="scheduling_pause_duration_minutes">دقیقه</string>
-    <string name="scheduling_pause_duration_error_both_fields">لطفاً یک زمان وارد کنید.</string>
     <string name="scheduling_pause_duration_error_non_digit_characters">این فیلد فقط می‌تواند شامل اعداد باشد.</string>
     <string name="scheduling_pause_duration_error_hours_too_long">این فیلد فقط می‌تواند ۳ رقم یا کمتر باشد.</string>
+    <string name="scheduling_confirm_indefinite_pause">تأیید توقف نامحدود</string>
+    <string name="scheduling_confirm_timed_pause">تأیید توقف برای %1$s</string>
     <string name="confirm">تایید</string>
 
     <string name="scheduling_schedule_loading">در حال بارگذاری زمان‌بندی...</string>
@@ -318,6 +319,7 @@
     <string name="day_schedule_all_day">تمام روز</string>
     <string name="day_schedule_select_times">انتخاب زمان‌ها</string>
     <string name="day_schedule_off">خاموش</string>
+    <string name="day_schedule_copy_from_previous_day">کپی از روز قبل</string>
 
     <!-- About View -->
     <string name="about_header_what">این برنامه چیست؟</string>

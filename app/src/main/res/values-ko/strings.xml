@@ -213,7 +213,7 @@
     <string name="title_settings">설정</string>
     <string name="title_support">지원 및 피드백</string>
     <string name="title_legal">법적 정보</string>
-    <string name="title_scheduling">예약</string>
+    <string name="title_scheduling">상태 및 예약</string>
 
     <!-- Important Apps View -->
     <string name="filter_apps">앱 필터링</string>
@@ -301,9 +301,10 @@
     <string name="scheduling_pause_duration_text">Speakify를 얼마나 오래 일시 중지할까요?</string>
     <string name="scheduling_pause_duration_hours">시간</string>
     <string name="scheduling_pause_duration_minutes">분</string>
-    <string name="scheduling_pause_duration_error_both_fields">시간을 입력해 주세요.</string>
     <string name="scheduling_pause_duration_error_non_digit_characters">이 필드에는 숫자만 입력할 수 있습니다.</string>
     <string name="scheduling_pause_duration_error_hours_too_long">이 필드는 3자리 이하로만 입력 가능합니다.</string>
+    <string name="scheduling_confirm_indefinite_pause">무기한 일시 중지 확인</string>
+    <string name="scheduling_confirm_timed_pause">%1$s 동안 일시 중지 확인</string>
     <string name="confirm">확인</string>
 
     <string name="scheduling_schedule_loading">스케줄 로딩 중...</string>
@@ -314,6 +315,7 @@
     <string name="day_schedule_all_day">하루 종일</string>
     <string name="day_schedule_select_times">시간 선택</string>
     <string name="day_schedule_off">꺼짐</string>
+    <string name="day_schedule_copy_from_previous_day">전날에서 복사</string>
 
     <!-- About View -->
     <string name="about_header_what">이 앱은 무엇인가요?</string>

@@ -44,7 +44,9 @@ class SchedulingRepository @Inject constructor(
         // Status check takes priority, then check by schedule
         val statusModel = schedulingModel.statusModel
         if (statusModel is StatusModel.Off) {
-            if (currentTimeMillis < statusModel.turnOnTime!!)
+            val turnOnTime = statusModel.turnOnTime ?: return schedulingModel
+
+            if (currentTimeMillis < turnOnTime)
                 return schedulingModel
 
             return schedulingModel.copy(statusModel = StatusModel.On)

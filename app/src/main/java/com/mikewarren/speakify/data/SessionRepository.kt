@@ -11,6 +11,7 @@ import com.clerk.api.session.fetchToken
 import com.clerk.api.user.delete
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import com.mikewarren.speakify.data.db.firestore.AccountDeletionFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FirestoreSyncRepository
 import com.mikewarren.speakify.data.models.FeedbackModel
@@ -194,12 +195,11 @@ class SessionRepository @Inject constructor(
             return
 
         if (isNewDirectSignUp) {
-            if (onboardingStep == OnboardingUiState.Completed) {
-                trialRepository.resetNewDirectSignUp()
+            if (onboardingStep != OnboardingUiState.Completed) {
+                setOnboardingState(OnboardingUiState.NotStarted)
                 return
             }
-            setOnboardingState(OnboardingUiState.NotStarted)
-            return
+            trialRepository.resetNewDirectSignUp()
         }
 
         _uiState.value = MainUiState.SignedIn
@@ -301,10 +301,15 @@ class SessionRepository @Inject constructor(
                 return Result.failure(signInResult.exceptionOrNull() ?: Exception("Unknown sign-in error"))
             }
 
-            withContext(Dispatchers.IO) {
+            val syncResult = withContext(Dispatchers.IO) {
                 Log.d("SessionRepo", "Downloading the user data from Firebase")
                 firestoreSyncRepository.downloadAndRestoreData()
             }
+
+            if (syncResult.isFailure) {
+                return Result.failure(syncResult.exceptionOrNull() ?: Exception("Failed to sync data from cloud"))
+            }
+
             syncedUserId = user.id
             Log.d("SessionRepo", "Successfully synced data for user ${user.id}")
             Result.success(true)
@@ -354,17 +359,24 @@ class SessionRepository @Inject constructor(
                             .build()
                         firebaseAuth.signInWithCredential(credential)
                             .addOnCompleteListener { task ->
-                                Log.d("SessionRepo", "Firebase auth result: ${task.isSuccessful}")
+                                val isSuccessful = task.isSuccessful
+                                Log.d("SessionRepo", "Firebase auth result: $isSuccessful")
 
-                                var result = Result.success(Unit)
-                                if (!task.isSuccessful) {
+                                if (!isSuccessful) {
                                     Log.d("SessionRepo", "Firebase auth failed with message: ${task.exception?.message}")
-
                                     val exception = task.exception
-                                    if (exception?.message?.contains("PROVIDER_ALREADY_LINKED") != true)
-                                        result = Result.failure(exception ?: Exception("Unknown error"))
+                                    if (exception?.message?.contains("PROVIDER_ALREADY_LINKED") != true) {
+                                        continuation.resume(Result.failure(exception ?: Exception("Unknown error")))
+                                        return@addOnCompleteListener
+                                    }
+                                    continuation.resume(Result.success(Unit))
                                 }
-                                continuation.resume(result)
+                                // Force refresh token to ensure Firestore has the latest identity
+                                firebaseAuth.currentUser
+                                    ?.getIdToken(true)
+                                    ?.addOnSuccessListener { _ ->
+                                        continuation.resume(Result.success(Unit))
+                                    }
                             }
                     }
                     .onFailure { failure ->
@@ -518,6 +530,8 @@ class SessionRepository @Inject constructor(
         if (_uiState.value in listOf(MainUiState.SignedOut, MainUiState.TrialEnded)) {
             return
         }
+
+        firestoreSyncRepository.stopSync()
 
         settingsRepository.clearAllData()
         if (trialStatus is TrialStatus.Expired) {

@@ -9,8 +9,10 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.MessengerContactsRepository
 import com.mikewarren.speakify.data.OnboardingRepository
+import com.mikewarren.speakify.data.SchedulingRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.models.FeedbackModel
+import com.mikewarren.speakify.data.models.scheduling.StatusModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
 import java.util.Date
@@ -20,6 +22,7 @@ import javax.inject.Singleton
 @Singleton
 class UploadRepository @Inject constructor(
     private val settingsRepository: SettingsRepository,
+    private val schedulingRepository: SchedulingRepository,
     private val appsRepository: AppsRepository,
     private val messengerContactsRepository: MessengerContactsRepository,
     private val onboardingRepository: OnboardingRepository,
@@ -55,6 +58,33 @@ class UploadRepository @Inject constructor(
                 "minVolume" to settingsRepository.minVolume.first(),
                 "isCrashlyticsEnabled" to settingsRepository.isCrashlyticsEnabled.first()
             ))
+    }
+
+    override suspend fun schedulingTransaction(): Result<Unit> {
+        val model = schedulingRepository.scheduling.first()
+        val statusData = hashMapOf(
+            "isAppOn" to model.statusModel.isAppOn,
+            "turnOnTime" to (model.statusModel as? StatusModel.Off)?.turnOnTime
+        )
+
+        val weeklyScheduleData = model.weeklySchedule.entries.associate { (day, schedule) ->
+            day.name to hashMapOf(
+                "dayName" to schedule.dayName,
+                "type" to schedule.type.name,
+                "fromTime" to schedule.fromTime,
+                "toTime" to schedule.toTime
+            )
+        }
+
+        val data = hashMapOf(
+            "status" to statusData,
+            "weeklySchedule" to weeklyScheduleData
+        )
+
+        return writeTransaction(userDoc.collection("config")
+            .document("schedule"),
+            data
+        )
     }
 
     override suspend fun onboardingTransaction(): Result<Unit> {

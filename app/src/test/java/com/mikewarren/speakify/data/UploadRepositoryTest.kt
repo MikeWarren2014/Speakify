@@ -35,6 +35,7 @@ class UploadRepositoryTest: BaseDbTest(),
     private lateinit var onboardingRepository: OnboardingRepository
     private lateinit var messengerContactsRepository: MessengerContactsRepository
     private lateinit var appUsageRepository: AppUsageStatsRepository
+    private lateinit var schedulingRepository: SchedulingRepository
     private lateinit var uploadRepository: UploadRepository
 
     private val trialModelFlow = MutableStateFlow(TrialModel())
@@ -64,9 +65,11 @@ class UploadRepositoryTest: BaseDbTest(),
         )
         messengerContactsRepository = mockk(relaxed = true)
         appUsageRepository = AppUsageStatsRepository()
+        schedulingRepository = SchedulingRepository(userSettingsDataStore)
 
         uploadRepository = UploadRepository(
             settingsRepository,
+            schedulingRepository,
             appsRepository,
             messengerContactsRepository,
             onboardingRepository,

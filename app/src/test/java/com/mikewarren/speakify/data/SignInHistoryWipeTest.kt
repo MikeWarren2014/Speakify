@@ -47,6 +47,7 @@ class SignInHistoryWipeTest: BaseDbTest(),
     private lateinit var messengerContactsRepository: MessengerContactsRepository
     private lateinit var onboardingRepository: OnboardingRepository
     private lateinit var trialRepository: TrialRepository
+    private lateinit var schedulingRepository: SchedulingRepository
     private lateinit var analyticsHelper: AnalyticsHelper
 
     private lateinit var downloadRepository: DownloadRepository
@@ -84,11 +85,19 @@ class SignInHistoryWipeTest: BaseDbTest(),
         trialRepository = TrialRepositoryImpl(settingsRepository, deviceIdProvider, userSettingsDataStore)
         
         analyticsHelper = mockk(relaxed = true)
+        schedulingRepository = SchedulingRepository(userSettingsDataStore)
 
-        downloadRepository = DownloadRepository(settingsRepository, appsRepository, messengerContactsRepository, onboardingRepository)
+        downloadRepository = DownloadRepository(
+            settingsRepository,
+            schedulingRepository,
+            appsRepository,
+            messengerContactsRepository,
+            onboardingRepository
+        )
 
         uploadRepository = UploadRepository(
             settingsRepository,
+            schedulingRepository,
             appsRepository,
             messengerContactsRepository,
             onboardingRepository,
@@ -97,6 +106,7 @@ class SignInHistoryWipeTest: BaseDbTest(),
         
         firestoreSyncRepository = FirestoreSyncRepository(settingsRepository,
             appsRepository,
+            schedulingRepository,
             messengerContactsRepository,
             onboardingRepository,
             trialRepository,

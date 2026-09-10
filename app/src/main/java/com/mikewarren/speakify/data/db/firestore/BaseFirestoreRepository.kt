@@ -8,11 +8,12 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.mikewarren.speakify.utils.log.ITaggable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
+import kotlin.time.Duration.Companion.seconds
 
 abstract class BaseFirestoreRepository : ITaggable {
 
-    protected val firestore = FirebaseFirestore.getInstance()
-    protected val firebaseAuth = FirebaseAuth.getInstance()
+    protected val firestore: FirebaseFirestore get() = FirebaseFirestore.getInstance()
+    protected val firebaseAuth: FirebaseAuth get() = FirebaseAuth.getInstance()
 
     /**
      * Executes a Firestore call with retries if the client is offline, unavailable,
@@ -43,11 +44,20 @@ abstract class BaseFirestoreRepository : ITaggable {
                     retries--
                     Log.w(TAG, "Firestore call failed (code: $code, isAuthMissing: $isAuthMissing, isOffline: $isOffline), retrying in 2s... ($retries left)", e)
 
+                    if (isAuthMissing) {
+                        try {
+                            firebaseAuth.signInAnonymously().await()
+                            Log.d(TAG, "Successfully signed in anonymously after auth failure")
+                        } catch (signInEx: Exception) {
+                            Log.e(TAG, "Failed to sign in anonymously during retry", signInEx)
+                        }
+                    }
+
                     if (isUnavailable || isOffline) {
                         try { firestore.enableNetwork().await() } catch (_: Exception) {}
                     }
 
-                    delay(2000)
+                    delay(2.seconds)
                     continue
                 }
                 throw e

@@ -216,7 +216,7 @@
     <string name="title_settings">Ajustes</string>
     <string name="title_support">Soporte y comentarios</string>
     <string name="title_legal">Legal</string>
-    <string name="title_scheduling">Horario</string>
+    <string name="title_scheduling">Estado y programación</string>
 
     <!-- Important Apps View -->
     <string name="filter_apps">Filtrar aplicaciones</string>
@@ -305,9 +305,10 @@
     <string name="scheduling_pause_duration_text">¿Cuánto tiempo debe pausarse Speakify?</string>
     <string name="scheduling_pause_duration_hours">Horas</string>
     <string name="scheduling_pause_duration_minutes">Minutos</string>
-    <string name="scheduling_pause_duration_error_both_fields">Por favor, ingresa un tiempo.</string>
     <string name="scheduling_pause_duration_error_non_digit_characters">Este campo solo puede contener números.</string>
     <string name="scheduling_pause_duration_error_hours_too_long">Este campo solo puede tener 3 dígitos o menos.</string>
+    <string name="scheduling_confirm_indefinite_pause">Confirmar pausa indefinida</string>
+    <string name="scheduling_confirm_timed_pause">Confirmar pausa por %1$s</string>
     <string name="confirm">Confirmar</string>
 
     <string name="scheduling_schedule_loading">Cargando horario...</string>
@@ -318,6 +319,7 @@
     <string name="day_schedule_all_day">Todo el día</string>
     <string name="day_schedule_select_times">Seleccionar horas</string>
     <string name="day_schedule_off">Desactivado</string>
+    <string name="day_schedule_copy_from_previous_day">Copiar del día anterior</string>
 
     <!-- About View -->
     <string name="about_header_what">¿Qué es esta aplicación?</string>

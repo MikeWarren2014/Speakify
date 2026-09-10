@@ -216,7 +216,7 @@
     <string name="title_settings">सेटिंग्स</string>
     <string name="title_support">सपोर्ट और फीडबैक</string>
     <string name="title_legal">कानूनी</string>
-    <string name="title_scheduling">निर्धारण (Scheduling)</string>
+    <string name="title_scheduling">स्थिति और निर्धारण</string>
 
     <!-- Important Apps View -->
     <string name="filter_apps">ऐप्स फ़िल्टर करें</string>
@@ -304,9 +304,10 @@
     <string name="scheduling_pause_duration_text">Speakify को कितनी देर के लिए रोका जाना चाहिए?</string>
     <string name="scheduling_pause_duration_hours">घंटे</string>
     <string name="scheduling_pause_duration_minutes">मिनट</string>
-    <string name="scheduling_pause_duration_error_both_fields">कृपया समय दर्ज करें।</string>
     <string name="scheduling_pause_duration_error_non_digit_characters">इस फ़ील्ड में केवल संख्याएँ हो सकती हैं।</string>
     <string name="scheduling_pause_duration_error_hours_too_long">यह फ़ील्ड केवल 3 अंकों या उससे कम की हो सकती है।</string>
+    <string name="scheduling_confirm_indefinite_pause">अनिश्चितकालीन रोक की पुष्टि करें</string>
+    <string name="scheduling_confirm_timed_pause">%1$s के लिए रोक की पुष्टि करें</string>
     <string name="confirm">पुष्टि करें</string>
 
     <string name="scheduling_schedule_loading">शेड्यूल लोड हो रहा है...</string>
@@ -317,6 +318,7 @@
     <string name="day_schedule_all_day">पूरे दिन</string>
     <string name="day_schedule_select_times">समय चुनें</string>
     <string name="day_schedule_off">बंद</string>
+    <string name="day_schedule_copy_from_previous_day">पिछले दिन से कॉपी करें</string>
 
     <!-- About View -->
     <string name="about_header_what">यह ऐप क्या है?</string>

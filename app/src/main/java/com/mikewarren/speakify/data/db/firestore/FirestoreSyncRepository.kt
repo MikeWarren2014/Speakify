@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.MessengerContactsRepository
 import com.mikewarren.speakify.data.OnboardingRepository
+import com.mikewarren.speakify.data.SchedulingRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.TrialRepository
 import com.mikewarren.speakify.data.TrialStatus
@@ -28,10 +29,10 @@ import javax.inject.Singleton
 class FirestoreSyncRepository @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val appsRepository: AppsRepository,
+    private val schedulingRepository: SchedulingRepository,
     private val messengerContactsRepository: MessengerContactsRepository,
     private val onboardingRepository: OnboardingRepository,
     private val trialRepository: TrialRepository,
-
     private val uploadRepository: UploadRepository,
     private val downloadRepository: DownloadRepository
 ) {
@@ -39,7 +40,7 @@ class FirestoreSyncRepository @Inject constructor(
     private val syncMutex = Mutex()
     private var observerJob: Job? = null
     private var isReadyToUpload = false
-    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseAuth: FirebaseAuth get() = FirebaseAuth.getInstance()
 
     init {
         startObservingChanges()
@@ -58,6 +59,7 @@ class FirestoreSyncRepository @Inject constructor(
                 settingsRepository.minVolume,
                 settingsRepository.isCrashlyticsEnabled,
                 settingsRepository.appSettings,
+                schedulingRepository.scheduling,
                 appsRepository.importantApps,
                 messengerContactsRepository.recentContacts,
                 onboardingRepository.onboardingModel,
@@ -85,6 +87,11 @@ class FirestoreSyncRepository @Inject constructor(
                     }
                 }
         }
+    }
+
+    fun stopSync() {
+        isReadyToUpload = false
+        observerJob?.cancel()
     }
 
     /**

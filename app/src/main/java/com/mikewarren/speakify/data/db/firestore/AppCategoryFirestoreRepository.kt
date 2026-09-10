@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class AppCategoryFirestoreRepository @Inject constructor() : BaseFirestoreRepository() {
 
-    private val categoriesCollection = firestore.collection("appCategories")
+    private val categoriesCollection get() = firestore.collection("appCategories")
 
     suspend fun fetchAllCategories(): List<AppCategoryModel> {
         return try {

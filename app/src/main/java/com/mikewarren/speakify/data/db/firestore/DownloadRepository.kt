@@ -1,11 +1,13 @@
 package com.mikewarren.speakify.data.db.firestore
 
+import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.NotificationSource
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.MessengerContactsRepository
 import com.mikewarren.speakify.data.OnboardingRepository
+import com.mikewarren.speakify.data.SchedulingRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.db.RecentMessengerContactModel
 import com.mikewarren.speakify.data.db.UserAppModel
@@ -13,14 +15,22 @@ import com.mikewarren.speakify.data.models.AppCategory
 import com.mikewarren.speakify.data.models.FeedbackModel
 import com.mikewarren.speakify.data.models.OnboardingCategorySelection
 import com.mikewarren.speakify.data.models.OnboardingModel
+import com.mikewarren.speakify.data.models.scheduling.DayScheduleModel
+import com.mikewarren.speakify.data.models.scheduling.DayScheduleType
+import com.mikewarren.speakify.data.models.scheduling.SchedulingModel
+import com.mikewarren.speakify.data.models.scheduling.StatusModel
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import kotlinx.coroutines.tasks.await
+import java.time.DayOfWeek
+import java.time.format.TextStyle
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class DownloadRepository @Inject constructor(
     private val settingsRepository: SettingsRepository,
+    private val schedulingRepository: SchedulingRepository,
     private val appsRepository: AppsRepository,
     private val messengerContactsRepository: MessengerContactsRepository,
     private val onboardingRepository: OnboardingRepository,
@@ -34,6 +44,7 @@ class DownloadRepository @Inject constructor(
     }
 
     override suspend fun settingsTransaction(): Result<Unit> {
+        Log.d("DownloadRepo", "Restoring settings for user $userId")
         val settingsSnapshot = safeFirestoreCall {
             userDoc.collection("config")
                 .document("settings")
@@ -42,6 +53,7 @@ class DownloadRepository @Inject constructor(
         }
         
         if (!settingsSnapshot.exists()) {
+            Log.d("DownloadRepo", "No settings document found")
             return Result.success(Unit)
         }
 
@@ -61,11 +73,45 @@ class DownloadRepository @Inject constructor(
             documentSnapshot.getBoolean("isCrashlyticsEnabled")?.let {
                 settingsRepository.setCrashlyticsEnabled(it)
             }
+        }
+    }
 
+    override suspend fun schedulingTransaction(): Result<Unit> {
+        val schedulingSnapshot = safeFirestoreCall {
+            userDoc.collection("config")
+                .document("schedule")
+                .get()
+                .await()
+        }
+
+        if (!schedulingSnapshot.exists()) {
+            return Result.success(Unit)
+        }
+
+        return transaction(schedulingSnapshot) { doc ->
+            val statusMap = doc.get("status") as? Map<*, *>
+            val weeklyScheduleMap = doc.get("weeklySchedule") as? Map<*, *>
+
+            val isAppOn = statusMap?.get("isAppOn") as? Boolean ?: true
+            val turnOnTime = statusMap?.get("turnOnTime") as? Long
+            val statusModel = if (isAppOn) StatusModel.On else StatusModel.Off(turnOnTime)
+
+            val weeklySchedule = DayOfWeek.entries.associateWith { day ->
+                val dayMap = weeklyScheduleMap?.get(day.name) as? Map<*, *>
+                DayScheduleModel(
+                    dayName = dayMap?.get("dayName") as? String ?: day.getDisplayName(TextStyle.FULL, Locale.getDefault()),
+                    type = DayScheduleType.valueOf(dayMap?.get("type") as? String ?: DayScheduleType.ALL_DAY.name),
+                    fromTime = dayMap?.get("fromTime") as? String ?: "09:00",
+                    toTime = dayMap?.get("toTime") as? String ?: "17:00"
+                )
+            }
+
+            schedulingRepository.updateScheduling(SchedulingModel(statusModel, weeklySchedule))
         }
     }
 
     override suspend fun onboardingTransaction(): Result<Unit> {
+        Log.d("DownloadRepo", "Restoring onboarding data for user $userId")
         val onboardingSnapshot = safeFirestoreCall {
             userDoc
                 .collection("onboarding")
@@ -75,6 +121,7 @@ class DownloadRepository @Inject constructor(
         }
 
         if (!onboardingSnapshot.exists()) {
+            Log.d("DownloadRepo", "No onboarding document found in Firestore")
             return Result.success(Unit)
         }
 
@@ -87,6 +134,8 @@ class DownloadRepository @Inject constructor(
             val hasShownRatingsPrompt = doc.getBoolean("hasShownRatingsPrompt") ?: false
             val hasShownTrialConversionPrompt = doc.getBoolean("hasShownTrialConversionPrompt") ?: false
             val timestamp = doc.getTimestamp("timestamp")?.toDate()?.time
+
+            Log.d("DownloadRepo", "Found onboarding step: $onboardingStep")
 
             @Suppress("UNCHECKED_CAST")
             val importantAppCategories = (doc.get("importantAppCategories") as? List<Map<String, Any>>)?.mapNotNull { map ->
