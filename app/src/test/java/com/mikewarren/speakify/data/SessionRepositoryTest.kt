@@ -14,6 +14,7 @@ import com.mikewarren.speakify.data.models.OnboardingModel
 import com.mikewarren.speakify.data.models.TrialModel
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
+import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -316,6 +317,68 @@ class SessionRepositoryTest {
         assertEquals(null, repository.lastDataBundle?.user)
         assertEquals(OnboardingUiState.Completed, repository.lastDataBundle?.onboardingStep)
         assertEquals(true, repository.lastDataBundle?.hasShownRatingsPrompt)
+    }
+
+    @Test
+    fun `signing out and signing back in restores onboarding state and results in SignedIn state`() = runTest {
+        val repository = createRepository()
+
+        // 1. Initial login - onboarding completed
+        isInitializedFlow.value = true
+        userFlow.value = createMockUser("user_123")
+        isNewDirectSignUpFlow.value = false
+        onboardingStepFlow.value = OnboardingUiState.Completed
+        trialModelFlow.value = TrialModel(status = TrialStatus.NotNeeded)
+
+        advanceUntilIdle()
+        assertEquals(MainUiState.SignedIn, repository.uiState.value)
+
+        // 2. Sign out
+        userFlow.value = null
+        advanceUntilIdle()
+        assertEquals(MainUiState.SignedOut, repository.uiState.value)
+
+        // Simulate data clear on sign out that happens in repositories
+        onboardingStepFlow.value = OnboardingUiState.NotStarted
+        advanceUntilIdle()
+
+        // 3. Sign back in
+        val user = createMockUser("user_123")
+
+        // Mock the restoration process to update the flows
+        coEvery { firestoreSyncRepository.downloadAndRestoreData() } returns Result.success(Unit)
+
+        userFlow.value = user
+        advanceUntilIdle()
+
+        // Verify that we reached SignedIn state, not Onboarding
+        assertEquals(MainUiState.SignedIn, repository.uiState.value)
+        coVerify(atLeast = 1) { firestoreSyncRepository.downloadAndRestoreData() }
+    }
+
+    @Test
+    fun `signing back in traps user in onboarding if restore fails`() = runTest {
+        val repository = createRepository()
+
+        // 1. Initial setup - user is logged out, onboarding cleared
+        isInitializedFlow.value = true
+        userFlow.value = null
+        onboardingStepFlow.value = OnboardingUiState.NotStarted
+        trialModelFlow.value = TrialModel(status = TrialStatus.NotNeeded)
+        advanceUntilIdle()
+        assertEquals(MainUiState.SignedOut, repository.uiState.value)
+
+        // 2. User signs in, but restoration fails
+        val user = createMockUser("user_123")
+        coEvery { firestoreSyncRepository.downloadAndRestoreData() } returns Result.failure(Exception("Firestore Terminated"))
+
+        userFlow.value = user
+        advanceUntilIdle()
+
+        // THEN: The user should be logged out (or at least NOT in Onboarding)
+        // If the bug exists, they will be trapped in Onboarding(NotStarted) because the failure was ignored
+        // and reactToSessionState proceeded with the zero-valued bundle.
+        assertEquals(MainUiState.SignedOut, repository.uiState.value)
     }
 
     private fun createRepository() = SessionRepository(
