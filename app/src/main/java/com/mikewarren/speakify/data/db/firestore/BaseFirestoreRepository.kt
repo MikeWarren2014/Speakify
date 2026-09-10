@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.mikewarren.speakify.utils.log.ITaggable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
+import kotlin.time.Duration.Companion.seconds
 
 abstract class BaseFirestoreRepository : ITaggable {
 
@@ -56,7 +57,7 @@ abstract class BaseFirestoreRepository : ITaggable {
                         try { firestore.enableNetwork().await() } catch (_: Exception) {}
                     }
 
-                    delay(2000)
+                    delay(2.seconds)
                     continue
                 }
                 throw e

@@ -366,21 +366,21 @@ class SessionRepository @Inject constructor(
                                 val isSuccessful = task.isSuccessful
                                 Log.d("SessionRepo", "Firebase auth result: $isSuccessful")
 
-                                if (isSuccessful) {
-                                    // Force refresh token to ensure Firestore has the latest identity
-                                    firebaseAuth.currentUser?.getIdToken(true)
-                                        ?.addOnCompleteListener { _ ->
-                                            continuation.resume(Result.success(Unit))
-                                        }
-                                } else {
+                                if (!isSuccessful) {
                                     Log.d("SessionRepo", "Firebase auth failed with message: ${task.exception?.message}")
                                     val exception = task.exception
-                                    if (exception?.message?.contains("PROVIDER_ALREADY_LINKED") == true) {
-                                        continuation.resume(Result.success(Unit))
-                                    } else {
+                                    if (exception?.message?.contains("PROVIDER_ALREADY_LINKED") != true) {
                                         continuation.resume(Result.failure(exception ?: Exception("Unknown error")))
+                                        return@addOnCompleteListener
                                     }
+                                    continuation.resume(Result.success(Unit))
                                 }
+                                // Force refresh token to ensure Firestore has the latest identity
+                                firebaseAuth.currentUser
+                                    ?.getIdToken(true)
+                                    ?.addOnSuccessListener { _ ->
+                                        continuation.resume(Result.success(Unit))
+                                    }
                             }
                     }
                     .onFailure { failure ->
