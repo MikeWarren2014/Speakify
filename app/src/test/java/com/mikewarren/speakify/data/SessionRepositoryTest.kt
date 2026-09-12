@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.mikewarren.speakify.data.db.firestore.AccountDeletionFirestoreRepository
 import com.mikewarren.speakify.data.db.firestore.FirestoreSyncRepository
+import com.mikewarren.speakify.data.fakes.FakeFirestore
 import com.mikewarren.speakify.data.models.FeedbackModel
 import com.mikewarren.speakify.data.models.OnboardingModel
 import com.mikewarren.speakify.data.models.TrialModel
@@ -20,18 +21,12 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.mockkStatic
-import io.mockk.unmockkAll
 import io.mockk.verify
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -42,9 +37,7 @@ import org.robolectric.annotation.Config
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
-class SessionRepositoryTest {
-
-    private val testDispatcher = StandardTestDispatcher()
+class SessionRepositoryTest: BaseDbTest() {
 
     private lateinit var firestoreSyncRepository: FirestoreSyncRepository
     private lateinit var accountDeletionFirestoreRepository: AccountDeletionFirestoreRepository
@@ -65,13 +58,12 @@ class SessionRepositoryTest {
     private val hasShownTrialConversionPromptFlow = MutableStateFlow(false)
     private val onboardingModelFlow = MutableStateFlow(OnboardingModel())
     private val feedbackFlow = MutableStateFlow<FeedbackModel?>(null)
+    
+    private val mockUserId = "user_123"
 
     @Before
-    fun setUp() {
-        Dispatchers.setMain(testDispatcher)
-
-        mockkStatic(Dispatchers::class)
-        every { Dispatchers.IO } returns testDispatcher
+    override fun setUp() {
+        super.setUp()
 
         firestoreSyncRepository = mockk(relaxed = true)
         accountDeletionFirestoreRepository = mockk(relaxed = true)
@@ -100,12 +92,6 @@ class SessionRepositoryTest {
         every { onboardingRepository.feedback } returns feedbackFlow
 
         every { firebaseAuth.signInAnonymously() } returns Tasks.forResult(mockk())
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-        unmockkAll()
     }
 
     @Test
@@ -293,7 +279,7 @@ class SessionRepositoryTest {
 
         // GIVEN: user logs in, completes onboarding, and has seen ratings prompt
         isInitializedFlow.value = true
-        userFlow.value = createMockUser("user_123")
+        userFlow.value = createMockUser(mockUserId)
         isNewDirectSignUpFlow.value = false
         onboardingStepFlow.value = OnboardingUiState.Completed
         hasShownRatingsPromptFlow.value = true
@@ -323,11 +309,18 @@ class SessionRepositoryTest {
     fun `signing out and signing back in restores onboarding state and results in SignedIn state`() = runTest {
         val repository = createRepository()
 
+        // create FakeFirestore document onboarding
+        fakeFirestore.setData("users/${mockUserId}/onboarding/onboarding", mapOf(
+            "onboardingStep" to "Completed",
+            "timestamp" to System.currentTimeMillis(),
+            "hasShownRatingsPrompt" to true,
+            "hasShownTrialConversionPrompt" to true,
+        ))
+
         // 1. Initial login - onboarding completed
         isInitializedFlow.value = true
-        userFlow.value = createMockUser("user_123")
+        userFlow.value = createMockUser(mockUserId)
         isNewDirectSignUpFlow.value = false
-        onboardingStepFlow.value = OnboardingUiState.Completed
         trialModelFlow.value = TrialModel(status = TrialStatus.NotNeeded)
 
         advanceUntilIdle()
@@ -339,11 +332,10 @@ class SessionRepositoryTest {
         assertEquals(MainUiState.SignedOut, repository.uiState.value)
 
         // Simulate data clear on sign out that happens in repositories
-        onboardingStepFlow.value = OnboardingUiState.NotStarted
         advanceUntilIdle()
 
         // 3. Sign back in
-        val user = createMockUser("user_123")
+        val user = createMockUser(mockUserId)
 
         // Mock the restoration process to update the flows
         coEvery { firestoreSyncRepository.downloadAndRestoreData() } returns Result.success(Unit)
@@ -369,7 +361,7 @@ class SessionRepositoryTest {
         assertEquals(MainUiState.SignedOut, repository.uiState.value)
 
         // 2. User signs in, but restoration fails
-        val user = createMockUser("user_123")
+        val user = createMockUser(mockUserId)
         coEvery { firestoreSyncRepository.downloadAndRestoreData() } returns Result.failure(Exception("Firestore Terminated"))
 
         userFlow.value = user
