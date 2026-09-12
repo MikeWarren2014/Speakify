@@ -25,18 +25,17 @@ jobs:
         with:
           gradle-home-cache-cleanup: true
 
-# NOTE: Commented out only because, at run time, GitHub couldn't find the testReleaseUnitTest task
-#      # Run unit tests before building the AAB
-#      - name: Run Unit Tests
-#        run: ./gradlew testReleaseUnitTest
-#
-#      # Upload test results so you can view failures in GitHub
-#      - name: Upload Test Reports
-#        if: always() # Ensures reports upload even if tests fail
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: unit-test-reports
-#          path: app/build/reports/tests/testReleaseUnitTest/
+      # Run unit tests before building the AAB
+      - name: Run Unit Tests
+        run: ./gradlew testReleaseUnitTest
+
+      # Upload test results so you can view failures in GitHub
+      - name: Upload Test Reports
+        if: always() # Ensures reports upload even if tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-reports
+          path: app/build/reports/tests/testReleaseUnitTest/
 
       - name: Extract versionCode and versionName
         id: get_versions
