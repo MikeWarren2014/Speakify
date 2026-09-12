@@ -295,6 +295,7 @@ class SessionRepository @Inject constructor(
         if (isSyncing || syncedUserId == user.id) return Result.success(false)
 
         isSyncing = true
+        var hasSyncedSuccessfully: Boolean = false
         return try {
             val signInResult = signInToFirebase(user)
             if (signInResult.isFailure) {
@@ -309,6 +310,7 @@ class SessionRepository @Inject constructor(
             if (syncResult.isFailure) {
                 return Result.failure(syncResult.exceptionOrNull() ?: Exception("Failed to sync data from cloud"))
             }
+            hasSyncedSuccessfully = true
 
             syncedUserId = user.id
             Log.d("SessionRepo", "Successfully synced data for user ${user.id}")
@@ -318,9 +320,8 @@ class SessionRepository @Inject constructor(
             Result.failure(e)
         } finally {
             isSyncing = false
-            // Now that we're done (success or fail), we trigger a re-evaluation
-            // without being blocked by the 'isSyncing' flag.
-            lastDataBundle?.let { reactToSessionState(it) }
+            if (hasSyncedSuccessfully)
+                lastDataBundle?.let { reactToSessionState(it) }
         }
     }
 
