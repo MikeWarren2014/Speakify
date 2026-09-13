@@ -4,8 +4,11 @@ import android.content.Context
 import android.service.notification.StatusBarNotification
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
+import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.services.TTSManager
+import com.mikewarren.speakify.strategies.IsPackageName
 
+@IsPackageName(PackageNames.FedEx)
 class FedExNotificationStrategy(notification: StatusBarNotification,
     appSettingsModel: AppSettingsModel?,
     context: Context,

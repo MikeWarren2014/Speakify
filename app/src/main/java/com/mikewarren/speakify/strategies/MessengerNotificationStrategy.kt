@@ -22,6 +22,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@InPackageNameList("FacebookMessengerAppList")
 class MessengerNotificationStrategy(
     notification: StatusBarNotification,
     appSettingsModel: AppSettingsModel?,

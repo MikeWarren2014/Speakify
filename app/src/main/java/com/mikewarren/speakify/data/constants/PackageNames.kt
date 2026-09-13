@@ -58,4 +58,13 @@ object PackageNames {
         "com.ebay.mobile",
         "com.walmart.android",
     )
+
+    fun GetListByName(name: String): List<String> {
+        return when (name) {
+            "PhoneAppList" -> PhoneAppList
+            "MessagingAppList" -> MessagingAppList
+            "FacebookMessengerAppList" -> FacebookMessengerAppList
+            else -> emptyList()
+        }
+    }
 }

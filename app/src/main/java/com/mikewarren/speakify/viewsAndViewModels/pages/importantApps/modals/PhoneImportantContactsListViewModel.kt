@@ -6,6 +6,7 @@ import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.data.NotificationSource
 import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.viewsAndViewModels.widgets.IStringConverter
 import com.mikewarren.speakify.viewsAndViewModels.widgets.UiText
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,6 +16,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+@NotificationListComponent(listName = "PhoneAppList")
+@NotificationListComponent(listName = "MessagingAppList")
+@NotificationListComponent(packageName = PackageNames.GoogleVoice)
 class PhoneImportantContactsListViewModel(
     override var settingsRepository: SettingsRepository,
     override var selectedNotificationSources: List<NotificationSource>,

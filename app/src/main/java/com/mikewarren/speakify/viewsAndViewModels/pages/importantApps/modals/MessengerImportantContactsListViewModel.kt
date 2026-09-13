@@ -8,6 +8,7 @@ import com.mikewarren.speakify.data.events.MessengerContactListDataRequester
 import com.mikewarren.speakify.viewsAndViewModels.widgets.UiText
 import kotlinx.coroutines.flow.StateFlow
 
+@NotificationListComponent(listName = "FacebookMessengerAppList")
 class MessengerImportantContactsListViewModel(
     override var settingsRepository: SettingsRepository,
     selectedNotificationSources: List<NotificationSource>,

@@ -8,12 +8,14 @@ import android.util.Log
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
+import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import com.mikewarren.speakify.utils.SearchUtils
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
 
+@InPackageNameList("MessagingAppList")
 class SMSNotificationStrategy(notification: StatusBarNotification,
                               appSettingsModel: AppSettingsModel?,
                               context: Context,

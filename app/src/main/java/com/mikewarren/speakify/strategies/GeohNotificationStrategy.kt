@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.annotation.VisibleForTesting
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
+import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import com.mikewarren.speakify.utils.SearchUtils
@@ -13,6 +14,7 @@ import com.mikewarren.speakify.utils.TimeUtils
 import com.mikewarren.speakify.utils.log.ITaggable
 import java.time.DayOfWeek
 
+@IsPackageName(PackageNames.GEOH)
 class GeohNotificationStrategy(notification: StatusBarNotification,
                                appSettingsModel: AppSettingsModel?,
                                context: Context,

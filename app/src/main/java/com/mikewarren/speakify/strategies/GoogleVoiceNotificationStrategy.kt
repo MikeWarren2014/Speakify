@@ -6,10 +6,12 @@ import android.service.notification.StatusBarNotification
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
+import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import com.mikewarren.speakify.utils.SearchUtils
 
+@IsPackageName(PackageNames.GoogleVoice)
 class GoogleVoiceNotificationStrategy(notification: StatusBarNotification,
                                       appSettingsModel: AppSettingsModel?,
                                       context: Context,

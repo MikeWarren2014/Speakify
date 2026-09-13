@@ -10,7 +10,6 @@ import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.annotation.RequiresPermission
 import com.mikewarren.speakify.data.AppSettingsModel
-import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.PhoneStateStore
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.PackageNames
@@ -26,7 +25,6 @@ import com.mikewarren.speakify.utils.log.ITaggable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
