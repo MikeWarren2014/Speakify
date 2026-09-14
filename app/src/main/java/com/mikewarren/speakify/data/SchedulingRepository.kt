@@ -32,14 +32,18 @@ class SchedulingRepository @Inject constructor(
 
     suspend fun refreshSchedulingStatus() {
         val schedulingModel = scheduling.first()
-        updateScheduling(getUpdatedScheduling(schedulingModel))
+        updateScheduling(getUpdatedScheduling(schedulingModel, LocalDateTime.now()))
     }
 
-    fun getUpdatedScheduling(schedulingModel: SchedulingModel) : SchedulingModel {
-        // get the time of day, and the day of the week
-        val currentTimeMillis = System.currentTimeMillis()
-        val dayOfWeek = LocalDateTime.now(ZoneId.systemDefault())
-            .dayOfWeek
+    fun getUpdatedScheduling(
+        schedulingModel: SchedulingModel,
+        now: LocalDateTime,
+    ) : SchedulingModel {
+        // Deriving currentTimeMillis from 'now'
+        val currentTimeMillis = now.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        
+        // get the day of the week
+        val dayOfWeek = now.dayOfWeek
 
         // Status check takes priority, then check by schedule
         val statusModel = schedulingModel.statusModel
@@ -63,13 +67,14 @@ class SchedulingRepository @Inject constructor(
             return schedulingModel.copy(statusModel = StatusModel.Off())
 
         val fromDateTime = TimeUtils.GetLocalDateTimeFrom(dayOfWeek,
-            daySchedule.fromTime)
+            daySchedule.fromTime, now)
         val toDateTime = TimeUtils.GetLocalDateTimeFrom(dayOfWeek,
-            daySchedule.toTime)
+            daySchedule.toTime, now)
 
         // 1. Get the current system offset
-        val zoneId = ZoneId.systemDefault()
-        val offset = zoneId.rules.getOffset(Instant.now())
+        val offset = ZoneId.systemDefault()
+            .rules
+            .getOffset(Instant.now())
 
         // 2. Convert your LocalDateTime to an Epoch Milli to compare with currentTime
         val fromMillis = fromDateTime.toInstant(offset).toEpochMilli()
