@@ -13,8 +13,7 @@ import java.time.temporal.ChronoField
 import java.util.Locale
 
 object TimeUtils {
-    fun GetLocalDateTimeFrom(dayOfWeek: DayOfWeek, hhMM: String): LocalDateTime {
-        val now = LocalDateTime.now()
+    fun GetLocalDateTimeFrom(dayOfWeek: DayOfWeek, hhMM: String, now: LocalDateTime = LocalDateTime.now()): LocalDateTime {
         var localDateTime = now.with(dayOfWeek)
 
         // If the day has already passed this week, move to next week

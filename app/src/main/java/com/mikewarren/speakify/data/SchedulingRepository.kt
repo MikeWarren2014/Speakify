@@ -35,64 +35,95 @@ class SchedulingRepository @Inject constructor(
         updateScheduling(getUpdatedScheduling(schedulingModel))
     }
 
-    fun getUpdatedScheduling(schedulingModel: SchedulingModel) : SchedulingModel {
-        // get the time of day, and the day of the week
-        val currentTimeMillis = System.currentTimeMillis()
-        val dayOfWeek = LocalDateTime.now(ZoneId.systemDefault())
-            .dayOfWeek
-
-        // Status check takes priority, then check by schedule
+    fun getUpdatedScheduling(
+        schedulingModel: SchedulingModel,
+    ) : SchedulingModel {
+        val now = LocalDateTime.now()
+        val currentTimeMillis = now
+            .atZone(ZoneId.systemDefault())
+            .toInstant()
+            .toEpochMilli()
         val statusModel = schedulingModel.statusModel
-        if (statusModel is StatusModel.Off) {
-            val turnOnTime = statusModel.turnOnTime ?: return schedulingModel
 
-            if (currentTimeMillis < turnOnTime)
-                return schedulingModel
-
-            return schedulingModel.copy(statusModel = StatusModel.On)
-        }
-
-        // check the schedule for that day
+        // 1. Determine what the schedule says we SHOULD be.
+        val dayOfWeek = now.dayOfWeek
         val daySchedule = schedulingModel.weeklySchedule[dayOfWeek]
-            ?: return schedulingModel
 
-        if (daySchedule.type == DayScheduleType.ALL_DAY)
-            return schedulingModel.copy(statusModel = StatusModel.On)
-
-        if (daySchedule.type == DayScheduleType.OFF)
-            return schedulingModel.copy(statusModel = StatusModel.Off())
-
-        val fromDateTime = TimeUtils.GetLocalDateTimeFrom(dayOfWeek,
-            daySchedule.fromTime)
-        val toDateTime = TimeUtils.GetLocalDateTimeFrom(dayOfWeek,
-            daySchedule.toTime)
-
-        // 1. Get the current system offset
-        val zoneId = ZoneId.systemDefault()
-        val offset = zoneId.rules.getOffset(Instant.now())
-
-        // 2. Convert your LocalDateTime to an Epoch Milli to compare with currentTime
-        val fromMillis = fromDateTime.toInstant(offset).toEpochMilli()
-        var toMillis = toDateTime.toInstant(offset).toEpochMilli()
-
-        // NOTE: this is ONLY used in the overnight case (e.g. 10 AM to 1 AM)
-        if (toMillis < fromMillis) {
-            toMillis += Constants.OneDay
-        }
-
-        val nextMillis = if (currentTimeMillis < fromMillis) {
-            fromMillis
+        val scheduleResult: StatusModel = if (daySchedule == null || daySchedule.type == DayScheduleType.OFF) {
+            StatusModel.Off(getNextStartMillis(schedulingModel, now))
+        } else if (daySchedule.type == DayScheduleType.ALL_DAY) {
+            StatusModel.On
         } else {
-            toMillis
+            val fromDateTime = TimeUtils.GetLocalDateTimeFrom(dayOfWeek, daySchedule.fromTime, now)
+            val toDateTime = TimeUtils.GetLocalDateTimeFrom(dayOfWeek, daySchedule.toTime, now)
+
+            val offset = ZoneId.systemDefault().rules.getOffset(Instant.now())
+            val fromMillis = fromDateTime.toInstant(offset).toEpochMilli()
+            var toMillis = toDateTime.toInstant(offset).toEpochMilli()
+
+            if (toMillis < fromMillis) {
+                toMillis += Constants.OneDay
+            }
+
+            if (currentTimeMillis in fromMillis..toMillis) {
+                StatusModel.On
+            } else {
+                StatusModel.Off(getNextStartMillis(schedulingModel, now))
+            }
         }
 
-        // 3. Logic to determine if we are inside the window
-        val isWithinSchedule = currentTimeMillis in fromMillis..toMillis
+        // 2. Resolve current status vs schedule result
+        return when (statusModel) {
+            is StatusModel.On -> {
+                // If we are currently ON, but the schedule says OFF, we go OFF.
+                if (scheduleResult is StatusModel.Off) {
+                    schedulingModel.copy(statusModel = scheduleResult)
+                } else {
+                    schedulingModel
+                }
+            }
+            is StatusModel.Off -> {
+                val turnOnTime = statusModel.turnOnTime
 
-        if (isWithinSchedule) {
-            return schedulingModel.copy(statusModel = StatusModel.On)
+                if (turnOnTime == null) {
+                    // Permanent OFF manually set. Stay OFF.
+                    return schedulingModel
+                }
+
+                if (currentTimeMillis < turnOnTime) {
+                    // We are still in a "Pause" or scheduled OFF period.
+                    // However, we should check if the schedule has since turned ON.
+                    // If the schedule is now ON, and our turnOnTime was a *scheduled* one (not a manual pause),
+                    // we might want to turn ON. But for simplicity, we respect the turnOnTime.
+                    return schedulingModel
+                }
+
+                // turnOnTime has passed. Revert to what the schedule says.
+                schedulingModel.copy(statusModel = scheduleResult)
+            }
         }
+    }
 
-        return schedulingModel.copy(statusModel = StatusModel.Off(nextMillis))
+    private fun getNextStartMillis(schedulingModel: SchedulingModel, now: LocalDateTime): Long? {
+        val currentTimeMillis = now.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        val weeklySchedule = schedulingModel.weeklySchedule
+        
+        // Check today and the next 7 days
+        for (i in 0..7) {
+            val checkDay = now.plusDays(i.toLong())
+            val dayOfWeek = checkDay.dayOfWeek
+            val daySchedule = weeklySchedule[dayOfWeek] ?: continue
+            
+            if (daySchedule.type == DayScheduleType.OFF) continue
+            
+            val fromTime = if (daySchedule.type == DayScheduleType.ALL_DAY) "00:00" else daySchedule.fromTime
+            val fromDateTime = TimeUtils.GetLocalDateTimeWithHHMM(checkDay, fromTime)
+            val fromMillis = fromDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+            
+            if (fromMillis > currentTimeMillis) {
+                return fromMillis
+            }
+        }
+        return null
     }
 }
