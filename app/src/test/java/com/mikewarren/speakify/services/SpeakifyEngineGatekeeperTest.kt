@@ -57,6 +57,11 @@ class SpeakifyEngineGatekeeperTest: SimpleScheduleTest() {
     @Test
     fun `canSpeakNow() should return true when inside schedule`() = runTest(UnconfinedTestDispatcher()) {
         // Change schedule to include "now" (~11:30 AM)
+        val rightBeforeNoon = LocalDateTime.now()
+            .withHour(11)
+            .withMinute(30)
+        setTime(rightBeforeNoon)
+
         val onSchedule = scheduleForEachDay.copy(
             fromTime = "07:00",
             toTime = "23:00"
