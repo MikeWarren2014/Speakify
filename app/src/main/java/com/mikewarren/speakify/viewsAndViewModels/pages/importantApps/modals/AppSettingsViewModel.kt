@@ -7,16 +7,15 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.data.AppSettingsModel
-import com.mikewarren.speakify.data.NotificationSource
 import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.data.NotificationSource
 import com.mikewarren.speakify.data.SettingsRepository
-import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.services.TTSManager
+import com.mikewarren.speakify.strategies.GeneratedAdditionalSettingsRegistry
+import com.mikewarren.speakify.strategies.GeneratedNotificationListRegistry
+import com.mikewarren.speakify.strategies.NotificationStrategyRegistry
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.BaseAppAdditionalSettingsViewModel
-import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.BaseMessagingAppAdditionalSettingsViewModel
-import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.CallingAppAdditionalSettingsViewModel
-import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.MessengerAdditionalSettingsViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -27,6 +26,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.reflect.full.primaryConstructor
 
 class AppSettingsViewModel(
     val appModel: UserAppModel,
@@ -94,72 +94,48 @@ class AppSettingsViewModel(
     fun createNotificationSourceListViewModel(model: AppSettingsModel): INotificationSourceListViewModel<*>? {
         Log.d("AppSettingsViewModel", "packageName = '${appModel.packageName}' , notificationSources = ${model.notificationSources}")
 
-        if ((getPackageName() in PackageNames.PhoneAppList) ||
-            (getPackageName() in PackageNames.MessagingAppList) ||
-            (getPackageName() == PackageNames.GoogleVoice)
+        val packageName = getPackageName()
+        val kClass = NotificationStrategyRegistry.findComponentClass(
+            packageName,
+            GeneratedNotificationListRegistry.classMap
         )
-            return PhoneImportantContactsListViewModel(
-                settingsRepository,
-                model.notificationSources,
-                { importantContacts: List<NotificationSource> ->
-                    _settings.update { model: AppSettingsModel ->
-                        model.copy(notificationSources = importantContacts)
-                    }
-                },
-            )
 
-        if (PackageNames.FacebookMessengerAppList.contains(getPackageName())) {
-            return MessengerImportantContactsListViewModel(
-                settingsRepository,
-                model.notificationSources,
-                { importantContacts: List<NotificationSource> ->
-                    _settings.update { model: AppSettingsModel ->
-                        model.copy(notificationSources = importantContacts)
-                    }
-                },
-            )
+        if (kClass == null) {
+            return null
         }
 
-        return null
+        return kClass.primaryConstructor?.call(
+            settingsRepository,
+            model.notificationSources,
+            { importantContacts: List<NotificationSource> ->
+                _settings.update { model: AppSettingsModel ->
+                    model.copy(notificationSources = importantContacts)
+                }
+            }
+        ) as? INotificationSourceListViewModel<*>
+
     }
 
     private fun createAdditionalSettingsViewModel(model: AppSettingsModel): BaseAppAdditionalSettingsViewModel? {
         val packageName = getPackageName()
+        val kClass = NotificationStrategyRegistry.findComponentClass(
+            packageName,
+            GeneratedAdditionalSettingsRegistry.classMap
+        )
 
-        if (packageName in PackageNames.PhoneAppList) {
-            return CallingAppAdditionalSettingsViewModel(
-                settingsRepository,
-                model.additionalSettings,
-                onSaveSettings = { additionalSettings: Map<String, String> ->
-                    _settings.update { model: AppSettingsModel ->
-                        model.copy(additionalSettings = additionalSettings)
-                    }
-                }
-            )
+        if (kClass == null) {
+            return null
         }
-        if (packageName in PackageNames.MessagingAppList) {
-            return BaseMessagingAppAdditionalSettingsViewModel(
-                settingsRepository,
-                model.additionalSettings,
-                onSaveSettings = { additionalSettings: Map<String, String> ->
-                    _settings.update { model: AppSettingsModel ->
-                        model.copy(additionalSettings = additionalSettings)
-                    }
+
+        return kClass.primaryConstructor?.call(
+            settingsRepository,
+            model.additionalSettings,
+            { additionalSettings: Map<String, String> ->
+                _settings.update { model: AppSettingsModel ->
+                    model.copy(additionalSettings = additionalSettings)
                 }
-            )
-        }
-        if (packageName in PackageNames.FacebookMessengerAppList) {
-            return MessengerAdditionalSettingsViewModel(
-                settingsRepository,
-                model.additionalSettings,
-                onSaveSettings = { additionalSettings: Map<String, String> ->
-                    _settings.update { model: AppSettingsModel ->
-                        model.copy(additionalSettings = additionalSettings)
-                    }
-                }
-            )
-        }
-        return null
+            }
+        ) as? BaseAppAdditionalSettingsViewModel
     }
 
     fun cancel() {

@@ -6,7 +6,11 @@ import androidx.compose.runtime.setValue
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.appSettingsKeys.MessagingAppKeys
+import com.mikewarren.speakify.data.constants.PackageNames
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AdditionalSettingsComponent
 
+@AdditionalSettingsComponent(listName = "MessagingAppList")
+@AdditionalSettingsComponent(packageName = PackageNames.GoogleVoice)
 open class BaseMessagingAppAdditionalSettingsViewModel(
     override var settingsRepository: SettingsRepository,
     initialAdditionalSettings: Map<String, String>,

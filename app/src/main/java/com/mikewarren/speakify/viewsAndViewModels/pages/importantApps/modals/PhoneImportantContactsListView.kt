@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.NotificationSource
+import com.mikewarren.speakify.data.constants.PackageNames
 import kotlinx.coroutines.flow.collectLatest
 
 /**
@@ -56,6 +57,9 @@ class PickPhoneNumbers : ActivityResultContract<Unit?, List<Uri>>() {
     }
 }
 
+@NotificationListComponent(listName = "PhoneAppList")
+@NotificationListComponent(listName = "MessagingAppList")
+@NotificationListComponent(packageName = PackageNames.GoogleVoice)
 @Composable
 fun PhoneImportantContactsListView(viewModel: PhoneImportantContactsListViewModel) {
     val context = LocalContext.current

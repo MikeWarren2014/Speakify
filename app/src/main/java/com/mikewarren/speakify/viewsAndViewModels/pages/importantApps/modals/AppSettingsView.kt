@@ -23,13 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.mikewarren.speakify.R
-import com.mikewarren.speakify.data.constants.PackageNames
-import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.BaseMessagingAppAdditionalSettingsViewModel
-import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.CallingAppAdditionalSettingsView
-import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.CallingAppAdditionalSettingsViewModel
-import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.MessagingAppAdditionalSettingsView
-import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.MessengerAdditionalSettingsView
-import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets.MessengerAdditionalSettingsViewModel
+import com.mikewarren.speakify.strategies.GeneratedAdditionalSettingsRegistry
+import com.mikewarren.speakify.strategies.GeneratedNotificationListRegistry
+import com.mikewarren.speakify.strategies.NotificationStrategyRegistry
 
 @Composable
 fun AppSettingsView(
@@ -119,37 +115,28 @@ fun AppSettingsView(
 @Composable
 fun GetAdditionalSettingsView(viewModel: AppSettingsViewModel) {
     val packageName = viewModel.getPackageName()
+    val viewFunc = NotificationStrategyRegistry.findComponentView(
+        packageName,
+        GeneratedAdditionalSettingsRegistry.viewMap
+    )
 
-    if (packageName in PackageNames.PhoneAppList) {
-        return CallingAppAdditionalSettingsView(viewModel.childAdditionalSettingsViewModel as CallingAppAdditionalSettingsViewModel)
-    }
-
-    if ((packageName in PackageNames.MessagingAppList) ||
-        (packageName == PackageNames.GoogleVoice)) {
-        return MessagingAppAdditionalSettingsView(viewModel.childAdditionalSettingsViewModel as BaseMessagingAppAdditionalSettingsViewModel)
-    }
-
-    if (packageName in PackageNames.FacebookMessengerAppList) {
-        return MessengerAdditionalSettingsView(viewModel.childAdditionalSettingsViewModel as MessengerAdditionalSettingsViewModel)
-    }
+    viewFunc?.invoke(viewModel.childAdditionalSettingsViewModel!!)
 }
 
 @Composable
 fun GetChildListView(viewModel: AppSettingsViewModel) {
     val packageName = viewModel.getPackageName()
-
-    if ((packageName in PackageNames.PhoneAppList) ||
-        (packageName in PackageNames.MessagingAppList) ||
-        (packageName == PackageNames.GoogleVoice)) {
-        return PhoneImportantContactsListView(viewModel.childNotificationListViewModel as PhoneImportantContactsListViewModel)
-    }
-
-    if (packageName in PackageNames.FacebookMessengerAppList) {
-        return MessengerImportantContactsListView(viewModel.childNotificationListViewModel as MessengerImportantContactsListViewModel)
-    }
+    val viewFunc = NotificationStrategyRegistry.findComponentView(
+        packageName,
+        GeneratedNotificationListRegistry.viewMap
+    )
 
     if (viewModel.childNotificationListViewModel == null)
         return NotSupportedView(viewModel.appModel.appName)
+
+    if (viewFunc != null) {
+        return viewFunc.invoke(viewModel.childNotificationListViewModel!!)
+    }
 
     return NotificationSourceListView(viewModel.childNotificationListViewModel!!, {})
 }

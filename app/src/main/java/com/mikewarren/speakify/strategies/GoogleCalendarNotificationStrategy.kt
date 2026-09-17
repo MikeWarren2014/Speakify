@@ -8,6 +8,7 @@ import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
+import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.TimeUtils
 import kotlinx.coroutines.flow.callbackFlow
@@ -17,6 +18,7 @@ import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoField
 import java.util.Locale
 
+@IsPackageName(PackageNames.GoogleCalendar)
 class GoogleCalendarNotificationStrategy(
     notification: StatusBarNotification,
     appSettingsModel: AppSettingsModel?,

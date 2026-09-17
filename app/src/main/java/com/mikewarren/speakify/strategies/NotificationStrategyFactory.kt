@@ -3,10 +3,8 @@ package com.mikewarren.speakify.strategies
 import android.content.Context
 import android.service.notification.StatusBarNotification
 import com.mikewarren.speakify.data.AppSettingsModel
-import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.services.TTSManager
-import com.mikewarren.speakify.strategies.shippingApps.AmazonShoppingNotificationStrategy
-import com.mikewarren.speakify.strategies.shippingApps.FedExNotificationStrategy
+import kotlin.reflect.full.primaryConstructor
 
 object NotificationStrategyFactory {
     fun CreateFrom(notification: StatusBarNotification,
@@ -14,27 +12,13 @@ object NotificationStrategyFactory {
                    context: Context,
                    ttsManager: TTSManager,
     ) : BaseNotificationStrategy {
-        if (PackageNames.MessagingAppList.contains(notification.packageName))
-            return SMSNotificationStrategy(notification, appSettingsModel, context, ttsManager)
-
-        if (notification.packageName == PackageNames.GoogleVoice)
-            return GoogleVoiceNotificationStrategy(notification, appSettingsModel, context, ttsManager)
-
-        if (notification.packageName == PackageNames.GoogleCalendar)
-            return GoogleCalendarNotificationStrategy(notification, appSettingsModel, context, ttsManager)
-
-        if (PackageNames.FacebookMessengerAppList.contains(notification.packageName))
-            return MessengerNotificationStrategy(notification, appSettingsModel, context, ttsManager)
-
-        if (notification.packageName == PackageNames.GEOH)
-            return GeohNotificationStrategy(notification, appSettingsModel, context, ttsManager)
-
-        if (notification.packageName == PackageNames.AmazonShopping)
-            return AmazonShoppingNotificationStrategy(notification, appSettingsModel, context, ttsManager)
-
-        if (notification.packageName == PackageNames.FedEx)
-            return FedExNotificationStrategy(notification, appSettingsModel, context, ttsManager)
-
-        return SimpleNotificationStrategy(notification, appSettingsModel, context, ttsManager)
+        val strategyClass = NotificationStrategyRegistry.findStrategyClass(notification)
+        
+        return strategyClass.primaryConstructor?.call(
+            notification,
+            appSettingsModel,
+            context,
+            ttsManager
+        ) ?: SimpleNotificationStrategy(notification, appSettingsModel, context, ttsManager)
     }
 }

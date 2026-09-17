@@ -1,6 +1,5 @@
 package com.mikewarren.speakify.data
 
-import androidx.datastore.core.DataStore
 import com.clerk.api.Clerk
 import com.clerk.api.emailaddress.EmailAddress
 import com.clerk.api.user.User
@@ -16,7 +15,6 @@ import com.mikewarren.speakify.data.delegates.SettingsTestDelegate
 import com.mikewarren.speakify.data.delegates.SignedOutFirebaseAuthDelegate
 import com.mikewarren.speakify.utils.AnalyticsHelper
 import com.mikewarren.speakify.utils.DeviceIdProvider
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -24,7 +22,6 @@ import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -62,10 +59,8 @@ class SignInHistoryWipeTest: BaseDbTest(),
     override fun setUp() {
         super.setUp()
         setUpSettings(context)
-        setUpFirebaseAuth()
 
-        mockkStatic(FirebaseAuth::class)
-        every { FirebaseAuth.getInstance() } returns firebaseAuth
+        setUpFirebaseAuth()
         every { firebaseAuth.currentUser } returns null // Start logged out
 
         mockkObject(Clerk)

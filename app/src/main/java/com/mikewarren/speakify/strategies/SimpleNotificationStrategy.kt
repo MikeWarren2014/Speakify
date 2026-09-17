@@ -8,6 +8,7 @@ import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.AppNameHelper
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
 
+@DefaultNotificationStrategy
 class SimpleNotificationStrategy(notification: StatusBarNotification,
                                  appSettingsModel: AppSettingsModel?,
                                  context: Context,

@@ -13,8 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mikewarren.speakify.R
+import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AdditionalSettingsComponent
 import com.mikewarren.speakify.viewsAndViewModels.widgets.CustomSwitch
 
+@AdditionalSettingsComponent(listName = "PhoneAppList")
 @Composable
 fun CallingAppAdditionalSettingsView(viewModel: CallingAppAdditionalSettingsViewModel) {
     Column(modifier = Modifier.fillMaxWidth()) {
