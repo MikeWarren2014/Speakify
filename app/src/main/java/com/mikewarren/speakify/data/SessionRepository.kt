@@ -8,6 +8,7 @@ import com.clerk.api.network.serialization.onFailure
 import com.clerk.api.network.serialization.onSuccess
 import com.clerk.api.session.GetTokenOptions
 import com.clerk.api.session.fetchToken
+import com.clerk.api.user.User
 import com.clerk.api.user.delete
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
@@ -21,6 +22,7 @@ import com.mikewarren.speakify.data.uiStates.AccountDeletionUiState
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import com.mikewarren.speakify.di.ApplicationScope
+import com.mikewarren.speakify.services.SpeakifyEngineGatekeeper
 import com.mikewarren.speakify.utils.AnalyticsHelper
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
@@ -54,7 +56,8 @@ class SessionRepository @Inject constructor(
     val trialRepository: TrialRepository,
     val onboardingRepository: OnboardingRepository,
     private val analyticsHelper: AnalyticsHelper,
-    private val authMessageRepository: AuthMessageRepository
+    private val authMessageRepository: AuthMessageRepository,
+    private val speakifyEngineGatekeeper: SpeakifyEngineGatekeeper
 ): ITaggable {
     private val _accountDeletionUiState = MutableStateFlow<AccountDeletionUiState>(
         AccountDeletionUiState.NotRequested)
@@ -161,7 +164,6 @@ class SessionRepository @Inject constructor(
             if (_uiState.value == MainUiState.TrialEnded) return
 
             if (isHandlingTrialEngagement(engagementContext)) {
-                ensureFirebaseAuthenticated()
                 return
             }
 
@@ -336,58 +338,45 @@ class SessionRepository @Inject constructor(
         }
     }
 
-    private suspend fun signInToFirebase(user: com.clerk.api.user.User): Result<Unit> = suspendCancellableCoroutine { continuation ->
-        try {
+    private suspend fun signInToFirebase(user: User): Result<Unit> {
+        return try {
             val currentUser = firebaseAuth.currentUser
             val clerkEmail = user.emailAddresses.firstOrNull()?.emailAddress
 
             if (currentUser != null && clerkEmail != null && currentUser.email == clerkEmail) {
                 Log.d("SessionRepo", "Firebase already signed in as $clerkEmail")
-                continuation.resume(Result.success(Unit))
-                return@suspendCancellableCoroutine
+                return Result.success(Unit)
             }
 
-            scope.launch {
-                val activeSession = Clerk.sessionFlow
-                    .filterNotNull()
-                    .first()
+            val activeSession = Clerk.sessionFlow
+                .filterNotNull()
+                .first()
 
-                activeSession.fetchToken(GetTokenOptions("firebase"))
-                    .onSuccess { tokenResource ->
-                        val clerkToken = tokenResource.jwt
-                        val credential = OAuthProvider.newCredentialBuilder("oidc.clerk")
-                            .setIdToken(clerkToken)
-                            .build()
-                        firebaseAuth.signInWithCredential(credential)
-                            .addOnCompleteListener { task ->
-                                val isSuccessful = task.isSuccessful
-                                Log.d("SessionRepo", "Firebase auth result: $isSuccessful")
+            val tokenResult = activeSession.fetchToken(GetTokenOptions("firebase"))
+            val clerkToken = tokenResult.fold(
+                onSuccess = { it.jwt },
+                onFailure = { throw it.throwable ?: Exception(it.longErrorMessageOrNull) }
+            )
 
-                                if (!isSuccessful) {
-                                    Log.d("SessionRepo", "Firebase auth failed with message: ${task.exception?.message}")
-                                    val exception = task.exception
-                                    if (exception?.message?.contains("PROVIDER_ALREADY_LINKED") != true) {
-                                        continuation.resume(Result.failure(exception ?: Exception("Unknown error")))
-                                        return@addOnCompleteListener
-                                    }
-                                    continuation.resume(Result.success(Unit))
-                                }
-                                // Force refresh token to ensure Firestore has the latest identity
-                                firebaseAuth.currentUser
-                                    ?.getIdToken(true)
-                                    ?.addOnSuccessListener { _ ->
-                                        continuation.resume(Result.success(Unit))
-                                    }
-                            }
-                    }
-                    .onFailure { failure ->
-                        Log.e("SessionRepo", "Failed to fetch Clerk token for Firebase: ${failure.longErrorMessageOrNull}")
-                        continuation.resume(Result.failure(failure.throwable ?: Exception(failure.longErrorMessageOrNull)))
-                    }
+            val credential = OAuthProvider.newCredentialBuilder("oidc.clerk")
+                .setIdToken(clerkToken)
+                .build()
+
+            val task = firebaseAuth.signInWithCredential(credential)
+            try {
+                task.await()
+            } catch (e: Exception) {
+                if (e.message?.contains("PROVIDER_ALREADY_LINKED") != true) {
+                    throw e
+                }
             }
+
+            // Force refresh token to ensure Firestore has the latest identity
+            firebaseAuth.currentUser?.getIdToken(true)?.await()
+            Result.success(Unit)
         } catch (e: Exception) {
             Log.e("SessionRepo", "Failed to bridge Clerk to Firebase", e)
-            continuation.resume(Result.failure(e))
+            Result.failure(e)
         }
     }
 
@@ -456,7 +445,8 @@ class SessionRepository @Inject constructor(
         }
     }
 
-    fun endTrial() {
+    suspend fun endTrial() {
+        trialRepository.endTrial()
         _uiState.value = MainUiState.TrialEnded
     }
 
@@ -494,19 +484,19 @@ class SessionRepository @Inject constructor(
     }
 
     fun markAccountForDeletion() {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             _accountDeletionUiState.value = AccountDeletionUiState.RequestMade
         }
     }
 
     fun cancelAccountDeletion() {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             _accountDeletionUiState.value = AccountDeletionUiState.NotRequested
         }
     }
 
     fun markAccountVerified() {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             _accountDeletionUiState.value = AccountDeletionUiState.Verified
         }
     }
@@ -534,7 +524,10 @@ class SessionRepository @Inject constructor(
 
         firestoreSyncRepository.stopSync()
 
-        settingsRepository.clearAllData()
+        if (speakifyEngineGatekeeper.shouldShutDownEverything()) {
+            settingsRepository.clearAllData()
+        }
+
         if (trialStatus is TrialStatus.Expired) {
             _uiState.value = MainUiState.TrialEnded
             return

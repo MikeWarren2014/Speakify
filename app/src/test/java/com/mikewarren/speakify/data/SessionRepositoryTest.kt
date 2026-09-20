@@ -15,13 +15,16 @@ import com.mikewarren.speakify.data.models.OnboardingModel
 import com.mikewarren.speakify.data.models.TrialModel
 import com.mikewarren.speakify.data.uiStates.MainUiState
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
+import com.mikewarren.speakify.services.SpeakifyEngineGatekeeper
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import io.mockk.verify
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -45,6 +48,7 @@ class SessionRepositoryTest: BaseDbTest() {
     private lateinit var trialRepository: TrialRepository
     private lateinit var onboardingRepository: OnboardingRepository
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var speakifyEngineGatekeeper: SpeakifyEngineGatekeeper
 
     private val isInitializedFlow = MutableStateFlow(false)
     private val userFlow = MutableStateFlow<User?>(null)
@@ -71,6 +75,7 @@ class SessionRepositoryTest: BaseDbTest() {
         trialRepository = mockk(relaxed = true)
         onboardingRepository = mockk(relaxed = true)
         firebaseAuth = mockk(relaxed = true)
+        speakifyEngineGatekeeper = mockk(relaxed = true)
 
         mockkObject(Clerk)
 
@@ -92,6 +97,7 @@ class SessionRepositoryTest: BaseDbTest() {
         every { onboardingRepository.feedback } returns feedbackFlow
 
         every { firebaseAuth.signInAnonymously() } returns Tasks.forResult(mockk())
+        coEvery { speakifyEngineGatekeeper.shouldShutDownEverything() } returns false
     }
 
     @Test
@@ -225,7 +231,6 @@ class SessionRepositoryTest: BaseDbTest() {
 
         assertEquals(MainUiState.SignedOut, repository.uiState.value)
         verify { firebaseAuth.signOut() }
-        coVerify { settingsRepository.clearAllData() }
     }
 
     @Test
@@ -349,7 +354,7 @@ class SessionRepositoryTest: BaseDbTest() {
     }
 
     @Test
-    fun `signing back in traps user in onboarding if restore fails`() = runTest {
+    fun `signing back in does NOT trap user in onboarding if restore fails`() = runTest {
         val repository = createRepository()
 
         // 1. Initial setup - user is logged out, onboarding cleared
@@ -373,6 +378,26 @@ class SessionRepositoryTest: BaseDbTest() {
         assertEquals(MainUiState.SignedOut, repository.uiState.value)
     }
 
+    @Test
+    fun `user who logged out and does NOT have the require auth setting on, does not clear all data`() = runTest {
+        val repository = createRepository()
+
+        coEvery { speakifyEngineGatekeeper.shouldShutDownEverything() } returns false
+
+        isInitializedFlow.value = true
+        trialModelFlow.value = TrialModel(status = TrialStatus.NotStarted)
+        userFlow.value = null
+
+        advanceUntilIdle()
+
+        // TEMPORARY FIX: Unmock Dispatchers to stop the verification noise
+        unmockkStatic(Dispatchers::class)
+
+        assertEquals(MainUiState.SignedOut, repository.uiState.value)
+        coVerify(exactly = 0) { settingsRepository.clearAllData() }
+    }
+
+
     private fun createRepository() = SessionRepository(
         firestoreSyncRepository,
         accountDeletionFirestoreRepository,
@@ -381,6 +406,7 @@ class SessionRepositoryTest: BaseDbTest() {
         onboardingRepository,
         mockk(relaxed = true),
         authMessageRepository = mockk(relaxed = true),
+        speakifyEngineGatekeeper,
     )
 
     private fun applyNewUserState() {

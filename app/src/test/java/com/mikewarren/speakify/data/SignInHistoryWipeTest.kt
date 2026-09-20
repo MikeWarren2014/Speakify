@@ -13,8 +13,10 @@ import com.mikewarren.speakify.data.delegates.IFirebaseAuth
 import com.mikewarren.speakify.data.delegates.ISettingsTest
 import com.mikewarren.speakify.data.delegates.SettingsTestDelegate
 import com.mikewarren.speakify.data.delegates.SignedOutFirebaseAuthDelegate
+import com.mikewarren.speakify.services.SpeakifyEngineGatekeeper
 import com.mikewarren.speakify.utils.AnalyticsHelper
 import com.mikewarren.speakify.utils.DeviceIdProvider
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -51,6 +53,7 @@ class SignInHistoryWipeTest: BaseDbTest(),
     private lateinit var uploadRepository: UploadRepository
     private lateinit var firestoreSyncRepository: FirestoreSyncRepository
     private lateinit var sessionRepository: SessionRepository
+    private lateinit var speakifyEngineGatekeeper: SpeakifyEngineGatekeeper
 
     private val clerkUserFlow = MutableStateFlow<User?>(null)
     override var firebaseUser: FirebaseUser? = mockk<FirebaseUser>(relaxed = true)
@@ -107,7 +110,10 @@ class SignInHistoryWipeTest: BaseDbTest(),
             trialRepository,
             uploadRepository,
             downloadRepository)
-        
+
+        speakifyEngineGatekeeper = mockk(relaxed = true)
+        coEvery { speakifyEngineGatekeeper.shouldShutDownEverything() } returns false
+
         sessionRepository = SessionRepository(
             firestoreSyncRepository,
             mockk(relaxed = true),
@@ -116,6 +122,7 @@ class SignInHistoryWipeTest: BaseDbTest(),
             onboardingRepository,
             analyticsHelper,
             mockk(relaxed = true),
+            speakifyEngineGatekeeper = speakifyEngineGatekeeper
         )
     }
 
