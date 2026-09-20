@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.SettingsRepositoryImpl
 import com.mikewarren.speakify.data.UserSettingsModel
+import com.mikewarren.speakify.utils.DispatcherProvider
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -15,7 +16,7 @@ class SettingsTestDelegate: ISettingsTest {
     override lateinit var settingsRepository: SettingsRepository
     override lateinit var userSettingsDataStore: DataStore<UserSettingsModel>
 
-    override fun setUpSettings(context: Context) {
+    override fun setUpSettings(context: Context, dispatcherProvider: DispatcherProvider) {
         userSettingsDataStore = mockk(relaxed = true)
         val userSettingsFlow = MutableStateFlow(UserSettingsModel())
         every { userSettingsDataStore.data } returns userSettingsFlow
@@ -26,6 +27,6 @@ class SettingsTestDelegate: ISettingsTest {
             newValue
         }
 
-        settingsRepository = SettingsRepositoryImpl(context, userSettingsDataStore)
+        settingsRepository = SettingsRepositoryImpl(context, userSettingsDataStore, dispatcherProvider)
     }
 }

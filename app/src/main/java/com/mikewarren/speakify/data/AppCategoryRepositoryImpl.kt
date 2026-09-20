@@ -10,9 +10,9 @@ import com.mikewarren.speakify.data.db.firestore.AppCategoryFirestoreRepository
 import com.mikewarren.speakify.data.models.AppCategory
 import com.mikewarren.speakify.data.models.AppCategoryModel
 import com.mikewarren.speakify.utils.AppCategoryService
+import com.mikewarren.speakify.utils.DispatcherProvider
 import com.mikewarren.speakify.utils.RawAppCategory
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.sync.Semaphore
@@ -25,7 +25,8 @@ import javax.inject.Singleton
 class AppCategoryRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val appCategoryDao: AppCategoryDao,
-    private val firestoreRepository: AppCategoryFirestoreRepository
+    private val firestoreRepository: AppCategoryFirestoreRepository,
+    private val dispatcherProvider: DispatcherProvider
 ) : AppCategoryRepository {
 
     override suspend fun getCategoryForPackage(packageName: String): AppCategory {
@@ -70,7 +71,7 @@ class AppCategoryRepositoryImpl @Inject constructor(
         return scrapedAppCategory
     }
 
-    override suspend fun getCategoriesForPackages(packageNames: List<String>): Map<String, AppCategory> = withContext(Dispatchers.IO) {
+    override suspend fun getCategoriesForPackages(packageNames: List<String>): Map<String, AppCategory> = withContext(dispatcherProvider.io) {
         val results = mutableMapOf<String, AppCategory>()
         val remainingPackages = mutableListOf<String>()
 
@@ -101,7 +102,7 @@ class AppCategoryRepositoryImpl @Inject constructor(
         return@withContext results
     }
 
-    override suspend fun initializeCategories() = withContext(Dispatchers.IO) {
+    override suspend fun initializeCategories() = withContext(dispatcherProvider.io) {
         val categories = mutableListOf<AppCategoryModel>()
         
         // Add hardcoded defaults
@@ -128,7 +129,7 @@ class AppCategoryRepositoryImpl @Inject constructor(
         appCategoryDao.insertAll(categories)
     }
 
-    override suspend fun addCategory(packageName: String, category: AppCategory) = withContext(Dispatchers.IO) {
+    override suspend fun addCategory(packageName: String, category: AppCategory) = withContext(dispatcherProvider.io) {
         val model = AppCategoryModel(packageName = packageName, appCategory = category)
         appCategoryDao.insertAll(listOf(model))
         firestoreRepository.uploadCategory(model)

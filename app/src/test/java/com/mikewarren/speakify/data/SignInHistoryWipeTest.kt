@@ -61,7 +61,7 @@ class SignInHistoryWipeTest: BaseDbTest(),
     @Before
     override fun setUp() {
         super.setUp()
-        setUpSettings(context)
+        setUpSettings(context, testDispatcherProvider)
 
         setUpFirebaseAuth()
         every { firebaseAuth.currentUser } returns null // Start logged out
@@ -109,7 +109,8 @@ class SignInHistoryWipeTest: BaseDbTest(),
             onboardingRepository,
             trialRepository,
             uploadRepository,
-            downloadRepository)
+            downloadRepository,
+            testDispatcherProvider)
 
         speakifyEngineGatekeeper = mockk(relaxed = true)
         coEvery { speakifyEngineGatekeeper.shouldShutDownEverything() } returns false
@@ -122,7 +123,8 @@ class SignInHistoryWipeTest: BaseDbTest(),
             onboardingRepository,
             analyticsHelper,
             mockk(relaxed = true),
-            speakifyEngineGatekeeper = speakifyEngineGatekeeper
+            speakifyEngineGatekeeper = speakifyEngineGatekeeper,
+            testDispatcherProvider
         )
     }
 

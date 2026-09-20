@@ -28,11 +28,11 @@ import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.receivers.PhoneStateReceiver
 import com.mikewarren.speakify.receivers.ScreenStateReceiver
 import com.mikewarren.speakify.strategies.NotificationStrategyFactory
+import com.mikewarren.speakify.utils.DispatcherProvider
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -59,6 +59,9 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
     @Inject
     @ApplicationScope
     lateinit var applicationScope: CoroutineScope
+
+    @Inject
+    lateinit var dispatcherProvider: DispatcherProvider
 
     @Inject
     lateinit var ttsManager: TTSManager
@@ -115,7 +118,7 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
                         // We rely on the try-catch inside startForegroundService logic
                         // to handle if we are technically in the background (though usually
                         // granting a permission brings the app/service interaction to foreground).
-                        withContext(Dispatchers.Main) {
+                        withContext(dispatcherProvider.main) {
                             attemptStartForeground()
                         }
                     }

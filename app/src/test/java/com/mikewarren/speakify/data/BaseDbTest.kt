@@ -7,11 +7,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mikewarren.speakify.data.db.AppDatabase
 import com.mikewarren.speakify.data.db.DbProvider
 import com.mikewarren.speakify.data.fakes.FakeFirestore
+import com.mikewarren.speakify.utils.DispatcherProvider
 import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.mockkStatic
 import io.mockk.unmockkObject
 import io.mockk.unmockkStatic
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -24,6 +26,14 @@ import org.junit.Before
 open class BaseDbTest {
     protected val testDispatcher = StandardTestDispatcher()
 
+    protected val testDispatcherProvider = object : DispatcherProvider {
+        override val main: CoroutineDispatcher = testDispatcher
+        override val mainImmediate: CoroutineDispatcher = testDispatcher
+        override val io: CoroutineDispatcher = testDispatcher
+        override val default: CoroutineDispatcher = testDispatcher
+        override val unconfined: CoroutineDispatcher = testDispatcher
+    }
+
     protected val context = ApplicationProvider.getApplicationContext<Context>()
 
     protected lateinit var db: AppDatabase
@@ -32,11 +42,6 @@ open class BaseDbTest {
     @Before
     open fun setUp() {
         Dispatchers.setMain(testDispatcher)
-
-        mockkStatic(Dispatchers::class)
-        every { Dispatchers.IO } returns testDispatcher
-        every { Dispatchers.Default } returns testDispatcher
-        every { Dispatchers.Unconfined } returns testDispatcher
 
         setUpDatabaseDoubles()
     }
@@ -62,7 +67,6 @@ open class BaseDbTest {
             db.close()
         }
         Dispatchers.resetMain()
-        unmockkStatic(Dispatchers::class)
         unmockkObject(DbProvider)
         unmockkStatic(FirebaseFirestore::class)
     }

@@ -9,9 +9,9 @@ import com.mikewarren.speakify.data.db.AppSettingsDbModel
 import com.mikewarren.speakify.data.db.DbProvider
 import com.mikewarren.speakify.data.db.NotificationSourceModel
 import com.mikewarren.speakify.data.db.UserAppModel
+import com.mikewarren.speakify.utils.DispatcherProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -23,6 +23,7 @@ import javax.inject.Inject
 class SettingsRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val userSettingsDataStore: DataStore<UserSettingsModel>,
+    private val dispatcherProvider: DispatcherProvider
 ) : SettingsRepository {
     private val _db = DbProvider.GetDb(context)
 
@@ -40,7 +41,7 @@ class SettingsRepositoryImpl @Inject constructor(
             }
             // We use stateIn to keep the latest value cached (hot flow), similar to your previous behavior
             .stateIn(
-                scope = CoroutineScope(Dispatchers.IO), // Keep it alive as long as the Repo is alive (Singleton)
+                scope = CoroutineScope(dispatcherProvider.io), // Keep it alive as long as the Repo is alive (Singleton)
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = emptyMap()
             )
@@ -203,7 +204,7 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun clearAllData() {
-        withContext(Dispatchers.IO) {
+        withContext(dispatcherProvider.io) {
             _db.clearAllTables()
         }
         userSettingsDataStore.updateData { UserSettingsModel() }

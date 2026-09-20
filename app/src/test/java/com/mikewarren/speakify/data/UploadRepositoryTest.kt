@@ -48,7 +48,7 @@ class UploadRepositoryTest: BaseDbTest(),
     @Before
     override fun setUp() {
         super.setUp()
-        setUpSettings(context)
+        setUpSettings(context, testDispatcherProvider)
         setUpFirebaseAuth()
 
         val deviceIdProvider = mockk<DeviceIdProvider>(relaxed = true)

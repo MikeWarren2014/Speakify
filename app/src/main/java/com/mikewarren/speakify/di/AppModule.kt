@@ -23,6 +23,7 @@ import com.mikewarren.speakify.data.db.NotificationSourcesDao
 import com.mikewarren.speakify.data.db.RecentMessengerContactDao
 import com.mikewarren.speakify.data.db.UserAppsDao
 import com.mikewarren.speakify.utils.AppInfoProvider
+import com.mikewarren.speakify.utils.DispatcherProvider
 import com.mikewarren.speakify.viewsAndViewModels.pages.AboutInfo
 import dagger.Binds
 import dagger.Module
@@ -77,7 +78,8 @@ abstract class AppModule {
         fun provideSettingsRepositoryImpl(
             @ApplicationContext context: Context,
             userSettingsDataStore: DataStore<UserSettingsModel>,
-        ): SettingsRepositoryImpl = SettingsRepositoryImpl(context, userSettingsDataStore)
+            dispatcherProvider: DispatcherProvider
+        ): SettingsRepositoryImpl = SettingsRepositoryImpl(context, userSettingsDataStore, dispatcherProvider)
 
         @Provides
         @Singleton

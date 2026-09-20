@@ -1,5 +1,7 @@
 package com.mikewarren.speakify.di
 
+import com.mikewarren.speakify.utils.DefaultDispatcherProvider
+import com.mikewarren.speakify.utils.DispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,9 +23,15 @@ object CoroutineModule {
 
     @Provides
     @Singleton
+    fun provideDispatcherProvider(): DispatcherProvider {
+        return DefaultDispatcherProvider()
+    }
+
+    @Provides
+    @Singleton
     @ApplicationScope
-    fun provideApplicationScope(): CoroutineScope {
+    fun provideApplicationScope(dispatcherProvider: DispatcherProvider): CoroutineScope {
         // SupervisorJob makes sure that if one coroutine fails, the whole scope is not cancelled.
-        return CoroutineScope(SupervisorJob() + Dispatchers.IO)
+        return CoroutineScope(SupervisorJob() + dispatcherProvider.io)
     }
 }

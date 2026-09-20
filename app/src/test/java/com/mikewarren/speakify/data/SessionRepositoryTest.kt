@@ -390,9 +390,6 @@ class SessionRepositoryTest: BaseDbTest() {
 
         advanceUntilIdle()
 
-        // TEMPORARY FIX: Unmock Dispatchers to stop the verification noise
-        unmockkStatic(Dispatchers::class)
-
         assertEquals(MainUiState.SignedOut, repository.uiState.value)
         coVerify(exactly = 0) { settingsRepository.clearAllData() }
     }
@@ -407,6 +404,7 @@ class SessionRepositoryTest: BaseDbTest() {
         mockk(relaxed = true),
         authMessageRepository = mockk(relaxed = true),
         speakifyEngineGatekeeper,
+        testDispatcherProvider
     )
 
     private fun applyNewUserState() {

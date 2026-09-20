@@ -62,7 +62,7 @@ class FirestoreSyncRepositoryTest : BaseDbTest(),
     override fun setUp() {
         super.setUp()
         setUpFirebaseAuth()
-        setUpSettings(context)
+        setUpSettings(context, testDispatcherProvider)
 
         appsRepository = mockk(relaxed = true)
         schedulingRepository = mockk(relaxed = true)
@@ -89,7 +89,8 @@ class FirestoreSyncRepositoryTest : BaseDbTest(),
             onboardingRepository,
             trialRepository,
             uploadRepository,
-            downloadRepository
+            downloadRepository,
+            testDispatcherProvider
         )
 
         // Prime the flows to clear the drop(1)
@@ -110,7 +111,6 @@ class FirestoreSyncRepositoryTest : BaseDbTest(),
         testDispatcher.scheduler.runCurrent()
 
         // THEN: Upload should be triggered
-        unmockkStatic(Dispatchers::class)
         coVerify(exactly = 1) { uploadRepository.doAllFirestoreTransactions() }
     }
 
@@ -126,7 +126,6 @@ class FirestoreSyncRepositoryTest : BaseDbTest(),
         testDispatcher.scheduler.runCurrent()
 
         // THEN: No upload
-        unmockkStatic(Dispatchers::class)
         coVerify(exactly = 0) { uploadRepository.doAllFirestoreTransactions() }
     }
 }

@@ -24,12 +24,11 @@ import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.services.SpeakifyEngineGatekeeper
 import com.mikewarren.speakify.utils.AnalyticsHelper
+import com.mikewarren.speakify.utils.DispatcherProvider
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
 import com.mikewarren.speakify.viewsAndViewModels.widgets.UiText
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -57,7 +56,8 @@ class SessionRepository @Inject constructor(
     val onboardingRepository: OnboardingRepository,
     private val analyticsHelper: AnalyticsHelper,
     private val authMessageRepository: AuthMessageRepository,
-    private val speakifyEngineGatekeeper: SpeakifyEngineGatekeeper
+    private val speakifyEngineGatekeeper: SpeakifyEngineGatekeeper,
+    private val dispatcherProvider: DispatcherProvider
 ): ITaggable {
     private val _accountDeletionUiState = MutableStateFlow<AccountDeletionUiState>(
         AccountDeletionUiState.NotRequested)
@@ -66,7 +66,7 @@ class SessionRepository @Inject constructor(
     private val _uiState = MutableStateFlow<MainUiState>(MainUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private val scope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
+    private val scope = CoroutineScope(dispatcherProvider.mainImmediate + SupervisorJob())
     private val firebaseAuth = FirebaseAuth.getInstance()
 
     // Flags to track background operations and avoid redundant/looping calls
@@ -279,7 +279,7 @@ class SessionRepository @Inject constructor(
                 if (_uiState.value != MainUiState.Loading) {
                     _uiState.value = MainUiState.Loading
                 }
-                scope.launch(Dispatchers.IO) {
+                scope.launch(dispatcherProvider.io) {
                     try {
                         trialRepository.refreshTrialStatus()
                     } catch (e: Exception) {
@@ -304,7 +304,7 @@ class SessionRepository @Inject constructor(
                 return Result.failure(signInResult.exceptionOrNull() ?: Exception("Unknown sign-in error"))
             }
 
-            val syncResult = withContext(Dispatchers.IO) {
+            val syncResult = withContext(dispatcherProvider.io) {
                 Log.d("SessionRepo", "Downloading the user data from Firebase")
                 firestoreSyncRepository.downloadAndRestoreData()
             }
