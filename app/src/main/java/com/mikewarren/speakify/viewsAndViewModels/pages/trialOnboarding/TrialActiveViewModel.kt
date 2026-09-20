@@ -39,7 +39,6 @@ class TrialActiveViewModel @Inject constructor(
 
     fun endTrial() {
         viewModelScope.launch {
-            trialRepository.endTrial()
             sessionRepository.endTrial()
         }
     }

@@ -21,8 +21,7 @@ class SpeakifyEngineGatekeeper @Inject constructor(
      * Checks scheduling, manual pauses, and global status.
      */
     suspend fun canSpeakNow(): Boolean {
-        val requireAuth = settingsRepository.requireAuthenticationForSpeakifications.first()
-        if (requireAuth && !checkAuthentication() && !hasStartedTheApp()) {
+        if (shouldShutDownEverything()) {
             return false
         }
 
@@ -38,6 +37,11 @@ class SpeakifyEngineGatekeeper @Inject constructor(
             is StatusModel.On -> true
             is StatusModel.Off -> false
         }
+    }
+
+    suspend fun shouldShutDownEverything(): Boolean {
+        val requireAuth = settingsRepository.requireAuthenticationForSpeakifications.first()
+        return requireAuth && !checkAuthentication() && !hasStartedTheApp()
     }
 
     fun checkAuthentication(): Boolean {

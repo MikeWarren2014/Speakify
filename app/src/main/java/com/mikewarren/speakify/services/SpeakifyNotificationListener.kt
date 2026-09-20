@@ -32,7 +32,9 @@ import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -113,7 +115,9 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
                         // We rely on the try-catch inside startForegroundService logic
                         // to handle if we are technically in the background (though usually
                         // granting a permission brings the app/service interaction to foreground).
-                        attemptStartForeground()
+                        withContext(Dispatchers.Main) {
+                            attemptStartForeground()
+                        }
                     }
                     is NotificationPermissionEvent.PermissionDenied -> {
                         Log.w(TAG, "Notification permission denied event received. Service may run with reduced priority.")

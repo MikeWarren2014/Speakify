@@ -165,28 +165,39 @@ fun SatisfactionSurvey(
 
                             val request = reviewManager.requestReviewFlow()
                             request.addOnCompleteListener { task ->
-                                if (!task.isSuccessful) {
-                                    // There was some problem, log or handle error, then continue.
-                                    // Fallback to market intent if needed
-                                    val intent = Intent(Intent.ACTION_VIEW,
-                                        "market://details?id=${context.packageName}".toUri())
-                                    context.startActivity(intent)
-                                    onResult(FeedbackModel(surveyResult = initialSentiment, action = "Rated (Fallback)"))
-                                    return@addOnCompleteListener
-                                }
-
-                                val reviewInfo = task.result
-                                val flow = reviewManager.launchReviewFlow(activity, reviewInfo)
-                                flow.addOnCompleteListener { _ ->
-                                    // The flow has finished. The API does not indicate whether the user
-                                    // reviewed or not, or even whether the review dialog was shown. Thus, no
-                                    // matter the result, we continue our app flow.
-                                    onResult(
-                                        FeedbackModel(
-                                            surveyResult = initialSentiment,
-                                            action = "Rated"
+                                activity.runOnUiThread {
+                                    if (!task.isSuccessful) {
+                                        // There was some problem, log or handle error, then continue.
+                                        // Fallback to market intent if needed
+                                        val intent = Intent(
+                                            Intent.ACTION_VIEW,
+                                            "market://details?id=${context.packageName}".toUri()
                                         )
-                                    )
+                                        context.startActivity(intent)
+                                        onResult(
+                                            FeedbackModel(
+                                                surveyResult = initialSentiment,
+                                                action = "Rated (Fallback)"
+                                            )
+                                        )
+                                        return@runOnUiThread
+                                    }
+
+                                    val reviewInfo = task.result
+                                    val flow = reviewManager.launchReviewFlow(activity, reviewInfo)
+                                    flow.addOnCompleteListener { _ ->
+                                        // The flow has finished. The API does not indicate whether the user
+                                        // reviewed or not, or even whether the review dialog was shown. Thus, no
+                                        // matter the result, we continue our app flow.
+                                        activity.runOnUiThread {
+                                            onResult(
+                                                FeedbackModel(
+                                                    surveyResult = initialSentiment,
+                                                    action = "Rated"
+                                                )
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         },
