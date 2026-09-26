@@ -59,6 +59,12 @@
             android:exported="false"
             android:theme="@style/Theme.MyApplication" >
         </activity>
+        <activity
+            android:name=".activities.BrokenNotificationReportActivity"
+            android:exported="false"
+            android:label="Report Broken Notification"
+            android:theme="@style/Theme.MyApplication" >
+        </activity>
 
         <!-- Use transparent themes for utility activities to prevent flashes -->
         <activity

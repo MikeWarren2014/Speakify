@@ -508,6 +508,37 @@
     <string name="conversion_ready_description">アカウントを作成すると、デバイス間で設定を同期し、トライアルの進行状況を永久に保存できます。</string>
     <string name="conversion_ready_button_sign_up">今すぐサインアップ</string>
     <string name="conversion_ready_button_continue">トライアルを続ける</string>
+
+    <!-- Broken Notification Report -->
+    <string name="broken_notification_report_header">不具合のある通知を報告</string>
+    <string name="broken_notification_report_step_1">1. どの通知が正しくありませんでしたか？</string>
+    <string name="broken_notification_report_step_2">2. どのような問題でしたか？</string>
+    <string name="broken_notification_report_step_3">3. 読み上げてほしかった単語をタップしてハイライト（任意）</string>
+    <string name="broken_notification_report_additional_notes">追加のメモ（任意）</string>
+    <string name="broken_notification_report_submit">レポートを送信</string>
+
+    <string name="problem_label_it_did_not_speak">読み上げられるべきでしたが、全く読み上げられませんでした。</string>
+    <string name="problem_label_should_have_been_silent">読み上げられましたが、静かであるべきでした。</string>
+    <string name="problem_label_too_wordy">長すぎるか冗長でした。</string>
+    <string name="problem_label_missed_important_part">最も重要な部分が欠けていました。</string>
+    <string name="problem_label_mispronounced">読み間違えました。</string>
+    <string name="problem_label_other">その他の問題</string>
+
+    <string name="broken_notification_report_privacy_guard">プライバシー保護</string>
+    <string name="broken_notification_report_privacy_guard_description">プライバシー保護: Speakifyは直近の通知データをローカルでのみ確認します。報告を送信すると、アプリの処理改善のためにメタデータが共有されます。</string>
+
+    <string name="broken_notification_report_empty_logs_header">最近の通知は見つかりませんでした</string>
+    <string name="broken_notification_report_empty_logs_header_description">Speakifyは過去30分間に通知イベントを記録していません。</string>
+
+    <string name="notification_log_card_spoke">読み上げ済み</string>
+    <string name="notification_log_card_silenced">消音: %1$s</string>
+    <string name="notification_log_card_silence_reason_filtered">フィルター済み</string>
+    <string name="notification_log_card_empty_text">(空のテキスト)</string>
+
+    <string name="report_success_view_icon_description">成功</string>
+    <string name="report_success_view_header">レポートが送信されました！</string>
+    <string name="report_success_view_description">Speakifyの改善にご協力いただきありがとうございます。</string>
+    <string name="report_success_view_button">完了</string>
 </resources>
 
 

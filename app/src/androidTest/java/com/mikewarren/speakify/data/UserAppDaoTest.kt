@@ -13,6 +13,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
+import kotlin.test.assertEquals
 
 class UserAppDaoTest {
 
@@ -48,8 +49,11 @@ class UserAppDaoTest {
         userAppDao.insertAll(userApp)
         val allApps = userAppDao.getAll()
 
-        assertTrue(allApps.contains(userApp))
+        assertEquals(1, allApps.size)
+
+        val appInDatabase = allApps.first()
+        assertEquals(userApp.packageName, appInDatabase.packageName)
+        assertEquals(userApp.appName, appInDatabase.appName)
     }
 
-    // Add more test methods for your DAO operations
 }

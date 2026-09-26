@@ -514,6 +514,37 @@
     <string name="conversion_ready_description">Erstellen Sie ein Konto, um Ihre Einstellungen geräteübergreifend zu synchronisieren und Ihren Testfortschritt dauerhaft zu speichern.</string>
     <string name="conversion_ready_button_sign_up">Jetzt registrieren</string>
     <string name="conversion_ready_button_continue">Mit Testzeitraum fortfahren</string>
+
+    <!-- Broken Notification Report -->
+    <string name="broken_notification_report_header">Fehlerhafte Benachrichtigung melden</string>
+    <string name="broken_notification_report_step_1">1. Welche Benachrichtigung war falsch?</string>
+    <string name="broken_notification_report_step_2">2. Was war das Problem?</string>
+    <string name="broken_notification_report_step_3">3. Tippen Sie auf Wörter, um hervorzuheben, was Sie hören wollten (Optional)</string>
+    <string name="broken_notification_report_additional_notes">Zusätzliche Anmerkungen (Optional)</string>
+    <string name="broken_notification_report_submit">Bericht senden</string>
+
+    <string name="problem_label_it_did_not_speak">Es hat nicht vorgelesen, sollte aber.</string>
+    <string name="problem_label_should_have_been_silent">Es hat vorgelesen, sollte aber stumm sein.</string>
+    <string name="problem_label_too_wordy">Es war viel zu lang oder wortreich.</string>
+    <string name="problem_label_missed_important_part">Es hat den wichtigsten Teil verpasst.</string>
+    <string name="problem_label_mispronounced">Es hat etwas falsch ausgesprochen.</string>
+    <string name="problem_label_other">Anderes Problem</string>
+
+    <string name="broken_notification_report_privacy_guard">Datenschutz-Schutz</string>
+    <string name="broken_notification_report_privacy_guard_description">Datenschutz-Schutz: Speakify prüft aktuelle Benachrichtigungsdaten nur lokal. Das Senden eines Berichts teilt App-Metadaten und Rohtext, um unsere globale Logik zu verbessern.</string>
+
+    <string name="broken_notification_report_empty_logs_header">Keine aktuellen Benachrichtigungen gefunden</string>
+    <string name="broken_notification_report_empty_logs_header_description">Speakify hat in den letzten 30 Minuten keine Benachrichtigungen protokolliert.</string>
+
+    <string name="notification_log_card_spoke">Vorgelesen</string>
+    <string name="notification_log_card_silenced">Stumm: %1$s</string>
+    <string name="notification_log_card_silence_reason_filtered">Gefiltert</string>
+    <string name="notification_log_card_empty_text">(Leerer Text)</string>
+
+    <string name="report_success_view_icon_description">Erfolg</string>
+    <string name="report_success_view_header">Bericht gesendet!</string>
+    <string name="report_success_view_description">Vielen Dank für Ihre Hilfe bei der Verbesserung von Speakify.</string>
+    <string name="report_success_view_button">Fertig</string>
 </resources>
 
 

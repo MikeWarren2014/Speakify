@@ -517,4 +517,35 @@
     <string name="conversion_ready_description">Create an account to sync your settings across devices and keep your trial progress forever.</string>
     <string name="conversion_ready_button_sign_up">Sign Up Now</string>
     <string name="conversion_ready_button_continue">Continue with Trial</string>
+
+    <!-- Broken Notification Report -->
+    <string name="broken_notification_report_header">Report Broken Notification</string>
+    <string name="broken_notification_report_step_1">1. Which notification felt wrong?</string>
+    <string name="broken_notification_report_step_2">2. What was the issue?</string>
+    <string name="broken_notification_report_step_3">3. Tap words to highlight what you wanted to hear (Optional)</string>
+    <string name="broken_notification_report_additional_notes">Additional Notes (Optional)</string>
+    <string name="broken_notification_report_submit">Submit Report</string>
+
+    <string name="problem_label_it_did_not_speak">It didn\'t speak at all, but should have.</string>
+    <string name="problem_label_should_have_been_silent">It spoke, but should have been silent.</string>
+    <string name="problem_label_too_wordy">It was way too long or wordy.</string>
+    <string name="problem_label_missed_important_part">It missed the most important part.</string>
+    <string name="problem_label_mispronounced">It mispronounced something.</string>
+    <string name="problem_label_other">Other issue</string>
+
+    <string name="broken_notification_report_privacy_guard">Privacy Guard</string>
+    <string name="broken_notification_report_privacy_guard_description">Privacy Guard: Speakify only inspects recent notification data locally. Submitting a report shares app metadata and raw text to help us improve global parsing logic.</string>
+
+    <string name="broken_notification_report_empty_logs_header">No Recent Notifications Found</string>
+    <string name="broken_notification_report_empty_logs_header_description">Speakify hasn\'t logged any notification events in the last 30 minutes.</string>
+
+    <string name="notification_log_card_spoke">Spoke</string>
+    <string name="notification_log_card_silenced">Silenced: %1$s</string>
+    <string name="notification_log_card_silence_reason_filtered">Filtered</string>
+    <string name="notification_log_card_empty_text">(Empty Text)</string>
+
+    <string name="report_success_view_icon_description">Success</string>
+    <string name="report_success_view_header">Report Submitted!</string>
+    <string name="report_success_view_description">Thank you for helping improve Speakify\'s notification parsing.</string>
+    <string name="report_success_view_button">Done</string>
 </resources>

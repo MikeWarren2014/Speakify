@@ -512,6 +512,37 @@
     <string name="conversion_ready_description">सभी डिवाइस पर अपनी सेटिंग्स सिंक करने और अपनी ट्रायल प्रगति को हमेशा के लिए रखने के लिए एक खाता बनाएं।</string>
     <string name="conversion_ready_button_sign_up">अभी साइन अप करें</string>
     <string name="conversion_ready_button_continue">ट्रायल के साथ जारी रखें</string>
+
+    <!-- Broken Notification Report -->
+    <string name="broken_notification_report_header">खराब नोटिफिकेशन की रिपोर्ट करें</string>
+    <string name="broken_notification_report_step_1">1. कौन सा नोटिफिकेशन गलत लगा?</string>
+    <string name="broken_notification_report_step_2">2. क्या समस्या थी?</string>
+    <string name="broken_notification_report_step_3">3. जो आप सुनना चाहते थे, उसे हाइलाइट करने के लिए शब्दों पर टैप करें (वैकल्पिक)</string>
+    <string name="broken_notification_report_additional_notes">अतिरिक्त टिप्पणी (वैकल्पिक)</string>
+    <string name="broken_notification_report_submit">रिपोर्ट सबमिट करें</string>
+
+    <string name="problem_label_it_did_not_speak">यह बिल्कुल नहीं बोला, लेकिन बोलना चाहिए था।</string>
+    <string name="problem_label_should_have_been_silent">यह बोला, लेकिन शांत रहना चाहिए था।</string>
+    <string name="problem_label_too_wordy">यह बहुत लंबा या विस्तृत था।</string>
+    <string name="problem_label_missed_important_part">यह सबसे महत्वपूर्ण हिस्सा छोड़ गया।</string>
+    <string name="problem_label_mispronounced">इसने किसी शब्द का गलत उच्चारण किया।</string>
+    <string name="problem_label_other">अन्य समस्या</string>
+
+    <string name="broken_notification_report_privacy_guard">गोपनीयता सुरक्षा</string>
+    <string name="broken_notification_report_privacy_guard_description">गोपनीयता सुरक्षा: Speakify केवल हालिया नोटिफिकेशन डेटा की स्थानीय रूप से जांच करता है। रिपोर्ट भेजने से वैश्विक तर्क को सुधारने के लिए ऐप मेटाडेटा साझा होता है।</string>
+
+    <string name="broken_notification_report_empty_logs_header">कोई हालिया नोटिफिकेशन नहीं मिला</string>
+    <string name="broken_notification_report_empty_logs_header_description">Speakify ने पिछले 30 मिनट में कोई नोटिफिकेशन लॉग नहीं किया है।</string>
+
+    <string name="notification_log_card_spoke">बोला गया</string>
+    <string name="notification_log_card_silenced">शांत: %1$s</string>
+    <string name="notification_log_card_silence_reason_filtered">फ़िल्टर किया गया</string>
+    <string name="notification_log_card_empty_text">(खाली टेक्स्ट)</string>
+
+    <string name="report_success_view_icon_description">सफलता</string>
+    <string name="report_success_view_header">रिपोर्ट सबमिट हो गई!</string>
+    <string name="report_success_view_description">Speakify को बेहतर बनाने में मदद करने के लिए धन्यवाद।</string>
+    <string name="report_success_view_button">हो गया</string>
 </resources>
 
 

@@ -514,6 +514,37 @@
     <string name="conversion_ready_description">برای همگام‌سازی تنظیمات خود در تمام دستگاه‌ها و حفظ پیشرفت دوره آزمایشی خود برای همیشه، یک حساب کاربری ایجاد کنید.</string>
     <string name="conversion_ready_button_sign_up">اکنون ثبت‌نام کنید</string>
     <string name="conversion_ready_button_continue">ادامه با دوره آزمایشی</string>
+
+    <!-- Broken Notification Report -->
+    <string name="broken_notification_report_header">گزارش اعلان خراب</string>
+    <string name="broken_notification_report_step_1">۱. کدام اعلان اشتباه بود؟</string>
+    <string name="broken_notification_report_step_2">۲. مشکل چه بود؟</string>
+    <string name="broken_notification_report_step_3">۳. کلمات را لمس کنید تا متنی که می‌خواستید بشنوید برجسته شود (اختیاری)</string>
+    <string name="broken_notification_report_additional_notes">توضیحات اضافی (اختیاری)</string>
+    <string name="broken_notification_report_submit">ارسال گزارش</string>
+
+    <string name="problem_label_it_did_not_speak">اصلاً خوانده نشد، اما باید خوانده می‌شد.</string>
+    <string name="problem_label_should_have_been_silent">خوانده شد، اما باید بی‌صدا می‌بود.</string>
+    <string name="problem_label_too_wordy">خیلی طولانی و پر حرف بود.</string>
+    <string name="problem_label_missed_important_part">مهم‌ترین بخش را از دست داد.</string>
+    <string name="problem_label_mispronounced">چیزی را اشتباه تلفظ کرد.</string>
+    <string name="problem_label_other">مشکل دیگر</string>
+
+    <string name="broken_notification_report_privacy_guard">حفظ حریم خصوصی</string>
+    <string name="broken_notification_report_privacy_guard_description">حفظ حریم خصوصی: Speakify اطلاعات اعلان‌ها را فقط به صورت محلی بررسی می‌کند. ارسال گزارش شامل متادیتای برنامه و متن خام برای بهبود منطق کلی است.</string>
+
+    <string name="broken_notification_report_empty_logs_header">هیچ اعلان اخیری یافت نشد</string>
+    <string name="broken_notification_report_empty_logs_header_description">Speakify در ۳۰ دقیقه گذشته هیچ اعلانی ثبت نکرده است.</string>
+
+    <string name="notification_log_card_spoke">خوانده شد</string>
+    <string name="notification_log_card_silenced">بی‌صدا: %1$s</string>
+    <string name="notification_log_card_silence_reason_filtered">فیلتر شده</string>
+    <string name="notification_log_card_empty_text">(متن خالی)</string>
+
+    <string name="report_success_view_icon_description">موفقیت</string>
+    <string name="report_success_view_header">گزارش ارسال شد!</string>
+    <string name="report_success_view_description">با تشکر از شما برای کمک به بهبود پردازش اعلان‌های Speakify.</string>
+    <string name="report_success_view_button">تأیید</string>
 </resources>
 
 

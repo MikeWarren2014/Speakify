@@ -513,6 +513,37 @@
     <string name="conversion_ready_description">Créez un compte pour synchroniser vos paramètres sur tous vos appareils et conserver votre progression d\'essai pour toujours.</string>
     <string name="conversion_ready_button_sign_up">S\'inscrire maintenant</string>
     <string name="conversion_ready_button_continue">Continuer avec l\'essai</string>
+
+    <!-- Broken Notification Report -->
+    <string name="broken_notification_report_header">Signaler une notification incorrecte</string>
+    <string name="broken_notification_report_step_1">1. Quelle notification était incorrecte ?</string>
+    <string name="broken_notification_report_step_2">2. Quel était le problème ?</string>
+    <string name="broken_notification_report_step_3">3. Appuyez sur les mots pour surligner ce que vous vouliez entendre (Optionnel)</string>
+    <string name="broken_notification_report_additional_notes">Remarques supplémentaires (Optionnel)</string>
+    <string name="broken_notification_report_submit">Envoyer le rapport</string>
+
+    <string name="problem_label_it_did_not_speak">Il n\'a rien lu, mais aurait dû.</string>
+    <string name="problem_label_should_have_been_silent">Il a lu, mais aurait dû être silencieux.</string>
+    <string name="problem_label_too_wordy">C\'était beaucoup trop long ou verbeux.</string>
+    <string name="problem_label_missed_important_part">Il a manqué la partie la plus importante.</string>
+    <string name="problem_label_mispronounced">Il a mal prononcé quelque chose.</string>
+    <string name="problem_label_other">Autre problème</string>
+
+    <string name="broken_notification_report_privacy_guard">Protection de la vie privée</string>
+    <string name="broken_notification_report_privacy_guard_description">Protection de la vie privée : Speakify inspecte uniquement les données récentes localement. L\'envoi d\'un rapport partage les métadonnées pour améliorer la logique globale.</string>
+
+    <string name="broken_notification_report_empty_logs_header">Aucune notification récente trouvée</string>
+    <string name="broken_notification_report_empty_logs_header_description">Speakify n\'a enregistré aucune notification au cours des 30 dernières minutes.</string>
+
+    <string name="notification_log_card_spoke">Lu</string>
+    <string name="notification_log_card_silenced">Silencieux : %1$s</string>
+    <string name="notification_log_card_silence_reason_filtered">Filtré</string>
+    <string name="notification_log_card_empty_text">(Texte vide)</string>
+
+    <string name="report_success_view_icon_description">Succès</string>
+    <string name="report_success_view_header">Rapport envoyé !</string>
+    <string name="report_success_view_description">Merci d\'aider à améliorer la lecture des notifications de Speakify.</string>
+    <string name="report_success_view_button">Terminé</string>
 </resources>
 
 

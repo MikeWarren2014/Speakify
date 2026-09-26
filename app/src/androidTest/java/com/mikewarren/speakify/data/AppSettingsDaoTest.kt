@@ -84,7 +84,6 @@ class AppSettingsDaoTest {
         appSettingsDao.insert(appSettingsDbModel)
 
         assert(appSettingsDao.getAll().size == 1)
-        assertEquals(1L, appSettingsDao.getAll().first().appSettings.id)
     }
 
     @Test

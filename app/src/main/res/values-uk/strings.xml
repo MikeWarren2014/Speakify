@@ -520,6 +520,37 @@
     <string name="conversion_ready_description">Створіть обліковий запис, щоб синхронізувати налаштування між пристроями та назавжди зберегти свій прогрес.</string>
     <string name="conversion_ready_button_sign_up">Зареєструватися зараз</string>
     <string name="conversion_ready_button_continue">Продовжити пробний період</string>
+
+    <!-- Broken Notification Report -->
+    <string name="broken_notification_report_header">Повідомити про помилку сповіщення</string>
+    <string name="broken_notification_report_step_1">1. Яке сповіщення було неправильним?</string>
+    <string name="broken_notification_report_step_2">2. У чому полягала проблема?</string>
+    <string name="broken_notification_report_step_3">3. Натисніть на слова, щоб виділити те, що ви хотіли почути (Необов\'язково)</string>
+    <string name="broken_notification_report_additional_notes">Додаткові примітки (Необов\'язково)</string>
+    <string name="broken_notification_report_submit">Надіслати звіт</string>
+
+    <string name="problem_label_it_did_not_speak">Воно взагалі не озвучилося, хоча мало б.</string>
+    <string name="problem_label_should_have_been_silent">Воно озвучилося, але мало б залишатися без звуку.</string>
+    <string name="problem_label_too_wordy">Воно було занадто довгим або багатослівним.</string>
+    <string name="problem_label_missed_important_part">Воно пропустило найважливішу частину.</string>
+    <string name="problem_label_mispronounced">Воно неправильно вимовило слово.</string>
+    <string name="problem_label_other">Інша проблема</string>
+
+    <string name="broken_notification_report_privacy_guard">Захист конфіденційності</string>
+    <string name="broken_notification_report_privacy_guard_description">Захист конфіденційності: Speakify перевіряє дані лише локально. Надсилання звіту передає метадані програми для покращення алгоритмів.</string>
+
+    <string name="broken_notification_report_empty_logs_header">Нещодавніх сповіщень не знайдено</string>
+    <string name="broken_notification_report_empty_logs_header_description">Speakify не зареєстрував жодного сповіщення за останні 30 хвилин.</string>
+
+    <string name="notification_log_card_spoke">Озвучено</string>
+    <string name="notification_log_card_silenced">Без звуку: %1$s</string>
+    <string name="notification_log_card_silence_reason_filtered">Відфільтровано</string>
+    <string name="notification_log_card_empty_text">(Порожній текст)</string>
+
+    <string name="report_success_view_icon_description">Успіх</string>
+    <string name="report_success_view_header">Звіт надіслано!</string>
+    <string name="report_success_view_description">Дякуємо за допомогу в покращенні Speakify.</string>
+    <string name="report_success_view_button">Готово</string>
 </resources>
 
 
