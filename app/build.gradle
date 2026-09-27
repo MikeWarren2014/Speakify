@@ -125,6 +125,7 @@ room {
 }
 
 dependencies {
+    implementation libs.firebase.dataconnect
     ksp project(':notification-processor')
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

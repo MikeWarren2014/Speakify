@@ -37,6 +37,11 @@ data class NotificationAuditLogModel(
     val notificationKey: String? = null
 ) {
     companion object {
+        const val SilenceReasonGatekeeperMuted = "GATEKEEPER_MUTED"
+        const val SilenceReasonHandledByPhoneReceiver = "HANDLED_BY_PHONE_RECEIVER"
+        const val SilenceReasonDebounced = "DEBOUNCED"
+        const val SilenceReasonStrategyFiltered = "STRATEGY_FILTERED"
+        const val SilenceReasonUnknown = "SILENCED_UNKNOWN"
         fun From(packageName: String,
                  appDisplayName: String,
                  rawTitle: String?,
@@ -44,7 +49,7 @@ data class NotificationAuditLogModel(
                  speakifiedText: String?,
                  silenceReason: String?,
                  notificationKey: String?): NotificationAuditLogModel {
-            val silenceReasonToUse = silenceReason ?: if (speakifiedText != null) null else "SILENCED_UNKNOWN"
+            val silenceReasonToUse = silenceReason ?: if (speakifiedText != null) null else this.SilenceReasonUnknown
 
             return NotificationAuditLogModel(
                 packageName = packageName,

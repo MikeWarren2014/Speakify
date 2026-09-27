@@ -47,6 +47,7 @@ mockk = "1.14.9"
 robolectric = "4.16.1"
 kotlinxCoroutines = "1.10.2"
 ksp = "2.3.6"
+firebaseDataconnect = "17.4.0"
 
 [libraries]
 androidx-core = { module = "androidx.test:core", version.ref = "core" }
@@ -111,6 +112,7 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+firebase-dataconnect = { group = "com.google.firebase", name = "firebase-dataconnect", version.ref = "firebaseDataconnect" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -4,6 +4,8 @@ import com.clerk.api.Clerk
 import com.mikewarren.speakify.data.SchedulingRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.TrialRepository
+import com.mikewarren.speakify.data.TrialStatus
+import com.mikewarren.speakify.data.models.TrialModel
 import com.mikewarren.speakify.data.models.scheduling.StatusModel
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
@@ -40,6 +42,10 @@ class SpeakifyEngineGatekeeper @Inject constructor(
     }
 
     suspend fun shouldShutDownEverything(): Boolean {
+        if (getTrialModel().status is TrialStatus.Expired) {
+            return true
+        }
+
         val requireAuth = settingsRepository.requireAuthenticationForSpeakifications.first()
         return requireAuth && !checkAuthentication() && !hasStartedTheApp()
     }
@@ -49,6 +55,10 @@ class SpeakifyEngineGatekeeper @Inject constructor(
     }
 
     suspend fun hasStartedTheApp(): Boolean {
-        return trialRepository.trialModelFlow.first().startTimestamp > 0L
+        return getTrialModel().startTimestamp > 0L
+    }
+
+    suspend fun getTrialModel(): TrialModel {
+        return trialRepository.trialModelFlow.first()
     }
 }

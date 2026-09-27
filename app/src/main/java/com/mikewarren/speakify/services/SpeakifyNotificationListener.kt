@@ -233,7 +233,7 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
                         rawTitle = getRawTitle(sbn),
                         rawText = getRawText(sbn),
                         speakifiedText = null,
-                        silenceReason = "GATEKEEPER_MUTED",
+                        silenceReason = NotificationAuditLogModel.SilenceReasonGatekeeperMuted,
                         notificationKey = sbn.key,
                     )
                 )
@@ -262,16 +262,13 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         )
 
         if (!importantApps.map { model -> model.packageName }.contains(sbn.packageName)) {
-            notificationAuditRepository.log(baseNotificationAuditlogModel.copy(
-                silenceReason = "NOT_IN_IMPORTANT_APPS",
-            ))
             return
         }
 
         // we're passing responsibility for this to PhoneStateReceiver
         if (PackageNames.PhoneAppList.contains(sbn.packageName)) {
             notificationAuditRepository.log(baseNotificationAuditlogModel.copy(
-                silenceReason = "HANDLED_BY_PHONE_RECEIVER",
+                silenceReason = NotificationAuditLogModel.SilenceReasonHandledByPhoneReceiver,
             ))
             return
         }
@@ -291,7 +288,7 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         if (lastSpokenTime != null && (currentTime - lastSpokenTime) < notificationStrategy.debounceTimeMillis) {
             Log.d(TAG, "Notification ${sbn.key} was spoken recently. Debouncing (${notificationStrategy.debounceTimeMillis}ms window).")
             notificationAuditRepository.log(baseNotificationAuditlogModel.copy(
-                silenceReason = "DEBOUNCED",
+                silenceReason = NotificationAuditLogModel.SilenceReasonDebounced,
             ))
             return
         }
@@ -314,7 +311,7 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
             return
         }
         notificationAuditRepository.log(baseNotificationAuditlogModel.copy(
-            silenceReason = "STRATEGY_FILTERED",
+            silenceReason = NotificationAuditLogModel.SilenceReasonStrategyFiltered,
         ))
 
     }
@@ -346,7 +343,7 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
             shakeDetector = ShakeDetector {
                 applicationScope.launch {
                     val recentLogs = notificationAuditRepository.getRecentLogsList(30 * Constants.OneMinute)
-                    if (recentLogs.isNotEmpty()) {
+                    if ((recentLogs.isNotEmpty()) && (!gatekeeper.shouldShutDownEverything())) {
                         Log.d(TAG, "Shake detected with ${recentLogs.size} recent notifications logged. Launching BrokenNotificationReportActivity.")
                         val intent = Intent(this@SpeakifyNotificationListener, BrokenNotificationReportActivity::class.java).apply {
                             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
