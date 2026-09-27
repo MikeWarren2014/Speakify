@@ -5,7 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mikewarren.speakify.ui.theme.MyApplicationTheme
+import com.mikewarren.speakify.viewsAndViewModels.pages.SettingsViewModel
 import com.mikewarren.speakify.viewsAndViewModels.pages.brokenNotification.BrokenNotificationReportView
 import com.mikewarren.speakify.viewsAndViewModels.pages.brokenNotification.BrokenNotificationReportViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +24,10 @@ class BrokenNotificationReportActivity : ComponentActivity() {
         val viewModel: BrokenNotificationReportViewModel by viewModels()
 
         setContent {
-            MyApplicationTheme {
+            val settingsViewModel: SettingsViewModel by viewModels()
+            val useDarkTheme by settingsViewModel.useDarkTheme.collectAsStateWithLifecycle(initialValue = null)
+
+            MyApplicationTheme(darkTheme = useDarkTheme ?: isSystemInDarkTheme()) {
                 BrokenNotificationReportView(
                     viewModel = viewModel,
                     onDismiss = { finish() }

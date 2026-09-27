@@ -307,6 +307,7 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
             }
             notificationAuditRepository.log(baseNotificationAuditlogModel.copy(
                 speakifiedText = speakText,
+                silenceReason = null,
             ))
             return
         }
@@ -340,7 +341,7 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         val sensorManager = getSystemService(SENSOR_SERVICE) as? SensorManager
         val accelerometer = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         if (sensorManager != null && accelerometer != null) {
-            shakeDetector = ShakeDetector {
+            shakeDetector = ShakeDetector({
                 applicationScope.launch {
                     val recentLogs = notificationAuditRepository.getRecentLogsList(30 * Constants.OneMinute)
                     if ((recentLogs.isNotEmpty()) && (!gatekeeper.shouldShutDownEverything())) {
@@ -353,7 +354,7 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
                         Log.d(TAG, "Shake detected but no notifications logged in the last 30 minutes. Ignoring.")
                     }
                 }
-            }
+            })
             sensorManager.registerListener(shakeDetector, accelerometer, SensorManager.SENSOR_DELAY_UI)
         }
     }
