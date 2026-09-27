@@ -2,9 +2,12 @@ package com.mikewarren.speakify.activities
 
 import android.Manifest
 import android.app.role.RoleManager
+import android.content.Intent
 import android.os.Build
+import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
+import androidx.core.net.toUri
 import com.mikewarren.speakify.data.constants.PermissionCodes
 import com.mikewarren.speakify.data.events.PhonePermissionEvent
 import com.mikewarren.speakify.data.events.PhonePermissionEventBus
@@ -20,9 +23,37 @@ class PhonePermissionsActivity : BaseMutliplePermissionsActivity<PhonePermission
     private val roleLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             val isGranted = result.resultCode == RESULT_OK
-            onPermissionResult?.invoke(isGranted)
+            val hasOverlayPermissionSynced = handleOverlayPermissionsAfterRoleGranted()
+
+            onPermissionResult?.invoke(isGranted && hasOverlayPermissionSynced)
             onPermissionResult = null
         }
+
+    /**
+     * @return {Boolean} whether or not the OS has synchronized the grant state of the permission
+     */
+    private fun handleOverlayPermissionsAfterRoleGranted(): Boolean {
+        if (Settings.canDrawOverlays(this)) {
+            // we let the role launcher handle this
+            return true
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true
+        }
+
+        val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, "package:$packageName".toUri())
+        overlayLauncher.launch(intent)
+        return false
+    }
+
+    private val overlayLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { _ ->
+        val hasOverlay = Settings.canDrawOverlays(this)
+        onPermissionResult?.invoke(hasOverlay)
+        onPermissionResult = null
+    }
+
 
     override fun onCheckPermission(permission: String) {
         if (permission == Manifest.permission.BIND_SCREENING_SERVICE) {
@@ -63,6 +94,7 @@ class PhonePermissionsActivity : BaseMutliplePermissionsActivity<PhonePermission
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.BIND_SCREENING_SERVICE,
+            Manifest.permission.SYSTEM_ALERT_WINDOW,
         )
     }
 

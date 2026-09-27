@@ -514,4 +514,37 @@
     <string name="conversion_ready_description">Crea una cuenta para sincronizar tus ajustes en varios dispositivos y conservar tu progreso de la prueba para siempre.</string>
     <string name="conversion_ready_button_sign_up">Registrarse ahora</string>
     <string name="conversion_ready_button_continue">Continuar con la prueba</string>
+
+    <!-- Broken Notification Report -->
+    <string name="broken_notification_report_header">Reportar notificación defectuosa</string>
+    <string name="broken_notification_report_step_1">1. ¿Qué notificación estuvo mal?</string>
+    <string name="broken_notification_report_step_2">2. ¿Cuál fue el problema?</string>
+    <string name="broken_notification_report_step_3">3. Toca las palabras para resaltar lo que querías escuchar (Opcional)</string>
+    <string name="broken_notification_report_additional_notes">Notas adicionales (Opcional)</string>
+    <string name="broken_notification_report_submit">Enviar reporte</string>
+
+    <string name="problem_label_it_did_not_speak">No habló en absoluto, pero debería haberlo hecho.</string>
+    <string name="problem_label_should_have_been_silent">Habló, pero debería haber estado en silencio.</string>
+    <string name="problem_label_too_wordy">Fue demasiado largo o enrevesado.</string>
+    <string name="problem_label_missed_important_part">Se perdió la parte más importante.</string>
+    <string name="problem_label_mispronounced">Malpronunció algo.</string>
+    <string name="problem_label_other">Otro problema</string>
+
+    <string name="broken_notification_report_privacy_guard">Protección de privacidad</string>
+    <string name="broken_notification_report_privacy_guard_description">Protección de privacidad: Speakify solo inspecciona datos recientes localmente. Al enviar un reporte se comparten metadatos de la app y texto sin formato para mejorar la lógica global.</string>
+
+    <string name="broken_notification_report_empty_logs_header">No se encontraron notificaciones recientes</string>
+    <string name="broken_notification_report_empty_logs_header_description">Speakify no ha registrado ningún evento de notificación en los últimos 30 minutos.</string>
+
+    <string name="notification_log_card_spoke">Habló</string>
+    <string name="notification_log_card_silenced">Silenciado: %1$s</string>
+    <string name="notification_log_card_silence_reason_filtered">Filtrado</string>
+    <string name="notification_log_card_empty_text">(Texto vacío)</string>
+
+    <string name="report_success_view_icon_description">Éxito</string>
+    <string name="report_success_view_header">¡Reporte enviado!</string>
+    <string name="report_success_view_description">Gracias por ayudarnos a mejorar el procesamiento de notificaciones de Speakify.</string>
+    <string name="report_success_view_button">Hecho</string>
+    <string name="next_step">Siguiente paso</string>
+    <string name="previous_step">Paso anterior</string>
 </resources>

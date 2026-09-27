@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
         tools:ignore="ForegroundServicePermission" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -57,6 +58,12 @@
         <activity
             android:name=".activities.TrialActivity"
             android:exported="false"
+            android:theme="@style/Theme.MyApplication" >
+        </activity>
+        <activity
+            android:name=".activities.BrokenNotificationReportActivity"
+            android:exported="false"
+            android:label="Report Broken Notification"
             android:theme="@style/Theme.MyApplication" >
         </activity>
 

@@ -13,13 +13,18 @@ import android.telephony.TelephonyManager
 import android.util.Log
 import android.util.LruCache
 import androidx.core.app.NotificationCompat
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import com.mikewarren.speakify.R
+import com.mikewarren.speakify.activities.BrokenNotificationReportActivity
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
+import com.mikewarren.speakify.data.NotificationAuditRepository
 import com.mikewarren.speakify.data.OnboardingRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.AppSettingsDao
+import com.mikewarren.speakify.data.db.NotificationAuditLogModel
 import com.mikewarren.speakify.data.db.NotificationSourcesDao
 import com.mikewarren.speakify.data.db.UserAppsDao
 import com.mikewarren.speakify.data.events.NotificationPermissionEvent
@@ -28,6 +33,8 @@ import com.mikewarren.speakify.di.ApplicationScope
 import com.mikewarren.speakify.receivers.PhoneStateReceiver
 import com.mikewarren.speakify.receivers.ScreenStateReceiver
 import com.mikewarren.speakify.strategies.NotificationStrategyFactory
+import com.mikewarren.speakify.utils.AppNameHelper
+import com.mikewarren.speakify.utils.ShakeDetector
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,6 +61,9 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
     @Inject
     lateinit var notificationSourcesDao: NotificationSourcesDao
 
+    @Inject
+    lateinit var notificationAuditRepository: NotificationAuditRepository
+
     val notificationPermissionEventBus: NotificationPermissionEventBus = NotificationPermissionEventBus.GetInstance()
 
     @Inject
@@ -72,7 +82,8 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
     @Inject
     lateinit var onboardingRepository: OnboardingRepository
 
-    private lateinit var defaultVoice: String;
+    private lateinit var defaultVoice: String
+    private lateinit var shakeDetector: ShakeDetector
 
     private val recentlySpokenCache = LruCache<String, Long>(20)
 
@@ -83,6 +94,8 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         startListeningForNotifications()
 
         listenForPermissionEvents()
+
+        setupShakeDetector()
 
         Log.d(TAG, "Service created. Registering PhoneStateReceiver.")
 
@@ -213,6 +226,17 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         // This is non-blocking and uses the robust application scope.
         applicationScope.launch {
             if (!gatekeeper.canSpeakNow()) {
+                notificationAuditRepository.log(
+                    NotificationAuditLogModel.From(
+                        packageName = sbn.packageName,
+                        appDisplayName = getAppDisplayName(sbn.packageName),
+                        rawTitle = getRawTitle(sbn),
+                        rawText = getRawText(sbn),
+                        speakifiedText = null,
+                        silenceReason = NotificationAuditLogModel.SilenceReasonGatekeeperMuted,
+                        notificationKey = sbn.key,
+                    )
+                )
                 return@launch
             }
             processNotification(sbn)
@@ -223,12 +247,31 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
 
         val importantApps = userAppsDao.getAll()
 
-        if (!importantApps.map { model -> model.packageName }.contains(sbn.packageName))
+        val appName = getAppDisplayName(sbn.packageName)
+        val rawTitle = getRawTitle(sbn)
+        val rawText = getRawText(sbn)
+
+        val baseNotificationAuditlogModel = NotificationAuditLogModel.From(
+            packageName = sbn.packageName,
+            appDisplayName = appName,
+            rawTitle = rawTitle,
+            rawText = rawText,
+            speakifiedText = null,
+            silenceReason = null,
+            notificationKey = sbn.key,
+        )
+
+        if (!importantApps.map { model -> model.packageName }.contains(sbn.packageName)) {
             return
+        }
 
         // we're passing responsibility for this to PhoneStateReceiver
-        if (PackageNames.PhoneAppList.contains(sbn.packageName))
+        if (PackageNames.PhoneAppList.contains(sbn.packageName)) {
+            notificationAuditRepository.log(baseNotificationAuditlogModel.copy(
+                silenceReason = NotificationAuditLogModel.SilenceReasonHandledByPhoneReceiver,
+            ))
             return
+        }
 
         // construct a model for reading the notification
         // if there are no app settings, we should assume that every notification from the app in question...is important...and worth speaking!
@@ -244,22 +287,86 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         val currentTime = System.currentTimeMillis()
         if (lastSpokenTime != null && (currentTime - lastSpokenTime) < notificationStrategy.debounceTimeMillis) {
             Log.d(TAG, "Notification ${sbn.key} was spoken recently. Debouncing (${notificationStrategy.debounceTimeMillis}ms window).")
+            notificationAuditRepository.log(baseNotificationAuditlogModel.copy(
+                silenceReason = NotificationAuditLogModel.SilenceReasonDebounced,
+            ))
             return
         }
 
         notificationStrategy.logNotification()
         if (notificationStrategy.shouldSpeakify()) {
             recentlySpokenCache.put(sbn.key, currentTime)
+            val speakText = try {
+                notificationStrategy.textToSpeakify()
+            } catch (_: Exception) {
+                null
+            }
             notificationStrategy.speakify()
             applicationScope.launch {
                 onboardingRepository.incrementSpeakificationCount()
             }
+            notificationAuditRepository.log(baseNotificationAuditlogModel.copy(
+                speakifiedText = speakText,
+            ))
+            return
         }
+        notificationAuditRepository.log(baseNotificationAuditlogModel.copy(
+            silenceReason = NotificationAuditLogModel.SilenceReasonStrategyFiltered,
+        ))
 
+    }
+
+    private fun getRawTitle(sbn: StatusBarNotification): String? {
+        val extras = sbn.notification.extras
+        return extras.getCharSequence(Notification.EXTRA_TITLE)?.toString()
+    }
+
+    private fun getRawText(sbn: StatusBarNotification): String? {
+        val extras = sbn.notification.extras
+        val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString()
+        if (!text.isNullOrBlank()) return text
+
+        val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString()
+        if (!bigText.isNullOrBlank()) return bigText
+
+        return sbn.notification.tickerText?.toString()
+    }
+
+    private fun getAppDisplayName(packageName: String): String {
+        return AppNameHelper(this).getAppDisplayName(packageName)
+    }
+
+    private fun setupShakeDetector() {
+        val sensorManager = getSystemService(SENSOR_SERVICE) as? SensorManager
+        val accelerometer = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        if (sensorManager != null && accelerometer != null) {
+            shakeDetector = ShakeDetector {
+                applicationScope.launch {
+                    val recentLogs = notificationAuditRepository.getRecentLogsList(30 * Constants.OneMinute)
+                    if ((recentLogs.isNotEmpty()) && (!gatekeeper.shouldShutDownEverything())) {
+                        Log.d(TAG, "Shake detected with ${recentLogs.size} recent notifications logged. Launching BrokenNotificationReportActivity.")
+                        val intent = Intent(this@SpeakifyNotificationListener, BrokenNotificationReportActivity::class.java).apply {
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        }
+                        startActivity(intent)
+                    } else {
+                        Log.d(TAG, "Shake detected but no notifications logged in the last 30 minutes. Ignoring.")
+                    }
+                }
+            }
+            sensorManager.registerListener(shakeDetector, accelerometer, SensorManager.SENSOR_DELAY_UI)
+        }
     }
 
     override fun onDestroy() {
         ttsManager.shutdown()
+
+        try {
+            val sensorManager = getSystemService(SENSOR_SERVICE) as? SensorManager
+            if (::shakeDetector.isInitialized && sensorManager != null) {
+                sensorManager.unregisterListener(shakeDetector)
+            }
+        } catch (_: Exception) {}
 
         Log.d(TAG, "Service destroyed. Unregistering PhoneStateReceiver.")
 

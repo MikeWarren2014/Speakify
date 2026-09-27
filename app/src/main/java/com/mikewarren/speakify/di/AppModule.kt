@@ -8,6 +8,8 @@ import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.AppsRepositoryImpl
 import com.mikewarren.speakify.data.MessengerContactsRepository
 import com.mikewarren.speakify.data.MessengerContactsRepositoryImpl
+import com.mikewarren.speakify.data.NotificationAuditRepository
+import com.mikewarren.speakify.data.NotificationAuditRepositoryImpl
 import com.mikewarren.speakify.data.OnboardingRepository
 import com.mikewarren.speakify.data.OnboardingRepositoryImpl
 import com.mikewarren.speakify.data.SettingsRepository
@@ -19,6 +21,7 @@ import com.mikewarren.speakify.data.db.AppCategoryDao
 import com.mikewarren.speakify.data.db.AppDatabase
 import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.DbProvider
+import com.mikewarren.speakify.data.db.NotificationAuditLogDao
 import com.mikewarren.speakify.data.db.NotificationSourcesDao
 import com.mikewarren.speakify.data.db.RecentMessengerContactDao
 import com.mikewarren.speakify.data.db.UserAppsDao
@@ -71,6 +74,12 @@ abstract class AppModule {
         appCategoryRepositoryImpl: AppCategoryRepositoryImpl
     ): AppCategoryRepository
 
+    @Binds
+    @Singleton
+    abstract fun bindNotificationAuditRepository(
+        notificationAuditRepositoryImpl: NotificationAuditRepositoryImpl
+    ): NotificationAuditRepository
+
     companion object {
         @Provides
         @Singleton
@@ -119,6 +128,12 @@ abstract class AppModule {
         @Singleton
         fun provideAppCategoryDao(database: AppDatabase): AppCategoryDao {
             return database.appCategoryDao()
+        }
+
+        @Provides
+        @Singleton
+        fun provideNotificationAuditLogDao(database: AppDatabase): NotificationAuditLogDao {
+            return database.notificationAuditLogDao()
         }
 
         @Provides
