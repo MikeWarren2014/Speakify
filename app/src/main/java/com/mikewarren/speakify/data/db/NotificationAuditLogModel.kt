@@ -36,4 +36,25 @@ data class NotificationAuditLogModel(
     @ColumnInfo(name = "notification_key")
     val notificationKey: String? = null
 ) {
+    companion object {
+        fun From(packageName: String,
+                 appDisplayName: String,
+                 rawTitle: String?,
+                 rawText: String?,
+                 speakifiedText: String?,
+                 silenceReason: String?,
+                 notificationKey: String?): NotificationAuditLogModel {
+            val silenceReasonToUse = silenceReason ?: if (speakifiedText != null) null else "SILENCED_UNKNOWN"
+
+            return NotificationAuditLogModel(
+                packageName = packageName,
+                appDisplayName = appDisplayName,
+                rawTitle = rawTitle,
+                rawText = rawText,
+                speakifiedText = speakifiedText,
+                silenceReason = silenceReasonToUse,
+                notificationKey = notificationKey,
+            )
+        }
+    }
 }

@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
@@ -16,6 +17,9 @@ object PermissionUtils {
         }
         if (permission == Manifest.permission.BIND_SCREENING_SERVICE) {
             return NotificationPermissionHelper(context).isCallScreeningServiceEnabled()
+        }
+        if (permission == Manifest.permission.SYSTEM_ALERT_WINDOW) {
+            return Settings.canDrawOverlays(context)
         }
 
         // Use `ContextCompat.checkSelfPermission` to verify if the permission is granted

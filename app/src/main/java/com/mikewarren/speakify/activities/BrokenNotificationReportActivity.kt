@@ -1,6 +1,7 @@
 package com.mikewarren.speakify.activities
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -18,6 +19,8 @@ class BrokenNotificationReportActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val viewModel: BrokenNotificationReportViewModel by viewModels()
+
+        Log.d("BrokenNotificationReportActivity", "onCreate called")
 
         setContent {
             MyApplicationTheme {

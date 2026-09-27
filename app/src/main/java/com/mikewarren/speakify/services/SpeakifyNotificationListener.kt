@@ -24,6 +24,7 @@ import com.mikewarren.speakify.data.OnboardingRepository
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.AppSettingsDao
+import com.mikewarren.speakify.data.db.NotificationAuditLogModel
 import com.mikewarren.speakify.data.db.NotificationSourcesDao
 import com.mikewarren.speakify.data.db.UserAppsDao
 import com.mikewarren.speakify.data.events.NotificationPermissionEvent
@@ -226,13 +227,15 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         applicationScope.launch {
             if (!gatekeeper.canSpeakNow()) {
                 notificationAuditRepository.logEvent(
-                    packageName = sbn.packageName,
-                    appDisplayName = getAppDisplayName(sbn.packageName),
-                    rawTitle = getRawTitle(sbn),
-                    rawText = getRawText(sbn),
-                    speakifiedText = null,
-                    silenceReason = "GATEKEEPER_MUTED",
-                    notificationKey = sbn.key
+                    NotificationAuditLogModel.From(
+                        packageName = sbn.packageName,
+                        appDisplayName = getAppDisplayName(sbn.packageName),
+                        rawTitle = getRawTitle(sbn),
+                        rawText = getRawText(sbn),
+                        speakifiedText = null,
+                        silenceReason = "GATEKEEPER_MUTED",
+                        notificationKey = sbn.key,
+                    )
                 )
                 return@launch
             }
@@ -248,30 +251,28 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         val rawTitle = getRawTitle(sbn)
         val rawText = getRawText(sbn)
 
+        val baseNotificationAuditlogModel = NotificationAuditLogModel.From(
+            packageName = sbn.packageName,
+            appDisplayName = appName,
+            rawTitle = rawTitle,
+            rawText = rawText,
+            speakifiedText = null,
+            silenceReason = null,
+            notificationKey = sbn.key,
+        )
+
         if (!importantApps.map { model -> model.packageName }.contains(sbn.packageName)) {
-            notificationAuditRepository.logEvent(
-                packageName = sbn.packageName,
-                appDisplayName = appName,
-                rawTitle = rawTitle,
-                rawText = rawText,
-                speakifiedText = null,
+            notificationAuditRepository.logEvent(baseNotificationAuditlogModel.copy(
                 silenceReason = "NOT_IN_IMPORTANT_APPS",
-                notificationKey = sbn.key
-            )
+            ))
             return
         }
 
         // we're passing responsibility for this to PhoneStateReceiver
         if (PackageNames.PhoneAppList.contains(sbn.packageName)) {
-            notificationAuditRepository.logEvent(
-                packageName = sbn.packageName,
-                appDisplayName = appName,
-                rawTitle = rawTitle,
-                rawText = rawText,
-                speakifiedText = null,
+            notificationAuditRepository.logEvent(baseNotificationAuditlogModel.copy(
                 silenceReason = "HANDLED_BY_PHONE_RECEIVER",
-                notificationKey = sbn.key
-            )
+            ))
             return
         }
 
@@ -289,15 +290,9 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         val currentTime = System.currentTimeMillis()
         if (lastSpokenTime != null && (currentTime - lastSpokenTime) < notificationStrategy.debounceTimeMillis) {
             Log.d(TAG, "Notification ${sbn.key} was spoken recently. Debouncing (${notificationStrategy.debounceTimeMillis}ms window).")
-            notificationAuditRepository.logEvent(
-                packageName = sbn.packageName,
-                appDisplayName = appName,
-                rawTitle = rawTitle,
-                rawText = rawText,
-                speakifiedText = null,
+            notificationAuditRepository.logEvent(baseNotificationAuditlogModel.copy(
                 silenceReason = "DEBOUNCED",
-                notificationKey = sbn.key
-            )
+            ))
             return
         }
 
@@ -313,26 +308,14 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
             applicationScope.launch {
                 onboardingRepository.incrementSpeakificationCount()
             }
-            notificationAuditRepository.logEvent(
-                packageName = sbn.packageName,
-                appDisplayName = appName,
-                rawTitle = rawTitle,
-                rawText = rawText,
+            notificationAuditRepository.logEvent(baseNotificationAuditlogModel.copy(
                 speakifiedText = speakText,
-                silenceReason = null,
-                notificationKey = sbn.key
-            )
-        } else {
-            notificationAuditRepository.logEvent(
-                packageName = sbn.packageName,
-                appDisplayName = appName,
-                rawTitle = rawTitle,
-                rawText = rawText,
-                speakifiedText = null,
-                silenceReason = "STRATEGY_FILTERED",
-                notificationKey = sbn.key
-            )
+            ))
+            return
         }
+        notificationAuditRepository.logEvent(baseNotificationAuditlogModel.copy(
+            silenceReason = "STRATEGY_FILTERED",
+        ))
 
     }
 

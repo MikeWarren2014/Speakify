@@ -22,23 +22,8 @@ class NotificationAuditRepositoryImpl @Inject constructor(
     }
 
     override suspend fun logEvent(
-        packageName: String,
-        appDisplayName: String,
-        rawTitle: String?,
-        rawText: String?,
-        speakifiedText: String?,
-        silenceReason: String?,
-        notificationKey: String?
+        log: NotificationAuditLogModel,
     ) {
-        val log = NotificationAuditLogModel(
-            packageName = packageName,
-            appDisplayName = appDisplayName,
-            rawTitle = rawTitle,
-            rawText = rawText,
-            speakifiedText = speakifiedText,
-            silenceReason = silenceReason ?: if (speakifiedText != null) null else "SILENCED_UNKNOWN",
-            notificationKey = notificationKey
-        )
         dao.insertLog(log)
         dao.trimLogs(keepCount = 50)
     }
