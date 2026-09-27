@@ -2,7 +2,9 @@ package com.mikewarren.speakify.services
 
 import com.mikewarren.speakify.data.SettingsRepository
 import com.mikewarren.speakify.data.TrialRepository
+import com.mikewarren.speakify.data.TrialStatus
 import com.mikewarren.speakify.data.delegates.SimpleScheduleTest
+import com.mikewarren.speakify.data.models.TrialModel
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -33,6 +35,11 @@ class SpeakifyEngineGatekeeperTest: SimpleScheduleTest() {
     fun setUp() {
         settingsRepository = mockk(relaxed = true)
         every { settingsRepository.requireAuthenticationForSpeakifications } returns flowOf(false)
+
+        every { trialRepository.trialModelFlow } returns flowOf(TrialModel(
+            status = TrialStatus.NotNeeded,
+            startTimestamp = System.currentTimeMillis(),
+        ))
 
         gatekeeper = SpeakifyEngineGatekeeper(schedulingRepository, trialRepository, settingsRepository)
     }
