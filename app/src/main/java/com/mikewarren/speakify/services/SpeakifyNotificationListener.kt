@@ -226,7 +226,7 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         // This is non-blocking and uses the robust application scope.
         applicationScope.launch {
             if (!gatekeeper.canSpeakNow()) {
-                notificationAuditRepository.logEvent(
+                notificationAuditRepository.log(
                     NotificationAuditLogModel.From(
                         packageName = sbn.packageName,
                         appDisplayName = getAppDisplayName(sbn.packageName),
@@ -262,7 +262,7 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         )
 
         if (!importantApps.map { model -> model.packageName }.contains(sbn.packageName)) {
-            notificationAuditRepository.logEvent(baseNotificationAuditlogModel.copy(
+            notificationAuditRepository.log(baseNotificationAuditlogModel.copy(
                 silenceReason = "NOT_IN_IMPORTANT_APPS",
             ))
             return
@@ -270,7 +270,7 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
 
         // we're passing responsibility for this to PhoneStateReceiver
         if (PackageNames.PhoneAppList.contains(sbn.packageName)) {
-            notificationAuditRepository.logEvent(baseNotificationAuditlogModel.copy(
+            notificationAuditRepository.log(baseNotificationAuditlogModel.copy(
                 silenceReason = "HANDLED_BY_PHONE_RECEIVER",
             ))
             return
@@ -290,7 +290,7 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         val currentTime = System.currentTimeMillis()
         if (lastSpokenTime != null && (currentTime - lastSpokenTime) < notificationStrategy.debounceTimeMillis) {
             Log.d(TAG, "Notification ${sbn.key} was spoken recently. Debouncing (${notificationStrategy.debounceTimeMillis}ms window).")
-            notificationAuditRepository.logEvent(baseNotificationAuditlogModel.copy(
+            notificationAuditRepository.log(baseNotificationAuditlogModel.copy(
                 silenceReason = "DEBOUNCED",
             ))
             return
@@ -308,12 +308,12 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
             applicationScope.launch {
                 onboardingRepository.incrementSpeakificationCount()
             }
-            notificationAuditRepository.logEvent(baseNotificationAuditlogModel.copy(
+            notificationAuditRepository.log(baseNotificationAuditlogModel.copy(
                 speakifiedText = speakText,
             ))
             return
         }
-        notificationAuditRepository.logEvent(baseNotificationAuditlogModel.copy(
+        notificationAuditRepository.log(baseNotificationAuditlogModel.copy(
             silenceReason = "STRATEGY_FILTERED",
         ))
 

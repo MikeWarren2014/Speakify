@@ -525,6 +525,8 @@
     <string name="broken_notification_report_step_3">3. Tap words to highlight what you wanted to hear (Optional)</string>
     <string name="broken_notification_report_additional_notes">Additional Notes (Optional)</string>
     <string name="broken_notification_report_submit">Submit Report</string>
+    <string name="next_step">Next Step</string>
+    <string name="previous_step">Previous Step</string>
 
     <string name="problem_label_it_did_not_speak">It didn\'t speak at all, but should have.</string>
     <string name="problem_label_should_have_been_silent">It spoke, but should have been silent.</string>

@@ -539,6 +539,8 @@
     <string name="report_success_view_header">보고서가 제출되었습니다!</string>
     <string name="report_success_view_description">Speakify 개선에 도움을 주셔서 감사합니다.</string>
     <string name="report_success_view_button">완료</string>
+    <string name="next_step">다음 단계</string>
+    <string name="previous_step">이전 단계</string>
 </resources>
 
 

@@ -539,6 +539,8 @@
     <string name="report_success_view_header">レポートが送信されました！</string>
     <string name="report_success_view_description">Speakifyの改善にご協力いただきありがとうございます。</string>
     <string name="report_success_view_button">完了</string>
+    <string name="next_step">次のステップ</string>
+    <string name="previous_step">前のステップ</string>
 </resources>
 
 

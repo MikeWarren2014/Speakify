@@ -46,6 +46,18 @@ class BrokenNotificationReportViewModel @Inject constructor(
         }
     }
 
+    fun nextStep() {
+        _uiState.update { state ->
+            if (state.currentStep < 3) state.copy(currentStep = state.currentStep + 1) else state
+        }
+    }
+
+    fun previousStep() {
+        _uiState.update { state ->
+            if (state.currentStep > 1) state.copy(currentStep = state.currentStep - 1) else state
+        }
+    }
+
     fun selectLog(log: NotificationAuditLogModel) {
         _uiState.update {
             it.copy(

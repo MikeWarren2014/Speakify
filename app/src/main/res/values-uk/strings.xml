@@ -551,6 +551,8 @@
     <string name="report_success_view_header">Звіт надіслано!</string>
     <string name="report_success_view_description">Дякуємо за допомогу в покращенні Speakify.</string>
     <string name="report_success_view_button">Готово</string>
+    <string name="next_step">Наступний крок</string>
+    <string name="previous_step">Попередній крок</string>
 </resources>
 
 

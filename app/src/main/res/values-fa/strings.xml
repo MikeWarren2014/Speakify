@@ -545,6 +545,8 @@
     <string name="report_success_view_header">گزارش ارسال شد!</string>
     <string name="report_success_view_description">با تشکر از شما برای کمک به بهبود پردازش اعلان‌های Speakify.</string>
     <string name="report_success_view_button">تأیید</string>
+    <string name="next_step">گام بعدی</string>
+    <string name="previous_step">گام قبلی</string>
 </resources>
 
 

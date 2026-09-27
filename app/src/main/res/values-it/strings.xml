@@ -544,6 +544,8 @@
     <string name="report_success_view_header">Segnalazione inviata!</string>
     <string name="report_success_view_description">Grazie per l\'aiuto nel migliorare Speakify.</string>
     <string name="report_success_view_button">Fatto</string>
+    <string name="next_step">Passaggio successivo</string>
+    <string name="previous_step">Passaggio precedente</string>
 </resources>
 
 

@@ -543,6 +543,8 @@
     <string name="report_success_view_header">रिपोर्ट सबमिट हो गई!</string>
     <string name="report_success_view_description">Speakify को बेहतर बनाने में मदद करने के लिए धन्यवाद।</string>
     <string name="report_success_view_button">हो गया</string>
+    <string name="next_step">अगला चरण</string>
+    <string name="previous_step">पिछला चरण</string>
 </resources>
 
 

@@ -21,10 +21,8 @@ class NotificationAuditRepositoryImpl @Inject constructor(
         return dao.getRecentLogsSince(sinceTimestamp)
     }
 
-    override suspend fun logEvent(
-        log: NotificationAuditLogModel,
-    ) {
-        dao.insertLog(log)
+    override suspend fun log(logModel: NotificationAuditLogModel) {
+        dao.insertLog(logModel)
         dao.trimLogs(keepCount = 50)
     }
 

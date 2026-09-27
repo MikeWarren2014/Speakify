@@ -541,6 +541,8 @@
     <string name="report_success_view_header">报告已提交！</string>
     <string name="report_success_view_description">感谢您帮助改进 Speakify 的通知解析。</string>
     <string name="report_success_view_button">完成</string>
+    <string name="next_step">下一步</string>
+    <string name="previous_step">上一步</string>
 </resources>
 
 

@@ -1,13 +1,12 @@
 package com.mikewarren.speakify.activities
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import com.mikewarren.speakify.ui.theme.MyApplicationTheme
-import com.mikewarren.speakify.viewsAndViewModels.pages.brokenNotification.BrokenNotificationReportScreen
+import com.mikewarren.speakify.viewsAndViewModels.pages.brokenNotification.BrokenNotificationReportView
 import com.mikewarren.speakify.viewsAndViewModels.pages.brokenNotification.BrokenNotificationReportViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,11 +19,9 @@ class BrokenNotificationReportActivity : ComponentActivity() {
 
         val viewModel: BrokenNotificationReportViewModel by viewModels()
 
-        Log.d("BrokenNotificationReportActivity", "onCreate called")
-
         setContent {
             MyApplicationTheme {
-                BrokenNotificationReportScreen(
+                BrokenNotificationReportView(
                     viewModel = viewModel,
                     onDismiss = { finish() }
                 )
