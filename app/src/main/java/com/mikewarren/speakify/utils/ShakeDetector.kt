@@ -6,7 +6,13 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import kotlin.math.sqrt
 
-class ShakeDetector(private val onShake: () -> Unit) : SensorEventListener {
+class ShakeDetector(private val listener: OnShakeListener) : SensorEventListener {
+
+    fun interface OnShakeListener {
+        fun onShake()
+    }
+
+    constructor(onShake: () -> Unit) : this(OnShakeListener { onShake() })
 
     private var lastShakeTimestamp: Long = 0
     private var shakeCount: Int = 0

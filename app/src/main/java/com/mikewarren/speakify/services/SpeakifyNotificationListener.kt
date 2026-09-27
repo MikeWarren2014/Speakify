@@ -307,6 +307,7 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
             }
             notificationAuditRepository.log(baseNotificationAuditlogModel.copy(
                 speakifiedText = speakText,
+                silenceReason = null,
             ))
             return
         }
