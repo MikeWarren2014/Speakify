@@ -25,10 +25,20 @@ jobs:
         with:
           gradle-home-cache-cleanup: true
 
+      # Source - https://stackoverflow.com/a/75127891
+      # Posted by Pieter Svenson, modified by community. See post 'Timeline' for change history
+      # Retrieved 2026-04-04, License - CC BY-SA 4.0
+      - name: Create Google Services JSON File
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $GOOGLE_SERVICES_JSON | base64 -di > ./app/google-services.json
+
+        # View tasks directly in your GitHub Action log output (optional debugging)
+      - name: View Available Test Tasks
+        run: ./gradlew tasks --group="verification"
       # Run unit tests before building the AAB
       - name: Run Unit Tests
         run: ./gradlew :app:test
-
       # Upload test results so you can view failures in GitHub
       - name: Upload Test Reports
         if: always() # Ensures reports upload even if tests fail
@@ -36,7 +46,6 @@ jobs:
         with:
           name: unit-test-reports
           path: app/build/reports/tests/testReleaseUnitTest/
-
       - name: Extract versionCode and versionName
         id: get_versions
         run: |
@@ -44,14 +53,6 @@ jobs:
           cat version_output.txt
           echo "VERSION_CODE=$(grep VERSION_CODE version_output.txt | cut -d '=' -f2)" >> $GITHUB_ENV
           echo "VERSION_NAME=$(grep VERSION_NAME version_output.txt | cut -d '=' -f2)" >> $GITHUB_ENV
-      # Source - https://stackoverflow.com/a/75127891
-      # Posted by Pieter Svenson, modified by community. See post 'Timeline' for change history
-      # Retrieved 2026-04-04, License - CC BY-SA 4.0
-
-      - name: Create Google Services JSON File
-        env:
-          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $GOOGLE_SERVICES_JSON | base64 -di > ./app/google-services.json
 
       - name: Build prodRelease
         run: ./gradlew bundleRelease -Pandroid.injected.versionCode=${{ github.run_number }} -Pandroid.injected.versionName=${{ env.VERSION_NAME }}
