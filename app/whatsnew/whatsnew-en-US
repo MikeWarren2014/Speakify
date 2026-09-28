@@ -1,9 +1,7 @@
 Bugs fixed:
-- Fixed critical issue where users signing in were softlocked in to onboarding, and lost their data.
-- Fixed issue where status and scheduling data was not persisted to the cloud.
+- Locked down Trial mode (no speakifications for expired trial users).
+- Fixed issue with updating status when a new day's schedule starts or ends.
+- Fixed bug where data was getting wiped when the user's session ended.
 
 Enhancements:
-- Renamed "Scheduling" page to "Status & Scheduling".
-- Removed the requirement of specifying hours and minutes when pausing the app.
-- Added an option to copy a previous day's schedule.
-- Now reporting important apps to help us prioritize features!
+- Broken Notification Report feature: Shake your device to report broken notifications!

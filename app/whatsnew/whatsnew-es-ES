@@ -1,9 +1,7 @@
-Errores corregidos:
-- Solucionado bloqueo en el onboarding (evita pérdida de datos).
-- Corregida la sincronización en la nube de datos y programación.
+Corrección de errores:
+- Bloqueado el modo de prueba para usuarios caducados.
+- Corregida la actualización de estado al cambiar el horario del día.
+- Solucionado el problema por el cual se borraban datos al cerrar sesión.
 
 Mejoras:
-- Página "Programación" renombrada a "Estado y programación".
-- Pausa simplificada de la app sin obligar a definir horas/minutos.
-- Opción para copiar la programación de un día anterior.
-- Reporte de apps importantes para priorizar funciones.
+- Reporte de notificaciones defectuosas: ¡Agita el dispositivo para enviar un informe!

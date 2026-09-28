@@ -1,9 +1,7 @@
 Fehlerbehebungen:
-- Login-Softlock im Onboarding behoben (Datenverlust verhindert).
-- Cloud-Synchronisierung von Status- und Zeitplandaten repariert.
+- Testmodus abgesichert: Keine Ansagen mehr für abgelaufene Testversionen.
+- Statusaktualisierung bei Tageswechsel und Zeitplanende korrigiert.
+- Datenlöschung beim Beenden der Benutzersitzung behoben.
 
 Verbesserungen:
-- „Zeitplanung“ in „Status & Zeitplanung“ umbenannt.
-- Vereinfachtes Pausieren der App ohne Stunden-/Minutenangabe.
-- Option zum Kopieren eines früheren Tageszeitplans hinzugefügt.
-- Wichtige Apps werden gemeldet, um Funktionen besser zu priorisieren.
+- Meldefunktion für fehlerhafte Benachrichtigungen: Schütteln Sie das Gerät, um Fehler zu melden!
