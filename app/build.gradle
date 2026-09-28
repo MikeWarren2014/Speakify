@@ -38,12 +38,10 @@ android {
         applicationId packageName
         minSdk 28
         targetSdk androidSdkVersion
-        versionCode 39
-        versionName "1.5.3"
+        versionCode 40
+        versionName "1.5.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        assert project.rootProject.file('apiKeys.properties').exists()
 
         Properties properties = new Properties()
         properties.load(project.rootProject.file('apiKeys.properties').newDataInputStream())

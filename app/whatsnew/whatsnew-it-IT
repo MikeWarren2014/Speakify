@@ -1,9 +1,7 @@
-Bug risolti:
-- Risolto il blocco nell'onboarding (evitata la perdita di dati).
-- Corretta la sincronizzazione cloud di stato e programmazione.
+Correzioni di bug:
+- Bloccata la modalità di prova per gli utenti scaduti.
+- Corretta l'aggiornamento dello stato in base alla programmazione giornaliera.
+- Risolto il bug di cancellazione dei dati al termine della sessione.
 
 Miglioramenti:
-- Pagina "Programmazione" rinominata in "Stato e programmazione".
-- Sospensione dell'app semplificata senza obbligo di ore/minuti.
-- Opzione per copiare la programmazione del giorno precedente.
-- Segnalazione app importanti per dare priorità alle funzioni.
+- Segnalazione notifiche : Scuoti il dispositivo per segnalare notifiche con problemi!

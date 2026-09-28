@@ -1,9 +1,7 @@
-Bugs corrigés:
-- Correction du blocage à l'onboarding (perte de données évitée).
-- Correction de la synchro cloud des données d'état/planification.
+Corrections de bugs :
+- Verrouillage du mode d'essai expiré (plus d'annonces vocales).
+- Correction de la mise à jour du statut selon le planning du jour.
+- Correction du bug d'effacement des données à la fin de session.
 
-Améliorations:
-- Page « Planification » renommée en « État et planification ».
-- Pause simplifiée de l'app sans obligation d'heures/minutes.
-- Option pour copier l'horaire d'un jour précédent.
-- Signalement des apps importantes pour prioriser les fonctions.
+Améliorations :
+- Signalement de notifications défectueuses : Secouez votre appareil pour signaler un problème !

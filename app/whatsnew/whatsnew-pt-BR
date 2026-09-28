@@ -1,9 +1,7 @@
-Bugs corrigidos:
-- Corrigido bloqueio na integração (evita perda de dados).
-- Corrigida a sincronização em nuvem de status e agendamento.
+Correções de bugs:
+- Bloqueado o modo de teste para usuários expirados.
+- Corrigida a atualização de status com base no agendamento do dia.
+- Corrigido o erro em que os dados eram apagados ao encerrar a sessão.
 
 Melhorias:
-- Página "Agendamento" renomeada para "Status e Agendamento".
-- Pausa simplificada do app sem exigir horas e minutos.
-- Opção para copiar o cronograma de um dia anterior.
-- Relato de apps importantes para priorizar recursos.
+- Relatório de notificações com falha: Agite o dispositivo para relatar problemas!
