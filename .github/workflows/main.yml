@@ -27,7 +27,7 @@ jobs:
 
       # Run unit tests before building the AAB
       - name: Run Unit Tests
-        run: ./gradlew testReleaseUnitTest
+        run: ./gradlew test
 
       # Upload test results so you can view failures in GitHub
       - name: Upload Test Reports
