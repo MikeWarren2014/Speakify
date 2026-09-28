@@ -32,6 +32,12 @@
     java.lang.String getString(java.lang.String);
 }
 
+# --- Synthetic Lambda methods ---
+-keepclassmembers class com.mikewarren.speakify.services.SpeakifyNotificationListener {
+    *** setupShakeDetector*lambda*(...);
+}
+
+
 # --- General Serialization/Reflection ---
 # If you use GSON or other serialization libraries, you might need more specific rules.
 # For now, keeping your data models is a safe bet if they are used in networking.
