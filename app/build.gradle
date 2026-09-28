@@ -43,8 +43,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        assert project.rootProject.file('apiKeys.properties').exists()
-
         Properties properties = new Properties()
         properties.load(project.rootProject.file('apiKeys.properties').newDataInputStream())
         buildConfigField "String", "CLERK_PUBLISHABLE_KEY", "\"${properties.getProperty('CLERK_PUBLISHABLE_KEY')}\""
