@@ -261,7 +261,7 @@
 
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">Annoncer le résumé de plusieurs nouveaux messages</string>
-    <string name="email_message_keywords">Mots-clés des messages (séparés par des virgules)</string>
+    <string name="email_message_keywords">Écouter les mots-clés des messages (séparés par des virgules)</string>
 
 
     <!-- Notification source widgets -->

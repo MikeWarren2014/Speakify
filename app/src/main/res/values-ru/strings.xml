@@ -267,7 +267,7 @@
 
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">Озвучивать сводку нескольких новых сообщений</string>
-    <string name="email_message_keywords">Ключевые слова сообщений (через запятую)</string>
+    <string name="email_message_keywords">Слушать ключевые слова сообщений (через запятую)</string>
 
 
     <!-- Notification source widgets -->

@@ -262,7 +262,7 @@
 
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">اعلام خلاصه چندین پیام جدید</string>
-    <string name="email_message_keywords">کلیدواژه‌های پیام (جدا شده با کاما)</string>
+    <string name="email_message_keywords">شنیدن کلیدواژه‌های پیام (جدا شده با کاما)</string>
 
 
     <!-- Notification source widgets -->

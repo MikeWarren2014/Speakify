@@ -258,7 +258,7 @@
 
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">여러 개의 새 메시지 요약 알림</string>
-    <string name="email_message_keywords">알릴 메시지 키워드 (쉼표로 구분)</string>
+    <string name="email_message_keywords">메시지 키워드 감지 (쉼표로 구분)</string>
 
 
     <!-- Notification source widgets -->

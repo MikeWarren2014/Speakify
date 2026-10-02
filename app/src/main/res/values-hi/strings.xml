@@ -261,7 +261,7 @@
 
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">कई नए संदेशों का सारांश घोषित करें</string>
-    <string name="email_message_keywords">संदेश कीवर्ड (कॉमा से अलग करें)</string>
+    <string name="email_message_keywords">संदेश कीवर्ड सुनें (कॉमा से अलग करें)</string>
 
 
     <!-- Notification source widgets -->

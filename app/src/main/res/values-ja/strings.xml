@@ -258,7 +258,7 @@
 
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">複数の新着メッセージの概要を読み上げる</string>
-    <string name="email_message_keywords">読み上げるキーワード（カンマ区切り）</string>
+    <string name="email_message_keywords">メッセージのキーワードを聴く（カンマ区切り）</string>
 
 
     <!-- Notification source widgets -->

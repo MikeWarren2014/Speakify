@@ -265,7 +265,7 @@
 
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">Announce multiple new messages summary</string>
-    <string name="email_message_keywords">Message keywords to speakify (comma-separated)</string>
+    <string name="email_message_keywords">Listen for message keywords (comma-separated)</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">notification sources</string>

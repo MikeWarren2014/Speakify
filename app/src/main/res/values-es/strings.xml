@@ -261,7 +261,7 @@
 
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">Anunciar resumen de múltiples mensajes nuevos</string>
-    <string name="email_message_keywords">Palabras clave del mensaje (separadas por comas)</string>
+    <string name="email_message_keywords">Escuchar palabras clave del mensaje (separadas por comas)</string>
 
 
     <!-- Notification source widgets -->

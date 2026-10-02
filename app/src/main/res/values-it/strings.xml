@@ -261,7 +261,7 @@
 
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">Annuncia il riepilogo di più nuovi messaggi</string>
-    <string name="email_message_keywords">Parole chiave dei messaggi (separate da virgole)</string>
+    <string name="email_message_keywords">Ascolta le parole chiave dei messaggi (separate da virgole)</string>
 
 
     <!-- Notification source widgets -->

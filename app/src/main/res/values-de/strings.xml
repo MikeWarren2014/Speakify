@@ -261,7 +261,7 @@
 
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">Zusammenfassung mehrerer neuer Nachrichten ansagen</string>
-    <string name="email_message_keywords">Nachrichten-Schlüsselwörter (kommagetrennt)</string>
+    <string name="email_message_keywords">Auf Nachrichten-Schlüsselwörter hören (kommagetrennt)</string>
 
 
     <!-- Notification source widgets -->

@@ -267,7 +267,7 @@
 
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">Озвучувати зведення кількох нових повідомлень</string>
-    <string name="email_message_keywords">Ключові слова повідомлень (через кому)</string>
+    <string name="email_message_keywords">Слухати ключові слова повідомлень (через кому)</string>
 
 
     <!-- Notification source widgets -->

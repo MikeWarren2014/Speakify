@@ -259,7 +259,7 @@
 
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">播报多条新消息摘要</string>
-    <string name="email_message_keywords">要播报的消息关键词（逗号分隔）</string>
+    <string name="email_message_keywords">监听消息关键词（逗号分隔）</string>
 
 
     <!-- Notification source widgets -->
