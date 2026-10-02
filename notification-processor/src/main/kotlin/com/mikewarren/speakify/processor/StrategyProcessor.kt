@@ -13,6 +13,7 @@ class StrategyProcessor(
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val strategySymbols = resolver.getSymbolsWithAnnotation("com.mikewarren.speakify.strategies.IsPackageName") +
                               resolver.getSymbolsWithAnnotation("com.mikewarren.speakify.strategies.InPackageNameList") +
+                              resolver.getSymbolsWithAnnotation("com.mikewarren.speakify.strategies.IsEmailApp") +
                               resolver.getSymbolsWithAnnotation("com.mikewarren.speakify.strategies.DefaultNotificationStrategy")
 
         val additionalSettingsSymbols = resolver.getSymbolsWithAnnotation("com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AdditionalSettingsComponent")
@@ -128,12 +129,20 @@ class StrategyProcessor(
                 cls.annotations.filter { it.shortName.asString() == annotationName }.forEach { annotation ->
                     val pkg = annotation.arguments.find { it.name?.asString() == "packageName" }?.value as? String
                     val list = annotation.arguments.find { it.name?.asString() == "listName" }?.value as? String
+                    @Suppress("UNCHECKED_CAST")
+                    val appTypes = (annotation.arguments.find { it.name?.asString() == "appTypes" }?.value as? List<*>)
+                        ?.filterIsInstance<String>() ?: emptyList()
                     
                     if (!pkg.isNullOrEmpty()) {
                         writer.write("        \"pkg:$pkg\" to ${cls.simpleName.asString()}::class,\n")
                     }
                     if (!list.isNullOrEmpty()) {
                         writer.write("        \"list:$list\" to ${cls.simpleName.asString()}::class,\n")
+                    }
+                    appTypes.forEach { appType ->
+                        if (appType.isNotEmpty()) {
+                            writer.write("        \"appType:$appType\" to ${cls.simpleName.asString()}::class,\n")
+                        }
                     }
                 }
             }
@@ -146,6 +155,9 @@ class StrategyProcessor(
                 func.annotations.filter { it.shortName.asString() == annotationName }.forEach { annotation ->
                     val pkg = annotation.arguments.find { it.name?.asString() == "packageName" }?.value as? String
                     val list = annotation.arguments.find { it.name?.asString() == "listName" }?.value as? String
+                    @Suppress("UNCHECKED_CAST")
+                    val appTypes = (annotation.arguments.find { it.name?.asString() == "appTypes" }?.value as? List<*>)
+                        ?.filterIsInstance<String>() ?: emptyList()
                     
                     val paramType = func.parameters.firstOrNull()?.type?.resolve()?.declaration?.qualifiedName?.asString() ?: "Any"
 
@@ -154,6 +166,11 @@ class StrategyProcessor(
                     }
                     if (!list.isNullOrEmpty()) {
                         writer.write("        \"list:$list\" to { vm: Any -> ${func.simpleName.asString()}(vm as $paramType) },\n")
+                    }
+                    appTypes.forEach { appType ->
+                        if (appType.isNotEmpty()) {
+                            writer.write("        \"appType:$appType\" to { vm: Any -> ${func.simpleName.asString()}(vm as $paramType) },\n")
+                        }
                     }
                 }
             }

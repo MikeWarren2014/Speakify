@@ -26,6 +26,11 @@
         <intent>
             <action android:name="com.google.android.gms.common.service.START" />
         </intent>
+        <!-- Query for apps that can handle mailto URIs -->
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
     </queries>
 
     <application

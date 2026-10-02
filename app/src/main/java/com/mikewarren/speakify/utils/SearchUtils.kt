@@ -81,4 +81,25 @@ object SearchUtils {
             ?.range
             ?.first ?: -1
     }
+
+    /**
+     * Matches an input string (e.g., "4 new messages") against a format string resource
+     * (e.g., "%1$d new messages") across any localized language.
+     * @param { String } formatString - The format string resource to match against. This should be the <code>context.getString(R.string....)</code> string
+     * @param { String } input - The input string to match against the format string.
+     *
+     *
+     * @return [MatchResult] if it matches (where groupValues[1] is the extracted parameter),
+     *         or `null` if it doesn't match.
+     */
+    fun MatchesFormatString(formatString: String, input: String): MatchResult? {
+        val escaped = Regex.escape(formatString)
+
+        // Replace %1$d or %d with (\d+), and %1$s or %s with (.*?)
+        val pattern = escaped
+            .replace(Regex("""\\%(\d+\\\$)?d"""), """(\\d+)""")
+            .replace(Regex("""\\%(\d+\\\$)?s"""), """(.*?)""")
+
+        return Regex("^$pattern$", RegexOption.IGNORE_CASE).matchEntire(input)
+    }
 }

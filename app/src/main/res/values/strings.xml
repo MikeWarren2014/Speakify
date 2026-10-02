@@ -192,6 +192,8 @@
         <item>Messenger Audio call</item>
     </string-array>
 
+    <string name="email_multiple_new_messages">%1$d new messages</string>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Audio call</string>
     <string name="messenger_incoming_video_call_text">Video call</string>
@@ -260,6 +262,10 @@
     <string name="read_messages">Read Messages</string>
     <string name="ignore_single_word_messages">Ignore single word messages</string>
     <string name="ignore_reactions">Ignore reactions</string>
+
+    <!-- Email App Settings -->
+    <string name="announce_multiple_new_messages_setting">Announce multiple new messages summary</string>
+    <string name="email_message_keywords">Message keywords to speakify (comma-separated)</string>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">notification sources</string>

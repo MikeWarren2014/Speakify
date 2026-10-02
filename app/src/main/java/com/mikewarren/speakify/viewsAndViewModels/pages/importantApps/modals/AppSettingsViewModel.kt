@@ -97,7 +97,8 @@ class AppSettingsViewModel(
         val packageName = getPackageName()
         val kClass = NotificationStrategyRegistry.findComponentClass(
             packageName,
-            GeneratedNotificationListRegistry.classMap
+            GeneratedNotificationListRegistry.classMap,
+            settingsRepository.getContext()
         )
 
         if (kClass == null) {
@@ -120,7 +121,8 @@ class AppSettingsViewModel(
         val packageName = getPackageName()
         val kClass = NotificationStrategyRegistry.findComponentClass(
             packageName,
-            GeneratedAdditionalSettingsRegistry.classMap
+            GeneratedAdditionalSettingsRegistry.classMap,
+            settingsRepository.getContext()
         )
 
         if (kClass == null) {

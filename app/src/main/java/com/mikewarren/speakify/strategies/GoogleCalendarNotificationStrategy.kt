@@ -37,13 +37,11 @@ class GoogleCalendarNotificationStrategy(
 
         // We only care about calendar events, not other notifications it might post
         // (You might need to refine this by inspecting the logged extras)
-        val title = notification.notification.extras.getString(Notification.EXTRA_TITLE)
-        return !title.isNullOrEmpty()
+        return title.isNotEmpty()
     }
 
     override fun textToSpeakify(): String {
         val extras = notification.notification.extras
-        val title = extras.getString(Notification.EXTRA_TITLE) ?: ""
         val text = extras.getString(Notification.EXTRA_TEXT) ?: ""
 
         return context.getString(getStringForNotificationText(text),

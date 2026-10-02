@@ -5,49 +5,32 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.data.SettingsRepository
-import com.mikewarren.speakify.data.constants.appSettingsKeys.MessagingAppKeys
 import com.mikewarren.speakify.data.constants.PackageNames
+import com.mikewarren.speakify.data.constants.appSettingsKeys.MessagingAppKeys
 import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AdditionalSettingsComponent
 
 @AdditionalSettingsComponent(listName = "MessagingAppList")
 @AdditionalSettingsComponent(packageName = PackageNames.GoogleVoice)
 open class BaseMessagingAppAdditionalSettingsViewModel(
-    override var settingsRepository: SettingsRepository,
+    settingsRepository: SettingsRepository,
     initialAdditionalSettings: Map<String, String>,
     onSaveSettings: (Map<String, String>) -> Unit
-) : BaseAppAdditionalSettingsViewModel(settingsRepository, initialAdditionalSettings, onSaveSettings) {
-    var readMessages by mutableStateOf(
-        initialAdditionalSettings[MessagingAppKeys.KEY_READ_MESSAGES]?.toBoolean() ?: Constants.DefaultBooleanSetting
-    )
-
-    var ignoreSingleWordMessages by mutableStateOf(
-        initialAdditionalSettings[MessagingAppKeys.KEY_IGNORE_SINGLE_WORD_MESSAGES]?.toBoolean() ?: Constants.DefaultBooleanSetting
-    )
+) : BaseMessageReadingAdditionalSettingsViewModel(settingsRepository, initialAdditionalSettings, onSaveSettings) {
 
     var ignoreReactions by mutableStateOf(
         initialAdditionalSettings[MessagingAppKeys.KEY_IGNORE_REACTIONS]?.toBoolean() ?: Constants.DefaultBooleanSetting
     )
 
-    private var originalReadMessages = readMessages
-    private var originalIgnoreSingleWordMessages = ignoreSingleWordMessages
     private var originalIgnoreReactions = ignoreReactions
 
-    override fun onOpen() {
-        // No additional logic needed on open, yet...
-    }
-
     override fun cancel() {
-        readMessages = originalReadMessages
-        ignoreSingleWordMessages = originalIgnoreSingleWordMessages
+        super.cancel()
         ignoreReactions = originalIgnoreReactions
     }
 
     override fun makeAdditionalSettingsDict(): Map<String, String> {
-        return mapOf(
-            MessagingAppKeys.KEY_READ_MESSAGES to readMessages.toString(),
-            MessagingAppKeys.KEY_IGNORE_SINGLE_WORD_MESSAGES to ignoreSingleWordMessages.toString(),
-            MessagingAppKeys.KEY_IGNORE_REACTIONS to ignoreReactions.toString(),
-        )
+        val baseDict = super.makeAdditionalSettingsDict().toMutableMap()
+        baseDict[MessagingAppKeys.KEY_IGNORE_REACTIONS] = ignoreReactions.toString()
+        return baseDict
     }
-
 }

@@ -188,6 +188,8 @@
         <item>Chamada de áudio do Messenger</item>
     </string-array>
 
+    <string name="email_multiple_new_messages">%1$d novas mensagens</string>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Chamada de áudio</string>
     <string name="messenger_incoming_video_call_text">Chamada de vídeo</string>
@@ -256,6 +258,10 @@
     <string name="read_messages">Ler mensagens</string>
     <string name="ignore_single_word_messages">Ignorar mensagens de uma única palavra</string>
     <string name="ignore_reactions">Ignorar reações</string>
+
+    <!-- Email App Settings -->
+    <string name="announce_multiple_new_messages_setting">Anunciar resumo de várias novas mensagens</string>
+    <string name="email_message_keywords">Palavras-chave das mensagens (separadas por vírgula)</string>
 
 
     <!-- Notification source widgets -->

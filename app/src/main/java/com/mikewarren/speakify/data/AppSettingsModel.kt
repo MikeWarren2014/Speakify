@@ -25,6 +25,15 @@ data class AppSettingsModel(
     }
 
     /**
+     * Helper to get a list setting from the additionalSettings map.
+     */
+    fun getListSetting(key: String, defaultValue: List<String> = emptyList()): List<String> {
+        // TODO: need a delimiter other than ',' here. Need one that won't, for example, show up in an email message notification title
+        return additionalSettings[key]?.split(",") ?: defaultValue
+    }
+
+
+    /**
      * Helper to create a copy of the model with an updated additional setting.
      */
     fun withSetting(key: String, value: String): AppSettingsModel {

@@ -188,6 +188,8 @@
         <item>تماس صوتی مسنجر</item>
     </string-array>
 
+    <string name="email_multiple_new_messages">%1$d پیام جدید</string>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">تماس صوتی</string>
     <string name="messenger_incoming_video_call_text">تماس تصویری</string>
@@ -257,6 +259,10 @@
     <string name="read_messages">خواندن پیام‌ها</string>
     <string name="ignore_single_word_messages">نادیده گرفتن پیام‌های تک‌کلمه‌ای</string>
     <string name="ignore_reactions">نادیده گرفتن عکس‌العمل‌ها</string>
+
+    <!-- Email App Settings -->
+    <string name="announce_multiple_new_messages_setting">اعلام خلاصه چندین پیام جدید</string>
+    <string name="email_message_keywords">کلیدواژه‌های پیام (جدا شده با کاما)</string>
 
 
     <!-- Notification source widgets -->

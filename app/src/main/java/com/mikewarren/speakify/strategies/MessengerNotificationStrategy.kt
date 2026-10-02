@@ -69,7 +69,6 @@ class MessengerNotificationStrategy(
         return MessengerNotificationTypes.Other
     }
 
-    val title = NotificationExtractionUtils.ExtractTitle(notification)
 
     override fun isReaction(): Boolean {
         if (isSingleWordMessage()) {
@@ -221,7 +220,7 @@ class MessengerNotificationStrategy(
             return false
 
         return ((super.shouldSpeakify()) || (appSettingsModel!!.notificationSources.any { it.value == name })) &&
-                (super.shouldSpeakifyBasedOnSettings())
+                (shouldSpeakifyBasedOnSettings())
     }
 
     private fun extractSenderName(): String? {

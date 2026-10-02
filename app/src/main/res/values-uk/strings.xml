@@ -194,6 +194,8 @@
         <item>Аудіодзвінок Messenger</item>
     </string-array>
 
+    <string name="email_multiple_new_messages">%1$d нових повідомлень</string>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Аудіодзвінок</string>
     <string name="messenger_incoming_video_call_text">Відеодзвінок</string>
@@ -262,6 +264,10 @@
     <string name="read_messages">Читати повідомлення</string>
     <string name="ignore_single_word_messages">Ігнорувати повідомлення з одного слова</string>
     <string name="ignore_reactions">Ігнорувати реакції</string>
+
+    <!-- Email App Settings -->
+    <string name="announce_multiple_new_messages_setting">Озвучувати зведення кількох нових повідомлень</string>
+    <string name="email_message_keywords">Ключові слова повідомлень (через кому)</string>
 
 
     <!-- Notification source widgets -->

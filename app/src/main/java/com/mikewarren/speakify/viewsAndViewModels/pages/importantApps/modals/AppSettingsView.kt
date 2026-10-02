@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -114,10 +115,12 @@ fun AppSettingsView(
 
 @Composable
 fun GetAdditionalSettingsView(viewModel: AppSettingsViewModel) {
+    val context = LocalContext.current
     val packageName = viewModel.getPackageName()
     val viewFunc = NotificationStrategyRegistry.findComponentView(
         packageName,
-        GeneratedAdditionalSettingsRegistry.viewMap
+        GeneratedAdditionalSettingsRegistry.viewMap,
+        context
     )
 
     viewFunc?.invoke(viewModel.childAdditionalSettingsViewModel!!)
@@ -125,10 +128,12 @@ fun GetAdditionalSettingsView(viewModel: AppSettingsViewModel) {
 
 @Composable
 fun GetChildListView(viewModel: AppSettingsViewModel) {
+    val context = LocalContext.current
     val packageName = viewModel.getPackageName()
     val viewFunc = NotificationStrategyRegistry.findComponentView(
         packageName,
-        GeneratedNotificationListRegistry.viewMap
+        GeneratedNotificationListRegistry.viewMap,
+        context
     )
 
     if (viewModel.childNotificationListViewModel == null)
