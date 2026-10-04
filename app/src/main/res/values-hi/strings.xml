@@ -150,6 +150,9 @@
     <string name="fedEx_out_for_delivery">डिलीवरी के लिए निर्धारित</string>
     <string name="fedEx_delivery_rescheduled">डिलीवरी का समय बदला गया</string>
 
+    <!-- Shop Notifications -->
+    <string name="shop_package_delivered">आपका पैकेज डिलीवर हो गया है</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
@@ -262,6 +265,11 @@
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">कई नए संदेशों का सारांश घोषित करें</string>
     <string name="email_message_keywords">संदेश कीवर्ड सुनें (कॉमा से अलग करें)</string>
+    <string name="email_contacts_text">ईमेल संपर्क</string>
+    <string name="new_email_notification_from_app">%1$s से नया ईमेल नोटिफिकेशन</string>
+    <string name="new_email_message_from_contact">%1$s से नया ईमेल संदेश: \"%2$s\"</string>
+    <string name="multiple_new_messages">आपके पास %1$s हैं</string>
+    <string name="whole_email_message">%1$s ने आपको विषय \"%2$s\" और संदेश \"%3$s\" के साथ एक ईमेल भेजा है</string>
 
     <string-array name="email_reply_header_prefixes">
         <item>\nको </item>

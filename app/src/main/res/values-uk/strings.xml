@@ -156,6 +156,9 @@
     <string name="fedEx_out_for_delivery">Заплановано до доставки</string>
     <string name="fedEx_delivery_rescheduled">Доставка перенесена</string>
 
+    <!-- Shop Notifications -->
+    <string name="shop_package_delivered">Вашу посилку доставлено</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
@@ -268,6 +271,11 @@
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">Озвучувати зведення кількох нових повідомлень</string>
     <string name="email_message_keywords">Слухати ключові слова повідомлень (через кому)</string>
+    <string name="email_contacts_text">Контакти електронної пошти</string>
+    <string name="new_email_notification_from_app">Нове сповіщення електронної пошти від %1$s</string>
+    <string name="new_email_message_from_contact">Новий лист від %1$s: \"%2$s\"</string>
+    <string name="multiple_new_messages">У вас %1$s</string>
+    <string name="whole_email_message">%1$s надіслав вам лист із темою \"%2$s\" та текстом \"%3$s\"</string>
 
     <string-array name="email_reply_header_prefixes">
         <item>написав:</item>

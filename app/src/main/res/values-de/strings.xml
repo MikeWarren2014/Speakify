@@ -150,6 +150,9 @@
     <string name="fedEx_out_for_delivery">Zustellung geplant</string>
     <string name="fedEx_delivery_rescheduled">Zustellung neu geplant</string>
 
+    <!-- Shop Notifications -->
+    <string name="shop_package_delivered">Ihr Paket wurde zugestellt</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
@@ -262,6 +265,11 @@
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">Zusammenfassung mehrerer neuer Nachrichten ansagen</string>
     <string name="email_message_keywords">Auf Nachrichten-Schlüsselwörter hören (kommagetrennt)</string>
+    <string name="email_contacts_text">E-Mail-Kontakte</string>
+    <string name="new_email_notification_from_app">Neue E-Mail-Benachrichtigung von %1$s</string>
+    <string name="new_email_message_from_contact">Neue E-Mail-Nachricht von %1$s: \"%2$s\"</string>
+    <string name="multiple_new_messages">Sie haben %1$s</string>
+    <string name="whole_email_message">%1$s hat Ihnen eine E-Mail mit dem Betreff \"%2$s\" und dem Text \"%3$s\" gesendet</string>
 
     <string-array name="email_reply_header_prefixes">
         <item>\nAm </item>

@@ -150,6 +150,9 @@
     <string name="fedEx_out_for_delivery">Prévu pour la livraison</string>
     <string name="fedEx_delivery_rescheduled">Livraison reprogrammée</string>
 
+    <!-- Shop Notifications -->
+    <string name="shop_package_delivered">Votre colis a été livré</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
@@ -262,6 +265,11 @@
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">Annoncer le résumé de plusieurs nouveaux messages</string>
     <string name="email_message_keywords">Écouter les mots-clés des messages (séparés par des virgules)</string>
+    <string name="email_contacts_text">Contacts e-mail</string>
+    <string name="new_email_notification_from_app">Nouvelle notification d\'e-mail de %1$s</string>
+    <string name="new_email_message_from_contact">Nouveau message e-mail de %1$s : \"%2$s\"</string>
+    <string name="multiple_new_messages">Vous avez %1$s</string>
+    <string name="whole_email_message">%1$s vous a envoyé un e-mail avec pour objet \"%2$s\" et pour message \"%3$s\"</string>
 
     <string-array name="email_reply_header_prefixes">
         <item>\nLe </item>

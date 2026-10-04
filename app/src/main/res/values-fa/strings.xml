@@ -150,6 +150,9 @@
     <string name="fedEx_out_for_delivery">برای تحویل برنامه‌ریزی شده است</string>
     <string name="fedEx_delivery_rescheduled">زمان تحویل تغییر کرد</string>
 
+    <!-- Shop Notifications -->
+    <string name="shop_package_delivered">بسته شما تحویل داده شد</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
@@ -263,6 +266,11 @@
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">اعلام خلاصه چندین پیام جدید</string>
     <string name="email_message_keywords">شنیدن کلیدواژه‌های پیام (جدا شده با کاما)</string>
+    <string name="email_contacts_text">مخاطبین ایمیل</string>
+    <string name="new_email_notification_from_app">اعلان ایمیل جدید از %1$s</string>
+    <string name="new_email_message_from_contact">پیام ایمیل جدید از %1$s: \"%2$s\"</string>
+    <string name="multiple_new_messages">شما %1$s دارید</string>
+    <string name="whole_email_message">%1$s برای شما ایمیلی با موضوع \"%2$s\" و متن \"%3$s\" ارسال کرد</string>
 
     <string-array name="email_reply_header_prefixes">
         <item>\nدر </item>
