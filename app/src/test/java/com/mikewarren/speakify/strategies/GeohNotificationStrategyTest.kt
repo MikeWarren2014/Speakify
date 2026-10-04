@@ -15,7 +15,7 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
-class GeohNotificationStrategyTest {
+class GeohNotificationStrategyTest: BaseNotificationStrategyTest() {
 
     @Test
     fun extractRelativeTimeTest() {
@@ -26,9 +26,8 @@ class GeohNotificationStrategyTest {
         every { sbn.notification } returns notification
         notification.extras = extras
         
-        val context = mockk<Context>(relaxed = true)
-        val ttsManager = mockk<TTSManager>(relaxed = true)
-        
+        val context = createStubContext()
+
         val strategy = GeohNotificationStrategy(sbn, null, context, ttsManager)
         
         val text = "You have an upcoming session on Fri, Apr 3 2026, 6:00 PM EDT."

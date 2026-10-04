@@ -11,13 +11,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import kotlin.intArrayOf
 import kotlin.test.DefaultAsserter.assertNotNull
-import kotlin.test.assertNotNull
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
-class GoogleCalendarNotificationStrategyTest {
+class GoogleCalendarNotificationStrategyTest: BaseNotificationStrategyTest() {
     @Test
     fun extractRelativeTimeTest() {
         val sbn = mockk<StatusBarNotification>(relaxed = true)
@@ -27,8 +25,7 @@ class GoogleCalendarNotificationStrategyTest {
         every { sbn.notification } returns notification
         notification.extras = extras
 
-        val context = mockk<Context>(relaxed = true)
-        val ttsManager = mockk<TTSManager>(relaxed = true)
+        val context = createStubContext()
 
         val strategy = GoogleCalendarNotificationStrategy(sbn, null, context, ttsManager)
 

@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.service.notification.StatusBarNotification
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.ContactModel
@@ -15,14 +14,10 @@ import com.mikewarren.speakify.services.TTSManager
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkObject
 import io.mockk.mockkStatic
-import io.mockk.unmockkObject
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -30,20 +25,8 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
-class SMSNotificationStrategyTest {
+class SMSNotificationStrategyTest: BaseNotificationStrategyTest() {
 
-    @Before
-    fun setUp() {
-        mockkStatic(FirebaseCrashlytics::class)
-        val mockCrashlytics = mockk<FirebaseCrashlytics>(relaxed = true)
-        every { FirebaseCrashlytics.getInstance() } returns mockCrashlytics
-        mockkObject(NotificationExtractionUtils)
-    }
-
-    @After
-    fun tearDown() {
-        unmockkObject(NotificationExtractionUtils)
-    }
 
     @Test
     fun testTextToSpeakify_ContainsUrl_ReplacesWithLink() {
@@ -73,8 +56,6 @@ class SMSNotificationStrategyTest {
         val appSettingsModel = mockk<AppSettingsModel>(relaxed = true)
         every { appSettingsModel.getBooleanSetting(any(), any()) } returns true
 
-        val ttsManager = mockk<TTSManager>(relaxed = true)
-        
         val strategy = SMSNotificationStrategy(sbn, appSettingsModel, context, ttsManager)
 
         val result = strategy.textToSpeakify()
@@ -83,10 +64,9 @@ class SMSNotificationStrategyTest {
         assertEquals("Mike says: Check this out: link", result)
     }
 
-    fun createStubContext(): Context {
-        val context = mockk<Context>(relaxed = true)
-        val resources = mockk<Resources>(relaxed = true)
-        every { context.resources } returns resources
+    override fun createStubContext(): Context {
+        val context = super.createStubContext()
+        val resources = context.resources
 
         every { context.getString(R.string.contact_unknown) } returns "Unknown"
         every { context.getString(R.string.action_reply) } returns "reply"

@@ -263,6 +263,13 @@
     <string name="announce_multiple_new_messages_setting">Anunciar resumo de várias novas mensagens</string>
     <string name="email_message_keywords">Ouvir palavras-chave da mensagem (separadas por vírgula)</string>
 
+    <string-array name="email_reply_header_prefixes">
+        <item>\nEm </item>
+        <item>Em </item>
+        <item>----- Mensagem original -----</item>
+        <item>-----Original Message-----</item>
+    </string-array>
+
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">fontes de notificação</string>

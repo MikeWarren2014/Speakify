@@ -269,6 +269,13 @@
     <string name="announce_multiple_new_messages_setting">Озвучивать сводку нескольких новых сообщений</string>
     <string name="email_message_keywords">Слушать ключевые слова сообщений (через запятую)</string>
 
+    <string-array name="email_reply_header_prefixes">
+        <item>написал:</item>
+        <item>написал(а):</item>
+        <item>----- Исходное сообщение -----</item>
+        <item>-----Original Message-----</item>
+    </string-array>
+
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">источники уведомлений</string>

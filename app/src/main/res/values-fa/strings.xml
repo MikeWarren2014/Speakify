@@ -264,6 +264,13 @@
     <string name="announce_multiple_new_messages_setting">اعلام خلاصه چندین پیام جدید</string>
     <string name="email_message_keywords">شنیدن کلیدواژه‌های پیام (جدا شده با کاما)</string>
 
+    <string-array name="email_reply_header_prefixes">
+        <item>\nدر </item>
+        <item>در </item>
+        <item>-----Original Message-----</item>
+        <item>-----Original Message</item>
+    </string-array>
+
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">منابع اعلان</string>

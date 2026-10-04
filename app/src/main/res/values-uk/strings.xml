@@ -269,6 +269,13 @@
     <string name="announce_multiple_new_messages_setting">Озвучувати зведення кількох нових повідомлень</string>
     <string name="email_message_keywords">Слухати ключові слова повідомлень (через кому)</string>
 
+    <string-array name="email_reply_header_prefixes">
+        <item>написав:</item>
+        <item>написав(ла):</item>
+        <item>----- Початкове повідомлення -----</item>
+        <item>-----Original Message-----</item>
+    </string-array>
+
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">джерела сповіщень</string>

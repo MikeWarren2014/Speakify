@@ -260,6 +260,13 @@
     <string name="announce_multiple_new_messages_setting">複数の新着メッセージの概要を読み上げる</string>
     <string name="email_message_keywords">メッセージのキーワードを聴く（カンマ区切り）</string>
 
+    <string-array name="email_reply_header_prefixes">
+        <item>\n差出人:</item>
+        <item>差出人:</item>
+        <item>-----Original Message-----</item>
+        <item>-----Original Message</item>
+    </string-array>
+
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">通知ソース</string>

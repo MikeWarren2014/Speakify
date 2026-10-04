@@ -263,6 +263,13 @@
     <string name="announce_multiple_new_messages_setting">Zusammenfassung mehrerer neuer Nachrichten ansagen</string>
     <string name="email_message_keywords">Auf Nachrichten-Schlüsselwörter hören (kommagetrennt)</string>
 
+    <string-array name="email_reply_header_prefixes">
+        <item>\nAm </item>
+        <item>Am </item>
+        <item>----- Ursprüngliche Nachricht -----</item>
+        <item>-----Original Message-----</item>
+    </string-array>
+
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">Benachrichtigungsquellen</string>

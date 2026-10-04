@@ -261,6 +261,13 @@
     <string name="announce_multiple_new_messages_setting">播报多条新消息摘要</string>
     <string name="email_message_keywords">监听消息关键词（逗号分隔）</string>
 
+    <string-array name="email_reply_header_prefixes">
+        <item>\n在 </item>
+        <item>写道：</item>
+        <item>----- 原始邮件 -----</item>
+        <item>-----Original Message-----</item>
+    </string-array>
+
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">通知源</string>

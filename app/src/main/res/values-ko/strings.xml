@@ -260,6 +260,13 @@
     <string name="announce_multiple_new_messages_setting">여러 개의 새 메시지 요약 알림</string>
     <string name="email_message_keywords">메시지 키워드 감지 (쉼표로 구분)</string>
 
+    <string-array name="email_reply_header_prefixes">
+        <item>\n보낸 사람:</item>
+        <item>보낸 사람:</item>
+        <item>-----Original Message-----</item>
+        <item>-----Original Message</item>
+    </string-array>
+
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">알림 소스</string>

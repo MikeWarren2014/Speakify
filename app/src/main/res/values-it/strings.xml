@@ -263,6 +263,13 @@
     <string name="announce_multiple_new_messages_setting">Annuncia il riepilogo di più nuovi messaggi</string>
     <string name="email_message_keywords">Ascolta le parole chiave dei messaggi (separate da virgole)</string>
 
+    <string-array name="email_reply_header_prefixes">
+        <item>\nIl giorno </item>
+        <item>Il giorno </item>
+        <item>----- Messaggio originale -----</item>
+        <item>-----Original Message-----</item>
+    </string-array>
+
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">fonti di notifica</string>

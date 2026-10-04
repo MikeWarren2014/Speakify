@@ -8,18 +8,12 @@ import android.service.notification.StatusBarNotification
 import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.services.TTSManager
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkObject
-import io.mockk.mockkStatic
-import io.mockk.unmockkObject
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -27,20 +21,8 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
-class MessengerNotificationStrategyTest {
+class MessengerNotificationStrategyTest: BaseNotificationStrategyTest() {
 
-    @Before
-    fun setUp() {
-        mockkStatic(FirebaseCrashlytics::class)
-        val mockCrashlytics = mockk<FirebaseCrashlytics>(relaxed = true)
-        every { FirebaseCrashlytics.getInstance() } returns mockCrashlytics
-        mockkObject(NotificationExtractionUtils)
-    }
-
-    @After
-    fun tearDown() {
-        unmockkObject(NotificationExtractionUtils)
-    }
 
     @Test
     fun testIsFromSentMessage_YourPhotoWasSent() {
@@ -113,8 +95,6 @@ class MessengerNotificationStrategyTest {
         val markReadAction = Notification.Action.Builder(0, "mark read", null).build()
         notification.actions = arrayOf(markReadAction)
 
-        val ttsManager = mockk<TTSManager>(relaxed = true)
-
         val strategy = MessengerNotificationStrategy(sbn, null, context, ttsManager)
 
         // Verify the special type is identified correctly
@@ -156,10 +136,9 @@ class MessengerNotificationStrategyTest {
         assertEquals("Mike sent a message: Check this out: link", result)
     }
 
-    fun createStubContext(): Context {
-        val context = mockk<Context>(relaxed = true)
-        val resources = mockk<Resources>(relaxed = true)
-        every { context.resources } returns resources
+    override fun createStubContext(): Context {
+        val context = super.createStubContext()
+        val resources = context.resources
 
         every { context.getString(R.string.messenger_incoming_reel_id_text, *anyVararg()) } returns "Sent a reel to you"
         every { context.getString(R.string.messenger_incoming_photo_id_text, *anyVararg()) } returns "Sent a photo to you"
