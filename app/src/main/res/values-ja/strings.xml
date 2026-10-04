@@ -185,6 +185,8 @@
         <item>Messenger 音声通話</item>
     </string-array>
 
+    <string name="email_multiple_new_messages">%1$d件の新着メッセージ</string>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">音声通話</string>
     <string name="messenger_incoming_video_call_text">映像通話</string>
@@ -253,6 +255,17 @@
     <string name="read_messages">メッセージを読み上げる</string>
     <string name="ignore_single_word_messages">単語1つのメッセージを無視する</string>
     <string name="ignore_reactions">リアクションを無視する</string>
+
+    <!-- Email App Settings -->
+    <string name="announce_multiple_new_messages_setting">複数の新着メッセージの概要を読み上げる</string>
+    <string name="email_message_keywords">メッセージのキーワードを聴く（カンマ区切り）</string>
+
+    <string-array name="email_reply_header_prefixes">
+        <item>\n差出人:</item>
+        <item>差出人:</item>
+        <item>-----Original Message-----</item>
+        <item>-----Original Message</item>
+    </string-array>
 
 
     <!-- Notification source widgets -->

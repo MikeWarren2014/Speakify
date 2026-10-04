@@ -1,5 +1,6 @@
 package com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.widgets
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,36 +13,48 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mikewarren.speakify.R
-import com.mikewarren.speakify.data.constants.PackageNames
-import com.mikewarren.speakify.viewsAndViewModels.pages.importantApps.modals.AdditionalSettingsComponent
 import com.mikewarren.speakify.viewsAndViewModels.widgets.CustomSwitch
 
-@AdditionalSettingsComponent(listName = "MessagingAppList")
-@AdditionalSettingsComponent(packageName = PackageNames.GoogleVoice)
 @Composable
-fun MessagingAppAdditionalSettingsView(
-    viewModel: BaseMessagingAppAdditionalSettingsViewModel,
+fun MessageReadingAdditionalSettingsView(
+    viewModel: BaseMessageReadingAdditionalSettingsViewModel,
     MoreSettings: @Composable (() -> Unit)? = null
 ) {
-    MessageReadingAdditionalSettingsView(viewModel, MoreSettings = {
+    Column(modifier = Modifier.fillMaxWidth()) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = stringResource(R.string.ignore_reactions),
+                text = stringResource(R.string.read_messages),
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(16.dp))
             CustomSwitch(
-                checked = viewModel.ignoreReactions,
-                onCheckedChange = { viewModel.ignoreReactions = it }
+                checked = viewModel.readMessages,
+                onCheckedChange = { viewModel.readMessages = it }
+            )
+        }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(R.string.ignore_single_word_messages),
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.weight(1f)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            CustomSwitch(
+                checked = viewModel.ignoreSingleWordMessages,
+                onCheckedChange = { viewModel.ignoreSingleWordMessages = it }
             )
         }
 
         if (MoreSettings != null) {
             MoreSettings()
         }
-    })
+    }
 }

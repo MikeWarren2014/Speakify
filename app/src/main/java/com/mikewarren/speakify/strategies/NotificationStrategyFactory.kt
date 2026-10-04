@@ -12,7 +12,7 @@ object NotificationStrategyFactory {
                    context: Context,
                    ttsManager: TTSManager,
     ) : BaseNotificationStrategy {
-        val strategyClass = NotificationStrategyRegistry.findStrategyClass(notification)
+        val strategyClass = NotificationStrategyRegistry.findStrategyClass(notification, context)
         
         return strategyClass.primaryConstructor?.call(
             notification,

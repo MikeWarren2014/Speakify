@@ -21,12 +21,12 @@ import org.junit.After
 import org.junit.Before
 
 @OptIn(ExperimentalCoroutinesApi::class)
-open class BaseDbTest {
+open class BaseDbTest: DbProviderMocker {
     protected val testDispatcher = StandardTestDispatcher()
 
-    protected val context = ApplicationProvider.getApplicationContext<Context>()
+    override val context = ApplicationProvider.getApplicationContext<Context>()
 
-    protected lateinit var db: AppDatabase
+    override lateinit var db: AppDatabase
     protected lateinit var fakeFirestore: FakeFirestore
 
     @Before
@@ -41,13 +41,8 @@ open class BaseDbTest {
         setUpDatabaseDoubles()
     }
 
-    private fun setUpDatabaseDoubles() {
-        db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java)
-            .allowMainThreadQueries()
-            .build()
-
-        mockkObject(DbProvider)
-        every { DbProvider.GetDb(any()) } returns db
+    override fun setUpDatabaseDoubles() {
+        super.setUpDatabaseDoubles()
 
         fakeFirestore = FakeFirestore()
 
@@ -58,12 +53,9 @@ open class BaseDbTest {
 
     @After
     open fun tearDown() {
-        if (this::db.isInitialized) {
-            db.close()
-        }
+        tearDownDatabaseDoubles()
         Dispatchers.resetMain()
         unmockkStatic(Dispatchers::class)
-        unmockkObject(DbProvider)
         unmockkStatic(FirebaseFirestore::class)
     }
 }

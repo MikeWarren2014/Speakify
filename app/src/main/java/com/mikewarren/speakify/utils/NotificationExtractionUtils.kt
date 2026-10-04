@@ -16,6 +16,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
+import com.mikewarren.speakify.R
 import com.mikewarren.speakify.data.ContactModel
 import com.mikewarren.speakify.utils.log.ITaggable
 import com.mikewarren.speakify.utils.log.LogUtils
@@ -76,15 +77,9 @@ object NotificationExtractionUtils: ITaggable {
     }
 
     fun extractContactFromPeopleList(context: Context, sbn: StatusBarNotification): ContactModel {
-        // TODO: seems we make mistake here in assuming this ArrayList will contain Bundles . It contains Person objects here....
-        val personList: ArrayList<Parcelable>? =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                sbn.notification.extras.getParcelable(Notification.EXTRA_PEOPLE_LIST, ArrayList::class.java) as ArrayList<Parcelable>?
-            else
-                sbn.notification.extras.getParcelableArrayList(Notification.EXTRA_PEOPLE_LIST)
-        val person = personList
-            ?.firstOrNull() as Person?
+        val personList: List<Person>? = ExtractPersonList(sbn)
 
+        val person = personList?.firstOrNull()
         if (person == null)
             return ContactModel()
 
@@ -106,6 +101,15 @@ object NotificationExtractionUtils: ITaggable {
             name,
             phoneNumber,
         )
+    }
+
+    fun ExtractPersonList(sbn: StatusBarNotification): List<Person>? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            sbn.notification.extras.getParcelableArrayList(Notification.EXTRA_PEOPLE_LIST, Person::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            sbn.notification.extras.getParcelableArrayList(Notification.EXTRA_PEOPLE_LIST)
+        }
     }
 
     @OptIn(UnstableApi::class)
@@ -322,5 +326,77 @@ object NotificationExtractionUtils: ITaggable {
             .getCharSequence(Notification.EXTRA_TEXT)
             ?.trim()
             ?.toString() ?: ""
+    }
+
+    public fun ExtractStringExtra(stringExtra: String, sbn: StatusBarNotification): String {
+        return sbn.notification
+            .extras
+            .getCharSequence(stringExtra)
+            ?.trim()
+            ?.toString() ?: ""
+    }
+
+    /**
+     * Strips quoted email reply content (e.g., "On Mon, Sep 28... wrote:", "> ", "-----Original Message-----")
+     * from email text across localized languages.
+     */
+    fun StripEmailQuotedReply(text: String, context: Context? = null): String {
+        if (text.isBlank()) return text
+
+        var result = text
+
+        // 1. Standard message quote headers
+        val standardDelimiters = listOf(
+            "-----Original Message-----",
+            "-----Original Message",
+            "----- Message d'origine -----",
+            "----- Ursprüngliche Nachricht -----",
+            "----- Mensaje original -----",
+            "----- Mensagem original -----",
+            "----- Исходное сообщение -----",
+            "----- Початкове повідомлення -----",
+            "----- 原始邮件 -----",
+            "----------------"
+        )
+        for (delimiter in standardDelimiters) {
+            if (result.contains(delimiter, ignoreCase = true)) {
+                result = result.substringBefore(delimiter)
+            }
+        }
+
+        // 2. Lines starting with > or >>
+        val lines = result.lines()
+        val firstQuoteIndex = lines.indexOfFirst { line ->
+            val trimmed = line.trimStart()
+            trimmed.startsWith(">") || trimmed.startsWith("»")
+        }
+        if (firstQuoteIndex >= 0) {
+            result = lines.take(firstQuoteIndex).joinToString("\n")
+        }
+
+        // 3. Localized prefixes from resources if context is provided
+        if (context != null) {
+            try {
+                val prefixes = context.resources.getStringArray(R.array.email_reply_header_prefixes)
+                for (prefix in prefixes) {
+                    if (prefix.isNotBlank() && result.contains(prefix, ignoreCase = true)) {
+                        result = result.substringBefore(prefix)
+                    }
+                }
+            } catch (_: Exception) {}
+        }
+
+        // 4. Regex pattern for "On [Date/Time] ... wrote:" or localized date headers
+        val replyHeaderRegex = Regex(
+            """(?m)^\s*(>+|»+)?\s*(On\s+\w+|Am\s+\w+|El\s+\w+|Le\s+\w+|Il\s+\w+|Em\s+\w+|\w+,\s+\d+|\d{4}[年/-]\d{1,2}[月/-]\d{1,2}).*?(wrote|schrieb|escribió|a écrit|escreveu|ha scritto|написал|写道|:\s*$)""",
+            RegexOption.IGNORE_CASE
+        )
+
+        val match = replyHeaderRegex.find(result)
+        if (match != null) {
+            result = result.substring(0, match.range.first)
+        }
+
+        return result.trim()
     }
 }

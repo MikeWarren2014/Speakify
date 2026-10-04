@@ -6,6 +6,8 @@ import com.mikewarren.speakify.data.AppCategoryRepository
 import com.mikewarren.speakify.data.AppCategoryRepositoryImpl
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.AppsRepositoryImpl
+import com.mikewarren.speakify.data.EmailContactsRepository
+import com.mikewarren.speakify.data.EmailContactsRepositoryImpl
 import com.mikewarren.speakify.data.MessengerContactsRepository
 import com.mikewarren.speakify.data.MessengerContactsRepositoryImpl
 import com.mikewarren.speakify.data.NotificationAuditRepository
@@ -23,6 +25,7 @@ import com.mikewarren.speakify.data.db.AppSettingsDao
 import com.mikewarren.speakify.data.db.DbProvider
 import com.mikewarren.speakify.data.db.NotificationAuditLogDao
 import com.mikewarren.speakify.data.db.NotificationSourcesDao
+import com.mikewarren.speakify.data.db.RecentEmailContactDao
 import com.mikewarren.speakify.data.db.RecentMessengerContactDao
 import com.mikewarren.speakify.data.db.UserAppsDao
 import com.mikewarren.speakify.utils.AppInfoProvider
@@ -55,6 +58,12 @@ abstract class AppModule {
     abstract fun bindMessengerContactsRepository(
         messengerContactsRepositoryImpl: MessengerContactsRepositoryImpl
     ): MessengerContactsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindEmailContactsRepository(
+        emailContactsRepositoryImpl: EmailContactsRepositoryImpl
+    ): EmailContactsRepository
 
     @Binds
     @Singleton
@@ -96,6 +105,12 @@ abstract class AppModule {
 
         @Provides
         @Singleton
+        fun provideEmailContactsRepository(
+            @ApplicationContext context: Context,
+        ): EmailContactsRepositoryImpl = EmailContactsRepositoryImpl(context)
+
+        @Provides
+        @Singleton
         fun provideAppDatabase(
             @ApplicationContext context: Context
         ): AppDatabase = DbProvider.GetDb(context.applicationContext)
@@ -122,6 +137,12 @@ abstract class AppModule {
         @Singleton
         fun provideRecentMessengerContactDao(database: AppDatabase): RecentMessengerContactDao {
             return database.recentMessengerContactDao()
+        }
+
+        @Provides
+        @Singleton
+        fun provideRecentEmailContactDao(database: AppDatabase): RecentEmailContactDao {
+            return database.recentEmailContactDao()
         }
 
         @Provides

@@ -186,6 +186,8 @@
         <item>Messenger 语音通话</item>
     </string-array>
 
+    <string name="email_multiple_new_messages">%1$d条新消息</string>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">语音通话</string>
     <string name="messenger_incoming_video_call_text">视频通话</string>
@@ -254,6 +256,17 @@
     <string name="read_messages">读取消息</string>
     <string name="ignore_single_word_messages">忽略单字消息</string>
     <string name="ignore_reactions">忽略回应</string>
+
+    <!-- Email App Settings -->
+    <string name="announce_multiple_new_messages_setting">播报多条新消息摘要</string>
+    <string name="email_message_keywords">监听消息关键词（逗号分隔）</string>
+
+    <string-array name="email_reply_header_prefixes">
+        <item>\n在 </item>
+        <item>写道：</item>
+        <item>----- 原始邮件 -----</item>
+        <item>-----Original Message-----</item>
+    </string-array>
 
 
     <!-- Notification source widgets -->

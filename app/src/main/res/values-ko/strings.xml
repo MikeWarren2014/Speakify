@@ -185,6 +185,8 @@
         <item>Messenger 오디오 통화</item>
     </string-array>
 
+    <string name="email_multiple_new_messages">%1$d개의 새 메시지</string>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">오디오 통화</string>
     <string name="messenger_incoming_video_call_text">영상 통화</string>
@@ -253,6 +255,17 @@
     <string name="read_messages">메시지 읽기</string>
     <string name="ignore_single_word_messages">한 단어 메시지 무시</string>
     <string name="ignore_reactions">반응 무시</string>
+
+    <!-- Email App Settings -->
+    <string name="announce_multiple_new_messages_setting">여러 개의 새 메시지 요약 알림</string>
+    <string name="email_message_keywords">메시지 키워드 감지 (쉼표로 구분)</string>
+
+    <string-array name="email_reply_header_prefixes">
+        <item>\n보낸 사람:</item>
+        <item>보낸 사람:</item>
+        <item>-----Original Message-----</item>
+        <item>-----Original Message</item>
+    </string-array>
 
 
     <!-- Notification source widgets -->

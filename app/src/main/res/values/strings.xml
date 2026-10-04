@@ -192,6 +192,8 @@
         <item>Messenger Audio call</item>
     </string-array>
 
+    <string name="email_multiple_new_messages">%1$d new messages</string>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Audio call</string>
     <string name="messenger_incoming_video_call_text">Video call</string>
@@ -260,6 +262,22 @@
     <string name="read_messages">Read Messages</string>
     <string name="ignore_single_word_messages">Ignore single word messages</string>
     <string name="ignore_reactions">Ignore reactions</string>
+
+    <!-- Email App Settings -->
+    <string name="announce_multiple_new_messages_setting">Announce multiple new messages summary</string>
+    <string name="email_message_keywords">Listen for message keywords (comma-separated)</string>
+    <string name="email_contacts_text">Email contacts</string>
+    <string name="new_email_notification_from_app">New email notification from %1$s</string>
+    <string name="new_email_message_from_contact">New email message from %1$s: \"%2$s\"</string>
+    <string name="multiple_new_messages">You have %1$s</string>
+    <string name="whole_email_message">%1$s emailed you message with subject \"%2$s\" and body \"%3$s\"</string>
+
+    <string-array name="email_reply_header_prefixes">
+        <item>\nOn </item>
+        <item>On </item>
+        <item>-----Original Message-----</item>
+        <item>-----Original Message</item>
+    </string-array>
 
     <!-- Notification source widgets -->
     <string name="notification_sources_name_text">notification sources</string>

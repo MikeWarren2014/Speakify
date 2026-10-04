@@ -188,6 +188,8 @@
         <item>Chiamata audio Messenger</item>
     </string-array>
 
+    <string name="email_multiple_new_messages">%1$d nuovi messaggi</string>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">Chiamata audio</string>
     <string name="messenger_incoming_video_call_text">Videochiamata</string>
@@ -256,6 +258,17 @@
     <string name="read_messages">Leggi messaggi</string>
     <string name="ignore_single_word_messages">Ignora messaggi di una sola parola</string>
     <string name="ignore_reactions">Ignora reazioni</string>
+
+    <!-- Email App Settings -->
+    <string name="announce_multiple_new_messages_setting">Annuncia il riepilogo di più nuovi messaggi</string>
+    <string name="email_message_keywords">Ascolta le parole chiave dei messaggi (separate da virgole)</string>
+
+    <string-array name="email_reply_header_prefixes">
+        <item>\nIl giorno </item>
+        <item>Il giorno </item>
+        <item>----- Messaggio originale -----</item>
+        <item>-----Original Message-----</item>
+    </string-array>
 
 
     <!-- Notification source widgets -->

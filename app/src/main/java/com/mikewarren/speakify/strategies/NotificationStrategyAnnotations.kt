@@ -12,3 +12,7 @@ annotation class InPackageNameList(val listName: String)
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class DefaultNotificationStrategy
+
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class IsEmailApp

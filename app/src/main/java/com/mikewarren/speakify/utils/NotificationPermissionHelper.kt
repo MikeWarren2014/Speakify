@@ -11,7 +11,7 @@ import android.content.pm.ResolveInfo
 import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
-import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 
 
 class NotificationPermissionHelper(private val context: Context) {
@@ -94,5 +94,27 @@ class NotificationPermissionHelper(private val context: Context) {
         }
     }
 
+    fun isEmailApp(packageName: String): Boolean {
+        // Create an intent specifically targeting email clients
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = "mailto:".toUri()
+        }
+
+        val packageManager = context.packageManager
+
+        // Query for all activities capable of handling the intent
+        val resolveInfoList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            packageManager.queryIntentActivities(
+                intent,
+                PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
+            )
+        } else {
+            @Suppress("DEPRECATION")
+            packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+        }
+
+        // Check if our target package name is in that list
+        return resolveInfoList.any { resolveInfo -> resolveInfo.activityInfo.packageName == packageName }
+    }
 }
 

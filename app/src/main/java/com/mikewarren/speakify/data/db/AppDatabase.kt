@@ -12,16 +12,18 @@ import androidx.room.TypeConverters
         AppSettingsDbModel::class,
         NotificationSourceModel::class,
         RecentMessengerContactModel::class,
+        RecentEmailContactModel::class,
         AppCategoryModel::class,
         NotificationAuditLogModel::class
     ],
-    version = 9,
+    version = 10,
     autoMigrations = [
         AutoMigration(from = 2, to = 3),
         AutoMigration(from = 3, to = 4),
         AutoMigration(from = 4, to = 5),
         AutoMigration(from = 7, to = 8),
-        AutoMigration(from = 8, to = 9)
+        AutoMigration(from = 8, to = 9),
+        AutoMigration(from = 9, to = 10)
     ],
     exportSchema = true,
 )
@@ -32,6 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun notificationSourcesDao(): NotificationSourcesDao
     abstract fun appSettingsDao(): AppSettingsDao
     abstract fun recentMessengerContactDao(): RecentMessengerContactDao
+    abstract fun recentEmailContactDao(): RecentEmailContactDao
     abstract fun appCategoryDao(): AppCategoryDao
     abstract fun notificationAuditLogDao(): NotificationAuditLogDao
 }

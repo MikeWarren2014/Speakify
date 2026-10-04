@@ -21,7 +21,6 @@ class GeohNotificationStrategy(notification: StatusBarNotification,
                                ttsManager: TTSManager) : BaseNotificationStrategy(notification, appSettingsModel, context, ttsManager),
 
 ITaggable {
-    val title = NotificationExtractionUtils.ExtractTitle(notification)
     val text = NotificationExtractionUtils.ExtractText(notification)
     
     enum class NotificationType {

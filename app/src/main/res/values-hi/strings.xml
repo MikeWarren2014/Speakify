@@ -188,6 +188,8 @@
         <item>मैसेंजर ऑडियो कॉल</item>
     </string-array>
 
+    <string name="email_multiple_new_messages">%1$d नए संदेश</string>
+
     <!-- Notification Text -->
     <string name="messenger_incoming_audio_call_text">ऑडियो कॉल</string>
     <string name="messenger_incoming_video_call_text">वीडियो कॉल</string>
@@ -256,6 +258,17 @@
     <string name="read_messages">संदेश पढ़ें</string>
     <string name="ignore_single_word_messages">एक शब्द वाले संदेशों को अनदेखा करें</string>
     <string name="ignore_reactions">प्रतिक्रियाओं को अनदेखा करें</string>
+
+    <!-- Email App Settings -->
+    <string name="announce_multiple_new_messages_setting">कई नए संदेशों का सारांश घोषित करें</string>
+    <string name="email_message_keywords">संदेश कीवर्ड सुनें (कॉमा से अलग करें)</string>
+
+    <string-array name="email_reply_header_prefixes">
+        <item>\nको </item>
+        <item>को </item>
+        <item>-----Original Message-----</item>
+        <item>-----Original Message</item>
+    </string-array>
 
 
     <!-- Notification source widgets -->

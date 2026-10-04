@@ -10,6 +10,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mikewarren.speakify.data.AppSettingsModel
 import com.mikewarren.speakify.data.Constants
 import com.mikewarren.speakify.services.TTSManager
+import com.mikewarren.speakify.utils.NotificationExtractionUtils
 import com.mikewarren.speakify.utils.log.ITaggable
 
 
@@ -21,6 +22,8 @@ abstract class  BaseNotificationStrategy(
 ): ITaggable {
 
     open val debounceTimeMillis: Long = 5 * Constants.OneSecond
+
+    val title = NotificationExtractionUtils.ExtractTitle(notification)
 
     open fun logNotification() {
 
@@ -42,7 +45,6 @@ abstract class  BaseNotificationStrategy(
         // --- Notification Content Details (from getNotification().getExtras()) ---
         val extras: Bundle = notification.getNotification().extras
 
-        val title = extras.getCharSequence(Notification.EXTRA_TITLE)
         val text = extras.getCharSequence(Notification.EXTRA_TEXT)
         val subText = extras.getCharSequence(Notification.EXTRA_SUB_TEXT)
 
