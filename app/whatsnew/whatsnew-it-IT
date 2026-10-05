@@ -1,7 +1,4 @@
-Correzioni di bug:
-- Bloccata la modalità di prova per gli utenti scaduti.
-- Corretta l'aggiornamento dello stato in base alla programmazione giornaliera.
-- Risolto il bug di cancellazione dei dati al termine della sessione.
-
 Miglioramenti:
-- Segnalazione notifiche : Scuoti il dispositivo per segnalare notifiche con problemi!
+- Segnalazione notifiche: Report diagnostici ampliati per risolvere i problemi più velocemente!
+- Supporto app Email: Filtra per mittente e parole chiave, ascolta messaggi completi e riassunti.
+- Supporto app Shop: Aggiunto supporto iniziale personalizzato per l'app Shop (com.shopify.arrive).
