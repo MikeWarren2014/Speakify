@@ -1,6 +1,6 @@
 package com.mikewarren.speakify.data.models
 
-import com.google.firebase.dataconnect.serializers.TimestampSerializer
+import com.mikewarren.speakify.data.serializers.TimestampSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -11,6 +11,8 @@ data class BrokenNotificationReportModel(
     val rawText: String? = null,
     val speakifiedText: String? = null,
     val silenceReason: String? = null,
+    val actions: String? = null,
+    val extras: String? = null,
     val selectedProblem: String = "",
     val highlightedIdealText: String? = null,
     val userNotes: String? = null,

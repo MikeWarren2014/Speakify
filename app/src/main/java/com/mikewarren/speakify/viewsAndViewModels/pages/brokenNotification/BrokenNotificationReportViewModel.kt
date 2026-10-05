@@ -112,6 +112,8 @@ class BrokenNotificationReportViewModel @Inject constructor(
                 rawText = log.rawText,
                 speakifiedText = log.speakifiedText,
                 silenceReason = log.silenceReason,
+                actions = log.actions,
+                extras = log.extras,
                 selectedProblem = currentState.selectedProblem,
                 highlightedIdealText = highlightedText,
                 userNotes = currentState.userNotes.ifBlank { null },
