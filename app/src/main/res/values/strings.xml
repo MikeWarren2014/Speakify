@@ -155,6 +155,9 @@
     <string name="fedEx_out_for_delivery">Scheduled for delivery</string>
     <string name="fedEx_delivery_rescheduled">Delivery Re-scheduled</string>
 
+    <!-- Shop Notifications -->
+    <string name="shop_package_delivered">Your package has been delivered</string>
+
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
         <item>answer</item>

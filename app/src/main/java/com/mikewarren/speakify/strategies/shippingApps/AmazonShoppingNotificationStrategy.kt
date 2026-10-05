@@ -22,7 +22,7 @@ class AmazonShoppingNotificationStrategy(
             context.getString(R.string.amazon_shopping_see_where_your_delivery_is)))
             return NotificationTypes.OutForDelivery
 
-        if (title == context.getString(R.string.package_delivered))
+        if (context.getString(R.string.package_delivered) in title)
             return NotificationTypes.Delivered
 
         return NotificationTypes.Other

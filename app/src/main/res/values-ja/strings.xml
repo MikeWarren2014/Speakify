@@ -147,6 +147,9 @@
     <string name="fedEx_out_for_delivery">配達予定</string>
     <string name="fedEx_delivery_rescheduled">配達日時が変更されました</string>
 
+    <!-- Shop Notifications -->
+    <string name="shop_package_delivered">荷物が配達されました</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
@@ -259,6 +262,11 @@
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">複数の新着メッセージの概要を読み上げる</string>
     <string name="email_message_keywords">メッセージのキーワードを聴く（カンマ区切り）</string>
+    <string name="email_contacts_text">メールの連絡先</string>
+    <string name="new_email_notification_from_app">%1$sからの新着メール通知</string>
+    <string name="new_email_message_from_contact">%1$sからの新着メールメッセージ: 「%2$s」</string>
+    <string name="multiple_new_messages">%1$sがあります</string>
+    <string name="whole_email_message">%1$sさんから件名「%2$s」、本文「%3$s」のメールが届きました</string>
 
     <string-array name="email_reply_header_prefixes">
         <item>\n差出人:</item>

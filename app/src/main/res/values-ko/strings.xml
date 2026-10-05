@@ -147,6 +147,9 @@
     <string name="fedEx_out_for_delivery">배송 예정</string>
     <string name="fedEx_delivery_rescheduled">배송 일정이 변경되었습니다</string>
 
+    <!-- Shop Notifications -->
+    <string name="shop_package_delivered">소포가 배송되었습니다</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
@@ -259,6 +262,11 @@
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">여러 개의 새 메시지 요약 알림</string>
     <string name="email_message_keywords">메시지 키워드 감지 (쉼표로 구분)</string>
+    <string name="email_contacts_text">이메일 연락처</string>
+    <string name="new_email_notification_from_app">%1$s의 새 이메일 알림</string>
+    <string name="new_email_message_from_contact">%1$s님의 새 이메일 메시지: \"%2$s\"</string>
+    <string name="multiple_new_messages">%1$s이(가) 있습니다</string>
+    <string name="whole_email_message">%1$s님이 제목 \"%2$s\", 내용 \"%3$s\"(으)로 이메일을 보냈습니다</string>
 
     <string-array name="email_reply_header_prefixes">
         <item>\n보낸 사람:</item>

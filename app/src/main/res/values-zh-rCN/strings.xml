@@ -148,6 +148,9 @@
     <string name="fedEx_out_for_delivery">已安排送货</string>
     <string name="fedEx_delivery_rescheduled">送货时间已更改</string>
 
+    <!-- Shop Notifications -->
+    <string name="shop_package_delivered">您的包裹已送达</string>
+
 
     <!-- Notification action Titles -->
     <string-array name="action_incoming_call_list">
@@ -260,6 +263,11 @@
     <!-- Email App Settings -->
     <string name="announce_multiple_new_messages_setting">播报多条新消息摘要</string>
     <string name="email_message_keywords">监听消息关键词（逗号分隔）</string>
+    <string name="email_contacts_text">电子邮件联系人</string>
+    <string name="new_email_notification_from_app">来自 %1$s 的新电子邮件通知</string>
+    <string name="new_email_message_from_contact">来自 %1$s 的新电子邮件：“%2$s”</string>
+    <string name="multiple_new_messages">您有 %1$s</string>
+    <string name="whole_email_message">%1$s 给您发送了一封主题为“%2$s”、内容为“%3$s”的电子邮件</string>
 
     <string-array name="email_reply_header_prefixes">
         <item>\n在 </item>
