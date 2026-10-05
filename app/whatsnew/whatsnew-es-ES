@@ -1,7 +1,4 @@
-Corrección de errores:
-- Bloqueado el modo de prueba para usuarios caducados.
-- Corregida la actualización de estado al cambiar el horario del día.
-- Solucionado el problema por el cual se borraban datos al cerrar sesión.
-
 Mejoras:
-- Reporte de notificaciones defectuosas: ¡Agita el dispositivo para enviar un informe!
+- Reporte de notificaciones: Informes de diagnóstico ampliados para solucionar problemas más rápido.
+- Compatibilidad con apps de correo: Filtra por remitente y palabras clave, escucha el correo completo o resúmenes.
+- Compatibilidad con app Shop: Soporte inicial personalizado para la app Shop (com.shopify.arrive).

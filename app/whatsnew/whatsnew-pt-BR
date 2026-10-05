@@ -1,7 +1,4 @@
-Correções de bugs:
-- Bloqueado o modo de teste para usuários expirados.
-- Corrigida a atualização de status com base no agendamento do dia.
-- Corrigido o erro em que os dados eram apagados ao encerrar a sessão.
-
 Melhorias:
-- Relatório de notificações com falha: Agite o dispositivo para relatar problemas!
+- Relatório de Notificações: Relatórios de diagnóstico expandidos para corrigir problemas mais rápido!
+- Suporte a Apps de E-mail: Filtre por remetente e palavras-chave, ouça e-mails completos e resumos.
+- Suporte ao App Shop: Adicionado suporte personalizado inicial para o app Shop (com.shopify.arrive).

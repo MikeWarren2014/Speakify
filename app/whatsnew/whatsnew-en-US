@@ -1,7 +1,4 @@
-Bugs fixed:
-- Locked down Trial mode (no speakifications for expired trial users).
-- Fixed issue with updating status when a new day's schedule starts or ends.
-- Fixed bug where data was getting wiped when the user's session ended.
-
 Enhancements:
-- Broken Notification Report feature: Shake your device to report broken notifications!
+- Broken Notification Report: Expanded diagnostic reporting to fix notification issues faster!
+- Email App Support: Filter emails by sender and keywords, hear full messages and summaries.
+- Shop App Support: Added initial custom support for the Shop app (com.shopify.arrive).
