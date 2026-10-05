@@ -228,13 +228,12 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
             if (!gatekeeper.canSpeakNow()) {
                 notificationAuditRepository.log(
                     NotificationAuditLogModel.From(
-                        packageName = sbn.packageName,
+                        sbn = sbn,
                         appDisplayName = getAppDisplayName(sbn.packageName),
                         rawTitle = getRawTitle(sbn),
                         rawText = getRawText(sbn),
                         speakifiedText = null,
-                        silenceReason = NotificationAuditLogModel.SilenceReasonGatekeeperMuted,
-                        notificationKey = sbn.key,
+                        silenceReason = NotificationAuditLogModel.SilenceReasonGatekeeperMuted
                     )
                 )
                 return@launch
@@ -252,13 +251,12 @@ class SpeakifyNotificationListener : NotificationListenerService(), ITaggable {
         val rawText = getRawText(sbn)
 
         val baseNotificationAuditlogModel = NotificationAuditLogModel.From(
-            packageName = sbn.packageName,
+            sbn = sbn,
             appDisplayName = appName,
             rawTitle = rawTitle,
             rawText = rawText,
             speakifiedText = null,
-            silenceReason = null,
-            notificationKey = sbn.key,
+            silenceReason = null
         )
 
         if (!importantApps.map { model -> model.packageName }.contains(sbn.packageName)) {
