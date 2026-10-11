@@ -35,13 +35,11 @@ class AppCategoryRepositoryImpl @Inject constructor(
         // Try to discover via System ApplicationInfo
         val systemCategory = try {
             val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                when (appInfo.category) {
-                    ApplicationInfo.CATEGORY_SOCIAL -> AppCategory.Communication
-                    ApplicationInfo.CATEGORY_PRODUCTIVITY -> AppCategory.BusinessProductivity
-                    else -> null
-                }
-            } else null
+            when (appInfo.category) {
+                ApplicationInfo.CATEGORY_SOCIAL -> AppCategory.Communication
+                ApplicationInfo.CATEGORY_PRODUCTIVITY -> AppCategory.BusinessProductivity
+                else -> null
+            }
         } catch (e: PackageManager.NameNotFoundException) {
             null
         }

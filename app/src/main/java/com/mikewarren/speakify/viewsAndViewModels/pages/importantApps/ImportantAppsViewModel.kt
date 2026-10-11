@@ -7,6 +7,7 @@ import com.mikewarren.speakify.data.AppCategoryRepository
 import com.mikewarren.speakify.data.AppsRepository
 import com.mikewarren.speakify.data.OnboardingRepository
 import com.mikewarren.speakify.data.SettingsRepository
+import com.mikewarren.speakify.data.constants.OnboardingConstants
 import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.events.PackageListDataRequester
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -118,6 +120,22 @@ class ImportantAppsViewModel @Inject constructor(
         onInit()
         viewModelScope.launch {
             repository.importantApps.collect { apps ->
+                if ((onboardingRepository.primaryGoal.first() == OnboardingConstants.PrimaryGoal.Accessibility) && (apps.isEmpty())) {
+                    val allApps = _allAppsFlow.value
+                    // TODO: get all the apps for all the primary goals the user stated
+                    val commPackages = PackageNames.CommunicationAppList
+                    allApps.filter { it.packageName in commPackages }
+                        .forEach { appInfo ->
+                        val appName = AppNameHelper(settingsRepository.getContext()).getAppDisplayName(appInfo)
+                        repository.addImportantApp(
+                            UserAppModel(
+                                appName = appName,
+                                packageName = appInfo.packageName,
+                                enabled = true
+                            )
+                        )
+                    }
+                }
                 // Fetch categories in parallel to avoid blocking or long sequential waits
                 apps.map { app ->
                     launch(Dispatchers.IO) {

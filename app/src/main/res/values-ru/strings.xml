@@ -524,6 +524,7 @@
     <string name="via_category_shopping">Покупки</string>
     <string name="via_category_shopping_desc">Amazon Shopping, UberEats, …</string>
     <string name="via_category_footer">Мы добавим их на страницу «Важные приложения»!</string>
+    <string name="via_category_error_message">Выберите несколько категорий приложений, прежде чем продолжить.</string>
 
     <!-- Value Discovery -->
     <string name="value_discovery_header">Послушайте Speakify в действии</string>

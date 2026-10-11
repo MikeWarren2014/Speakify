@@ -14,8 +14,12 @@ class SimpleNotificationStrategy(notification: StatusBarNotification,
                                  context: Context,
                                  ttsManager: TTSManager) : BaseNotificationStrategy(notification, appSettingsModel, context, ttsManager) {
     override fun textToSpeakify(): String {
+        var text = NotificationExtractionUtils.ExtractText(notification)
+        if (text.isBlank())
+            text = title
+
         return context.getString(R.string.simple_notification_strategy_text,
             AppNameHelper(context).getAppDisplayName(notification.packageName),
-            NotificationExtractionUtils.ExtractText(notification))
+             text)
     }
 }
