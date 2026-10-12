@@ -1,4 +1,3 @@
 Enhancements:
-- Broken Notification Report: Expanded diagnostic reporting to fix notification issues faster!
-- Email App Support: Filter emails by sender and keywords, hear full messages and summaries.
-- Shop App Support: Added initial custom support for the Shop app (com.shopify.arrive).
+- Guided Onboarding: Added pulsing visual highlights for suggested app categories and validation requiring at least one category selection.
+- Smart App Setup: Automatically detects and configures essential communication apps on first launch for Accessibility users.

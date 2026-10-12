@@ -1,4 +1,3 @@
 Mejoras:
-- Reporte de notificaciones: Informes de diagnóstico ampliados para solucionar problemas más rápido.
-- Compatibilidad con apps de correo: Filtra por remitente y palabras clave, escucha el correo completo o resúmenes.
-- Compatibilidad con app Shop: Soporte inicial personalizado para la app Shop (com.shopify.arrive).
+- Onboarding guiado: Se añadieron resaltados visuales parpadeantes para las categorías sugeridas y validación que requiere seleccionar al menos una categoría.
+- Configuración inteligente: Detecta y configura automáticamente aplicaciones de comunicación esenciales en el primer inicio.
