@@ -119,25 +119,14 @@ class ImportantAppsViewModel @Inject constructor(
     init {
         onInit()
         viewModelScope.launch {
-            repository.importantApps.collect { apps ->
-                if ((onboardingRepository.primaryGoal.first() == OnboardingConstants.PrimaryGoal.Accessibility) && (apps.isEmpty())) {
-                    val allApps = _allAppsFlow.value
-                    // TODO: get all the apps for all the primary goals the user stated
-                    val commPackages = PackageNames.CommunicationAppList
-                    allApps.filter { it.packageName in commPackages }
-                        .forEach { appInfo ->
-                        val appName = AppNameHelper(settingsRepository.getContext()).getAppDisplayName(appInfo)
-                        repository.addImportantApp(
-                            UserAppModel(
-                                appName = appName,
-                                packageName = appInfo.packageName,
-                                enabled = true
-                            )
-                        )
-                    }
+            combine(onboardingRepository.primaryGoal, repository.importantApps, _allAppsFlow) { primaryGoal, apps, allInstalledApps ->
+                if ((primaryGoal == OnboardingConstants.PrimaryGoal.Accessibility) && (apps.isEmpty()) && (allInstalledApps.isNotEmpty())) {
+                    addAllImportantAppsForUser()
                 }
+                return@combine apps
+            }.collect { apps ->
                 // Fetch categories in parallel to avoid blocking or long sequential waits
-                apps.map { app ->
+                apps.forEach { app ->
                     launch(Dispatchers.IO) {
                         appCategoryRepository.getCategoryForPackage(app.packageName)?.let { category ->
                             onboardingRepository.satisfyCategory(category)
@@ -173,6 +162,35 @@ class ImportantAppsViewModel @Inject constructor(
             )
         )
 
+    }
+
+    suspend fun addAllImportantAppsForUser() {
+        val allInstalledApps = _allAppsFlow.value
+
+        val importantAppCategories = onboardingRepository.importantAppCategories.first()
+
+        var categoryMap = appCategoryRepository.packageCategories.value
+        if (categoryMap.isEmpty())
+            categoryMap = appCategoryRepository.getCategoriesForPackages(allInstalledApps.map { it.packageName })
+
+        val allowedCategories = importantAppCategories.map { it.category }.toSet()
+
+        val matchingPackageNames = allInstalledApps.filter { appInfo ->
+            val category = categoryMap[appInfo.packageName]
+            category != null && category in allowedCategories
+        }.map { it.packageName }
+
+        allInstalledApps.filter { it.packageName in matchingPackageNames }
+            .forEach { appInfo ->
+                val appName = AppNameHelper(settingsRepository.getContext()).getAppDisplayName(appInfo)
+                repository.addImportantApp(
+                    UserAppModel(
+                        appName = appName,
+                        packageName = appInfo.packageName,
+                        enabled = true
+                    )
+                )
+            }
     }
 
     fun handleNewAppPermissions() {
