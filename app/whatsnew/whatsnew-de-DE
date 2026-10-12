@@ -1,4 +1,3 @@
 Verbesserungen:
-- Meldefunktion für Benachrichtigungsfehler: Erweiterte Diagnoseberichte zur schnelleren Fehlerbehebung!
-- E-Mail-App-Unterstützung: Filtern nach Absender und Schlüsselwörtern, Anhören von Nachrichten und Zusammenfassungen.
-- Shop-App-Unterstützung: Erste Anpassung für die Shop-App (com.shopify.arrive).
+- Geführtes Onboarding: Pulsierende visuelle Hervorhebungen für empfohlene App-Kategorien und Validierung, die mindestens eine Kategorieauswahl erfordert.
+- Intelligente App-Einrichtung: Erkennt und konfiguriert wichtige Kommunikations-Apps beim ersten Start automatisch für Barrierefreiheits-Nutzer.
