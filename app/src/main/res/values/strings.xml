@@ -146,6 +146,7 @@
     <string name="amazon_arrival_today_prefix">Arriving today</string>
     <string name="amazon_delivery_between_and">Arriving between %1$s and %2$s from now</string>
 
+    <string name="package_shipped">Shipped</string>
     <string name="package_delivered">Delivered</string>
 
     <string name="shipping_app_package_out_for_delivery">Your %1$s package is out for delivery!</string>
@@ -156,6 +157,7 @@
     <string name="fedEx_delivery_rescheduled">Delivery Re-scheduled</string>
 
     <!-- Shop Notifications -->
+    <string name="shop_package_shipped">Your package is on the way</string>
     <string name="shop_package_delivered">Your package has been delivered</string>
 
     <!-- Notification action Titles -->

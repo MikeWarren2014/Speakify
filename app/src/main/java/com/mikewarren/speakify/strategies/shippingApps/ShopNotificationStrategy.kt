@@ -15,6 +15,9 @@ class ShopNotificationStrategy(
     ttsManager: TTSManager,
 ): BaseShippingAppNotificationStrategy(notification, appSettingsModel, context, ttsManager) {
     override fun getNotificationType(): NotificationTypes {
+        if (context.getString(R.string.shop_package_shipped) in title)
+            return NotificationTypes.Shipped
+
         if (context.getString(R.string.shop_package_delivered) in title)
             return NotificationTypes.Delivered
 
