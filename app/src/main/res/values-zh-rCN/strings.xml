@@ -516,6 +516,7 @@
     <string name="via_category_shopping">购物</string>
     <string name="via_category_shopping_desc">亚马逊购物、UberEats、…</string>
     <string name="via_category_footer">我们会将这些添加到“重要应用”页面！</string>
+    <string name="via_category_error_message">请在继续之前选择一些应用类别。</string>
 
     <!-- Value Discovery -->
     <string name="value_discovery_header">听听 Speakify 的实际效果</string>

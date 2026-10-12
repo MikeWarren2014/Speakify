@@ -520,6 +520,7 @@
     <string name="via_category_shopping">Shopping</string>
     <string name="via_category_shopping_desc">Amazon Shopping, UberEats, …</string>
     <string name="via_category_footer">Wir werden diese auf der Seite \'Wichtige Apps\' hinzufügen!</string>
+    <string name="via_category_error_message">Wählen Sie vor dem Fortfahren einige App-Kategorien aus.</string>
 
     <!-- Value Discovery -->
     <string name="value_discovery_header">Speakify in Aktion hören</string>

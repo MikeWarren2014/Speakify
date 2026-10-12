@@ -3,7 +3,8 @@ package com.mikewarren.speakify.data
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.os.Build
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import com.mikewarren.speakify.data.constants.PackageNames
 import com.mikewarren.speakify.data.db.AppCategoryDao
 import com.mikewarren.speakify.data.db.firestore.AppCategoryFirestoreRepository
@@ -15,6 +16,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
@@ -28,6 +31,10 @@ class AppCategoryRepositoryImpl @Inject constructor(
     private val firestoreRepository: AppCategoryFirestoreRepository
 ) : AppCategoryRepository {
 
+    private val _packageCategories = MutableStateFlow<Map<String, AppCategory>>(emptyMap())
+    override val packageCategories: StateFlow<Map<String, AppCategory>> = _packageCategories.asStateFlow()
+
+
     override suspend fun getCategoryForPackage(packageName: String): AppCategory {
         val localCategory = appCategoryDao.getCategoryForPackage(packageName)
         if (localCategory != null) return localCategory
@@ -35,13 +42,11 @@ class AppCategoryRepositoryImpl @Inject constructor(
         // Try to discover via System ApplicationInfo
         val systemCategory = try {
             val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                when (appInfo.category) {
-                    ApplicationInfo.CATEGORY_SOCIAL -> AppCategory.Communication
-                    ApplicationInfo.CATEGORY_PRODUCTIVITY -> AppCategory.BusinessProductivity
-                    else -> null
-                }
-            } else null
+            when (appInfo.category) {
+                ApplicationInfo.CATEGORY_SOCIAL -> AppCategory.Communication
+                ApplicationInfo.CATEGORY_PRODUCTIVITY -> AppCategory.BusinessProductivity
+                else -> null
+            }
         } catch (e: PackageManager.NameNotFoundException) {
             null
         }
@@ -97,6 +102,8 @@ class AppCategoryRepositoryImpl @Inject constructor(
         }.awaitAll().forEach { (pkg, cat) ->
             results[pkg] = cat
         }
+
+        _packageCategories.update { it + results }
 
         return@withContext results
     }

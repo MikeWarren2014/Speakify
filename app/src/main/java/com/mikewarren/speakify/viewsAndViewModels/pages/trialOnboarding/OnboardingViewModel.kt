@@ -3,6 +3,7 @@ package com.mikewarren.speakify.viewsAndViewModels.pages.trialOnboarding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mikewarren.speakify.data.SessionRepository
+import com.mikewarren.speakify.data.constants.OnboardingConstants
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 import com.mikewarren.speakify.services.TTSManager
@@ -42,6 +43,17 @@ class OnboardingViewModel @Inject constructor(
 
     fun savePrimaryGoal(goal: String) {
         sessionRepository.savePrimaryGoal(goal)
+    }
+
+    fun getSuggestedAppCategories(primaryGoal: String): List<String> {
+        if (primaryGoal == OnboardingConstants.PrimaryGoal.Accessibility) {
+            return listOf(OnboardingConstants.AppCategory.Communication)
+        }
+        if (primaryGoal == OnboardingConstants.PrimaryGoal.Productivity) {
+            return listOf(OnboardingConstants.AppCategory.BusinessProductivity)
+        }
+
+        return emptyList()
     }
 
     fun saveImportantAppCategories(categories: List<String>) {

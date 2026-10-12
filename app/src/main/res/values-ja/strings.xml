@@ -514,6 +514,7 @@
     <string name="via_category_shopping">ショッピング</string>
     <string name="via_category_shopping_desc">Amazonショッピング、UberEats、…</string>
     <string name="via_category_footer">これらは「重要なアプリ」ページに追加されます！</string>
+    <string name="via_category_error_message">続行する前に、アプリのカテゴリをいくつか選択してください。</string>
 
     <!-- Value Discovery -->
     <string name="value_discovery_header">Speakify を実際に聞いてみる</string>

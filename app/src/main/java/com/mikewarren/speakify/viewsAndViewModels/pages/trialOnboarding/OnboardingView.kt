@@ -27,6 +27,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.border
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -46,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.mikewarren.speakify.R
+import com.mikewarren.speakify.data.constants.OnboardingConstants
 import com.mikewarren.speakify.data.db.UserAppModel
 import com.mikewarren.speakify.data.uiStates.OnboardingUiState
 
@@ -67,6 +76,7 @@ fun OnboardingView(
                 }
             )
             OnboardingUiState.AppUsageInsight -> AppUsageInsightView(
+                viewModel = viewModel,
                 onComplete = { categories ->
                     viewModel.saveImportantAppCategories(categories)
                     viewModel.updateOnboardingStep(OnboardingUiState.ValueDiscovery)
@@ -102,10 +112,10 @@ fun PreferenceGathering(onComplete: (String) -> Unit) {
         Spacer(modifier = Modifier.height(24.dp))
 
         val goals = listOf(
-            Triple("Accessibility", stringResource(R.string.preference_gathering_option_accessibility), stringResource(R.string.preference_gathering_option_accessibility_desc)),
-            Triple("Productivity", stringResource(R.string.preference_gathering_option_productivity), stringResource(R.string.preference_gathering_option_productivity_desc)),
-            Triple("Hands-free Use", stringResource(R.string.preference_gathering_option_hands_free_use), stringResource(R.string.preference_gathering_option_hands_free_use_desc)),
-            Triple("Other", stringResource(R.string.preference_gathering_option_other), ""),
+            Triple(OnboardingConstants.PrimaryGoal.Accessibility, stringResource(R.string.preference_gathering_option_accessibility), stringResource(R.string.preference_gathering_option_accessibility_desc)),
+            Triple(OnboardingConstants.PrimaryGoal.Productivity, stringResource(R.string.preference_gathering_option_productivity), stringResource(R.string.preference_gathering_option_productivity_desc)),
+            Triple(OnboardingConstants.PrimaryGoal.HandsFreeUse, stringResource(R.string.preference_gathering_option_hands_free_use), stringResource(R.string.preference_gathering_option_hands_free_use_desc)),
+            Triple(OnboardingConstants.PrimaryGoal.Other, stringResource(R.string.preference_gathering_option_other), ""),
         )
         var selectedValue by remember { mutableStateOf(goals[0].first) }
 
@@ -157,15 +167,32 @@ fun PreferenceGathering(onComplete: (String) -> Unit) {
 
 @Composable
 fun AppUsageInsightView(
+    viewModel: OnboardingViewModel = hiltViewModel(),
     onComplete: (List<String>) -> Unit
 ) {
+    val primaryGoal by viewModel.primaryGoal.collectAsState()
+    if (primaryGoal == null)
+        return
     val categories = listOf(
-        Triple("Communication", stringResource(R.string.via_category_communication), stringResource(R.string.via_category_communication_desc)),
-        Triple("Business/Productivity", stringResource(R.string.via_category_business), stringResource(R.string.via_category_business_desc)),
-        Triple("Shopping", stringResource(R.string.via_category_shopping), stringResource(R.string.via_category_shopping_desc)),
-        Triple("Other", stringResource(R.string.preference_gathering_option_other), ""),
+        Triple(OnboardingConstants.AppCategory.Communication, stringResource(R.string.via_category_communication), stringResource(R.string.via_category_communication_desc)),
+        Triple(OnboardingConstants.AppCategory.BusinessProductivity, stringResource(R.string.via_category_business), stringResource(R.string.via_category_business_desc)),
+        Triple(OnboardingConstants.AppCategory.Shopping, stringResource(R.string.via_category_shopping), stringResource(R.string.via_category_shopping_desc)),
+        Triple(OnboardingConstants.AppCategory.Other, stringResource(R.string.preference_gathering_option_other), ""),
     )
+    
     val selectedCategories = remember { mutableStateMapOf<String, Boolean>() }
+    val suggestedAppCategories = viewModel.getSuggestedAppCategories(primaryGoal!!)
+
+    val infiniteTransition = rememberInfiniteTransition(label = "pulsingBorder")
+    val borderAlpha by infiniteTransition.animateFloat(
+        initialValue = 0.2f,
+        targetValue = 1.0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "borderAlpha"
+    )
 
     Column(
         modifier = Modifier
@@ -195,15 +222,27 @@ fun AppUsageInsightView(
 
         Column(modifier = Modifier.weight(1f)) {
             categories.forEach { (id, title, desc) ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .selectable(
-                            selected = selectedCategories[id] == true,
-                            onClick = { selectedCategories[id] = !(selectedCategories[id] ?: false) },
-                            role = Role.Checkbox
+                val isSuggested = id in suggestedAppCategories && selectedCategories[id] != true
+
+                var itemModifier = Modifier
+                    .fillMaxWidth()
+                    .selectable(
+                        selected = selectedCategories[id] == true,
+                        onClick = { selectedCategories[id] = !(selectedCategories[id] ?: false) },
+                        role = Role.Checkbox
+                    )
+                    .padding(16.dp)
+                if (isSuggested) {
+                    itemModifier = itemModifier
+                        .border(
+                            width = 2.dp,
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = borderAlpha),
+                            shape = RoundedCornerShape(12.dp)
                         )
-                        .padding(16.dp),
+                }
+
+                Row(
+                    modifier = itemModifier,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Checkbox(
@@ -235,59 +274,23 @@ fun AppUsageInsightView(
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
+        val isSelectedCategoriesEmpty = selectedCategories.values.none { it }
+        var buttonText = stringResource(R.string.next)
+        if (isSelectedCategoriesEmpty)
+            buttonText = stringResource(R.string.via_category_error_message)
+
         Button(
+            enabled = !isSelectedCategoriesEmpty,
             onClick = {
+                if (isSelectedCategoriesEmpty)
+                    return@Button
+
                 onComplete(selectedCategories.filter { it.value }.keys.toList())
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(stringResource(R.string.next))
+            Text(buttonText)
         }
-    }
-}
-
-@Composable
-fun AppUsageListItem(
-    app: UserAppModel,
-    isSelected: Boolean,
-    onSelectedChange: (Boolean) -> Unit
-) {
-    val context = LocalContext.current
-    val icon = remember(app.packageName) {
-        try {
-            context.packageManager.getApplicationIcon(app.packageName)
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .selectable(
-                selected = isSelected,
-                onClick = { onSelectedChange(!isSelected) },
-                role = Role.Checkbox
-            )
-            .padding(horizontal = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Checkbox(
-            checked = isSelected,
-            onCheckedChange = null
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        AsyncImage(
-            model = icon,
-            contentDescription = "${app.appName} icon",
-            modifier = Modifier.size(32.dp)
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = app.appName,
-            style = MaterialTheme.typography.bodyLarge
-        )
     }
 }
 
@@ -299,9 +302,9 @@ fun ValueDiscoveryView(
     val goal by viewModel.primaryGoal.collectAsState()
 
     val sampleText = when (goal) {
-        "Accessibility" -> stringResource(R.string.value_discovery_sample_text_accessibility)
-        "Productivity" -> stringResource(R.string.value_discovery_sample_text_productivity)
-        "Hands-free Use" -> stringResource(R.string.value_discovery_sample_text_hands_free)
+        OnboardingConstants.PrimaryGoal.Accessibility -> stringResource(R.string.value_discovery_sample_text_accessibility)
+        OnboardingConstants.PrimaryGoal.Productivity -> stringResource(R.string.value_discovery_sample_text_productivity)
+        OnboardingConstants.PrimaryGoal.HandsFreeUse -> stringResource(R.string.value_discovery_sample_text_hands_free)
         else -> stringResource(R.string.value_discovery_sample_text)
     }
 

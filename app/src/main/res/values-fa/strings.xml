@@ -520,6 +520,7 @@
     <string name="via_category_shopping">خرید</string>
     <string name="via_category_shopping_desc">آمازون، اوبر ایتس، …</string>
     <string name="via_category_footer">ما این‌ها را در صفحه برنامه‌های مهم اضافه خواهیم کرد!</string>
+    <string name="via_category_error_message">لطفاً پیش از ادامه، برخی از دسته‌بندی‌های برنامه را انتخاب کنید.</string>
 
     <!-- Value Discovery -->
     <string name="value_discovery_header">Speakify را در عمل بشنوید</string>

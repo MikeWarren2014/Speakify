@@ -518,6 +518,7 @@
     <string name="via_category_shopping">खरीदारी</string>
     <string name="via_category_shopping_desc">Amazon शॉपिंग, UberEats, …</string>
     <string name="via_category_footer">हम इन्हें महत्वपूर्ण ऐप्स पेज पर जोड़ देंगे!</string>
+    <string name="via_category_error_message">आगे बढ़ने से पहले कुछ ऐप श्रेणियों का चयन करें।</string>
 
     <!-- Value Discovery -->
     <string name="value_discovery_header">Speakify को काम करते हुए सुनें</string>
