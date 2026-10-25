@@ -1,4 +1,3 @@
 Améliorations :
-- Signalement de notifications : Diagnostic étendu pour corriger les erreurs plus rapidement !
-- Prise en charge des emails : Filtrez par expéditeur/mots-clés, écoutez les messages complets et résumés.
-- Prise en charge de Shop : Support personnalisé initial pour l'application Shop (com.shopify.arrive).
+- Onboarding guidé : Ajout de repères visuels animés pour les catégories suggérées et validation exigeant la sélection d'au moins une catégorie.
+- Configuration intelligente : Détection et configuration automatiques des applications de communication essentielles.
