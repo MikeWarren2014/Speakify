@@ -26,6 +26,8 @@ import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 @OptIn(UnstableApi::class)
 @Singleton
@@ -109,9 +111,9 @@ class TTSManager @Inject constructor(
         if (!isInitialized) {
             Log.d(TAG, "TTS not ready. Waiting for initialization...")
             try {
-                withTimeout(5000) {
+                withTimeout(50.seconds) {
                     while (!isInitialized) {
-                        delay(100)
+                        delay(100.milliseconds)
                     }
                 }
             } catch (e: TimeoutCancellationException) {
