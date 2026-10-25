@@ -11,6 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.round
@@ -121,7 +122,7 @@ class SpeakifyAudioManager @Inject constructor(
     }
 
     suspend fun getDesiredVolume(): Int {
-        val ringerVolume = round(audioManager.getStreamVolume(AudioManager.STREAM_RING)
+        val ringerVolume = ceil(audioManager.getStreamVolume(AudioManager.STREAM_RING)
             .toFloat() *
                 maxVolume / audioManager.getStreamMaxVolume(AudioManager.STREAM_RING))
             .toInt()
@@ -131,9 +132,10 @@ class SpeakifyAudioManager @Inject constructor(
         if (currentVolume > max(minVolume, ringerVolume))
             return currentVolume
 
-        if (minVolume > max(currentVolume, ringerVolume))
+        val higherVolume = max(currentVolume, ringerVolume)
+        if (minVolume > higherVolume)
             return minVolume
 
-        return min(ringerVolume + 1, maxVolume)
+        return min(higherVolume, maxVolume)
     }
 }
