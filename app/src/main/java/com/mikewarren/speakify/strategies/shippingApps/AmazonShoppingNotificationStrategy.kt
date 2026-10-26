@@ -25,6 +25,9 @@ class AmazonShoppingNotificationStrategy(
         if (context.getString(R.string.package_delivered) in title)
             return NotificationTypes.Delivered
 
+        if (context.getString(R.string.package_shipped) in title)
+            return NotificationTypes.Shipped
+
         return NotificationTypes.Other
     }
 
